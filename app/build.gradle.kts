@@ -6,6 +6,8 @@ plugins {
     alias(libs.plugins.hilt)
 }
 
+val mockitoAgent = configurations.create("mockitoAgent")
+
 android {
     namespace = "br.com.usinasantafe.cvf"
     compileSdk {
@@ -140,6 +142,11 @@ dependencies {
     testImplementation(libs.hilt.android.testing)
     testImplementation(kotlin("test"))
 
+    // Mockito Java Agent
+    mockitoAgent(libs.mockito.core) {
+        isTransitive = false
+    }
+
     // --- Instrumentation Tests (androidTest) ---
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
@@ -150,4 +157,8 @@ dependencies {
     androidTestImplementation(libs.hilt.android.testing)
     androidTestImplementation(libs.mockito)
     androidTestImplementation(kotlin("test"))
+}
+
+tasks.withType<Test>().configureEach {
+    jvmArgs("-javaagent:${mockitoAgent.asPath}")
 }

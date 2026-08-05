@@ -1,3 +1,36 @@
 <resources>
     <string name="app_name">CVF</string>
+    <string name="text_msg_recovery">RECUPERANDO DADOS DA TABELA \"%1$s\" DO WEB SERVICE.</string>
+    <string name="text_msg_clean">LIMPANDO A TABELA \"%1$s\".</string>
+    <string name="text_msg_save">SALVANDO DADOS NA TABELA \"%1$s\".</string>
+    <string name="text_msg_get_token">ENVIANDO DADOS DE TOKEN</string>
+    <string name="text_msg_save_token">SALVANDO DADOS DE TOKEN</string>
+    <string name="text_msg_finish_update_initial">AJUSTE INICIAIS FINALIZADO COM SUCESSO!</string>
+    <string name="text_msg_finish_update_completed">ATUALIZAÇÃO DE DADOS REALIZADO COM SUCESSO!</string>
+    <string name="text_field_empty">CAMPO VAZIO! POR FAVOR, PREENCHA O CAMPO \"%1$s\" PARA DAR CONTINUIDADE AO APONTAMENTO.</string>
+    <string name="text_input_data_invalid">DADO INVÁLIDO! POR FAVOR, VERIFIQUE SE O CAMPO \"%1$s\" FOI DIGITADO CORRETAMENTE OU ATUALIZE OS DADOS PARA VERIFICAR SE OS MESMOS NÃO ESTÃO DESATUALIZADOS.</string>
+    <string name="text_field_empty_config">CAMPO VAZIO! POR FAVOR, PREENCHA TODOS OS CAMPOS PARA SALVAR AS CONFIGURAÇÕES E ATUALIZAR TODAS AS BASES DE DADOS.</string>
+    <string name="text_update_failure">FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. %1$s</string>
+    <string name="text_failure">FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. %1$s</string>
+    <string name="text_number_1">1</string>
+    <string name="text_number_2">2</string>
+    <string name="text_number_3">3</string>
+    <string name="text_number_4">4</string>
+    <string name="text_number_5">5</string>
+    <string name="text_number_6">6</string>
+    <string name="text_number_7">7</string>
+    <string name="text_number_8">8</string>
+    <string name="text_number_9">9</string>
+    <string name="text_number_0">0</string>
+    <string name="text_number_00">00</string>
+    <string name="text_comma">,</string>
+    <string name="text_pattern_clean">APAGAR</string>
+    <string name="text_pattern_update">ATUALIZAR DADOS</string>
+    <string name="text_pattern_ok">OK</string>
+    <string name="text_pattern_cancel">CANCELAR</string>
+    <string name="text_pattern_return">RETORNAR</string>
+    <string name="text_title_config">CONFIGURAÇÃO</string>
+    <string name="text_number">NRO APARELHO</string>
+    S<string name="text_password">SENHA</string>
+    <string name="text_pattern_save">SALVAR</string>
 </resources>
