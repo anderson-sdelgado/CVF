@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cvf.domain.usecases.config
 
-import br.com.usinasantafe.cvf.domain.entities.stable.Config
+import br.com.usinasantafe.cvf.domain.entities.variable.Config
 import br.com.usinasantafe.cvf.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cvf.lib.LevelUpdate
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate

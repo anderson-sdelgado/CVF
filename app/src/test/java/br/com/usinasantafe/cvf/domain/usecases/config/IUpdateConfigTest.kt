@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cvf.domain.usecases.config
 
-import br.com.usinasantafe.cvf.domain.entities.stable.Config
+import br.com.usinasantafe.cvf.domain.entities.variable.Config
 import br.com.usinasantafe.cvf.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.LevelUpdate
@@ -146,7 +146,7 @@ class IUpdateConfigTest {
             val list = result.toList()
             assertEquals(
                 result.count(),
-                2
+                3
             )
             assertEquals(
                 list[0],
@@ -160,7 +160,7 @@ class IUpdateConfigTest {
                 list[1],
                 UiStatusStateUpdate(
                     flagProgress = true,
-                    levelUpdate = LevelUpdate.GET_TOKEN,
+                    levelUpdate = LevelUpdate.SAVE_TOKEN,
                     currentProgress = updatePercentage(2f, 1f, 3f)
                 )
             )
@@ -172,6 +172,64 @@ class IUpdateConfigTest {
                     flagFailure = true,
                     failure = "IUpdateConfig -> IConfigRepository.save -> java.lang.Exception",
                     currentProgress = 1f,
+                )
+            )
+        }
+    
+    @Test
+    fun `Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                configRepository.send(
+                    Config(
+                        number = 16997417840,
+                        password = "123456",
+                        version = "1.00"
+                    )
+                )
+            ).thenReturn(
+                Result.success(
+                    Config(
+                        number = 16997417840,
+                        password = "123456",
+                        version = "1.00",
+                        idServ = 1
+                    )
+                )
+            )
+            val result = usecase(
+                "16997417840",
+                "123456",
+                "1.00",
+                3f
+            )
+            val list = result.toList()
+            assertEquals(
+                result.count(),
+                3
+            )
+            assertEquals(
+                list[0],
+                UiStatusStateUpdate(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.GET_TOKEN,
+                    currentProgress = updatePercentage(1f, 1f, 3f)
+                )
+            )
+            assertEquals(
+                list[1],
+                UiStatusStateUpdate(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.SAVE_TOKEN,
+                    currentProgress = updatePercentage(2f, 1f, 3f)
+                )
+            )
+            assertEquals(
+                list[2],
+                UiStatusStateUpdate(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.FINISH_UPDATE_INITIAL,
+                    currentProgress = updatePercentage(3f, 1f, 3f)
                 )
             )
         }

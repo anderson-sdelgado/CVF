@@ -1,4 +1,4 @@
-package br.com.usinasantafe.cvf.domain.entities.stable
+package br.com.usinasantafe.cvf.domain.entities.variable
 
 import br.com.usinasantafe.cvf.lib.StatusSend
 
