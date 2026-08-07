@@ -5,14 +5,12 @@ import br.com.usinasantafe.cvf.domain.usecases.common.GetToken
 import br.com.usinasantafe.cvf.lib.LevelUpdate
 import br.com.usinasantafe.cvf.lib.TB_COLAB
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
-import br.com.usinasantafe.cvf.utils.call
 import br.com.usinasantafe.cvf.utils.emitProgress
-import br.com.usinasantafe.cvf.utils.flowCall
+import br.com.usinasantafe.cvf.utils.flowCallUpdate
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
-import kotlin.collections.addAll
 
 interface UpdateTableColab {
     suspend operator fun invoke(
@@ -30,7 +28,7 @@ class IUpdateTableColab @Inject constructor(
         sizeAll: Float,
         count: Float
     ): Flow<UiStatusStateUpdate> = flow {
-        flowCall(getClassAndMethod()) {
+        flowCallUpdate(getClassAndMethod()) {
 
             emitProgress(count, sizeAll, LevelUpdate.RECOVERY, TB_COLAB)
             val token = getToken().getOrThrow()

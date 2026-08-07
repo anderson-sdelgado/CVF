@@ -75,7 +75,7 @@ fun UiStatusStateUpdate.withFailure(
     flagProgress: Boolean = false
 ): UiStatusStateUpdate {
 
-    val failMsg = "$classAndMethod -> $message"
+    val failMsg = removeRepeatedCalls("$classAndMethod -> $message")
     Timber.e(failMsg)
 
     return copy(
@@ -125,11 +125,12 @@ suspend fun FlowCollector<UiStatusStateUpdate>.emitProgress(
 
 suspend fun FlowCollector<UiStatusStateUpdate>.emitFailure(
     failure: String,
+    errors: Errors
 ) {
     emit(
         UiStatusStateUpdate(
             flagProgress = false,
-            errors = Errors.UPDATE,
+            errors = errors,
             flagDialog = true,
             flagFailure = true,
             failure = failure,

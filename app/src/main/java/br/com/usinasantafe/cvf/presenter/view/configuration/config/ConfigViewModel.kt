@@ -6,6 +6,8 @@ import br.com.usinasantafe.cvf.domain.usecases.config.SetFinishUpdateAllTable
 import br.com.usinasantafe.cvf.domain.usecases.config.UpdateConfig
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableColab
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableEquip
+import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableFront
+import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableRelease
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.utils.UiStateWithStatusUpdate
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
@@ -42,7 +44,9 @@ class ConfigViewModel @Inject constructor(
     private val updateConfig: UpdateConfig,
     private val setFinishUpdateAllTable: SetFinishUpdateAllTable,
     private val updateTableColab: UpdateTableColab,
-    private val updateTableEquip: UpdateTableEquip
+    private val updateTableEquip: UpdateTableEquip,
+    private val updateTableFront: UpdateTableFront,
+    private val updateTableRelease: UpdateTableRelease
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ConfigState())
@@ -92,11 +96,8 @@ class ConfigViewModel @Inject constructor(
 
 
     suspend fun updateAllDatabase(): Flow<ConfigState> {
-        val tables = listOf(updateTableColab, updateTableEquip)
-        val sizeAllTables = sizeUpdate(tables.size.toFloat())
-        
         return executeUpdateSteps(
-            steps = listUpdate(sizeAllTables),
+            steps = listUpdate(),
             getState = { _uiState.value },
             getStatus = { it.status },
             copyStateWithStatus = { state, status -> state.copy(status = status) },
@@ -106,11 +107,16 @@ class ConfigViewModel @Inject constructor(
         )
     }
 
-    suspend fun listUpdate(sizeAll: Float) : List<Flow<UiStatusStateUpdate>> {
-        var count = 1f
-        return listOf(
-            updateTableColab(sizeAll, count++),
-            updateTableEquip(sizeAll, count++)
+    suspend fun listUpdate() : List<Flow<UiStatusStateUpdate>> {
+        val tables = listOf(
+            updateTableColab::invoke,
+            updateTableEquip::invoke,
+            updateTableFront::invoke,
+            updateTableRelease::invoke
         )
+        val sizeAllTables = sizeUpdate(tables.size.toFloat())
+        return tables.mapIndexed { index, useCase ->
+            useCase(sizeAllTables, (index + 1).toFloat())
+        }
     }
 }

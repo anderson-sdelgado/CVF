@@ -16,4 +16,16 @@ interface StableRoomDatasourceModule {
     @Singleton
     fun bindColabRoomDatasource(datasource: IColabRoomDatasource): ColabRoomDatasource
 
+    @Binds
+    @Singleton
+    fun bindEquipRoomDatasource(datasource: IEquipRoomDatasource): EquipRoomDatasource
+
+    @Binds
+    @Singleton
+    fun bindFrontRoomDatasource(datasource: IFrontRoomDatasource): FrontRoomDatasource
+
+    @Binds
+    @Singleton
+    fun bindReleaseRoomDatasource(datasource: IReleaseRoomDatasource): ReleaseRoomDatasource
+
 }

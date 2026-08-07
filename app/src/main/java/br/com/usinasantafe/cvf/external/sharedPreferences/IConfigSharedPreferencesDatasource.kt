@@ -41,4 +41,13 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
             model
         }
 
+    override suspend fun has(): Result<Boolean> =
+        result(getClassAndMethod()) {
+            val result = sharedPreferences.getString(
+                BASE_SHARED_PREFERENCES_TABLE_CONFIG,
+                null
+            )
+            result != null
+        }
+
 }

@@ -6,23 +6,23 @@
         <option name="selectionMode" value="DROPDOWN" />
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="check_return_failure_if_token_is_invalid()">
+      <SelectionState runConfigName="verify_check_open_screen_config_and_service_without_connection()">
         <option name="selectionMode" value="DROPDOWN" />
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="check_return_failure_if_have_error_404()">
+      <SelectionState runConfigName="verify_check_msg_number_field_empty()">
         <option name="selectionMode" value="DROPDOWN" />
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="check_return_failure_if_row_is_repeated()">
+      <SelectionState runConfigName="verify_check_msg_password_field_empty()">
         <option name="selectionMode" value="DROPDOWN" />
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="verify_return_data_if_success_usecase()">
+      <SelectionState runConfigName="check_open_screen_and_msg_if_web_service_return_data_token_incorrect()">
         <option name="selectionMode" value="DROPDOWN" />
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="flow()">
+      <SelectionState runConfigName="check_open_screen_and_msg_if_web_service_return_data_token_correct()">
         <option name="selectionMode" value="DROPDOWN" />
         <DialogSelection />
       </SelectionState>

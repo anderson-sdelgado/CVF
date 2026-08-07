@@ -2,10 +2,11 @@ package br.com.usinasantafe.cvf.domain.usecases.config
 
 import br.com.usinasantafe.cvf.domain.entities.variable.Config
 import br.com.usinasantafe.cvf.domain.repositories.variable.ConfigRepository
+import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.LevelUpdate
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
 import br.com.usinasantafe.cvf.utils.emitProgress
-import br.com.usinasantafe.cvf.utils.flowCall
+import br.com.usinasantafe.cvf.utils.flowCallUpdate
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
 import br.com.usinasantafe.cvf.utils.tryCatch
 import com.google.common.primitives.UnsignedInts.toLong
@@ -34,7 +35,7 @@ class IUpdateConfig @Inject constructor(
         sizeAll: Float,
         count: Float
     ): Flow<UiStatusStateUpdate> = flow {
-        flowCall(getClassAndMethod()) {
+        flowCallUpdate(getClassAndMethod(), Errors.TOKEN) {
 
             emitProgress(count, sizeAll, LevelUpdate.GET_TOKEN)
 

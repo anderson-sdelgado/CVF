@@ -16,4 +16,16 @@ interface StableRepositoryModule {
     @Singleton
     fun bindColabRepository(repository: IColabRepository): ColabRepository
 
+    @Binds
+    @Singleton
+    fun bindEquipRepository(repository: IEquipRepository): EquipRepository
+
+    @Binds
+    @Singleton
+    fun bindFrontRepository(repository: IFrontRepository): FrontRepository
+
+    @Binds
+    @Singleton
+    fun bindReleaseRepository(repository: IReleaseRepository): ReleaseRepository
+    
 }

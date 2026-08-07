@@ -32,6 +32,10 @@ fun errors(errors: Errors, failure: String, value: String = ""): String {
             id = R.string.text_update_failure,
             failure
         )
+        Errors.TOKEN -> stringResource(
+            id = R.string.text_token_failure,
+            failure
+        )
         Errors.INVALID -> {
             stringResource(
                 id = R.string.text_input_data_invalid,

@@ -11,6 +11,7 @@
     <string name="text_input_data_invalid">DADO INVÁLIDO! POR FAVOR, VERIFIQUE SE O CAMPO \"%1$s\" FOI DIGITADO CORRETAMENTE OU ATUALIZE OS DADOS PARA VERIFICAR SE OS MESMOS NÃO ESTÃO DESATUALIZADOS.</string>
     <string name="text_field_empty_config">CAMPO VAZIO! POR FAVOR, PREENCHA TODOS OS CAMPOS PARA SALVAR AS CONFIGURAÇÕES E ATUALIZAR TODAS AS BASES DE DADOS.</string>
     <string name="text_update_failure">FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. %1$s</string>
+    <string name="text_token_failure">FALHA DE RECUPERACAO DE TOKEN! POR FAVOR ENTRE EM CONTATO COM TI. %1$s</string>
     <string name="text_failure">FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. %1$s</string>
     <string name="text_number_1">1</string>
     <string name="text_number_2">2</string>

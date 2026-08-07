@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.test.core.app.ApplicationProvider
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cvf.lib.StatusSend
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -90,6 +91,42 @@ class IConfigSharedPreferencesDatasourceTest {
                     number = 16997417840,
                     password = "12345"
                 )
+            )
+        }
+
+    @Test
+    fun `has - Check return false if not have data`() =
+        runTest {
+            val result = datasource.has()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                false
+            )
+        }
+
+    @Test
+    fun `has - Check return true if have data`() =
+        runTest {
+            val data = ConfigSharedPreferencesModel(
+                number = 1,
+                password = "123456",
+                idServ = 1,
+                version = "1.00",
+                statusSend = StatusSend.SENT
+            )
+            datasource.save(data)
+            val result = datasource.has()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
             )
         }
 

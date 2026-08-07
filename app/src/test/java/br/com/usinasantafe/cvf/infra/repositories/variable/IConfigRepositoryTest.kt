@@ -302,4 +302,50 @@ class IConfigRepositoryTest {
             )
         }
 
+    @Test
+    fun `has - Check return failure if have error in ConfigSharedPreferencesDatasource has`() =
+        runTest {
+            whenever(
+                configSharedPreferencesDatasource.has()
+            ).thenReturn(
+                resultFailure(
+                    "IConfigSharedPreferencesDatasource.has",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.has()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IConfigRepository.has -> IConfigSharedPreferencesDatasource.has"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `has - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                configSharedPreferencesDatasource.has()
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.has()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
 }

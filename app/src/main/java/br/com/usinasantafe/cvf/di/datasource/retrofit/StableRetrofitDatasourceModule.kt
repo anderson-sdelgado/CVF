@@ -16,4 +16,16 @@ interface StableRetrofitDatasourceModule {
     @Singleton
     fun bindColabRetrofitDatasource(datasource: IColabRetrofitDatasource): ColabRetrofitDatasource
 
+    @Binds
+    @Singleton
+    fun bindEquipRetrofitDatasource(datasource: IEquipRetrofitDatasource): EquipRetrofitDatasource
+
+    @Binds
+    @Singleton
+    fun bindFrontRetrofitDatasource(datasource: IFrontRetrofitDatasource): FrontRetrofitDatasource
+
+    @Binds
+    @Singleton
+    fun bindReleaseRetrofitDatasource(datasource: IReleaseRetrofitDatasource): ReleaseRetrofitDatasource
+
 }

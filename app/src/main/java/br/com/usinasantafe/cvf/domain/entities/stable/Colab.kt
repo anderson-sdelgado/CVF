@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cvf.domain.entities.stable
 
-data class Colab(
+data class Colab (
     val reg: Long,
     val name: String,
 ) {

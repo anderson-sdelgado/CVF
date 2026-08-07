@@ -19,4 +19,12 @@ interface UpdateModule {
     @Singleton
     fun bindUpdateTableEquip(usecase: IUpdateTableEquip): UpdateTableEquip
 
+    @Binds
+    @Singleton
+    fun bindUpdateTableFront(usecase: IUpdateTableFront): UpdateTableFront
+
+    @Binds
+    @Singleton
+    fun bindUpdateTableRelease(usecase: IUpdateTableRelease): UpdateTableRelease
+
 }

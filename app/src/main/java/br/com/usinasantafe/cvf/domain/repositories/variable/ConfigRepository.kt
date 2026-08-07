@@ -7,4 +7,5 @@ interface ConfigRepository {
     suspend fun get(): Result<Config>
     suspend fun send(entity: Config): Result<Config>
     suspend fun save(entity: Config): EmptyResult
+    suspend fun has(): Result<Boolean>
 }

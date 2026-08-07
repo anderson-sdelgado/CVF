@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cvf.utils
 
+import br.com.usinasantafe.cvf.lib.Errors
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.catch
@@ -30,19 +31,20 @@ suspend fun <T> result (
     }
 }
 
-suspend fun FlowCollector<UiStatusStateUpdate>.flowCall(
+suspend fun FlowCollector<UiStatusStateUpdate>.flowCallUpdate(
     context: String,
+    errors: Errors = Errors.UPDATE,
     block: suspend () -> Unit
 ) {
     try {
         block()
     } catch (e: Exception) {
         val failure = failure(context, e)
-        emitFailure(failure)
+        emitFailure(failure, errors)
     }
 }
 
-fun <T> callFlow(
+fun <T> flowCall(
     context: String,
     block: () -> Flow<T>
 ): Flow<T> =

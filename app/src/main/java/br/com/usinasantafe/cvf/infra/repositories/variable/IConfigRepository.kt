@@ -36,4 +36,9 @@ class IConfigRepository @Inject constructor(
             configSharedPreferencesDatasource.save(sharedPreferencesModel).getOrThrow()
         }
 
+    override suspend fun has(): Result<Boolean> =
+        call(getClassAndMethod()) {
+            configSharedPreferencesDatasource.has().getOrThrow()
+        }
+
 }

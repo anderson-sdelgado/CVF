@@ -4,14 +4,17 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
-import br.com.usinasantafe.cvf.external.room.dao.stable.ColabDao
-import br.com.usinasantafe.cvf.infra.models.room.stable.ColabRoomModel
+import br.com.usinasantafe.cvf.external.room.dao.stable.*
+import br.com.usinasantafe.cvf.infra.models.room.stable.*
 import br.com.usinasantafe.cvf.lib.VERSION_DB
 import java.util.Date
 
 @Database(
     entities = [
-        ColabRoomModel::class
+        ColabRoomModel::class,
+        EquipRoomModel::class,
+        FrontRoomModel::class,
+        ReleaseRoomModel::class,
     ],
     version = VERSION_DB,
     exportSchema = false,
@@ -19,6 +22,9 @@ import java.util.Date
 @TypeConverters(Converters::class)
 abstract class DatabaseRoom : RoomDatabase() {
     abstract fun colabDao(): ColabDao
+    abstract fun equipDao(): EquipDao
+    abstract fun frontDao(): FrontDao
+    abstract fun releaseDao(): ReleaseDao
 }
 
 class Converters {

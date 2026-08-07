@@ -8,8 +8,12 @@ const val BASE_SHARED_PREFERENCES_TABLE_CONFIG = "config"
 
 const val TB_COLAB = "tb_colab"
 const val TB_EQUIP = "tb_equip"
+const val TB_FRONT = "tb_front"
+const val TB_RELEASE = "tb_release"
 
 const val WEB_ALL_COLAB = "colab.php"
 const val WEB_ALL_EQUIP = "equip.php"
+const val WEB_ALL_FRONT = "front.php"
+const val WEB_ALL_RELEASE = "release.php"
 
 const val WEB_SAVE_TOKEN = "find-token.php"
