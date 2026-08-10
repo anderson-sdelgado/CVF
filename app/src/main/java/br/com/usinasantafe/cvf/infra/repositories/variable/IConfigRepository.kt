@@ -41,4 +41,9 @@ class IConfigRepository @Inject constructor(
             configSharedPreferencesDatasource.has().getOrThrow()
         }
 
+    override suspend fun setFlagUpdate(): EmptyResult =
+        call(getClassAndMethod()) {
+            configSharedPreferencesDatasource.setFlagUpdate().getOrThrow()
+        }
+
 }

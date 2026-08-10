@@ -6,6 +6,7 @@ import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.ConfigSharedPr
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.sharedPreferencesModelToEntity
 import br.com.usinasantafe.cvf.lib.BASE_SHARED_PREFERENCES_TABLE_CONFIG
+import br.com.usinasantafe.cvf.lib.StatusSend
 import br.com.usinasantafe.cvf.utils.EmptyResult
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
 import br.com.usinasantafe.cvf.utils.result
@@ -48,6 +49,14 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
                 null
             )
             result != null
+        }
+
+    override suspend fun setFlagUpdate(): EmptyResult =
+        result(getClassAndMethod()) {
+            val model = get().getOrThrow()
+            model.flagUpdate = true
+            model.statusSend = StatusSend.SENT
+            save(model).getOrThrow()
         }
 
 }

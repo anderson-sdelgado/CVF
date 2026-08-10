@@ -6,7 +6,6 @@ import br.com.usinasantafe.cvf.presenter.model.toConfigModel
 import br.com.usinasantafe.cvf.utils.call
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
 import javax.inject.Inject
-import kotlin.text.get
 
 interface GetConfig {
     suspend operator fun invoke(): Result<ConfigScreenModel?>
@@ -18,8 +17,8 @@ class IGetConfig @Inject constructor(
 
     override suspend fun invoke(): Result<ConfigScreenModel?> =
         call(getClassAndMethod()) {
-            val hasConfig = configRepository.has().getOrThrow()
-            if (!hasConfig) return@call null
+            val has = configRepository.has().getOrThrow()
+            if (!has) return@call null
             val config = configRepository.get().getOrThrow()
             config.toConfigModel()
         }

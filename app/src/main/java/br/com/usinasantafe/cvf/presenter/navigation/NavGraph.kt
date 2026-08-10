@@ -35,7 +35,10 @@ fun NavigationGraph(
         }
 
         composable(CONFIG_ROUTE) {
-            ConfigScreen()
+            ConfigScreen(
+                onNavFront = {},
+                onNavNote = {}
+            )
         }
 
     }

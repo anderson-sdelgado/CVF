@@ -426,16 +426,12 @@ fun CheckboxDefault(
     font: Int = 22,
     paddingStart: Int = 10,
     checked: Boolean,
-    enabled: Boolean = true,
     onChecked: (Boolean) -> Unit
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .then(
-                if (enabled) Modifier.clickable { onChecked(!checked) }
-                else Modifier
-            )
+            .clickable { onChecked(!checked) }
             .padding(
                 start = paddingStart.dp,
                 top = 10.dp,
@@ -453,7 +449,6 @@ fun CheckboxDefault(
         Text(
             text = text,
             fontSize = font.sp,
-            color = if (enabled) Color.Unspecified else Color.Gray
         )
     }
 }

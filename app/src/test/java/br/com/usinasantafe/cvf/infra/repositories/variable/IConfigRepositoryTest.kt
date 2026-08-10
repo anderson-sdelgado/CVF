@@ -348,4 +348,42 @@ class IConfigRepositoryTest {
             )
         }
 
+    @Test
+    fun `setFlagUpdate - Check return failure if have error in ConfigSharedPreferencesDatasource setFlagUpdate`() =
+        runTest {
+            whenever(
+                configSharedPreferencesDatasource.setFlagUpdate()
+            ).thenReturn(
+                resultFailure(
+                    "IConfigSharedPreferencesDatasource.setFlagUpdate",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.setFlagUpdate()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IConfigRepository.setFlagUpdate -> IConfigSharedPreferencesDatasource.setFlagUpdate"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `setFlagUpdate - Check return correct if function execute successfully`() =
+        runTest {
+            val result = repository.setFlagUpdate()
+            verify(configSharedPreferencesDatasource, atLeastOnce()).setFlagUpdate()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+        }
+
 }

@@ -39,6 +39,8 @@ const val TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN = "tag_password_text_field_confi
 @Composable
 fun ConfigScreen(
     viewModel: ConfigViewModel = hiltViewModel(),
+    onNavFront: () -> Unit,
+    onNavNote: () -> Unit
 ) {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -57,6 +59,10 @@ fun ConfigScreen(
                 onSaveAndUpdate = viewModel::onSaveAndUpdate,
                 onCloseDialog = viewModel::onCloseDialog,
                 status = uiState.status,
+                flagAccess = uiState.flagAccess,
+                flagManager = uiState.flagManager,
+                onNavFront = onNavFront,
+                onNavNote = onNavNote,
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -72,6 +78,10 @@ fun ConfigContent(
     onSaveAndUpdate: () -> Unit,
     onCloseDialog: () -> Unit,
     status: UiStatusStateUpdate,
+    flagAccess: Boolean,
+    flagManager: Boolean,
+    onNavFront: () -> Unit,
+    onNavNote: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -106,7 +116,8 @@ fun ConfigContent(
         Spacer(modifier = Modifier.padding(vertical = 8.dp))
         ButtonMaxWidth(id = R.string.text_pattern_save, onClick = onSaveAndUpdate)
         Spacer(modifier = Modifier.padding(vertical = 8.dp))
-        ButtonMaxWidth(id = R.string.text_pattern_return) { }
+
+        if(flagManager) ButtonMaxWidth(id = R.string.text_pattern_return, onClick = onNavNote)
 
         if (status.flagProgress) {
             Spacer(modifier = Modifier.padding(vertical = 16.dp))
@@ -134,6 +145,7 @@ fun ConfigContent(
 
     LaunchedEffect(status.flagAccess) {
         if(status.flagAccess) {
+            onNavFront()
         }
     }
 }
@@ -151,6 +163,10 @@ fun ConfigPagePreview() {
                 onSaveAndUpdate = {},
                 onCloseDialog = {},
                 status = UiStatusStateUpdate(),
+                flagAccess = false,
+                flagManager = false,
+                onNavFront = {},
+                onNavNote = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -180,6 +196,10 @@ fun ConfigPagePreviewWithData() {
                     errors = Errors.FIELD_EMPTY,
                     failure = "",
                 ),
+                flagAccess = false,
+                flagManager = true,
+                onNavFront = {},
+                onNavNote = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -208,6 +228,10 @@ fun ConfigPagePreviewShowProgress() {
                     errors = Errors.FIELD_EMPTY,
                     failure = "",
                 ),
+                flagAccess = false,
+                flagManager = false,
+                onNavFront = {},
+                onNavNote = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -236,6 +260,10 @@ fun ConfigPagePreviewShowMsgFieldEmpty() {
                     errors = Errors.FIELD_EMPTY,
                     failure = "",
                 ),
+                flagAccess = false,
+                flagManager = false,
+                onNavFront = {},
+                onNavNote = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -264,6 +292,10 @@ fun ConfigPagePreviewShowMsgSuccess() {
                     errors = Errors.FIELD_EMPTY,
                     failure = "",
                 ),
+                flagAccess = false,
+                flagManager = false,
+                onNavFront = {},
+                onNavNote = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }

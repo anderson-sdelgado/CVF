@@ -16,4 +16,8 @@ interface VariableRepositoryModule {
     @Singleton
     fun bindConfigRepository(repository: IConfigRepository): ConfigRepository
 
+    @Binds
+    @Singleton
+    fun bindManagerRepository(repository: IManagerRepository): ManagerRepository
+
 }

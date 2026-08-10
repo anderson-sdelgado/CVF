@@ -34,4 +34,5 @@
     <string name="text_number">NRO APARELHO</string>
     S<string name="text_password">SENHA</string>
     <string name="text_pattern_save">SALVAR</string>
+    <string name="text_front">FRENTE</string>
 </resources>

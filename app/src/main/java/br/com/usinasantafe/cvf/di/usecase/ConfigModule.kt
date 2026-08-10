@@ -19,4 +19,8 @@ interface ConfigModule {
     @Singleton
     fun bindSetFinishUpdateAllTable(usecase: ISetFinishUpdateAllTable): SetFinishUpdateAllTable
 
+    @Binds
+    @Singleton
+    fun bindGetConfig(usecase: IGetConfig): GetConfig
+
 }

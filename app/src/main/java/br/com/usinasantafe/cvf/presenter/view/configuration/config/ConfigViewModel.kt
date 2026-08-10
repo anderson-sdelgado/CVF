@@ -2,6 +2,7 @@ package br.com.usinasantafe.cvf.presenter.view.configuration.config
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.usinasantafe.cvf.domain.usecases.config.GetConfig
 import br.com.usinasantafe.cvf.domain.usecases.config.SetFinishUpdateAllTable
 import br.com.usinasantafe.cvf.domain.usecases.config.UpdateConfig
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableColab
@@ -31,6 +32,7 @@ data class ConfigState(
     val password: String = "",
     val version: String = "",
     val flagAccess: Boolean = false,
+    val flagManager: Boolean = false,
     override val status: UiStatusStateUpdate = UiStatusStateUpdate()
 ) : UiStateWithStatusUpdate<ConfigState> {
 
@@ -41,6 +43,7 @@ data class ConfigState(
 
 @HiltViewModel
 class ConfigViewModel @Inject constructor(
+    private val getConfig: GetConfig,
     private val updateConfig: UpdateConfig,
     private val setFinishUpdateAllTable: SetFinishUpdateAllTable,
     private val updateTableColab: UpdateTableColab,
@@ -70,7 +73,15 @@ class ConfigViewModel @Inject constructor(
     private fun ConfigState.isValid() = number.isNotBlank() && password.isNotBlank()
 
     fun recoverData() = viewModelScope.launch {
-
+        runCatching {
+            getConfig().getOrThrow()
+        }
+            .onSuccess { config ->
+                config?.let {
+                    updateState { copy(number = it.number, password = it.password) }
+                }
+            }
+            .onFailureUpdate(getClassAndMethod(), ::updateState)
     }
 
     fun onSaveAndUpdate() = viewModelScope.launch {

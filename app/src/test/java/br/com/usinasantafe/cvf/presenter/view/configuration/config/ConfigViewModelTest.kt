@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cvf.presenter.view.configuration.config
 
 import br.com.usinasantafe.cvf.MainCoroutineRule
+import br.com.usinasantafe.cvf.domain.usecases.config.GetConfig
 import br.com.usinasantafe.cvf.domain.usecases.config.SetFinishUpdateAllTable
 import br.com.usinasantafe.cvf.domain.usecases.config.UpdateConfig
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableColab
@@ -9,6 +10,7 @@ import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableFront
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableRelease
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.LevelUpdate
+import br.com.usinasantafe.cvf.presenter.model.ConfigScreenModel
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
 import br.com.usinasantafe.cvf.utils.percentage
 import br.com.usinasantafe.cvf.utils.resultFailure
@@ -41,8 +43,10 @@ class ConfigViewModelTest {
     private val updateTableEquip = mock<UpdateTableEquip>()
     private val updateTableFront = mock<UpdateTableFront>()
     private val updateTableRelease = mock<UpdateTableRelease>()
+    private val getConfig = mock<GetConfig>()
     private var tableList = mutableListOf<String>()
     private val viewModel = ConfigViewModel(
+        getConfig = getConfig,
         updateConfig = updateConfig,
         setFinishUpdateAllTable = setFinishUpdateAllTable,
         updateTableColab = updateTableColab,
@@ -657,6 +661,80 @@ class ConfigViewModelTest {
                 )
             )
             verify(setFinishUpdateAllTable, atLeastOnce()).invoke()
+        }
+
+    @Test
+    fun `recoverData - Check return failure if have error in GetConfig`() =
+        runTest {
+            whenever(
+                getConfig()
+            ).thenReturn(
+                resultFailure(
+                    context = "GetConfig",
+                    message = "-",
+                    cause = Exception()
+                )
+            )
+            viewModel.recoverData()
+            assertEquals(
+                viewModel.uiState.value.status.flagDialog,
+                true
+            )
+            assertEquals(
+                viewModel.uiState.value.status.failure,
+                "ConfigViewModel.recoverData -> GetConfig -> java.lang.Exception"
+            )
+            assertEquals(
+                viewModel.uiState.value.status.flagFailure,
+                true
+            )
+            assertEquals(
+                viewModel.uiState.value.status.errors,
+                Errors.EXCEPTION
+            )
+        }
+
+    @Test
+    fun `recoverData - Check return null if GetConfig execute successfully and return null`() =
+        runTest {
+            whenever(
+                getConfig()
+            ).thenReturn(
+                Result.success(null)
+            )
+            viewModel.recoverData()
+            assertEquals(
+                viewModel.uiState.value.number,
+                ""
+            )
+            assertEquals(
+                viewModel.uiState.value.password,
+                ""
+            )
+        }
+
+    @Test
+    fun `recoverData - Check return correct if GetConfig execute successfully`() =
+        runTest {
+            whenever(
+                getConfig()
+            ).thenReturn(
+                Result.success(
+                    ConfigScreenModel(
+                        number = "16997417840",
+                        password = "12345"
+                    )
+                )
+            )
+            viewModel.recoverData()
+            assertEquals(
+                viewModel.uiState.value.number,
+                "16997417840"
+            )
+            assertEquals(
+                viewModel.uiState.value.password,
+                "12345"
+            )
         }
 
     ///////////////////////////////////////////////////////////////////////////////////////

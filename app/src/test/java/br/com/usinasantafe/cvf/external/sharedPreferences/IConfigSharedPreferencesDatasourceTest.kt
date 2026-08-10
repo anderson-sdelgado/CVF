@@ -130,4 +130,53 @@ class IConfigSharedPreferencesDatasourceTest {
             )
         }
 
+    @Test
+    fun `setFlagUpdate - Check return data correct the Config SharedPreferences internal`() =
+        runTest {
+            val data = ConfigSharedPreferencesModel(
+                number = 16997417840,
+                password = "123456",
+                idServ = 1,
+                version = "1.00"
+            )
+            datasource.save(data)
+            val resultBefore = datasource.get()
+            assertEquals(
+                resultBefore.isSuccess,
+                true
+            )
+            val modelBefore = resultBefore.getOrNull()!!
+            assertEquals(
+                modelBefore.statusSend,
+                StatusSend.STARTED
+            )
+            assertEquals(
+                modelBefore.flagUpdate,
+                false
+            )
+            val result = datasource.setFlagUpdate()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                Unit
+            )
+            val resultAfter = datasource.get()
+            assertEquals(
+                resultAfter.isSuccess,
+                true
+            )
+            val modelAfter = resultAfter.getOrNull()!!
+            assertEquals(
+                modelAfter.statusSend,
+                StatusSend.SENT
+            )
+            assertEquals(
+                modelAfter.flagUpdate,
+                true
+            )
+        }
+
 }
