@@ -4,6 +4,7 @@ import br.com.usinasantafe.cvf.MainCoroutineRule
 import br.com.usinasantafe.cvf.domain.usecases.config.GetConfig
 import br.com.usinasantafe.cvf.domain.usecases.config.SetFinishUpdateAllTable
 import br.com.usinasantafe.cvf.domain.usecases.config.UpdateConfig
+import br.com.usinasantafe.cvf.domain.usecases.manager.HasManager
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableColab
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableEquip
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableFront
@@ -19,12 +20,10 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.mock
-import org.mockito.kotlin.any
 import org.mockito.kotlin.atLeastOnce
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
@@ -43,6 +42,7 @@ class ConfigViewModelTest {
     private val updateTableEquip = mock<UpdateTableEquip>()
     private val updateTableFront = mock<UpdateTableFront>()
     private val updateTableRelease = mock<UpdateTableRelease>()
+    private val hasManager = mock<HasManager>()
     private val getConfig = mock<GetConfig>()
     private var tableList = mutableListOf<String>()
     private val viewModel = ConfigViewModel(
@@ -52,7 +52,8 @@ class ConfigViewModelTest {
         updateTableColab = updateTableColab,
         updateTableEquip = updateTableEquip,
         updateTableFront = updateTableFront,
-        updateTableRelease = updateTableRelease
+        updateTableRelease = updateTableRelease,
+        hasManager = hasManager
     )
 
     private val qtdTable = 4f
@@ -62,9 +63,18 @@ class ConfigViewModelTest {
         runTest {
             viewModel.onSaveAndUpdate()
             val uiState = viewModel.uiState.value
-            assertEquals(true, uiState.status.flagDialog)
-            assertEquals(true, uiState.status.flagFailure)
-            assertEquals(Errors.FIELD_EMPTY, uiState.status.errors)
+            assertEquals(
+                true,
+                uiState.status.flagDialog
+            )
+            assertEquals(
+                true,
+                uiState.status.flagFailure
+            )
+            assertEquals(
+                Errors.FIELD_EMPTY,
+                uiState.status.errors
+            )
         }
 
     @Test
@@ -93,35 +103,34 @@ class ConfigViewModelTest {
                     )
                 )
             )
-
             val result = updateConfig("16997417840", "12345", "1.00", 3f, 1f).toList()
-
-            assertEquals(result.count(), 2)
             assertEquals(
-                result[0],
-            UiStatusStateUpdate(
-                flagProgress = true,
-                levelUpdate = LevelUpdate.GET_TOKEN,
-                currentProgress = 0.33f
-                )
+                2,
+                result.count()
             )
             assertEquals(
-                result[1],
-            UiStatusStateUpdate(
+                UiStatusStateUpdate(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.GET_TOKEN,
+                    currentProgress = 0.33f
+                ),
+                result[0]
+            )
+            assertEquals(
+                UiStatusStateUpdate(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
                     failure = "UpdateConfig -> java.lang.NullPointerException"
-                )
+                ),
+                result[1]
             )
-
             viewModel.onNumberChanged("16997417840")
             viewModel.onPasswordChanged("12345")
             viewModel.onVersionChanged("1.00")
             viewModel.onSaveAndUpdate()
             val configState = viewModel.uiState.value
             assertEquals(
-                configState,
                 ConfigState(
                     number = "16997417840",
                     password = "12345",
@@ -134,7 +143,8 @@ class ConfigViewModelTest {
                         currentProgress = 1f,
                         failure = "ConfigViewModel.onSaveAndUpdate -> UpdateConfig -> java.lang.NullPointerException",
                     )
-                )
+                ),
+                configState
             )
         }
 
@@ -143,7 +153,6 @@ class ConfigViewModelTest {
         runTest {
             val qtdBefore = 0f
             val sizeAllTables = sizeUpdate(qtdTable)
-
             whenever(
                 updateConfig(
                     "16997417840",
@@ -161,7 +170,6 @@ class ConfigViewModelTest {
                     )
                 )
             )
-
             whenever(
                 updateTableColab(
                     sizeAll = sizeAllTables,
@@ -183,14 +191,12 @@ class ConfigViewModelTest {
                     )
                 )
             )
-
             val result = viewModel.updateAllDatabase().toList()
             assertEquals(
-                result.count(),
-                ((qtdBefore * 3) + 2).toInt()
+                ((qtdBefore * 3) + 2).toInt(),
+                result.count()
             )
             assertEquals(
-                result[(qtdBefore * 3).toInt()],
                 ConfigState(
                     status = UiStatusStateUpdate(
                         flagProgress = true,
@@ -198,10 +204,10 @@ class ConfigViewModelTest {
                         tableUpdate = "tb_colab",
                         currentProgress = percentage(((qtdBefore * 3) + 1), qtdTable)
                     )
-                )
+                ),
+                result[(qtdBefore * 3).toInt()]
             )
             assertEquals(
-                result[((qtdBefore * 3) + 1).toInt()],
                 ConfigState(
                     status = UiStatusStateUpdate(
                         errors = Errors.UPDATE,
@@ -211,16 +217,15 @@ class ConfigViewModelTest {
                         currentProgress = 1f,
                         failure = "ConfigViewModel.updateAllDatabase -> CleanColab -> java.lang.NullPointerException",
                     )
-                )
+                ),
+                result[((qtdBefore * 3) + 1).toInt()]
             )
-
             viewModel.onNumberChanged("16997417840")
             viewModel.onPasswordChanged("12345")
             viewModel.onVersionChanged("1.00")
             viewModel.onSaveAndUpdate()
             val configState = viewModel.uiState.value
             assertEquals(
-                configState,
                 ConfigState(
                     number = "16997417840",
                     password = "12345",
@@ -233,7 +238,8 @@ class ConfigViewModelTest {
                         currentProgress = 1f,
                         failure = "ConfigViewModel.onSaveAndUpdate -> ConfigViewModel.updateAllDatabase -> CleanColab -> java.lang.NullPointerException",
                     )
-                )
+                ),
+                configState
             )
         }
 
@@ -241,7 +247,6 @@ class ConfigViewModelTest {
     fun `update - Check return failure if have error in UpdateTableEquip`() =
         runTest {
             val qtdBefore = 1f
-
             whenever(
                 updateConfig(
                     "16997417840",
@@ -259,7 +264,6 @@ class ConfigViewModelTest {
                     )
                 )
             )
-
             wheneverSuccess(qtdBefore)
             whenever(
                 updateTableEquip(
@@ -284,12 +288,11 @@ class ConfigViewModelTest {
             )
             val result = viewModel.updateAllDatabase().toList()
             assertEquals(
-                result.count(),
-                ((qtdBefore * 3) + 2).toInt()
+                ((qtdBefore * 3) + 2).toInt(),
+                result.count()
             )
             checkResultUpdate(qtdBefore, result)
             assertEquals(
-                result[(qtdBefore * 3).toInt()],
                 ConfigState(
                     status = UiStatusStateUpdate(
                         flagProgress = true,
@@ -297,10 +300,10 @@ class ConfigViewModelTest {
                         tableUpdate = "tb_equip",
                         currentProgress = percentage(((qtdBefore * 3) + 1), qtdTable)
                     )
-                )
+                ),
+                result[(qtdBefore * 3).toInt()]
             )
             assertEquals(
-                result[((qtdBefore * 3) + 1).toInt()],
                 ConfigState(
                     status = UiStatusStateUpdate(
                         errors = Errors.UPDATE,
@@ -310,16 +313,15 @@ class ConfigViewModelTest {
                         currentProgress = 1f,
                         failure = "ConfigViewModel.updateAllDatabase -> CleanEquip -> java.lang.NullPointerException",
                     )
-                )
+                ),
+                result[((qtdBefore * 3) + 1).toInt()]
             )
-
             viewModel.onNumberChanged("16997417840")
             viewModel.onPasswordChanged("12345")
             viewModel.onVersionChanged("1.00")
             viewModel.onSaveAndUpdate()
             val configState = viewModel.uiState.value
             assertEquals(
-                configState,
                 ConfigState(
                     number = "16997417840",
                     password = "12345",
@@ -332,7 +334,8 @@ class ConfigViewModelTest {
                         currentProgress = 1f,
                         failure = "ConfigViewModel.onSaveAndUpdate -> ConfigViewModel.updateAllDatabase -> CleanEquip -> java.lang.NullPointerException",
                     )
-                )
+                ),
+                configState
             )
         }
 
@@ -340,7 +343,6 @@ class ConfigViewModelTest {
     fun `update - Check return failure if have error in UpdateTableFront`() =
         runTest {
             val qtdBefore = 2f
-
             whenever(
                 updateConfig(
                     "16997417840",
@@ -358,7 +360,6 @@ class ConfigViewModelTest {
                     )
                 )
             )
-
             wheneverSuccess(qtdBefore)
             whenever(
                 updateTableFront(
@@ -383,12 +384,11 @@ class ConfigViewModelTest {
             )
             val result = viewModel.updateAllDatabase().toList()
             assertEquals(
-                result.count(),
-                ((qtdBefore * 3) + 2).toInt()
+                ((qtdBefore * 3) + 2).toInt(),
+                result.count()
             )
             checkResultUpdate(qtdBefore, result)
             assertEquals(
-                result[(qtdBefore * 3).toInt()],
                 ConfigState(
                     status = UiStatusStateUpdate(
                         flagProgress = true,
@@ -396,10 +396,10 @@ class ConfigViewModelTest {
                         tableUpdate = "tb_front",
                         currentProgress = percentage(((qtdBefore * 3) + 1), qtdTable)
                     )
-                )
+                ),
+                result[(qtdBefore * 3).toInt()]
             )
             assertEquals(
-                result[((qtdBefore * 3) + 1).toInt()],
                 ConfigState(
                     status = UiStatusStateUpdate(
                         errors = Errors.UPDATE,
@@ -409,16 +409,15 @@ class ConfigViewModelTest {
                         currentProgress = 1f,
                         failure = "ConfigViewModel.updateAllDatabase -> CleanFront -> java.lang.NullPointerException",
                     )
-                )
+                ),
+                result[((qtdBefore * 3) + 1).toInt()]
             )
-
             viewModel.onNumberChanged("16997417840")
             viewModel.onPasswordChanged("12345")
             viewModel.onVersionChanged("1.00")
             viewModel.onSaveAndUpdate()
             val configState = viewModel.uiState.value
             assertEquals(
-                configState,
                 ConfigState(
                     number = "16997417840",
                     password = "12345",
@@ -431,7 +430,8 @@ class ConfigViewModelTest {
                         currentProgress = 1f,
                         failure = "ConfigViewModel.onSaveAndUpdate -> ConfigViewModel.updateAllDatabase -> CleanFront -> java.lang.NullPointerException",
                     )
-                )
+                ),
+                configState
             )
         }
 
@@ -439,7 +439,6 @@ class ConfigViewModelTest {
     fun `update - Check return failure if have error in UpdateTableRelease`() =
         runTest {
             val qtdBefore = 3f
-
             whenever(
                 updateConfig(
                     "16997417840",
@@ -457,7 +456,6 @@ class ConfigViewModelTest {
                     )
                 )
             )
-
             wheneverSuccess(qtdBefore)
             whenever(
                 updateTableRelease(
@@ -482,12 +480,11 @@ class ConfigViewModelTest {
             )
             val result = viewModel.updateAllDatabase().toList()
             assertEquals(
-                result.count(),
-                ((qtdBefore * 3) + 2).toInt()
+                ((qtdBefore * 3) + 2).toInt(),
+                result.count()
             )
             checkResultUpdate(qtdBefore, result)
             assertEquals(
-                result[(qtdBefore * 3).toInt()],
                 ConfigState(
                     status = UiStatusStateUpdate(
                         flagProgress = true,
@@ -495,10 +492,10 @@ class ConfigViewModelTest {
                         tableUpdate = "tb_release",
                         currentProgress = percentage(((qtdBefore * 3) + 1), qtdTable)
                     )
-                )
+                ),
+                result[(qtdBefore * 3).toInt()]
             )
             assertEquals(
-                result[((qtdBefore * 3) + 1).toInt()],
                 ConfigState(
                     status = UiStatusStateUpdate(
                         errors = Errors.UPDATE,
@@ -508,16 +505,15 @@ class ConfigViewModelTest {
                         currentProgress = 1f,
                         failure = "ConfigViewModel.updateAllDatabase -> CleanRelease -> java.lang.NullPointerException",
                     )
-                )
+                ),
+                result[((qtdBefore * 3) + 1).toInt()]
             )
-
             viewModel.onNumberChanged("16997417840")
             viewModel.onPasswordChanged("12345")
             viewModel.onVersionChanged("1.00")
             viewModel.onSaveAndUpdate()
             val configState = viewModel.uiState.value
             assertEquals(
-                configState,
                 ConfigState(
                     number = "16997417840",
                     password = "12345",
@@ -530,16 +526,15 @@ class ConfigViewModelTest {
                         currentProgress = 1f,
                         failure = "ConfigViewModel.onSaveAndUpdate -> ConfigViewModel.updateAllDatabase -> CleanRelease -> java.lang.NullPointerException",
                     )
-                )
+                ),
+                configState
             )
         }
 
     @Test
     fun `onSaveAndUpdate - Check return failure if have error in SetFinishUpdateAllTable`() =
         runTest {
-
             val qtdBefore = 4f
-
             whenever(
                 updateConfig(
                     "16997417840",
@@ -557,17 +552,7 @@ class ConfigViewModelTest {
                     )
                 )
             )
-
             wheneverSuccess(qtdBefore)
-
-            val result = viewModel.updateAllDatabase().toList()
-            assertEquals(
-                result.count(),
-                (qtdBefore * 3).toInt()
-            )
-            
-            checkResultUpdate(qtdBefore, result)
-
             whenever(
                 setFinishUpdateAllTable()
             ).thenReturn(
@@ -577,16 +562,18 @@ class ConfigViewModelTest {
                     Exception()
                 )
             )
-
+            val result = viewModel.updateAllDatabase().toList()
+            assertEquals(
+                (qtdBefore * 3).toInt(),
+                result.count()
+            )
+            checkResultUpdate(qtdBefore, result)
             viewModel.onNumberChanged("16997417840")
             viewModel.onPasswordChanged("12345")
             viewModel.onVersionChanged("1.00")
-
             viewModel.onSaveAndUpdate()
-
             val configState = viewModel.uiState.value
             assertEquals(
-                configState,
                 ConfigState(
                     number = "16997417840",
                     password = "12345",
@@ -599,16 +586,15 @@ class ConfigViewModelTest {
                         currentProgress = 1f,
                         failure = "ConfigViewModel.onSaveAndUpdate -> ISetFinishUpdateAllTable -> java.lang.Exception",
                     )
-                )
+                ),
+                configState
             )
         }
 
     @Test
     fun `onSaveAndUpdate - Check return correct if function execute successfully`() =
         runTest {
-
             val qtdBefore = 4f
-
             whenever(
                 updateConfig(
                     "16997417840",
@@ -626,26 +612,19 @@ class ConfigViewModelTest {
                     )
                 )
             )
-
             wheneverSuccess(qtdBefore)
-
             val result = viewModel.updateAllDatabase().toList()
             assertEquals(
-                result.count(),
-                (qtdBefore * 3).toInt()
+                (qtdBefore * 3).toInt(),
+                result.count()
             )
-
             checkResultUpdate(qtdBefore, result)
-
             viewModel.onNumberChanged("16997417840")
             viewModel.onPasswordChanged("12345")
             viewModel.onVersionChanged("1.00")
-
             viewModel.onSaveAndUpdate()
-
             val configState = viewModel.uiState.value
             assertEquals(
-                configState,
                 ConfigState(
                     number = "16997417840",
                     password = "12345",
@@ -658,7 +637,8 @@ class ConfigViewModelTest {
                         levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
                         currentProgress = 1f
                     )
-                )
+                ),
+                configState
             )
             verify(setFinishUpdateAllTable, atLeastOnce()).invoke()
         }
@@ -677,20 +657,56 @@ class ConfigViewModelTest {
             )
             viewModel.recoverData()
             assertEquals(
-                viewModel.uiState.value.status.flagDialog,
-                true
+                true,
+                viewModel.uiState.value.status.flagDialog
             )
             assertEquals(
-                viewModel.uiState.value.status.failure,
-                "ConfigViewModel.recoverData -> GetConfig -> java.lang.Exception"
+                "ConfigViewModel.recoverData -> GetConfig -> java.lang.Exception",
+                viewModel.uiState.value.status.failure
             )
             assertEquals(
-                viewModel.uiState.value.status.flagFailure,
-                true
+                true,
+                viewModel.uiState.value.status.flagFailure
             )
             assertEquals(
-                viewModel.uiState.value.status.errors,
-                Errors.EXCEPTION
+                Errors.EXCEPTION,
+                viewModel.uiState.value.status.errors
+            )
+        }
+
+    @Test
+    fun `recoverData - Check return failure if have error in HasManager`() =
+        runTest {
+            whenever(
+                getConfig()
+            ).thenReturn(
+                Result.success(null)
+            )
+            whenever(
+                hasManager()
+            ).thenReturn(
+                resultFailure(
+                    context = "HasManager",
+                    message = "-",
+                    cause = Exception()
+                )
+            )
+            viewModel.recoverData()
+            assertEquals(
+                true,
+                viewModel.uiState.value.status.flagDialog
+            )
+            assertEquals(
+                "ConfigViewModel.recoverData -> HasManager -> java.lang.Exception",
+                viewModel.uiState.value.status.failure
+            )
+            assertEquals(
+                Errors.EXCEPTION,
+                viewModel.uiState.value.status.errors
+            )
+            assertEquals(
+                true,
+                viewModel.uiState.value.status.flagFailure
             )
         }
 
@@ -702,14 +718,23 @@ class ConfigViewModelTest {
             ).thenReturn(
                 Result.success(null)
             )
+            whenever(
+                hasManager()
+            ).thenReturn(
+                Result.success(false)
+            )
             viewModel.recoverData()
             assertEquals(
-                viewModel.uiState.value.number,
-                ""
+                "",
+                viewModel.uiState.value.number
             )
             assertEquals(
-                viewModel.uiState.value.password,
-                ""
+                "",
+                viewModel.uiState.value.password
+            )
+            assertEquals(
+                false,
+                viewModel.uiState.value.flagManager
             )
         }
 
@@ -726,14 +751,23 @@ class ConfigViewModelTest {
                     )
                 )
             )
+            whenever(
+                hasManager()
+            ).thenReturn(
+                Result.success(true)
+            )
             viewModel.recoverData()
             assertEquals(
-                viewModel.uiState.value.number,
-                "16997417840"
+                "16997417840",
+                viewModel.uiState.value.number
             )
             assertEquals(
-                viewModel.uiState.value.password,
-                "12345"
+                "12345",
+                viewModel.uiState.value.password
+            )
+            assertEquals(
+                true,
+                viewModel.uiState.value.flagManager
             )
         }
 
@@ -743,12 +777,10 @@ class ConfigViewModelTest {
         runTest {
             var contUpdate = 0f
             var contWhenever = 0f
-
             val sizeAll = sizeUpdate(qtdTable)
             tableList = mutableListOf(
                 "tb_colab", "tb_equip", "tb_front", "tb_release",
             )
-
             val updateFunctions = mutableListOf<
                     suspend (Float, Float) -> Flow<UiStatusStateUpdate>
                     >(
@@ -757,7 +789,6 @@ class ConfigViewModelTest {
                 { sizeAll, count -> updateTableFront(sizeAll, count) },
                 { sizeAll, count -> updateTableRelease(sizeAll, count) },
             )
-
             for (func in updateFunctions) {
                 whenever(
                     func(
@@ -794,40 +825,43 @@ class ConfigViewModelTest {
         runTest {
             val sizeAll = sizeUpdate(qtdTable)
             var contUpdate = 0f
-            var cont = 0
+            var count = 0
             for(table in tableList) {
+                ++count
                 assertEquals(
-                    result[cont++],
                     ConfigState(
                         status = UiStatusStateUpdate(
                             flagProgress = true,
                             levelUpdate = LevelUpdate.RECOVERY,
                             tableUpdate = table,
-                            currentProgress = percentage(cont.toFloat(), sizeAll)
+                            currentProgress = percentage(count.toFloat(), sizeAll)
                         )
-                    )
+                    ),
+                    result[count - 1]
                 )
+                ++count
                 assertEquals(
-                    result[cont++],
                     ConfigState(
                         status = UiStatusStateUpdate(
                             flagProgress = true,
                             levelUpdate = LevelUpdate.CLEAN,
                             tableUpdate = table,
-                            currentProgress = percentage(cont.toFloat(), sizeAll)
+                            currentProgress = percentage(count.toFloat(), sizeAll)
                         )
-                    )
+                    ),
+                    result[count - 1]
                 )
+                ++count
                 assertEquals(
-                    result[cont++],
                     ConfigState(
                         status = UiStatusStateUpdate(
                             flagProgress = true,
                             levelUpdate = LevelUpdate.SAVE,
                             tableUpdate = table,
-                            currentProgress = percentage(cont.toFloat(), sizeAll)
+                            currentProgress = percentage(count.toFloat(), sizeAll)
                         )
-                    )
+                    ),
+                    result[count - 1]
                 )
                 ++contUpdate
                 if(posTable == contUpdate) break

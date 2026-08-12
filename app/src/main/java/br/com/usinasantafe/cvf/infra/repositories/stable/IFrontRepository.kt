@@ -6,6 +6,7 @@ import br.com.usinasantafe.cvf.infra.datasource.retrofit.stable.FrontRetrofitDat
 import br.com.usinasantafe.cvf.infra.datasource.room.stable.FrontRoomDatasource
 import br.com.usinasantafe.cvf.infra.models.retrofit.stable.retrofitModelToEntity
 import br.com.usinasantafe.cvf.infra.models.room.stable.entityToRoomModel
+import br.com.usinasantafe.cvf.infra.models.room.stable.roomModelToEntity
 import br.com.usinasantafe.cvf.utils.EmptyResult
 import br.com.usinasantafe.cvf.utils.call
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
@@ -32,6 +33,12 @@ class IFrontRepository @Inject constructor(
         call(getClassAndMethod()) {
             val modelList = frontRetrofitDatasource.listAll(token).getOrThrow()
             modelList.map { it.retrofitModelToEntity() }
+        }
+
+    override suspend fun listAll(): Result<List<Front>> =
+        call(getClassAndMethod()) {
+            val roomModelList = frontRoomDatasource.listAll().getOrThrow()
+            roomModelList.map { it.roomModelToEntity() }
         }
 
 }

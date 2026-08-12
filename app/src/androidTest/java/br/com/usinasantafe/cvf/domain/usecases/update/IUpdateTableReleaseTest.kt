@@ -3,6 +3,7 @@ package br.com.usinasantafe.cvf.domain.usecases.update
 import br.com.usinasantafe.cvf.di.provider.BaseUrlModuleTest
 import br.com.usinasantafe.cvf.external.room.dao.stable.ReleaseDao
 import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
+import br.com.usinasantafe.cvf.infra.models.room.stable.ReleaseRoomModel
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.LevelUpdate
@@ -32,7 +33,7 @@ class IUpdateTableReleaseTest {
     lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource
 
     @Inject
-    lateinit var equipDao: ReleaseDao
+    lateinit var releaseDao: ReleaseDao
 
     @Test
     fun check_return_failure_if_not_have_data_config_internal() =
@@ -46,20 +47,19 @@ class IUpdateTableReleaseTest {
             )
             val list = result.toList()
             assertEquals(
-                list.count(),
-                2
+                2,
+                list.count()
             )
             assertEquals(
-                list[0],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_release",
                     currentProgress = updatePercentage(1f, 1f, 16f)
-                )
+                ),
+                list[0]
             )
             assertEquals(
-                list[1],
                 UiStatusStateUpdate(
                     errors = Errors.UPDATE,
                     flagDialog = true,
@@ -67,7 +67,8 @@ class IUpdateTableReleaseTest {
                     failure = "IUpdateTableRelease -> IGetToken -> IConfigRepository.get -> number is required",
                     currentProgress = 1f,
                     levelUpdate = null,
-                )
+                ),
+                list[1]
             )
 
         }
@@ -86,20 +87,19 @@ class IUpdateTableReleaseTest {
             )
             val list = result.toList()
             assertEquals(
-                list.count(),
-                2
+                2,
+                list.count()
             )
             assertEquals(
-                list[0],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_release",
                     currentProgress = updatePercentage(1f, 1f, 16f)
-                )
+                ),
+                list[0]
             )
             assertEquals(
-                list[1],
                 UiStatusStateUpdate(
                     errors = Errors.UPDATE,
                     flagDialog = true,
@@ -107,7 +107,8 @@ class IUpdateTableReleaseTest {
                     failure = "IUpdateTableRelease -> IReleaseRepository.listAll -> IReleaseRetrofitDatasource.listAll -> java.net.ConnectException: Failed to connect to localhost/127.0.0.1:8080",
                     currentProgress = 1f,
                     levelUpdate = null,
-                )
+                ),
+                list[1]
             )
         }
 
@@ -132,20 +133,19 @@ class IUpdateTableReleaseTest {
             )
             val list = result.toList()
             assertEquals(
-                list.count(),
-                2
+                2,
+                list.count()
             )
             assertEquals(
-                list[0],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_release",
                     currentProgress = updatePercentage(1f, 1f, 16f)
-                )
+                ),
+                list[0]
             )
             assertEquals(
-                list[1],
                 UiStatusStateUpdate(
                     errors = Errors.UPDATE,
                     flagDialog = true,
@@ -154,7 +154,8 @@ class IUpdateTableReleaseTest {
                             "See https://github.com/google/gson/blob/main/Troubleshooting.md#unexpected-json-structure",
                     currentProgress = 1f,
                     levelUpdate = null,
-                )
+                ),
+                list[1]
             )
         }
 
@@ -179,20 +180,19 @@ class IUpdateTableReleaseTest {
             )
             val list = result.toList()
             assertEquals(
-                list.count(),
-                2
+                2,
+                list.count()
             )
             assertEquals(
-                list[0],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_release",
                     currentProgress = updatePercentage(1f, 1f, 16f)
-                )
+                ),
+                list[0]
             )
             assertEquals(
-                list[1],
                 UiStatusStateUpdate(
                     errors = Errors.UPDATE,
                     flagDialog = true,
@@ -200,7 +200,8 @@ class IUpdateTableReleaseTest {
                     failure = "IUpdateTableRelease -> IReleaseRepository.listAll -> IReleaseRetrofitDatasource.listAll -> java.lang.NullPointerException",
                     currentProgress = 1f,
                     levelUpdate = null,
-                )
+                ),
+                list[1]
             )
         }
 
@@ -230,38 +231,37 @@ class IUpdateTableReleaseTest {
             )
             val list = result.toList()
             assertEquals(
-                list.count(),
-                4
+                4,
+                list.count()
             )
             assertEquals(
-                list[0],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_release",
                     currentProgress = updatePercentage(1f, 1f, 16f)
-                )
+                ),
+                list[0]
             )
             assertEquals(
-                list[1],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CLEAN,
                     tableUpdate = "tb_release",
                     currentProgress = updatePercentage(2f, 1f, 16f)
-                )
+                ),
+                list[1]
             )
             assertEquals(
-                list[2],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.SAVE,
                     tableUpdate = "tb_release",
                     currentProgress = updatePercentage(3f, 1f, 16f)
-                )
+                ),
+                list[2]
             )
             assertEquals(
-                list[3],
                 UiStatusStateUpdate(
                     errors = Errors.UPDATE,
                     flagDialog = true,
@@ -269,7 +269,8 @@ class IUpdateTableReleaseTest {
                     failure = "IUpdateTableRelease -> IReleaseRepository.addAll -> IReleaseRoomDatasource.addAll -> android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: tb_release.id (code 1555 SQLITE_CONSTRAINT_PRIMARYKEY[1555])",
                     currentProgress = 1f,
                     levelUpdate = null,
-                )
+                ),
+                list[3]
             )
         }
 
@@ -302,82 +303,62 @@ class IUpdateTableReleaseTest {
             )
             val list = result.toList()
             assertEquals(
-                list.count(),
-                3
+                3,
+                list.count()
             )
             assertEquals(
-                list[0],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_release",
                     currentProgress = updatePercentage(++pos, 1f, 16f)
-                )
+                ),
+                list[0]
             )
             assertEquals(
-                list[1],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CLEAN,
                     tableUpdate = "tb_release",
                     currentProgress = updatePercentage(++pos, 1f, 16f)
-                )
+                ),
+                list[1]
             )
             assertEquals(
-                list[2],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.SAVE,
                     tableUpdate = "tb_release",
                     currentProgress = updatePercentage(++pos, 1f, 16f)
-                )
+                ),
+                list[2]
             )
-            val modelList = equipDao.all()
+            val modelList = releaseDao.all()
             assertEquals(
-                modelList.size,
-                2
+                2,
+                modelList.size
             )
             val model1 = modelList[0]
             assertEquals(
-                model1.id,
-                1
-            )
-            assertEquals(
-                model1.nroOS,
-                1
-            )
-            assertEquals(
-                model1.idPropAgr,
-                1
-            )
-            assertEquals(
-                model1.descPropAgr,
-                "Test1"
-            )
-            assertEquals(
-                model1.idFront,
-                1
+                ReleaseRoomModel(
+                    id = 1,
+                    nroOS = 1,
+                    idPropAgr = 1,
+                    descPropAgr = "Test1",
+                    idFront = 1
+                ),
+                model1
             )
             val model2 = modelList[1]
             assertEquals(
-                model2.id,
-                2
-            )
-            assertEquals(
-                model2.nroOS,
-                2
-            )
-            assertEquals(
-                model2.idPropAgr,
-                2
-            )
-            assertEquals(
-                model2.descPropAgr,
-                "Test2"
-            )
-            assertEquals(
-                model2.idFront,
-                2
+                ReleaseRoomModel(
+                    id = 2,
+                    nroOS = 2,
+                    idPropAgr = 2,
+                    descPropAgr = "Test2",
+                    idFront = 2
+                ),
+                model2
             )
         }
 

@@ -7,4 +7,5 @@ interface FrontRepository {
     suspend fun addAll(list: List<Front>): EmptyResult
     suspend fun deleteAll(): EmptyResult
     suspend fun listAll(token: String): Result<List<Front>>
+    suspend fun listAll(): Result<List<Front>>
 }

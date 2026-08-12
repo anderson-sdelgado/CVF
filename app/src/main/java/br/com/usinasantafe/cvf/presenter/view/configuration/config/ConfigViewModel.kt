@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cvf.domain.usecases.config.GetConfig
 import br.com.usinasantafe.cvf.domain.usecases.config.SetFinishUpdateAllTable
 import br.com.usinasantafe.cvf.domain.usecases.config.UpdateConfig
+import br.com.usinasantafe.cvf.domain.usecases.manager.HasManager
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableColab
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableEquip
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableFront
@@ -43,6 +44,7 @@ data class ConfigState(
 
 @HiltViewModel
 class ConfigViewModel @Inject constructor(
+    private val hasManager: HasManager,
     private val getConfig: GetConfig,
     private val updateConfig: UpdateConfig,
     private val setFinishUpdateAllTable: SetFinishUpdateAllTable,
@@ -73,13 +75,24 @@ class ConfigViewModel @Inject constructor(
     private fun ConfigState.isValid() = number.isNotBlank() && password.isNotBlank()
 
     fun recoverData() = viewModelScope.launch {
+
+        data class RecoverConfig(
+            val number: String,
+            val password: String,
+            val flagManager: Boolean
+        )
+
         runCatching {
-            getConfig().getOrThrow()
+            val config = getConfig().getOrThrow()
+            val manager = hasManager().getOrThrow()
+            RecoverConfig(
+                number = config?.number ?: "",
+                password = config?.password ?: "",
+                flagManager = manager
+            )
         }
-            .onSuccess { config ->
-                config?.let {
-                    updateState { copy(number = it.number, password = it.password) }
-                }
+            .onSuccess {
+                updateState { copy(number = it.number, password = it.password, flagManager = it.flagManager) }
             }
             .onFailureUpdate(getClassAndMethod(), ::updateState)
     }

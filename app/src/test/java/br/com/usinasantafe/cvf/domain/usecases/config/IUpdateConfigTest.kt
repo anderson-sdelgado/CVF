@@ -33,26 +33,26 @@ class IUpdateConfigTest {
             val result = usecase("dfjslçahf", "123456", "1.00", 3f)
             val list = result.toList()
             assertEquals(
-                result.count(),
-                2
+                2,
+                result.count()
             )
             assertEquals(
-                list[0],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.GET_TOKEN,
                     currentProgress = updatePercentage(1f, 1f, 3f)
-                )
+                ),
+                list[0]
             )
             assertEquals(
-                list[1],
                 UiStatusStateUpdate(
                     errors = Errors.TOKEN,
                     flagDialog = true,
                     flagFailure = true,
                     failure = "IUpdateConfig -> toLong -> java.lang.NumberFormatException: For input string: \"dfjslçahf\"",
                     currentProgress = 1f,
-                )
+                ),
+                list[1]
             )
         }
 
@@ -82,26 +82,26 @@ class IUpdateConfigTest {
             )
             val list = result.toList()
             assertEquals(
-                result.count(),
-                2
+                2,
+                result.count()
             )
             assertEquals(
-                list[0],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.GET_TOKEN,
                     currentProgress = updatePercentage(1f, 1f, 3f)
-                )
+                ),
+                list[0]
             )
             assertEquals(
-                list[1],
                 UiStatusStateUpdate(
                     errors = Errors.TOKEN,
                     flagDialog = true,
                     flagFailure = true,
                     failure = "IUpdateConfig -> IConfigRepository.send -> java.lang.Exception",
                     currentProgress = 1f,
-                )
+                ),
+                list[1]
             )
         }
 
@@ -150,34 +150,34 @@ class IUpdateConfigTest {
             )
             val list = result.toList()
             assertEquals(
-                result.count(),
-                3
+                3,
+                result.count()
             )
             assertEquals(
-                list[0],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.GET_TOKEN,
                     currentProgress = updatePercentage(1f, 1f, 3f)
-                )
+                ),
+                list[0]
             )
             assertEquals(
-                list[1],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.SAVE_TOKEN,
                     currentProgress = updatePercentage(2f, 1f, 3f)
-                )
+                ),
+                list[1]
             )
             assertEquals(
-                list[2],
                 UiStatusStateUpdate(
                     errors = Errors.TOKEN,
                     flagDialog = true,
                     flagFailure = true,
                     failure = "IUpdateConfig -> IConfigRepository.save -> java.lang.Exception",
                     currentProgress = 1f,
-                )
+                ),
+                list[2]
             )
         }
 
@@ -218,34 +218,34 @@ class IUpdateConfigTest {
             )
             val list = result.toList()
             assertEquals(
-                result.count(),
-                3
+                3,
+                result.count()
             )
             assertEquals(
-                list[0],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.GET_TOKEN,
                     currentProgress = updatePercentage(1f, 1f, 3f)
-                )
+                ),
+                list[0]
             )
             assertEquals(
-                list[1],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.SAVE_TOKEN,
                     currentProgress = updatePercentage(2f, 1f, 3f)
-                )
+                ),
+                list[1]
             )
             assertEquals(
-                list[2],
                 UiStatusStateUpdate(
                     errors = Errors.TOKEN,
                     flagDialog = true,
                     flagFailure = true,
                     failure = "IUpdateConfig -> IManagerRepository.clean -> java.lang.Exception",
                     currentProgress = 1f,
-                )
+                ),
+                list[2]
             )
         }
 
@@ -277,32 +277,32 @@ class IUpdateConfigTest {
             )
             val list = result.toList()
             assertEquals(
-                result.count(),
-                3
+                3,
+                result.count()
             )
             assertEquals(
-                list[0],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.GET_TOKEN,
                     currentProgress = updatePercentage(1f, 1f, 3f)
-                )
+                ),
+                list[0]
             )
             assertEquals(
-                list[1],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.SAVE_TOKEN,
                     currentProgress = updatePercentage(2f, 1f, 3f)
-                )
+                ),
+                list[1]
             )
             assertEquals(
-                list[2],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.FINISH_UPDATE_INITIAL,
                     currentProgress = updatePercentage(3f, 1f, 3f)
-                )
+                ),
+                list[2]
             )
         }
 }

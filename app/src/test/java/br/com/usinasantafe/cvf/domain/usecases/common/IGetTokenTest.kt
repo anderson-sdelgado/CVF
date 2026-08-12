@@ -30,21 +30,21 @@ class IGetTokenTest {
             )
             val result = usecase()
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IGetToken -> IConfigRepository.get"
+                "IGetToken -> IConfigRepository.get",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
             )
         }
 
     @Test
-    fun `Check return failure if have error in Repository `() =
+    fun `Check return failure if token is null`() =
         runTest {
             whenever(
                 configRepository.get()
@@ -57,12 +57,12 @@ class IGetTokenTest {
                 true
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IGetToken -> token"
+                "IGetToken -> token",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.NullPointerException: idServ is required"
+                "java.lang.NullPointerException: idServ is required",
+                result.exceptionOrNull()!!.cause.toString()
             )
         }
 
@@ -82,12 +82,12 @@ class IGetTokenTest {
             )
             val result = usecase()
             assertEquals(
-                result.isSuccess,
-                true
+                true,
+                result.isSuccess
             )
             assertEquals(
-                result.getOrNull()!!,
-                "Bearer ABAEBF582FAE11B64AD1C11711A99CD9"
+                "Bearer ABAEBF582FAE11B64AD1C11711A99CD9",
+                result.getOrNull()!!
             )
         }
 

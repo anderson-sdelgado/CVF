@@ -59,6 +59,6 @@ suspend fun <T> tryCatch (
     try {
         return block()
     } catch (e: Exception) {
-        throw Exception(context, e)
+        throw AppError(context, null, e)
     }
 }

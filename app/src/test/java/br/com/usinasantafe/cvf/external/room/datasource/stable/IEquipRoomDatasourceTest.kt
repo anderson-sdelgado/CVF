@@ -43,10 +43,10 @@ class IEquipRoomDatasourceTest {
     @Test
     fun `addAll - Check failure if have row repeated`() =
         runTest {
-            val list = equipDao.all()
+            val qtdBefore = equipDao.all().size
             assertEquals(
-                list.size,
-                0
+                0,
+                qtdBefore
             )
             val result = datasource.addAll(
                 listOf(
@@ -65,21 +65,21 @@ class IEquipRoomDatasourceTest {
                 )
             )
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IEquipRoomDatasource.addAll"
+                "IEquipRoomDatasource.addAll",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: tb_equip.id (code 1555 SQLITE_CONSTRAINT_PRIMARYKEY)"
+                "android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: tb_equip.id (code 1555 SQLITE_CONSTRAINT_PRIMARYKEY)",
+                result.exceptionOrNull()!!.cause.toString()
             )
             val qtdAfter = equipDao.all().size
             assertEquals(
-                qtdAfter,
-                0
+                0,
+                qtdAfter
             )
         }
 
@@ -88,8 +88,8 @@ class IEquipRoomDatasourceTest {
         runTest {
             val qtdBefore = equipDao.all().size
             assertEquals(
-                qtdBefore,
-                0
+                0,
+                qtdBefore
             )
             val result = datasource.addAll(
                 listOf(
@@ -108,52 +108,38 @@ class IEquipRoomDatasourceTest {
                 )
             )
             assertEquals(
-                result.isSuccess,
-                true
+                true,
+                result.isSuccess
             )
             val qtdAfter = equipDao.all().size
             assertEquals(
-                qtdAfter,
-                2
+                2,
+                qtdAfter
             )
             val list = equipDao.all()
             assertEquals(
-                list.size,
-                2
+                2,
+                list.size
             )
             val model1 = list[0]
             assertEquals(
-                model1.id,
-                1
-            )
-            assertEquals(
-                model1.nro,
-                1
-            )
-            assertEquals(
-                model1.cdOperClass,
-                1
-            )
-            assertEquals(
-                model1.description,
-                "Test"
+                EquipRoomModel(
+                    id = 1,
+                    nro = 1,
+                    cdOperClass = 1,
+                    description = "Test"
+                ),
+                model1
             )
             val model2 = list[1]
             assertEquals(
-                model2.id,
-                2
-            )
-            assertEquals(
-                model2.nro,
-                2
-            )
-            assertEquals(
-                model2.cdOperClass,
-                2
-            )
-            assertEquals(
-                model2.description,
-                "Test2"
+                EquipRoomModel(
+                    id = 2,
+                    nro = 2,
+                    cdOperClass = 2,
+                    description = "Test2"
+                ),
+                model2
             )
         }
 
@@ -172,22 +158,18 @@ class IEquipRoomDatasourceTest {
             )
             val listBefore = equipDao.all()
             assertEquals(
-                listBefore.size,
-                1
+                1,
+                listBefore.size
             )
             val result = datasource.deleteAll()
             assertEquals(
-                result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                Unit
+                true,
+                result.isSuccess
             )
             val listAfter = equipDao.all()
             assertEquals(
-                listAfter.size,
-                0
+                0,
+                listAfter.size
             )
         }
 

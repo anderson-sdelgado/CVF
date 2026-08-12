@@ -9,6 +9,8 @@ import br.com.usinasantafe.cvf.utils.resultFailure
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.Mockito.mock
+import org.mockito.kotlin.atLeastOnce
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import kotlin.test.assertEquals
 
@@ -49,16 +51,16 @@ class IFrontRepositoryTest {
             )
             val result = repository.addAll(entityList)
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IFrontRepository.addAll -> IFrontRoomDatasource.addAll"
+                "IFrontRepository.addAll -> IFrontRoomDatasource.addAll",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
             )
         }
 
@@ -79,19 +81,11 @@ class IFrontRepositoryTest {
                     description = "Test"
                 )
             )
-            whenever(
-                frontRoomDatasource.addAll(roomModelList)
-            ).thenReturn(
-                Result.success(Unit)
-            )
             val result = repository.addAll(entityList)
+            verify(frontRoomDatasource, atLeastOnce()).addAll(roomModelList)
             assertEquals(
                 result.isSuccess,
                 true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                Unit
             )
         }
 
@@ -109,40 +103,32 @@ class IFrontRepositoryTest {
             )
             val result = repository.deleteAll()
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IFrontRepository.deleteAll -> IFrontRoomDatasource.deleteAll"
+                "IFrontRepository.deleteAll -> IFrontRoomDatasource.deleteAll",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
             )
         }
 
     @Test
     fun `deleteAll - Check return true if function execute successfully`() =
         runTest {
-            whenever(
-                frontRoomDatasource.deleteAll()
-            ).thenReturn(
-                Result.success(Unit)
-            )
             val result = repository.deleteAll()
+            verify(frontRoomDatasource, atLeastOnce()).deleteAll()
             assertEquals(
                 result.isSuccess,
                 true
             )
-            assertEquals(
-                result.getOrNull()!!,
-                Unit
-            )
         }
 
     @Test
-    fun `listAll - Check return failure if have error`() =
+    fun `listAll(token) - Check return failure if have error`() =
         runTest {
             whenever(
                 frontRetrofitDatasource.listAll("token")
@@ -155,21 +141,21 @@ class IFrontRepositoryTest {
             )
             val result = repository.listAll("token")
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IFrontRepository.listAll -> IFrontRetrofitDatasource.listAll"
+                "IFrontRepository.listAll -> IFrontRetrofitDatasource.listAll",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
             )
         }
 
     @Test
-    fun `listAll - Check return true if function execute successfully`() =
+    fun `listAll(token) - Check return true if function execute successfully`() =
         runTest {
             val retrofitModelList = listOf(
                 FrontRetrofitModel(
@@ -203,6 +189,76 @@ class IFrontRepositoryTest {
                 )
             )
             val result = repository.listAll("token")
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                entityList,
+                result.getOrNull()!!
+            )
+        }
+
+    @Test
+    fun `listAll - Check return failure if have error in FrontRoomDatasource listAll`() =
+        runTest {
+            whenever(
+                frontRoomDatasource.listAll()
+            ).thenReturn(
+                resultFailure(
+                    "IFrontRoomDatasource.listAll",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.listAll()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IFrontRepository.listAll -> IFrontRoomDatasource.listAll"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `listAll - Check return correct if function execute successfully`() =
+        runTest {
+            val roomModelList = listOf(
+                FrontRoomModel(
+                    id = 1,
+                    cd = 1,
+                    description = "Test"
+                ),
+                FrontRoomModel(
+                    id = 2,
+                    cd = 2,
+                    description = "Test"
+                )
+            )
+            val entityList = listOf(
+                Front(
+                    id = 1,
+                    cd = 1,
+                    description = "Test"
+                ),
+                Front(
+                    id = 2,
+                    cd = 2,
+                    description = "Test"
+                )
+            )
+            whenever(
+                frontRoomDatasource.listAll()
+            ).thenReturn(
+                Result.success(roomModelList)
+            )
+            val result = repository.listAll()
             assertEquals(
                 result.isSuccess,
                 true

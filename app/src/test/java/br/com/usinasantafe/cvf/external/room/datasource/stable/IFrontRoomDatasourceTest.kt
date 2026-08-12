@@ -43,10 +43,10 @@ class IFrontRoomDatasourceTest {
     @Test
     fun `addAll - Check failure if have row repeated`() =
         runTest {
-            val list = frontDao.all()
+            val qtdBefore = frontDao.all().size
             assertEquals(
-                list.size,
-                0
+                0,
+                qtdBefore
             )
             val result = datasource.addAll(
                 listOf(
@@ -63,21 +63,21 @@ class IFrontRoomDatasourceTest {
                 )
             )
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IFrontRoomDatasource.addAll"
+                "IFrontRoomDatasource.addAll",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: tb_front.id (code 1555 SQLITE_CONSTRAINT_PRIMARYKEY)"
+                "android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: tb_front.id (code 1555 SQLITE_CONSTRAINT_PRIMARYKEY)",
+                result.exceptionOrNull()!!.cause.toString()
             )
             val qtdAfter = frontDao.all().size
             assertEquals(
-                qtdAfter,
-                0
+                0,
+                qtdAfter
             )
         }
 
@@ -86,8 +86,8 @@ class IFrontRoomDatasourceTest {
         runTest {
             val qtdBefore = frontDao.all().size
             assertEquals(
-                qtdBefore,
-                0
+                0,
+                qtdBefore
             )
             val result = datasource.addAll(
                 listOf(
@@ -104,44 +104,36 @@ class IFrontRoomDatasourceTest {
                 )
             )
             assertEquals(
-                result.isSuccess,
-                true
+                true,
+                result.isSuccess
             )
             val qtdAfter = frontDao.all().size
             assertEquals(
-                qtdAfter,
-                2
+                2,
+                qtdAfter
             )
             val list = frontDao.all()
             assertEquals(
-                list.size,
-                2
+                2,
+                list.size
             )
             val model1 = list[0]
             assertEquals(
-                model1.id,
-                1
-            )
-            assertEquals(
-                model1.cd,
-                1
-            )
-            assertEquals(
-                model1.description,
-                "Test1"
+                FrontRoomModel(
+                    id = 1,
+                    cd = 1,
+                    description = "Test1"
+                ),
+                model1
             )
             val model2 = list[1]
             assertEquals(
-                model2.id,
-                2
-            )
-            assertEquals(
-                model2.cd,
-                2
-            )
-            assertEquals(
-                model2.description,
-                "Test2"
+                FrontRoomModel(
+                    id = 2,
+                    cd = 2,
+                    description = "Test2"
+                ),
+                model2
             )
         }
 
@@ -159,23 +151,81 @@ class IFrontRoomDatasourceTest {
             )
             val listBefore = frontDao.all()
             assertEquals(
-                listBefore.size,
-                1
+                1,
+                listBefore.size
             )
             val result = datasource.deleteAll()
             assertEquals(
-                result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                Unit
+                true,
+                result.isSuccess
             )
             val listAfter = frontDao.all()
             assertEquals(
-                listAfter.size,
-                0
+                0,
+                listAfter.size
             )
         }
 
+    @Test
+    fun `listAll - Check return empty list if not have row in table`() =
+        runTest {
+            val result = datasource.listAll()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                emptyList(),
+                result.getOrNull()
+            )
+        }
+
+    @Test
+    fun `listAll - Check return list if have row in table`() =
+        runTest {
+            frontDao.insertAll(
+                listOf(
+                    FrontRoomModel(
+                        id = 1,
+                        cd = 1,
+                        description = "Test1"
+                    ),
+                    FrontRoomModel(
+                        id = 3,
+                        cd = 3,
+                        description = "Test3"
+                    ),
+                    FrontRoomModel(
+                        id = 2,
+                        cd = 2,
+                        description = "Test2"
+                    ),
+                )
+            )
+            val result = datasource.listAll()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                listOf(
+                    FrontRoomModel(
+                        id = 1,
+                        cd = 1,
+                        description = "Test1"
+                    ),
+                    FrontRoomModel(
+                        id = 2,
+                        cd = 2,
+                        description = "Test2"
+                    ),
+                    FrontRoomModel(
+                        id = 3,
+                        cd = 3,
+                        description = "Test3"
+                    ),
+                ),
+                result.getOrNull()
+            )
+        }
 }

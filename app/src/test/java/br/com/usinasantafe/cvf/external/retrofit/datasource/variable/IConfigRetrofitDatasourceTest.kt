@@ -26,17 +26,17 @@ class IConfigRetrofitDatasourceTest {
             val dataSource = IConfigRetrofitDatasource(service)
             val result = dataSource.recoverToken(retrofitModelOutput)
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IConfigRetrofitDatasource.recoverToken"
+                "IConfigRetrofitDatasource.recoverToken",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause!!.toString(),
                 "com.google.gson.stream.MalformedJsonException: Use JsonReader.setStrictness(Strictness.LENIENT) to accept malformed JSON at line 1 column 1 path \$\n" +
-                        "See https://github.com/google/gson/blob/main/Troubleshooting.md#malformed-json"
+                        "See https://github.com/google/gson/blob/main/Troubleshooting.md#malformed-json",
+                result.exceptionOrNull()!!.cause!!.toString()
             )
             server.shutdown()
         }
@@ -56,17 +56,17 @@ class IConfigRetrofitDatasourceTest {
             val dataSource = IConfigRetrofitDatasource(service)
             val result = dataSource.recoverToken(retrofitModelOutput)
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IConfigRetrofitDatasource.recoverToken"
+                "IConfigRetrofitDatasource.recoverToken",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause!!.toString(),
                 "com.google.gson.stream.MalformedJsonException: Use JsonReader.setStrictness(Strictness.LENIENT) to accept malformed JSON at line 1 column 11 path \$.idServ\n" +
-                        "See https://github.com/google/gson/blob/main/Troubleshooting.md#malformed-json"
+                        "See https://github.com/google/gson/blob/main/Troubleshooting.md#malformed-json",
+                result.exceptionOrNull()!!.cause!!.toString()
             )
             server.shutdown()
         }
@@ -86,16 +86,16 @@ class IConfigRetrofitDatasourceTest {
             val dataSource = IConfigRetrofitDatasource(service)
             val result = dataSource.recoverToken(retrofitModelOutput)
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IConfigRetrofitDatasource.recoverToken"
+                "IConfigRetrofitDatasource.recoverToken",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause!!.toString(),
-                "java.lang.NullPointerException"
+                "java.lang.NullPointerException",
+                result.exceptionOrNull()!!.cause!!.toString()
             )
             server.shutdown()
         }
@@ -115,13 +115,13 @@ class IConfigRetrofitDatasourceTest {
             val dataSource = IConfigRetrofitDatasource(service)
             val result = dataSource.recoverToken(retrofitModelOutput)
             assertEquals(
-                result.isSuccess,
-                true
+                true,
+                result.isSuccess
             )
             val modelInput = result.getOrNull()!!
             assertEquals(
-                modelInput.idServ,
-                16
+                16,
+                modelInput.idServ
             )
             server.shutdown()
         }

@@ -21,4 +21,9 @@ class IManagerRepository @Inject constructor(
             managerSharedPreferencesDatasource.has().getOrThrow()
         }
 
+    override suspend fun getIdFront(): Result<Int?> =
+        call(getClassAndMethod()) {
+            managerSharedPreferencesDatasource.getIdFront().getOrThrow()
+        }
+
 }

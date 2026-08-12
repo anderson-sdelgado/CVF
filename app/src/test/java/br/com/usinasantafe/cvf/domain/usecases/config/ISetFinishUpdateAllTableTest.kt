@@ -31,16 +31,16 @@ class ISetFinishUpdateAllTableTest {
             )
             val result = usecase()
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "ISetFinishUpdateAllTable -> IConfigRepository.setFlagUpdate"
+                "ISetFinishUpdateAllTable -> IConfigRepository.setFlagUpdate",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
             )
         }
 
@@ -50,8 +50,8 @@ class ISetFinishUpdateAllTableTest {
             val result = usecase()
             verify(configRepository, atLeastOnce()).setFlagUpdate()
             assertEquals(
-                result.isSuccess,
-                true
+                true,
+                result.isSuccess
             )
         }
 

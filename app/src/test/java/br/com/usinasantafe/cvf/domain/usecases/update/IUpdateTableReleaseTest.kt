@@ -45,27 +45,27 @@ class IUpdateTableReleaseTest {
             )
             val list = result.toList()
             assertEquals(
-                result.count(),
-                2
+                2,
+                result.count()
             )
             assertEquals(
-                list[0],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_release",
                     currentProgress = updatePercentage(1f, 1f, 7f)
-                )
+                ),
+                list[0]
             )
             assertEquals(
-                list[1],
                 UiStatusStateUpdate(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
                     failure = "IUpdateTableRelease -> GetToken -> java.lang.Exception",
                     currentProgress = 1f,
-                )
+                ),
+                list[1]
             )
         }
 
@@ -92,27 +92,27 @@ class IUpdateTableReleaseTest {
             )
             val list = result.toList()
             assertEquals(
-                result.count(),
-                2
+                2,
+                result.count()
             )
             assertEquals(
-                list[0],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_release",
                     currentProgress = updatePercentage(1f, 1f, 7f)
-                )
+                ),
+                list[0]
             )
             assertEquals(
-                list[1],
                 UiStatusStateUpdate(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
                     failure = "IUpdateTableRelease -> IReleaseRepository.recoverAll -> java.lang.Exception",
                     currentProgress = 1f,
-                )
+                ),
+                list[1]
             )
         }
 
@@ -155,36 +155,36 @@ class IUpdateTableReleaseTest {
             )
             val resultList = result.toList()
             assertEquals(
-                result.count(),
-                3
+                3,
+                result.count()
             )
             assertEquals(
-                resultList[0],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_release",
                     currentProgress = updatePercentage(1f, 1f, 7f)
-                )
+                ),
+                resultList[0]
             )
             assertEquals(
-                resultList[1],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CLEAN,
                     tableUpdate = "tb_release",
                     currentProgress = updatePercentage(2f, 1f, 7f)
-                )
+                ),
+                resultList[1]
             )
             assertEquals(
-                resultList[2],
                 UiStatusStateUpdate(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
                     failure = "IUpdateTableRelease -> IReleaseRepository.deleteAll -> java.lang.Exception",
                     currentProgress = 1f,
-                )
+                ),
+                resultList[2]
             )
         }
 
@@ -228,45 +228,45 @@ class IUpdateTableReleaseTest {
             val resultList = result.toList()
             verify(releaseRepository, atLeastOnce()).deleteAll()
             assertEquals(
-                result.count(),
-                4
+                4,
+                result.count()
             )
             assertEquals(
-                resultList[0],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_release",
                     currentProgress = updatePercentage(1f, 1f, 7f)
-                )
+                ),
+                resultList[0]
             )
             assertEquals(
-                resultList[1],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CLEAN,
                     tableUpdate = "tb_release",
                     currentProgress = updatePercentage(2f, 1f, 7f)
-                )
+                ),
+                resultList[1]
             )
             assertEquals(
-                resultList[2],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.SAVE,
                     tableUpdate = "tb_release",
                     currentProgress = updatePercentage(3f, 1f, 7f)
-                )
+                ),
+                resultList[2]
             )
             assertEquals(
-                resultList[3],
                 UiStatusStateUpdate(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
                     failure = "IUpdateTableRelease -> IReleaseRepository.addAll -> java.lang.Exception",
                     currentProgress = 1f,
-                )
+                ),
+                resultList[3]
             )
         }
 
@@ -302,35 +302,35 @@ class IUpdateTableReleaseTest {
             verify(releaseRepository, atLeastOnce()).deleteAll()
             verify(releaseRepository, atLeastOnce()).addAll(list)
             assertEquals(
-                result.count(),
-                3
+                3,
+                result.count()
             )
             assertEquals(
-                resultList[0],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_release",
                     currentProgress = updatePercentage(1f, 1f, 7f)
-                )
+                ),
+                resultList[0]
             )
             assertEquals(
-                resultList[1],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CLEAN,
                     tableUpdate = "tb_release",
                     currentProgress = updatePercentage(2f, 1f, 7f)
-                )
+                ),
+                resultList[1]
             )
             assertEquals(
-                resultList[2],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.SAVE,
                     tableUpdate = "tb_release",
                     currentProgress = updatePercentage(3f, 1f, 7f)
-                )
+                ),
+                resultList[2]
             )
         }
 }

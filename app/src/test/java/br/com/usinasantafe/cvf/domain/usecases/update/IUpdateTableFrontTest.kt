@@ -45,27 +45,27 @@ class IUpdateTableFrontTest {
             )
             val list = result.toList()
             assertEquals(
-                result.count(),
-                2
+                2,
+                result.count()
             )
             assertEquals(
-                list[0],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_front",
                     currentProgress = updatePercentage(1f, 1f, 7f)
-                )
+                ),
+                list[0]
             )
             assertEquals(
-                list[1],
                 UiStatusStateUpdate(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
                     failure = "IUpdateTableFront -> GetToken -> java.lang.Exception",
                     currentProgress = 1f,
-                )
+                ),
+                list[1]
             )
         }
 
@@ -92,27 +92,27 @@ class IUpdateTableFrontTest {
             )
             val list = result.toList()
             assertEquals(
-                result.count(),
-                2
+                2,
+                result.count()
             )
             assertEquals(
-                list[0],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_front",
                     currentProgress = updatePercentage(1f, 1f, 7f)
-                )
+                ),
+                list[0]
             )
             assertEquals(
-                list[1],
                 UiStatusStateUpdate(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
                     failure = "IUpdateTableFront -> IFrontRepository.recoverAll -> java.lang.Exception",
                     currentProgress = 1f,
-                )
+                ),
+                list[1]
             )
         }
 
@@ -153,36 +153,36 @@ class IUpdateTableFrontTest {
             )
             val resultList = result.toList()
             assertEquals(
-                result.count(),
-                3
+                3,
+                result.count()
             )
             assertEquals(
-                resultList[0],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_front",
                     currentProgress = updatePercentage(1f, 1f, 7f)
-                )
+                ),
+                resultList[0]
             )
             assertEquals(
-                resultList[1],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CLEAN,
                     tableUpdate = "tb_front",
                     currentProgress = updatePercentage(2f, 1f, 7f)
-                )
+                ),
+                resultList[1]
             )
             assertEquals(
-                resultList[2],
                 UiStatusStateUpdate(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
                     failure = "IUpdateTableFront -> IFrontRepository.deleteAll -> java.lang.Exception",
                     currentProgress = 1f,
-                )
+                ),
+                resultList[2]
             )
         }
 
@@ -224,45 +224,45 @@ class IUpdateTableFrontTest {
             val resultList = result.toList()
             verify(frontRepository, atLeastOnce()).deleteAll()
             assertEquals(
-                result.count(),
-                4
+                4,
+                result.count()
             )
             assertEquals(
-                resultList[0],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_front",
                     currentProgress = updatePercentage(1f, 1f, 7f)
-                )
+                ),
+                resultList[0]
             )
             assertEquals(
-                resultList[1],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CLEAN,
                     tableUpdate = "tb_front",
                     currentProgress = updatePercentage(2f, 1f, 7f)
-                )
+                ),
+                resultList[1]
             )
             assertEquals(
-                resultList[2],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.SAVE,
                     tableUpdate = "tb_front",
                     currentProgress = updatePercentage(3f, 1f, 7f)
-                )
+                ),
+                resultList[2]
             )
             assertEquals(
-                resultList[3],
                 UiStatusStateUpdate(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
                     failure = "IUpdateTableFront -> IFrontRepository.addAll -> java.lang.Exception",
                     currentProgress = 1f,
-                )
+                ),
+                resultList[3]
             )
         }
 
@@ -296,35 +296,35 @@ class IUpdateTableFrontTest {
             verify(frontRepository, atLeastOnce()).deleteAll()
             verify(frontRepository, atLeastOnce()).addAll(list)
             assertEquals(
-                result.count(),
-                3
+                3,
+                result.count()
             )
             assertEquals(
-                resultList[0],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_front",
                     currentProgress = updatePercentage(1f, 1f, 7f)
-                )
+                ),
+                resultList[0]
             )
             assertEquals(
-                resultList[1],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CLEAN,
                     tableUpdate = "tb_front",
                     currentProgress = updatePercentage(2f, 1f, 7f)
-                )
+                ),
+                resultList[1]
             )
             assertEquals(
-                resultList[2],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.SAVE,
                     tableUpdate = "tb_front",
                     currentProgress = updatePercentage(3f, 1f, 7f)
-                )
+                ),
+                resultList[2]
             )
         }
 }

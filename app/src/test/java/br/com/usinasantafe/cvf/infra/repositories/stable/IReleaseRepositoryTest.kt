@@ -9,6 +9,8 @@ import br.com.usinasantafe.cvf.utils.resultFailure
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.Mockito.mock
+import org.mockito.kotlin.atLeastOnce
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import kotlin.test.assertEquals
 
@@ -53,16 +55,16 @@ class IReleaseRepositoryTest {
             )
             val result = repository.addAll(entityList)
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IReleaseRepository.addAll -> IReleaseRoomDatasource.addAll"
+                "IReleaseRepository.addAll -> IReleaseRoomDatasource.addAll",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
             )
         }
 
@@ -87,19 +89,11 @@ class IReleaseRepositoryTest {
                     idFront = 1
                 )
             )
-            whenever(
-                releaseRoomDatasource.addAll(roomModelList)
-            ).thenReturn(
-                Result.success(Unit)
-            )
             val result = repository.addAll(entityList)
+            verify(releaseRoomDatasource, atLeastOnce()).addAll(roomModelList)
             assertEquals(
                 result.isSuccess,
                 true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                Unit
             )
         }
 
@@ -117,35 +111,27 @@ class IReleaseRepositoryTest {
             )
             val result = repository.deleteAll()
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IReleaseRepository.deleteAll -> IReleaseRoomDatasource.deleteAll"
+                "IReleaseRepository.deleteAll -> IReleaseRoomDatasource.deleteAll",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
             )
         }
 
     @Test
     fun `deleteAll - Check return true if function execute successfully`() =
         runTest {
-            whenever(
-                releaseRoomDatasource.deleteAll()
-            ).thenReturn(
-                Result.success(Unit)
-            )
             val result = repository.deleteAll()
+            verify(releaseRoomDatasource, atLeastOnce()).deleteAll()
             assertEquals(
                 result.isSuccess,
                 true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                Unit
             )
         }
 
@@ -163,16 +149,16 @@ class IReleaseRepositoryTest {
             )
             val result = repository.listAll("token")
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IReleaseRepository.listAll -> IReleaseRetrofitDatasource.listAll"
+                "IReleaseRepository.listAll -> IReleaseRetrofitDatasource.listAll",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
             )
         }
 
@@ -220,12 +206,12 @@ class IReleaseRepositoryTest {
             )
             val result = repository.listAll("token")
             assertEquals(
-                result.isSuccess,
-                true
+                true,
+                result.isSuccess
             )
             assertEquals(
-                result.getOrNull()!!,
-                entityList
+                entityList,
+                result.getOrNull()!!
             )
         }
 

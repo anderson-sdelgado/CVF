@@ -6,4 +6,5 @@ import br.com.usinasantafe.cvf.utils.EmptyResult
 interface FrontRoomDatasource {
     suspend fun addAll(list: List<FrontRoomModel>): EmptyResult
     suspend fun deleteAll(): EmptyResult
+    suspend fun listAll(): Result<List<FrontRoomModel>>
 }

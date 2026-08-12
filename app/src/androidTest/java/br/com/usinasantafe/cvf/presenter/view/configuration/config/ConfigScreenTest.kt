@@ -14,12 +14,14 @@ import br.com.usinasantafe.cvf.external.room.dao.stable.ColabDao
 import br.com.usinasantafe.cvf.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cvf.external.room.dao.stable.FrontDao
 import br.com.usinasantafe.cvf.external.room.dao.stable.ReleaseDao
+import br.com.usinasantafe.cvf.external.sharedPreferences.IManagerSharedPreferencesDatasource
 import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cvf.infra.models.room.stable.ColabRoomModel
 import br.com.usinasantafe.cvf.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cvf.infra.models.room.stable.FrontRoomModel
 import br.com.usinasantafe.cvf.infra.models.room.stable.ReleaseRoomModel
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ManagerSharedPreferencesModel
 import br.com.usinasantafe.cvf.lib.StatusSend
 import br.com.usinasantafe.cvf.lib.WEB_ALL_COLAB
 import br.com.usinasantafe.cvf.lib.WEB_ALL_EQUIP
@@ -36,9 +38,7 @@ import okhttp3.mockwebserver.RecordedRequest
 import org.junit.Rule
 import org.junit.Test
 import javax.inject.Inject
-import kotlin.collections.get
 import kotlin.test.assertEquals
-import kotlin.text.get
 import kotlin.time.Duration.Companion.minutes
 
 @HiltAndroidTest
@@ -52,6 +52,9 @@ class ConfigScreenTest {
 
     @Inject
     lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource
+
+    @Inject
+    lateinit var managerSharedPreferencesDatasource: IManagerSharedPreferencesDatasource
 
     @Inject
     lateinit var colabDao: ColabDao
@@ -362,6 +365,25 @@ class ConfigScreenTest {
         }
 
     @Test
+    fun check_open_screen_with_data_manager() =
+        runTest {
+
+            hiltRule.inject()
+
+            managerSharedPreferencesDatasource.save(
+                ManagerSharedPreferencesModel(
+                    idFront = 1,
+                    idRelease = 1
+                )
+            )
+
+            setContent()
+
+            composeTestRule.waitUntilTimeout(20_000)
+
+        }
+
+    @Test
     fun verify_check_msg_all_field_empty() =
         runTest {
 
@@ -449,12 +471,12 @@ class ConfigScreenTest {
 
             val result = configSharedPreferencesDatasource.has()
             assertEquals(
-                result.isSuccess,
-                true
+                true,
+                result.isSuccess
             )
             assertEquals(
-                result.getOrNull()!!,
-                false
+                false,
+                result.getOrNull()!!
             )
 
             composeTestRule.waitUntilTimeout(10_000)
@@ -494,12 +516,12 @@ class ConfigScreenTest {
 
             val result = configSharedPreferencesDatasource.has()
             assertEquals(
-                result.isSuccess,
-                true
+                true,
+                result.isSuccess
             )
             assertEquals(
-                result.getOrNull()!!,
-                false
+                false,
+                result.getOrNull()!!
             )
 
             composeTestRule.waitUntilTimeout(10_000)
@@ -537,22 +559,21 @@ class ConfigScreenTest {
 
             val result = configSharedPreferencesDatasource.has()
             assertEquals(
-                result.isSuccess,
-                true
+                true,
+                result.isSuccess
             )
             assertEquals(
-                result.getOrNull()!!,
-                true
+                true,
+                result.getOrNull()!!
             )
 
             val resultGet = configSharedPreferencesDatasource.get()
             assertEquals(
-                resultGet.isSuccess,
-                true
+                true,
+                resultGet.isSuccess
             )
             val config = resultGet.getOrNull()!!
             assertEquals(
-                config,
                 ConfigSharedPreferencesModel(
                     number = 16997417840,
                     password = "12345",
@@ -560,7 +581,8 @@ class ConfigScreenTest {
                     version = "1.0",
                     statusSend = StatusSend.STARTED,
                     flagUpdate = false
-                )
+                ),
+                config
             )
 
             composeTestRule.waitUntilTimeout(10_000)
@@ -599,22 +621,21 @@ class ConfigScreenTest {
 
             val result = configSharedPreferencesDatasource.has()
             assertEquals(
-                result.isSuccess,
-                true
+                true,
+                result.isSuccess
             )
             assertEquals(
-                result.getOrNull()!!,
-                true
+                true,
+                result.getOrNull()!!
             )
 
             val resultGet = configSharedPreferencesDatasource.get()
             assertEquals(
-                resultGet.isSuccess,
-                true
+                true,
+                resultGet.isSuccess
             )
-            val config = resultGet.getOrNull()!!
+            val model = resultGet.getOrNull()!!
             assertEquals(
-                config,
                 ConfigSharedPreferencesModel(
                     number = 16997417840,
                     password = "12345",
@@ -622,13 +643,14 @@ class ConfigScreenTest {
                     version = "1.0",
                     statusSend = StatusSend.STARTED,
                     flagUpdate = false
-                )
+                ),
+                model
             )
 
             val count = colabDao.all().size
             assertEquals(
-                count,
-                0
+                0,
+                count
             )
 
             composeTestRule.waitUntilTimeout(10_000)
@@ -666,22 +688,21 @@ class ConfigScreenTest {
 
             val result = configSharedPreferencesDatasource.has()
             assertEquals(
-                result.isSuccess,
-                true
+                true,
+                result.isSuccess
             )
             assertEquals(
-                result.getOrNull()!!,
-                true
+                true,
+                result.getOrNull()!!
             )
 
             val resultGet = configSharedPreferencesDatasource.get()
             assertEquals(
-                resultGet.isSuccess,
-                true
+                true,
+                resultGet.isSuccess
             )
-            val config = resultGet.getOrNull()!!
+            val model = resultGet.getOrNull()!!
             assertEquals(
-                config,
                 ConfigSharedPreferencesModel(
                     number = 16997417840,
                     password = "12345",
@@ -689,13 +710,14 @@ class ConfigScreenTest {
                     version = "1.0",
                     statusSend = StatusSend.STARTED,
                     flagUpdate = false
-                )
+                ),
+                model
             )
 
             val count = colabDao.all().size
             assertEquals(
-                count,
-                0
+                0,
+                count
             )
 
             composeTestRule.waitUntilTimeout(10_000)
@@ -773,8 +795,8 @@ class ConfigScreenTest {
 
             val count = equipDao.all().size
             assertEquals(
-                count,
-                0
+                0,
+                count
             )
 
             composeTestRule.waitUntilTimeout(10_000)
@@ -815,8 +837,8 @@ class ConfigScreenTest {
 
             val count = equipDao.all().size
             assertEquals(
-                count,
-                0
+                0,
+                count
             )
 
             composeTestRule.waitUntilTimeout(10_000)
@@ -857,8 +879,8 @@ class ConfigScreenTest {
 
             val count = frontDao.all().size
             assertEquals(
-                count,
-                0
+                0,
+                count
             )
 
             composeTestRule.waitUntilTimeout(10_000)
@@ -900,8 +922,8 @@ class ConfigScreenTest {
 
             val count = frontDao.all().size
             assertEquals(
-                count,
-                0
+                0,
+                count
             )
 
             composeTestRule.waitUntilTimeout(10_000)
@@ -942,8 +964,8 @@ class ConfigScreenTest {
 
             val count = frontDao.all().size
             assertEquals(
-                count,
-                0
+                0,
+                count
             )
 
             composeTestRule.waitUntilTimeout(10_000)
@@ -984,8 +1006,8 @@ class ConfigScreenTest {
 
             val count = releaseDao.all().size
             assertEquals(
-                count,
-                0
+                0,
+                count
             )
 
             composeTestRule.waitUntilTimeout(10_000)
@@ -1027,8 +1049,8 @@ class ConfigScreenTest {
 
             val count = releaseDao.all().size
             assertEquals(
-                count,
-                0
+                0,
+                count
             )
 
             composeTestRule.waitUntilTimeout(10_000)
@@ -1069,8 +1091,8 @@ class ConfigScreenTest {
 
             val count = releaseDao.all().size
             assertEquals(
-                count,
-                0
+                0,
+                count
             )
 
             composeTestRule.waitUntilTimeout(10_000)
@@ -1205,9 +1227,8 @@ class ConfigScreenTest {
             resultGet.isSuccess,
             true
         )
-        val config = resultGet.getOrNull()!!
+        val model = resultGet.getOrNull()!!
         assertEquals(
-            config,
             ConfigSharedPreferencesModel(
                 number = 16997417840,
                 password = "12345",
@@ -1215,113 +1236,114 @@ class ConfigScreenTest {
                 version = "1.0",
                 statusSend = if(flagUpdate) StatusSend.SENT else StatusSend.STARTED,
                 flagUpdate = flagUpdate
-            )
+            ),
+            model
         )
 
         val colabRoomModelList = colabDao.all()
         assertEquals(
-            colabRoomModelList.size,
-            2
+            2,
+            colabRoomModelList.size
         )
         val colabRoomModel1 = colabRoomModelList[0]
         assertEquals(
-            colabRoomModel1,
             ColabRoomModel(
                 reg = 18017,
                 name = "RONALDO"
-            )
+            ),
+            colabRoomModel1
         )
         val colabRoomModel2 = colabRoomModelList[1]
         assertEquals(
-            colabRoomModel2,
             ColabRoomModel(
                 reg = 19759,
                 name = "ANDERSON DA SILVA DELGADO"
-            )
+            ),
+            colabRoomModel2
         )
 
         if(level == 1) return
 
         val equipRoomModelList = equipDao.all()
         assertEquals(
-            equipRoomModelList.size,
-            2
+            2,
+            equipRoomModelList.size
         )
         val equipRoomModel1 = equipRoomModelList[0]
         assertEquals(
-            equipRoomModel1,
             EquipRoomModel(
                 id = 1,
                 nro = 1,
                 cdOperClass = 1,
                 description = "Equip1"
-            )
+            ),
+            equipRoomModel1
         )
         val equipRoomModel2 = equipRoomModelList[1]
         assertEquals(
-            equipRoomModel2,
             EquipRoomModel(
                 id = 2,
                 nro = 2,
                 cdOperClass = 2,
                 description = "Equip2"
-            )
+            ),
+            equipRoomModel2
         )
 
         if(level == 2) return
 
         val frontRoomModelList = frontDao.all()
         assertEquals(
-            frontRoomModelList.size,
-            2
+            2,
+            frontRoomModelList.size
         )
         val frontRoomModel1 = frontRoomModelList[0]
         assertEquals(
-            frontRoomModel1,
             FrontRoomModel(
                 id = 1,
                 cd = 1,
                 description = "Front1"
-            )
+            ),
+            frontRoomModel1
         )
         val frontRoomModel2 = frontRoomModelList[1]
         assertEquals(
-            frontRoomModel2,
             FrontRoomModel(
                 id = 2,
                 cd = 2,
                 description = "Front2"
-            )
+            ),
+            frontRoomModel2
         )
 
         if(level == 3) return
 
         val releaseRoomModelList = releaseDao.all()
         assertEquals(
-            releaseRoomModelList.size,
-            2
+            2,
+            releaseRoomModelList.size
         )
         val releaseRoomModel1 = releaseRoomModelList[0]
         assertEquals(
-            releaseRoomModel1,
             ReleaseRoomModel(
                 id = 1,
                 nroOS = 1,
                 idPropAgr = 1,
                 descPropAgr = "Release1",
                 idFront = 1
-            )
+            ),
+            releaseRoomModel1
         )
         val releaseRoomModel2 = releaseRoomModelList[1]
         assertEquals(
-            releaseRoomModel2,
             ReleaseRoomModel(
                 id = 2,
                 nroOS = 2,
                 idPropAgr = 2,
                 descPropAgr = "Release2",
                 idFront = 2
-            )
+            ),
+            releaseRoomModel2
         )
 
         if(level == 4) return

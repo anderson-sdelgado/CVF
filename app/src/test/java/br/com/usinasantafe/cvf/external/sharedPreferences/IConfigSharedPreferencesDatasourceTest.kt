@@ -37,16 +37,16 @@ class IConfigSharedPreferencesDatasourceTest {
             datasource.save(data)
             val result = datasource.get()
             assertEquals(
+                true,
                 result.isFailure,
-                true
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IConfigSharedPreferencesDatasource.get"
+                "IConfigSharedPreferencesDatasource.get",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.NullPointerException: number is required"
+                "java.lang.NullPointerException: number is required",
+                result.exceptionOrNull()!!.cause.toString()
             )
         }
 
@@ -59,16 +59,16 @@ class IConfigSharedPreferencesDatasourceTest {
             datasource.save(data)
             val result = datasource.get()
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
+                "IConfigSharedPreferencesDatasource.get",
                 result.exceptionOrNull()!!.message,
-                "IConfigSharedPreferencesDatasource.get"
             )
             assertEquals(
+                "java.lang.NullPointerException: password is required",
                 result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.NullPointerException: password is required"
             )
         }
 
@@ -82,15 +82,15 @@ class IConfigSharedPreferencesDatasourceTest {
             datasource.save(data)
             val result = datasource.get()
             assertEquals(
+                true,
                 result.isSuccess,
-                true
             )
             assertEquals(
-                result.getOrNull()!!,
                 ConfigSharedPreferencesModel(
                     number = 16997417840,
                     password = "12345"
-                )
+                ),
+                result.getOrNull()!!
             )
         }
 
@@ -99,12 +99,12 @@ class IConfigSharedPreferencesDatasourceTest {
         runTest {
             val result = datasource.has()
             assertEquals(
-                result.isSuccess,
-                true
+                true,
+                result.isSuccess
             )
             assertEquals(
-                result.getOrNull()!!,
-                false
+                false,
+                result.getOrNull()!!
             )
         }
 
@@ -121,12 +121,12 @@ class IConfigSharedPreferencesDatasourceTest {
             datasource.save(data)
             val result = datasource.has()
             assertEquals(
-                result.isSuccess,
-                true
+                true,
+                result.isSuccess
             )
             assertEquals(
-                result.getOrNull()!!,
-                true
+                true,
+                result.getOrNull()!!
             )
         }
 
@@ -142,40 +142,36 @@ class IConfigSharedPreferencesDatasourceTest {
             datasource.save(data)
             val resultBefore = datasource.get()
             assertEquals(
-                resultBefore.isSuccess,
-                true
+                true,
+                resultBefore.isSuccess
             )
             val modelBefore = resultBefore.getOrNull()!!
             assertEquals(
-                modelBefore.statusSend,
-                StatusSend.STARTED
+                StatusSend.STARTED,
+                modelBefore.statusSend
             )
             assertEquals(
-                modelBefore.flagUpdate,
-                false
+                false,
+                modelBefore.flagUpdate
             )
             val result = datasource.setFlagUpdate()
             assertEquals(
-                result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                Unit
+                true,
+                result.isSuccess
             )
             val resultAfter = datasource.get()
             assertEquals(
-                resultAfter.isSuccess,
-                true
+                true,
+                resultAfter.isSuccess
             )
             val modelAfter = resultAfter.getOrNull()!!
             assertEquals(
-                modelAfter.statusSend,
-                StatusSend.SENT
+                StatusSend.SENT,
+                modelAfter.statusSend
             )
             assertEquals(
-                modelAfter.flagUpdate,
-                true
+                true,
+                modelAfter.flagUpdate
             )
         }
 

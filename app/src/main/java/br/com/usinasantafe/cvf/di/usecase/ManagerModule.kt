@@ -15,4 +15,9 @@ interface ManagerModule {
     @Singleton
     fun bindHasManager(usecase: IHasManager): HasManager
 
+    @Binds
+    @Singleton
+    fun bindListFront(usecase: IListFront): ListFront
+
+
 }

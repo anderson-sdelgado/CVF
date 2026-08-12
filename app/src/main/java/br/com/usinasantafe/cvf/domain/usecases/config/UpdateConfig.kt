@@ -41,7 +41,6 @@ class IUpdateConfig @Inject constructor(
         flowCallUpdate(getClassAndMethod(), Errors.TOKEN) {
 
             emitProgress(count, sizeAll, LevelUpdate.GET_TOKEN)
-
             val numberLong = tryCatch(::toLong.name) {
                 number.toLong()
             }

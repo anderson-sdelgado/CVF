@@ -38,16 +38,16 @@ class IConfigRepositoryTest {
             )
             val result = repository.get()
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IConfigRepository.get -> IConfigSharedPreferencesDatasource.get"
+                "IConfigRepository.get -> IConfigSharedPreferencesDatasource.get",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
             )
         }
 
@@ -63,16 +63,16 @@ class IConfigRepositoryTest {
             )
             val result = repository.get()
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IConfigRepository.get -> number is required"
+                "IConfigRepository.get -> number is required",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "null",
+                result.exceptionOrNull()!!.cause.toString()
             )
         }
 
@@ -90,16 +90,16 @@ class IConfigRepositoryTest {
             )
             val result = repository.get()
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IConfigRepository.get -> password is required"
+                "IConfigRepository.get -> password is required",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "null",
+                result.exceptionOrNull()!!.cause.toString()
             )
         }
 
@@ -118,15 +118,15 @@ class IConfigRepositoryTest {
             )
             val result = repository.get()
             assertEquals(
-                result.isSuccess,
-                true
+                true,
+                result.isSuccess
             )
             assertEquals(
-                result.getOrNull()!!,
                 Config(
                     number = 16997417840,
                     password = "12345"
-                )
+                ),
+                result.getOrNull()!!
             )
         }
 
@@ -135,16 +135,16 @@ class IConfigRepositoryTest {
         runTest {
             val result = repository.send(Config())
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IConfigRepository.send -> number is required"
+                "IConfigRepository.send -> number is required",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "null",
+                result.exceptionOrNull()!!.cause.toString()
             )
         }
 
@@ -172,16 +172,16 @@ class IConfigRepositoryTest {
                 )
             )
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IConfigRepository.send -> IConfigRetrofitDatasource.recoverToken"
+                "IConfigRepository.send -> IConfigRetrofitDatasource.recoverToken",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
             )
         }
 
@@ -209,12 +209,12 @@ class IConfigRepositoryTest {
                 )
             )
             assertEquals(
-                result.isSuccess,
-                true
+                true,
+                result.isSuccess
             )
             assertEquals(
-                result.getOrNull()!!,
-                Config(idServ = 1)
+                Config(idServ = 1),
+                result.getOrNull()!!
             )
         }
 
@@ -223,16 +223,16 @@ class IConfigRepositoryTest {
         runTest {
             val result = repository.save(Config())
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IConfigRepository.save -> number is required"
+                "IConfigRepository.save -> number is required",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "null",
+                result.exceptionOrNull()!!.cause.toString()
             )
         }
 
@@ -264,16 +264,16 @@ class IConfigRepositoryTest {
                 )
             )
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IConfigRepository.save -> IConfigSharedPreferencesDatasource.save"
+                "IConfigRepository.save -> IConfigSharedPreferencesDatasource.save",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
             )
         }
 
@@ -297,8 +297,8 @@ class IConfigRepositoryTest {
                 )
             )
             assertEquals(
-                result.isSuccess,
-                true
+                true,
+                result.isSuccess
             )
         }
 
@@ -316,16 +316,16 @@ class IConfigRepositoryTest {
             )
             val result = repository.has()
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IConfigRepository.has -> IConfigSharedPreferencesDatasource.has"
+                "IConfigRepository.has -> IConfigSharedPreferencesDatasource.has",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
             )
         }
 
@@ -335,16 +335,16 @@ class IConfigRepositoryTest {
             whenever(
                 configSharedPreferencesDatasource.has()
             ).thenReturn(
-                Result.success(true)
+                Result.success(false)
             )
             val result = repository.has()
             assertEquals(
-                result.isSuccess,
-                true
+                true,
+                result.isSuccess
             )
             assertEquals(
-                result.getOrNull()!!,
-                true
+                false,
+                result.getOrNull()!!
             )
         }
 
@@ -362,16 +362,16 @@ class IConfigRepositoryTest {
             )
             val result = repository.setFlagUpdate()
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IConfigRepository.setFlagUpdate -> IConfigSharedPreferencesDatasource.setFlagUpdate"
+                "IConfigRepository.setFlagUpdate -> IConfigSharedPreferencesDatasource.setFlagUpdate",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
             )
         }
 
@@ -381,8 +381,8 @@ class IConfigRepositoryTest {
             val result = repository.setFlagUpdate()
             verify(configSharedPreferencesDatasource, atLeastOnce()).setFlagUpdate()
             assertEquals(
-                result.isSuccess,
-                true
+                true,
+                result.isSuccess
             )
         }
 

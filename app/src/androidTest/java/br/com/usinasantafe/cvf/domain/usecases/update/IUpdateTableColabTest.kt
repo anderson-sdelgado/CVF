@@ -3,6 +3,7 @@ package br.com.usinasantafe.cvf.domain.usecases.update
 import br.com.usinasantafe.cvf.di.provider.BaseUrlModuleTest
 import br.com.usinasantafe.cvf.external.room.dao.stable.ColabDao
 import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
+import br.com.usinasantafe.cvf.infra.models.room.stable.ColabRoomModel
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.LevelUpdate
@@ -47,20 +48,19 @@ class IUpdateTableColabTest {
             )
             val list = result.toList()
             assertEquals(
-                list.count(),
-                2
+                2,
+                list.count()
             )
             assertEquals(
-                list[0],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_colab",
                     currentProgress = updatePercentage(1f, 1f, 16f)
-                )
+                ),
+                list[0]
             )
             assertEquals(
-                list[1],
                 UiStatusStateUpdate(
                     errors = Errors.UPDATE,
                     flagDialog = true,
@@ -68,9 +68,9 @@ class IUpdateTableColabTest {
                     failure = "IUpdateTableColab -> IGetToken -> IConfigRepository.get -> number is required",
                     currentProgress = 1f,
                     levelUpdate = null,
-                )
+                ),
+                list[1]
             )
-
         }
 
     @Test
@@ -87,20 +87,19 @@ class IUpdateTableColabTest {
             )
             val list = result.toList()
             assertEquals(
-                list.count(),
-                2
+                2,
+                list.count()
             )
             assertEquals(
-                list[0],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_colab",
                     currentProgress = updatePercentage(1f, 1f, 16f)
-                )
+                ),
+                list[0]
             )
             assertEquals(
-                list[1],
                 UiStatusStateUpdate(
                     errors = Errors.UPDATE,
                     flagDialog = true,
@@ -108,7 +107,8 @@ class IUpdateTableColabTest {
                     failure = "IUpdateTableColab -> IColabRepository.listAll -> IColabRetrofitDatasource.listAll -> java.net.ConnectException: Failed to connect to localhost/127.0.0.1:8080",
                     currentProgress = 1f,
                     levelUpdate = null,
-                )
+                ),
+                list[1]
             )
         }
 
@@ -133,20 +133,19 @@ class IUpdateTableColabTest {
             )
             val list = result.toList()
             assertEquals(
-                list.count(),
-                2
+                2,
+                list.count()
             )
             assertEquals(
-                list[0],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_colab",
                     currentProgress = updatePercentage(1f, 1f, 16f)
-                )
+                ),
+                list[0]
             )
             assertEquals(
-                list[1],
                 UiStatusStateUpdate(
                     errors = Errors.UPDATE,
                     flagDialog = true,
@@ -155,7 +154,8 @@ class IUpdateTableColabTest {
                             "See https://github.com/google/gson/blob/main/Troubleshooting.md#unexpected-json-structure",
                     currentProgress = 1f,
                     levelUpdate = null,
-                )
+                ),
+                list[1]
             )
         }
 
@@ -180,20 +180,19 @@ class IUpdateTableColabTest {
             )
             val list = result.toList()
             assertEquals(
-                list.count(),
-                2
+                2,
+                list.count()
             )
             assertEquals(
-                list[0],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_colab",
                     currentProgress = updatePercentage(1f, 1f, 16f)
-                )
+                ),
+                list[0]
             )
             assertEquals(
-                list[1],
                 UiStatusStateUpdate(
                     errors = Errors.UPDATE,
                     flagDialog = true,
@@ -201,7 +200,8 @@ class IUpdateTableColabTest {
                     failure = "IUpdateTableColab -> IColabRepository.listAll -> IColabRetrofitDatasource.listAll -> java.lang.NullPointerException",
                     currentProgress = 1f,
                     levelUpdate = null,
-                )
+                ),
+                list[1]
             )
         }
 
@@ -231,38 +231,37 @@ class IUpdateTableColabTest {
             )
             val list = result.toList()
             assertEquals(
-                list.count(),
-                4
+                4,
+                list.count()
             )
             assertEquals(
-                list[0],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_colab",
                     currentProgress = updatePercentage(1f, 1f, 16f)
-                )
+                ),
+                list[0]
             )
             assertEquals(
-                list[1],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CLEAN,
                     tableUpdate = "tb_colab",
                     currentProgress = updatePercentage(2f, 1f, 16f)
-                )
+                ),
+                list[1]
             )
             assertEquals(
-                list[2],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.SAVE,
                     tableUpdate = "tb_colab",
                     currentProgress = updatePercentage(3f, 1f, 16f)
-                )
+                ),
+                list[2]
             )
             assertEquals(
-                list[3],
                 UiStatusStateUpdate(
                     errors = Errors.UPDATE,
                     flagDialog = true,
@@ -270,7 +269,8 @@ class IUpdateTableColabTest {
                     failure = "IUpdateTableColab -> IColabRepository.addAll -> IColabRoomDatasource.addAll -> android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: tb_colab.reg (code 1555 SQLITE_CONSTRAINT_PRIMARYKEY[1555])",
                     currentProgress = 1f,
                     levelUpdate = null,
-                )
+                ),
+                list[3]
             )
         }
 
@@ -303,35 +303,35 @@ class IUpdateTableColabTest {
             )
             val list = result.toList()
             assertEquals(
-                list.count(),
-                3
+                3,
+                list.count()
             )
             assertEquals(
-                list[0],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_colab",
                     currentProgress = updatePercentage(++pos, 1f, 16f)
-                )
+                ),
+                list[0]
             )
             assertEquals(
-                list[1],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CLEAN,
                     tableUpdate = "tb_colab",
                     currentProgress = updatePercentage(++pos, 1f, 16f)
-                )
+                ),
+                list[1]
             )
             assertEquals(
-                list[2],
                 UiStatusStateUpdate(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.SAVE,
                     tableUpdate = "tb_colab",
                     currentProgress = updatePercentage(++pos, 1f, 16f)
-                )
+                ),
+                list[2]
             )
             val modelList = colabDao.all()
             assertEquals(
@@ -340,21 +340,19 @@ class IUpdateTableColabTest {
             )
             val model1 = modelList[0]
             assertEquals(
-                model1.reg,
-                123456
-            )
-            assertEquals(
-                model1.name,
-                "João da Silva"
+                ColabRoomModel(
+                    reg = 123456,
+                    name = "João da Silva"
+                ),
+                model1
             )
             val model2 = modelList[1]
             assertEquals(
-                model2.reg,
-                456789
-            )
-            assertEquals(
-                model2.name,
-                "Maria de Souza"
+                ColabRoomModel(
+                    reg = 456789,
+                    name = "Maria de Souza"
+                ),
+                model2
             )
         }
 

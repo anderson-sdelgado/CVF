@@ -31,16 +31,16 @@ class IGetConfigTest {
             )
             val result = usecase()
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IGetConfig -> IConfigRepository.hasConfig"
+                "IGetConfig -> IConfigRepository.hasConfig",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
             )
         }
 
@@ -54,12 +54,12 @@ class IGetConfigTest {
             )
             val result = usecase()
             assertEquals(
-                result.isSuccess,
-                true
+                true,
+                result.isSuccess
             )
             assertEquals(
-                result.getOrNull(),
-                null
+                null,
+                result.getOrNull()
             )
         }
 
@@ -82,16 +82,16 @@ class IGetConfigTest {
             )
             val result = usecase()
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IGetConfig -> IConfigRepository.get"
+                "IGetConfig -> IConfigRepository.get",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
             )
         }
 
@@ -115,15 +115,15 @@ class IGetConfigTest {
             )
             val result = usecase()
             assertEquals(
-                result.isSuccess,
-                true
+                true,
+                result.isSuccess
             )
             assertEquals(
-                result.getOrNull()!!,
                 ConfigScreenModel(
                     number = "16997417840",
                     password = "12345"
-                )
+                ),
+                result.getOrNull()!!
             )
         }
 

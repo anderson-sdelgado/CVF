@@ -22,4 +22,9 @@ class IFrontRoomDatasource @Inject constructor(
             frontDao.deleteAll()
         }
 
+    override suspend fun listAll(): Result<List<FrontRoomModel>> =
+        result(getClassAndMethod()) {
+            frontDao.all()
+        }
+
 }

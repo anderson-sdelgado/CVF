@@ -1,11 +1,16 @@
 package br.com.usinasantafe.cvf.presenter.view.manager.front
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -18,8 +23,10 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cvf.R
 import br.com.usinasantafe.cvf.presenter.model.ItemCheckBoxScreenModel
+import br.com.usinasantafe.cvf.presenter.theme.ButtonMaxWidth
 import br.com.usinasantafe.cvf.presenter.theme.CVFTheme
 import br.com.usinasantafe.cvf.presenter.theme.CheckboxDefault
+import br.com.usinasantafe.cvf.presenter.theme.TextButtonDesign
 import br.com.usinasantafe.cvf.presenter.theme.TitleDesign
 
 @Composable
@@ -72,6 +79,39 @@ fun FrontContent(
                 )
             }
         }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+        )  {
+            Button(
+                onClick = {},
+                modifier = Modifier
+                    .weight(1f)
+            ) {
+                TextButtonDesign(
+                    text = stringResource(
+                        id = R.string.text_pattern_return
+                    ),
+                    padding = 10
+                )
+            }
+            Button(
+                onClick = {  },
+                modifier = Modifier
+                    .weight(1f)
+            ) {
+                TextButtonDesign(
+                    text = stringResource(
+                        id = R.string.text_pattern_save
+                    ),
+                    padding = 10
+                )
+            }
+        }
+        Spacer(modifier = Modifier.padding(vertical = 4.dp))
+        ButtonMaxWidth(R.string.text_pattern_update, padding = 10) {  }
+        BackHandler {}
     }
 }
 

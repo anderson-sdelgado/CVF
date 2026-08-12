@@ -31,16 +31,16 @@ class IManagerRepositoryTest {
             )
             val result = repository.clean()
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IManagerRepository.clean -> IManagerSharedPreferencesDatasource.clean"
+                "IManagerRepository.clean -> IManagerSharedPreferencesDatasource.clean",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
             )
         }
 
@@ -50,8 +50,8 @@ class IManagerRepositoryTest {
             val result = repository.clean()
             verify(managerSharedPreferencesDatasource, atLeastOnce()).clean()
             assertEquals(
-                result.isSuccess,
-                true
+                true,
+                result.isSuccess
             )
         }
 
@@ -69,16 +69,16 @@ class IManagerRepositoryTest {
             )
             val result = repository.has()
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IManagerRepository.has -> IManagerSharedPreferencesDatasource.has"
+                "IManagerRepository.has -> IManagerSharedPreferencesDatasource.has",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
             )
         }
 
@@ -92,12 +92,77 @@ class IManagerRepositoryTest {
             )
             val result = repository.has()
             assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                false,
+                result.getOrNull()!!
+            )
+        }
+
+    @Test
+    fun `getIdFront - Check return failure if have error in ManagerSharedPreferencesDatasource getIdFront`() =
+        runTest {
+            whenever(
+                managerSharedPreferencesDatasource.getIdFront()
+            ).thenReturn(
+                resultFailure(
+                    "IManagerSharedPreferencesDatasource.getIdFront",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getIdFront()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IManagerRepository.getIdFront -> IManagerSharedPreferencesDatasource.getIdFront"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getIdFront - Check return null if function execute successfully and db is empty`() =
+        runTest {
+            whenever(
+                managerSharedPreferencesDatasource.getIdFront()
+            ).thenReturn(
+                Result.success(null)
+            )
+            val result = repository.getIdFront()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull(),
+                null
+            )
+        }
+
+    @Test
+    fun `getIdFront - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                managerSharedPreferencesDatasource.getIdFront()
+            ).thenReturn(
+                Result.success(1)
+            )
+            val result = repository.getIdFront()
+            assertEquals(
                 result.isSuccess,
                 true
             )
             assertEquals(
                 result.getOrNull()!!,
-                false
+                1
             )
         }
 

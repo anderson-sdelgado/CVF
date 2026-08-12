@@ -15,7 +15,7 @@ interface FrontDao {
     @Query("DELETE FROM $TB_FRONT")
     suspend fun deleteAll()
 
-    @Query("SELECT * FROM $TB_FRONT")
+    @Query("SELECT * FROM $TB_FRONT ORDER BY cd ASC")
     suspend fun all(): List<FrontRoomModel>
 
 }

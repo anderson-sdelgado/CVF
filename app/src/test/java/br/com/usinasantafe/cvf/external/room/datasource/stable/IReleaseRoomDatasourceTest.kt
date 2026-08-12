@@ -43,10 +43,10 @@ class IReleaseRoomDatasourceTest {
     @Test
     fun `addAll - Check failure if have row repeated`() =
         runTest {
-            val list = releaseDao.all()
+            val qtdAfter = releaseDao.all().size
             assertEquals(
-                list.size,
-                0
+                0,
+                qtdAfter
             )
             val result = datasource.addAll(
                 listOf(
@@ -67,21 +67,21 @@ class IReleaseRoomDatasourceTest {
                 )
             )
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IReleaseRoomDatasource.addAll"
+                "IReleaseRoomDatasource.addAll",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: tb_release.id (code 1555 SQLITE_CONSTRAINT_PRIMARYKEY)"
+                "android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: tb_release.id (code 1555 SQLITE_CONSTRAINT_PRIMARYKEY)",
+                result.exceptionOrNull()!!.cause.toString()
             )
-            val qtdAfter = releaseDao.all().size
+            val qtdBefore = releaseDao.all().size
             assertEquals(
-                qtdAfter,
-                0
+                0,
+                qtdBefore
             )
         }
 
@@ -90,8 +90,8 @@ class IReleaseRoomDatasourceTest {
         runTest {
             val qtdBefore = releaseDao.all().size
             assertEquals(
-                qtdBefore,
-                0
+                0,
+                qtdBefore
             )
             val result = datasource.addAll(
                 listOf(
@@ -127,45 +127,25 @@ class IReleaseRoomDatasourceTest {
             )
             val model1 = list[0]
             assertEquals(
-                model1.id,
-                1
-            )
-            assertEquals(
-                model1.nroOS,
-                1
-            )
-            assertEquals(
-                model1.idPropAgr,
-                1
-            )
-            assertEquals(
-                model1.descPropAgr,
-                "Test1"
-            )
-            assertEquals(
-                model1.idFront,
-                1
+                ReleaseRoomModel(
+                    id = 1,
+                    nroOS = 1,
+                    idPropAgr = 1,
+                    descPropAgr = "Test1",
+                    idFront = 1
+                ),
+                model1
             )
             val model2 = list[1]
             assertEquals(
-                model2.id,
-                2
-            )
-            assertEquals(
-                model2.nroOS,
-                2
-            )
-            assertEquals(
-                model2.idPropAgr,
-                2
-            )
-            assertEquals(
-                model2.descPropAgr,
-                "Test2"
-            )
-            assertEquals(
-                model2.idFront,
-                2
+                ReleaseRoomModel(
+                    id = 2,
+                    nroOS = 2,
+                    idPropAgr = 2,
+                    descPropAgr = "Test2",
+                    idFront = 2
+                ),
+                model2
             )
         }
 
@@ -185,22 +165,18 @@ class IReleaseRoomDatasourceTest {
             )
             val listBefore = releaseDao.all()
             assertEquals(
+                1,
                 listBefore.size,
-                1
             )
             val result = datasource.deleteAll()
             assertEquals(
                 result.isSuccess,
                 true
             )
-            assertEquals(
-                result.getOrNull()!!,
-                Unit
-            )
             val listAfter = releaseDao.all()
             assertEquals(
-                listAfter.size,
-                0
+                0,
+                listAfter.size
             )
         }
 

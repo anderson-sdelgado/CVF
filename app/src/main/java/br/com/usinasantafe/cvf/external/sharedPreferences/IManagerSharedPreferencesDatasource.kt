@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.ManagerSharedPreferencesDatasource
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ManagerSharedPreferencesModel
+import br.com.usinasantafe.cvf.infra.models.sharedpreferences.sharedPreferencesModelToEntity
 import br.com.usinasantafe.cvf.lib.BASE_SHARED_PREFERENCES_TABLE_MANAGER
 import br.com.usinasantafe.cvf.utils.EmptyResult
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
@@ -40,4 +41,24 @@ class IManagerSharedPreferencesDatasource @Inject constructor(
             )
             !data.isNullOrEmpty()
         }
+
+    override suspend fun getIdFront(): Result<Int?> =
+        result(getClassAndMethod()) {
+            get().getOrThrow().idFront
+        }
+
+    suspend fun get(): Result<ManagerSharedPreferencesModel> =
+        result(getClassAndMethod()) {
+            val data = sharedPreferences.getString(
+                BASE_SHARED_PREFERENCES_TABLE_MANAGER,
+                null
+            )
+            val model = Gson().fromJson(
+                data,
+                ManagerSharedPreferencesModel::class.java
+            )
+            model.sharedPreferencesModelToEntity()
+            model
+        }
+
 }

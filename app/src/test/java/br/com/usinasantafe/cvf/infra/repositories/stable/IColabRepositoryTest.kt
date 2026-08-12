@@ -9,6 +9,8 @@ import br.com.usinasantafe.cvf.utils.resultFailure
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.Mockito.mock
+import org.mockito.kotlin.atLeastOnce
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import kotlin.test.assertEquals
 
@@ -47,16 +49,16 @@ class IColabRepositoryTest {
             )
             val result = repository.addAll(entityList)
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IColabRepository.addAll -> IColabRoomDatasource.addAll"
+                "IColabRepository.addAll -> IColabRoomDatasource.addAll",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
+                "java.lang.Exception",
                 result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
             )
         }
 
@@ -75,19 +77,11 @@ class IColabRepositoryTest {
                     name = "ANDERSON DA SILVA"
                 )
             )
-            whenever(
-                colabRoomDatasource.addAll(roomModelList)
-            ).thenReturn(
-                Result.success(Unit)
-            )
             val result = repository.addAll(entityList)
+            verify(colabRoomDatasource, atLeastOnce()).addAll(roomModelList)
             assertEquals(
+                true,
                 result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                Unit
             )
         }
 
@@ -105,35 +99,27 @@ class IColabRepositoryTest {
             )
             val result = repository.deleteAll()
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
+                "IColabRepository.deleteAll -> IColabRoomDatasource.deleteAll",
                 result.exceptionOrNull()!!.message,
-                "IColabRepository.deleteAll -> IColabRoomDatasource.deleteAll"
             )
             assertEquals(
+                "java.lang.Exception",
                 result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
             )
         }
 
     @Test
     fun `deleteAll - Check return true if function execute successfully`() =
         runTest {
-            whenever(
-                colabRoomDatasource.deleteAll()
-            ).thenReturn(
-                Result.success(Unit)
-            )
             val result = repository.deleteAll()
+            verify(colabRoomDatasource, atLeastOnce()).deleteAll()
             assertEquals(
+                true,
                 result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                Unit
             )
         }
 
@@ -151,16 +137,16 @@ class IColabRepositoryTest {
             )
             val result = repository.listAll("token")
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IColabRepository.listAll -> IColabRetrofitDatasource.listAll"
+                "IColabRepository.listAll -> IColabRetrofitDatasource.listAll",
+                result.exceptionOrNull()!!.message
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
             )
         }
 
@@ -196,12 +182,12 @@ class IColabRepositoryTest {
             )
             val result = repository.listAll("token")
             assertEquals(
+                true,
                 result.isSuccess,
-                true
             )
             assertEquals(
-                result.getOrNull()!!,
-                entityList
+                entityList,
+                result.getOrNull()!!
             )
         }
 

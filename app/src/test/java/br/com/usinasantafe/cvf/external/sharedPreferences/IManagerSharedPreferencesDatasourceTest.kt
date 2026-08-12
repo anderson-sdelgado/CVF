@@ -35,12 +35,12 @@ class IManagerSharedPreferencesDatasourceTest {
         runTest {
             val result = datasource.has()
             assertEquals(
-                result.isSuccess,
-                true
+                true,
+                result.isSuccess
             )
             assertEquals(
-                result.getOrNull()!!,
-                false
+                false,
+                result.getOrNull()!!
             )
         }
 
@@ -54,12 +54,12 @@ class IManagerSharedPreferencesDatasourceTest {
             datasource.save(data)
             val result = datasource.has()
             assertEquals(
-                result.isSuccess,
-                true
+                true,
+                result.isSuccess
             )
             assertEquals(
-                result.getOrNull()!!,
-                true
+                true,
+                result.getOrNull()!!
             )
         }
 
@@ -73,22 +73,59 @@ class IManagerSharedPreferencesDatasourceTest {
             datasource.save(data)
             val result = datasource.has()
             assertEquals(
-                result.isSuccess,
-                true
+                true,
+                result.isSuccess
             )
             assertEquals(
-                result.getOrNull()!!,
-                true
+                true,
+                result.getOrNull()!!
             )
             datasource.clean()
             val resultAfter = datasource.has()
             assertEquals(
-                resultAfter.isSuccess,
-                true
+                true,
+                resultAfter.isSuccess
             )
             assertEquals(
-                resultAfter.getOrNull()!!,
-                false
+                false,
+                resultAfter.getOrNull()!!
+            )
+        }
+
+    @Test
+    fun `getIdFront - Check return failure if have db is empty`() =
+        runTest {
+            val result = datasource.getIdFront()
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IManagerSharedPreferencesDatasource.getIdFront -> IManagerSharedPreferencesDatasource.get",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.NullPointerException",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `getIdFront - Check return correct if have data`() =
+        runTest {
+            val data = ManagerSharedPreferencesModel(
+                idRelease = 1,
+                idFront = 20
+            )
+            datasource.save(data)
+            val result = datasource.getIdFront()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                20,
+                result.getOrNull()!!
             )
         }
 
