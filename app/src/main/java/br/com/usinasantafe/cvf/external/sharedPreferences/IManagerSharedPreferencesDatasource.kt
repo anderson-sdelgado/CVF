@@ -44,6 +44,7 @@ class IManagerSharedPreferencesDatasource @Inject constructor(
 
     override suspend fun getIdFront(): Result<Int?> =
         result(getClassAndMethod()) {
+            if (!has().getOrThrow()) return@result null
             get().getOrThrow().idFront
         }
 

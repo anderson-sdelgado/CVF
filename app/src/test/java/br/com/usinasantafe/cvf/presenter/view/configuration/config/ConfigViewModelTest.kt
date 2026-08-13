@@ -734,7 +734,7 @@ class ConfigViewModelTest {
             )
             assertEquals(
                 false,
-                viewModel.uiState.value.flagManager
+                viewModel.uiState.value.flagReturn
             )
         }
 
@@ -767,7 +767,7 @@ class ConfigViewModelTest {
             )
             assertEquals(
                 true,
-                viewModel.uiState.value.flagManager
+                viewModel.uiState.value.flagReturn
             )
         }
 

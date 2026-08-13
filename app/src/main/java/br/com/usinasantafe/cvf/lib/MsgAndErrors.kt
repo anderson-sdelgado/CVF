@@ -42,6 +42,12 @@ fun errors(errors: Errors, failure: String, value: String = ""): String {
                 value
             )
         }
+        Errors.NOT_SELECTION -> {
+            stringResource(
+                id = R.string.text_not_selection,
+                value
+            )
+        }
         else -> stringResource(
             id = R.string.text_failure,
             failure

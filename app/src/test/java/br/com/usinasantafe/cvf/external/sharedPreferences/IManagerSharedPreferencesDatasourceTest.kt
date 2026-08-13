@@ -98,15 +98,11 @@ class IManagerSharedPreferencesDatasourceTest {
             val result = datasource.getIdFront()
             assertEquals(
                 true,
-                result.isFailure
+                result.isSuccess
             )
             assertEquals(
-                "IManagerSharedPreferencesDatasource.getIdFront -> IManagerSharedPreferencesDatasource.get",
-                result.exceptionOrNull()!!.message
-            )
-            assertEquals(
-                "java.lang.NullPointerException",
-                result.exceptionOrNull()!!.cause.toString()
+                null,
+                result.getOrNull()
             )
         }
 

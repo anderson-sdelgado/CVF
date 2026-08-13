@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cvf.presenter.view.configuration.config
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -59,8 +60,7 @@ fun ConfigScreen(
                 onSaveAndUpdate = viewModel::onSaveAndUpdate,
                 onCloseDialog = viewModel::onCloseDialog,
                 status = uiState.status,
-                flagAccess = uiState.flagAccess,
-                flagManager = uiState.flagManager,
+                flagReturn = uiState.flagReturn,
                 onNavFront = onNavFront,
                 onNavNote = onNavNote,
                 modifier = Modifier.padding(innerPadding)
@@ -78,8 +78,7 @@ fun ConfigContent(
     onSaveAndUpdate: () -> Unit,
     onCloseDialog: () -> Unit,
     status: UiStatusStateUpdate,
-    flagAccess: Boolean,
-    flagManager: Boolean,
+    flagReturn: Boolean,
     onNavFront: () -> Unit,
     onNavNote: () -> Unit,
     modifier: Modifier = Modifier
@@ -117,7 +116,7 @@ fun ConfigContent(
         ButtonMaxWidth(id = R.string.text_pattern_save, onClick = onSaveAndUpdate)
         Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
-        if(flagManager) ButtonMaxWidth(id = R.string.text_pattern_return, onClick = onNavNote)
+        if(flagReturn) ButtonMaxWidth(id = R.string.text_pattern_return, onClick = onNavNote)
 
         if (status.flagProgress) {
             Spacer(modifier = Modifier.padding(vertical = 16.dp))
@@ -163,8 +162,7 @@ fun ConfigPagePreview() {
                 onSaveAndUpdate = {},
                 onCloseDialog = {},
                 status = UiStatusStateUpdate(),
-                flagAccess = false,
-                flagManager = false,
+                flagReturn = false,
                 onNavFront = {},
                 onNavNote = {},
                 modifier = Modifier.padding(innerPadding)
@@ -196,8 +194,7 @@ fun ConfigPagePreviewWithData() {
                     errors = Errors.FIELD_EMPTY,
                     failure = "",
                 ),
-                flagAccess = false,
-                flagManager = true,
+                flagReturn = true,
                 onNavFront = {},
                 onNavNote = {},
                 modifier = Modifier.padding(innerPadding)
@@ -228,8 +225,7 @@ fun ConfigPagePreviewShowProgress() {
                     errors = Errors.FIELD_EMPTY,
                     failure = "",
                 ),
-                flagAccess = false,
-                flagManager = false,
+                flagReturn = false,
                 onNavFront = {},
                 onNavNote = {},
                 modifier = Modifier.padding(innerPadding)
@@ -260,8 +256,7 @@ fun ConfigPagePreviewShowMsgFieldEmpty() {
                     errors = Errors.FIELD_EMPTY,
                     failure = "",
                 ),
-                flagAccess = false,
-                flagManager = false,
+                flagReturn = false,
                 onNavFront = {},
                 onNavNote = {},
                 modifier = Modifier.padding(innerPadding)
@@ -292,8 +287,7 @@ fun ConfigPagePreviewShowMsgSuccess() {
                     errors = Errors.FIELD_EMPTY,
                     failure = "",
                 ),
-                flagAccess = false,
-                flagManager = false,
+                flagReturn = false,
                 onNavFront = {},
                 onNavNote = {},
                 modifier = Modifier.padding(innerPadding)

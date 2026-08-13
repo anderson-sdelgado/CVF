@@ -89,7 +89,7 @@ class ConfigScreenTest {
     private val resultColab = """
         [
             {"reg":19759,"name":"ANDERSON DA SILVA DELGADO"},
-            {"reg":18017,"name":"RONALDO"}
+            {"reg":18017,"name":"RONALDO GOMES"}
         ]
     """.trimIndent()
 
@@ -1249,7 +1249,7 @@ class ConfigScreenTest {
         assertEquals(
             ColabRoomModel(
                 reg = 18017,
-                name = "RONALDO"
+                name = "RONALDO GOMES"
             ),
             colabRoomModel1
         )

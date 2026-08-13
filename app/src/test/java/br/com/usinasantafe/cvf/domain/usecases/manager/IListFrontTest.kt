@@ -199,5 +199,63 @@ class IListFrontTest {
             )
         }
 
+    @Test
+    fun `Check return list with check if function execute successfully and idFront is non-existent`() =
+        runTest {
+            whenever(
+                frontRepository.listAll()
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        Front(
+                            id = 1,
+                            cd = 1,
+                            description = "Front1"
+                        ),
+                        Front(
+                            id = 2,
+                            cd = 2,
+                            description = "Front2"
+                        ),
+                        Front(
+                            id = 3,
+                            cd = 3,
+                            description = "Front3"
+                        )
+                    )
+                )
+            )
+            whenever(
+                managerRepository.getIdFront()
+            ).thenReturn(
+                Result.success(10)
+            )
+            val result = usecase()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                listOf(
+                    ItemCheckBoxScreenModel(
+                        id = 1,
+                        desc = "Front1",
+                        flag = false
+                    ),
+                    ItemCheckBoxScreenModel(
+                        id = 2,
+                        desc = "Front2",
+                        flag = false
+                    ),
+                    ItemCheckBoxScreenModel(
+                        id = 3,
+                        desc = "Front3",
+                        flag = false
+                    )
+                )
+            )
+        }
+
 
 }

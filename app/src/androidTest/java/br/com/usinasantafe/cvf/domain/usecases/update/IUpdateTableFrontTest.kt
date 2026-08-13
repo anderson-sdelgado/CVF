@@ -113,7 +113,7 @@ class IUpdateTableFrontTest {
         }
 
     @Test
-    fun check_return_failure_if_token_is_invalid() =
+    fun check_return_failure_if_error_url() =
         runTest {
 
             val server = MockWebServer()

@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cvf.presenter.view.configuration.config
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cvf.domain.usecases.config.GetConfig
@@ -11,6 +12,7 @@ import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableEquip
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableFront
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableRelease
 import br.com.usinasantafe.cvf.lib.Errors
+import br.com.usinasantafe.cvf.lib.LevelUpdate
 import br.com.usinasantafe.cvf.utils.UiStateWithStatusUpdate
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
 import br.com.usinasantafe.cvf.utils.collectUpdateStep
@@ -32,8 +34,7 @@ data class ConfigState(
     val number: String = "",
     val password: String = "",
     val version: String = "",
-    val flagAccess: Boolean = false,
-    val flagManager: Boolean = false,
+    val flagReturn: Boolean = false,
     override val status: UiStatusStateUpdate = UiStatusStateUpdate()
 ) : UiStateWithStatusUpdate<ConfigState> {
 
@@ -63,7 +64,10 @@ class ConfigViewModel @Inject constructor(
         _uiState.update(block)
     }
 
-    fun onCloseDialog() = updateState { copy(status = status.copy(flagDialog = false, flagFailure = false)) }
+    fun onCloseDialog() = updateState {
+        val flag = (status.levelUpdate == LevelUpdate.FINISH_UPDATE_COMPLETED)
+        copy(status = status.copy(flagDialog = false, flagFailure = false, flagAccess = flag))
+    }
 
     fun onNumberChanged(v: String) = updateState { copy(number = v) }
     fun onPasswordChanged(v: String) = updateState { copy(password = v) }
@@ -92,7 +96,7 @@ class ConfigViewModel @Inject constructor(
             )
         }
             .onSuccess {
-                updateState { copy(number = it.number, password = it.password, flagManager = it.flagManager) }
+                updateState { copy(number = it.number, password = it.password, flagReturn = it.flagManager) }
             }
             .onFailureUpdate(getClassAndMethod(), ::updateState)
     }

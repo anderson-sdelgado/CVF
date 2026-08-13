@@ -1,4 +1,4 @@
-package br.com.usinasantafe.cvf.presenter.view.manager.front
+package br.com.usinasantafe.cvf.presenter.view.manager.release
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
@@ -32,13 +32,12 @@ import br.com.usinasantafe.cvf.presenter.theme.Progress
 import br.com.usinasantafe.cvf.presenter.theme.TextButtonDesign
 import br.com.usinasantafe.cvf.presenter.theme.TitleDesign
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
-import br.com.usinasantafe.cvf.utils.required
 
 @Composable
-fun FrontScreen(
-    viewModel: FrontViewModel = hiltViewModel(),
-    onNavRelease: (Int) -> Unit,
-    onNavConfig: () -> Unit
+fun ReleaseScreen(
+    viewModel: ReleaseViewModel = hiltViewModel(),
+    onNavFront: () -> Unit,
+    onNavColab: () -> Unit
 ) {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -49,16 +48,14 @@ fun FrontScreen(
                 viewModel.list()
             }
 
-            FrontContent(
-                idSelection = uiState.idSelection,
+            ReleaseContent(
                 list = list,
                 onCheckChanged = viewModel::onCheckChanged,
-                check = viewModel::check,
                 update = viewModel::update,
                 onCloseDialog = viewModel::onCloseDialog,
                 status = uiState.status,
-                onNavRelease = onNavRelease,
-                onNavConfig = onNavConfig,
+                onNavFront = onNavFront,
+                onNavColab = onNavColab,
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -66,16 +63,14 @@ fun FrontScreen(
 }
 
 @Composable
-fun FrontContent(
-    idSelection: Int?,
+fun ReleaseContent(
     list: List<ItemCheckBoxScreenModel>,
     onCheckChanged: (Int, Boolean) -> Unit,
-    check: () -> Unit,
     update: () -> Unit,
     onCloseDialog: () -> Unit,
     status: UiStatusStateUpdate,
-    onNavRelease: (Int) -> Unit,
-    onNavConfig: () -> Unit,
+    onNavFront: () -> Unit,
+    onNavColab: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -84,7 +79,7 @@ fun FrontContent(
     ) {
         TitleDesign(
             text = stringResource(
-                id = R.string.text_front
+                id = R.string.text_release
             )
         )
         LazyColumn(
@@ -106,7 +101,7 @@ fun FrontContent(
             horizontalArrangement = Arrangement.Center,
         )  {
             Button(
-                onClick = onNavConfig,
+                onClick = onNavFront,
                 modifier = Modifier
                     .weight(1f)
             ) {
@@ -118,7 +113,7 @@ fun FrontContent(
                 )
             }
             Button(
-                onClick = check,
+                onClick = {},
                 modifier = Modifier
                     .weight(1f)
             ) {
@@ -146,23 +141,20 @@ fun FrontContent(
 
     LaunchedEffect(status.flagAccess) {
         if (status.flagAccess) {
-            onNavRelease(idSelection.required("idSelection"))
+            onNavColab()
         }
     }
-
 
 }
 
 @Preview(showBackground = true)
 @Composable
-fun FrontPagePreview() {
+fun ReleasePagePreview() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            FrontContent(
-                idSelection = null,
+            ReleaseContent(
                 list = listOf(),
                 onCheckChanged = { _, _ -> },
-                check = {},
                 update = {},
                 onCloseDialog = {},
                 status = UiStatusStateUpdate(
@@ -176,8 +168,8 @@ fun FrontPagePreview() {
                     tableUpdate = "",
                     currentProgress = 0f,
                 ),
-                onNavRelease = {},
-                onNavConfig = {},
+                onNavFront = {},
+                onNavColab = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -186,30 +178,34 @@ fun FrontPagePreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun FrontPagePreviewWithData() {
+fun ReleasePagePreviewWithData() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            FrontContent(
-                idSelection = null,
+            ReleaseContent(
                 list = listOf(
                     ItemCheckBoxScreenModel(
                         id = 1,
-                        desc = "FRENTE 1",
+                        desc = "LIBERAÇÃO: 1\n" +
+                                "O.S.: 1\n" +
+                                "PROPRIEDADE: ITAQUERE",
                         flag = false
                     ),
                     ItemCheckBoxScreenModel(
                         id = 2,
-                        desc = "FRENTE 2",
+                        desc = "LIBERAÇÃO: 2\n" +
+                                "O.S.: 2\n" +
+                                "PROPRIEDADE: RANCHO AZUL",
                         flag = false
                     ),
                     ItemCheckBoxScreenModel(
                         id = 3,
-                        desc = "FRENTE 3",
+                        desc = "LIBERAÇÃO: 3\n" +
+                                "O.S.: 3\n" +
+                                "PROPRIEDADE: ITAQUERE",
                         flag = false
                     ),
                 ),
                 onCheckChanged = { _, _ -> },
-                check = {},
                 update = {},
                 onCloseDialog = {},
                 status = UiStatusStateUpdate(
@@ -223,8 +219,8 @@ fun FrontPagePreviewWithData() {
                     tableUpdate = "",
                     currentProgress = 0f,
                 ),
-                onNavRelease = {},
-                onNavConfig = {},
+                onNavFront = {},
+                onNavColab = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
