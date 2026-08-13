@@ -71,6 +71,12 @@ android {
             manifest.srcFile("src/androidTest/AndroidManifest.xml")
         }
     }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 room {

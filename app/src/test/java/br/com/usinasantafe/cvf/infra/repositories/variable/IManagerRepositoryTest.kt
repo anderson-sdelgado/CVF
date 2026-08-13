@@ -1,10 +1,13 @@
 package br.com.usinasantafe.cvf.infra.repositories.variable
 
+import br.com.usinasantafe.cvf.domain.entities.variable.Manager
 import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.ManagerSharedPreferencesDatasource
 import br.com.usinasantafe.cvf.utils.resultFailure
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.Mockito.mock
+import org.mockito.kotlin.any
+import org.mockito.kotlin.argThat
 import org.mockito.kotlin.atLeastOnce
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
@@ -163,6 +166,109 @@ class IManagerRepositoryTest {
             assertEquals(
                 result.getOrNull()!!,
                 1
+            )
+        }
+
+    @Test
+    fun `getIdRelease - Check return failure if have error in ManagerSharedPreferencesDatasource getIdRelease`() =
+        runTest {
+            whenever(
+                managerSharedPreferencesDatasource.getIdRelease()
+            ).thenReturn(
+                resultFailure(
+                    "IManagerSharedPreferencesDatasource.getIdRelease",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getIdRelease()
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IManagerRepository.getIdRelease -> IManagerSharedPreferencesDatasource.getIdRelease",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `getIdRelease - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                managerSharedPreferencesDatasource.getIdRelease()
+            ).thenReturn(
+                Result.success(20)
+            )
+            val result = repository.getIdRelease()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                20,
+                result.getOrNull()!!
+            )
+        }
+
+    @Test
+    fun `save - Check return failure if have error in ManagerSharedPreferencesDatasource save`() =
+        runTest {
+            whenever(
+                managerSharedPreferencesDatasource.save(any())
+            ).thenReturn(
+                resultFailure(
+                    "IManagerSharedPreferencesDatasource.save",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.save(
+                Manager(
+                    idRelease = 1,
+                    idFront = 1
+                )
+            )
+            verify(managerSharedPreferencesDatasource, atLeastOnce()).save(
+                argThat {
+                    idRelease == 1 && idFront == 1
+                }
+            )
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IManagerRepository.save -> IManagerSharedPreferencesDatasource.save",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `save - Check return correct if function execute successfully`() =
+        runTest {
+            val result = repository.save(
+                Manager(
+                    idRelease = 1,
+                    idFront = 1
+                )
+            )
+            verify(managerSharedPreferencesDatasource, atLeastOnce()).save(
+                argThat {
+                    idRelease == 1 && idFront == 1
+                }
+            )
+            assertEquals(
+                true,
+                result.isSuccess
             )
         }
 

@@ -19,5 +19,11 @@ interface ManagerModule {
     @Singleton
     fun bindListFront(usecase: IListFront): ListFront
 
+    @Binds
+    @Singleton
+    fun bindListRelease(usecase: IListRelease): ListRelease
 
+    @Binds
+    @Singleton
+    fun bindSaveManager(usecase: ISaveManager): SaveManager
 }

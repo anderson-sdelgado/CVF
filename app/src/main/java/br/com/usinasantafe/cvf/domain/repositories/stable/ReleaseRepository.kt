@@ -7,4 +7,5 @@ interface ReleaseRepository {
     suspend fun addAll(list: List<Release>): EmptyResult
     suspend fun deleteAll(): EmptyResult
     suspend fun listAll(token: String): Result<List<Release>>
+    suspend fun listByIdFront(idFront: Int): Result<List<Release>>
 }

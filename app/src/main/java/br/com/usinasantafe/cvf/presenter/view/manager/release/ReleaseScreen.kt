@@ -130,7 +130,7 @@ fun ReleaseContent(
         BackHandler {}
 
         if (status.flagDialog) {
-            MsgUpdate(status = status, onClickOk = onCloseDialog, value = stringResource(id = R.string.text_front))
+            MsgUpdate(status = status, onClickOk = onCloseDialog, value = stringResource(id = R.string.text_release))
         }
 
         if (status.flagProgress) {

@@ -215,4 +215,68 @@ class IReleaseRepositoryTest {
             )
         }
 
+    @Test
+    fun `listByIdFront - Check return failure if have error in ReleaseRoomDatasource listByIdFront`() =
+        runTest {
+            whenever(
+                releaseRoomDatasource.listByIdFront(1)
+            ).thenReturn(
+                resultFailure(
+                    "IReleaseRoomDatasource.listByIdFront",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.listByIdFront(1)
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IReleaseRepository.listByIdFront -> IReleaseRoomDatasource.listByIdFront",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `listByIdFront - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                releaseRoomDatasource.listByIdFront(1)
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        ReleaseRoomModel(
+                            id = 1,
+                            nroOS = 1,
+                            idPropAgr = 1,
+                            descPropAgr = "Test",
+                            idFront = 1
+                        )
+                    )
+                )
+            )
+            val result = repository.listByIdFront(1)
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                listOf(
+                    Release(
+                        id = 1,
+                        nroOS = 1,
+                        idPropAgr = 1,
+                        descPropAgr = "Test",
+                        idFront = 1
+                    )
+                ),
+                result.getOrNull()!!
+            )
+        }
+
 }

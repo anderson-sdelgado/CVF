@@ -180,4 +180,119 @@ class IReleaseRoomDatasourceTest {
             )
         }
 
+    @Test
+    fun `listByIdFront - Check return list empty if not data in table`() =
+        runTest {
+            val result = datasource.listByIdFront(1)
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                emptyList(),
+                result.getOrNull()!!
+            )
+        }
+
+    @Test
+    fun `listByIdFront - Check return list empty if data in table and idFront is different`() =
+        runTest {
+            releaseDao.insertAll(
+                listOf(
+                    ReleaseRoomModel(
+                        id = 1,
+                        nroOS = 1,
+                        idPropAgr = 1,
+                        descPropAgr = "Test1",
+                        idFront = 1
+                    ),
+                    ReleaseRoomModel(
+                        id = 2,
+                        nroOS = 2,
+                        idPropAgr = 2,
+                        descPropAgr = "Test2",
+                        idFront = 2
+                    ),
+                    ReleaseRoomModel(
+                        id = 3,
+                        nroOS = 3,
+                        idPropAgr = 3,
+                        descPropAgr = "Test3",
+                        idFront = 3
+                    )
+                )
+            )
+            val result = datasource.listByIdFront(4)
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                emptyList(),
+                result.getOrNull()!!
+            )
+        }
+
+    @Test
+    fun `listByIdFront - Check return list if data in table and idFront is correct`() =
+        runTest {
+            releaseDao.insertAll(
+                listOf(
+                    ReleaseRoomModel(
+                        id = 1,
+                        nroOS = 1,
+                        idPropAgr = 1,
+                        descPropAgr = "Test1",
+                        idFront = 1
+                    ),
+                    ReleaseRoomModel(
+                        id = 2,
+                        nroOS = 2,
+                        idPropAgr = 2,
+                        descPropAgr = "Test2",
+                        idFront = 2
+                    ),
+                    ReleaseRoomModel(
+                        id = 3,
+                        nroOS = 3,
+                        idPropAgr = 3,
+                        descPropAgr = "Test3",
+                        idFront = 3
+                    ),
+                    ReleaseRoomModel(
+                        id = 4,
+                        nroOS = 4,
+                        idPropAgr = 4,
+                        descPropAgr = "Test4",
+                        idFront = 3
+                    )
+                )
+            )
+            val result = datasource.listByIdFront(3)
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                listOf(
+                    ReleaseRoomModel(
+                        id = 3,
+                        nroOS = 3,
+                        idPropAgr = 3,
+                        descPropAgr = "Test3",
+                        idFront = 3
+                    ),
+                    ReleaseRoomModel(
+                        id = 4,
+                        nroOS = 4,
+                        idPropAgr = 4,
+                        descPropAgr = "Test4",
+                        idFront = 3
+                    )
+                ),
+                result.getOrNull()!!
+            )
+        }
+
+
 }

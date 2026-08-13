@@ -22,4 +22,9 @@ class IReleaseRoomDatasource @Inject constructor(
             releaseDao.deleteAll()
         }
 
+    override suspend fun listByIdFront(idFront: Int): Result<List<ReleaseRoomModel>> =
+        result(getClassAndMethod()) {
+            releaseDao.listByIdFront(idFront)
+        }
+
 }

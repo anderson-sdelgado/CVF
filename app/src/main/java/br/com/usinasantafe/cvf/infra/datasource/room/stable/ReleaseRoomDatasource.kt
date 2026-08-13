@@ -6,4 +6,5 @@ import br.com.usinasantafe.cvf.utils.EmptyResult
 interface ReleaseRoomDatasource {
     suspend fun addAll(list: List<ReleaseRoomModel>): EmptyResult
     suspend fun deleteAll(): EmptyResult
+    suspend fun listByIdFront(idFront: Int): Result<List<ReleaseRoomModel>>
 }

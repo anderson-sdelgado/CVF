@@ -38,4 +38,5 @@
     <string name="text_front">FRENTE</string>
     <string name="text_pattern_next">AVANÇAR</string>
     <string name="text_release">LIBERAÇÃO</string>
+    <string name="text_item_release">LIBERAÇÃO: %1$s\n O.S.: %2$s\n PROPRIEDADE: %3$s</string>
 </resources>

@@ -18,4 +18,7 @@ interface ReleaseDao {
     @Query("SELECT * FROM $TB_RELEASE")
     suspend fun all(): List<ReleaseRoomModel>
 
+    @Query("SELECT * FROM $TB_RELEASE WHERE idFront = :idFront")
+    suspend fun listByIdFront(idFront: Int): List<ReleaseRoomModel>
+
 }

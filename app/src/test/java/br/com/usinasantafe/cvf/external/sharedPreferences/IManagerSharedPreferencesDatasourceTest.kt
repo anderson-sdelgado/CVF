@@ -12,6 +12,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import java.util.Date
 import kotlin.intArrayOf
 import kotlin.test.assertEquals
 
@@ -124,5 +125,68 @@ class IManagerSharedPreferencesDatasourceTest {
                 result.getOrNull()!!
             )
         }
+
+    @Test
+    fun `getIdRelease - Check return failure if have db is empty`() =
+        runTest {
+            val result = datasource.getIdRelease()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                null,
+                result.getOrNull()
+            )
+        }
+
+    @Test
+    fun `getIdRelease - Check return correct if have data`() =
+        runTest {
+            val data = ManagerSharedPreferencesModel(
+                idRelease = 1,
+                idFront = 20
+            )
+            datasource.save(data)
+            val result = datasource.getIdRelease()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                1,
+                result.getOrNull()!!
+            )
+        }
+
+    @Test
+    fun `save - Check data save`() =
+        runTest {
+            val data = ManagerSharedPreferencesModel(
+                idRelease = 1,
+                idFront = 20,
+                dateHourCreate = Date(1786647885000),
+                dateHourUpdate = Date(1786647885000),
+                stateSend = StatusSend.SENT
+            )
+            datasource.save(data)
+            val result = datasource.get()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                ManagerSharedPreferencesModel(
+                    idRelease = 1,
+                    idFront = 20,
+                    dateHourCreate = Date(1786647885000),
+                    dateHourUpdate = Date(1786647885000),
+                    stateSend = StatusSend.SENT
+                ),
+                result.getOrNull()!!
+            )
+
+        }
+
 
 }

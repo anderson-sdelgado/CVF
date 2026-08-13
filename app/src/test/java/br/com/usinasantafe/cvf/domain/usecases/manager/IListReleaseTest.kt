@@ -1,44 +1,59 @@
 package br.com.usinasantafe.cvf.domain.usecases.manager
 
-import br.com.usinasantafe.cvf.domain.entities.stable.Front
-import br.com.usinasantafe.cvf.domain.repositories.stable.FrontRepository
+import android.content.Context
+import androidx.test.core.app.ApplicationProvider
+import br.com.usinasantafe.cvf.domain.entities.stable.Release
+import br.com.usinasantafe.cvf.domain.repositories.stable.ReleaseRepository
 import br.com.usinasantafe.cvf.domain.repositories.variable.ManagerRepository
 import br.com.usinasantafe.cvf.presenter.model.ItemCheckBoxScreenModel
 import br.com.usinasantafe.cvf.utils.resultFailure
 import kotlinx.coroutines.test.runTest
+import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import kotlin.test.assertEquals
 
-class IListFrontTest {
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = [34])
+class IListReleaseTest {
 
-    private val frontRepository = mock<FrontRepository>()
+    private val releaseRepository = mock<ReleaseRepository>()
     private val managerRepository = mock<ManagerRepository>()
-    private val usecase = IListFront(
-        frontRepository = frontRepository,
-        managerRepository = managerRepository
-    )
+    private lateinit var usecase: IListRelease
+
+    @Before
+    fun setup() {
+        val context: Context = ApplicationProvider.getApplicationContext()
+        usecase = IListRelease(
+            context = context,
+            releaseRepository = releaseRepository,
+            managerRepository = managerRepository
+        )
+    }
 
     @Test
-    fun `Check return failure if have error in FrontRepository listAll`() =
+    fun `Check return failure if have error in ReleaseRepository listByIdFront`() =
         runTest {
             whenever(
-                frontRepository.listAll()
+                releaseRepository.listByIdFront(1)
             ).thenReturn(
                 resultFailure(
-                    "IFrontRepository.listAll",
+                    "IReleaseRepository.listByIdFront",
                     "-",
                     Exception()
                 )
             )
-            val result = usecase()
+            val result = usecase(1)
             assertEquals(
                 true,
-                result.isFailure,
+                result.isFailure
             )
             assertEquals(
-                "IListFront -> IFrontRepository.listAll",
+                "IListRelease -> IReleaseRepository.listByIdFront",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -48,29 +63,29 @@ class IListFrontTest {
         }
 
     @Test
-    fun `Check return failure if have error in ManagerRepository getIdFront`() =
+    fun `Check return failure if have error in ManagerRepository getIdRelease`() =
         runTest {
             whenever(
-                frontRepository.listAll()
+                releaseRepository.listByIdFront(1)
             ).thenReturn(
                 Result.success(emptyList())
             )
             whenever(
-                managerRepository.getIdFront()
+                managerRepository.getIdRelease()
             ).thenReturn(
                 resultFailure(
-                    "IManagerRepository.getIdFront",
+                    "IManagerRepository.getIdRelease",
                     "-",
                     Exception()
                 )
             )
-            val result = usecase()
+            val result = usecase(1)
             assertEquals(
                 true,
                 result.isFailure
             )
             assertEquals(
-                "IListFront -> IManagerRepository.getIdFront",
+                "IListRelease -> IManagerRepository.getIdRelease",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -83,23 +98,23 @@ class IListFrontTest {
     fun `Check return empty list if function execute successfully and list is empty`() =
         runTest {
             whenever(
-                frontRepository.listAll()
+                releaseRepository.listByIdFront(1)
             ).thenReturn(
                 Result.success(emptyList())
             )
             whenever(
-                managerRepository.getIdFront()
+                managerRepository.getIdRelease()
             ).thenReturn(
                 Result.success(null)
             )
-            val result = usecase()
+            val result = usecase(1)
             assertEquals(
-                result.isSuccess,
-                true
+                true,
+                result.isSuccess
             )
             assertEquals(
-                result.getOrNull()!!,
-                emptyList()
+                emptyList(),
+                result.getOrNull()!!
             )
         }
 
@@ -107,24 +122,40 @@ class IListFrontTest {
     fun `Check return list without check if function execute successfully and idFront is null`() =
         runTest {
             whenever(
-                frontRepository.listAll()
+                releaseRepository.listByIdFront(1)
             ).thenReturn(
                 Result.success(
                     listOf(
-                        Front(
+                        Release(
                             id = 1,
-                            cd = 1,
-                            description = "Front1"
+                            nroOS = 1,
+                            idPropAgr = 1,
+                            descPropAgr = "Test1",
+                            idFront = 1
+                        ),
+                        Release(
+                            id = 2,
+                            nroOS = 2,
+                            idPropAgr = 2,
+                            descPropAgr = "Test2",
+                            idFront = 2
+                        ),
+                        Release(
+                            id = 3,
+                            nroOS = 3,
+                            idPropAgr = 3,
+                            descPropAgr = "Test3",
+                            idFront = 3
                         )
                     )
                 )
             )
             whenever(
-                managerRepository.getIdFront()
+                managerRepository.getIdRelease()
             ).thenReturn(
                 Result.success(null)
             )
-            val result = usecase()
+            val result = usecase(1)
             assertEquals(
                 true,
                 result.isSuccess
@@ -133,7 +164,17 @@ class IListFrontTest {
                 listOf(
                     ItemCheckBoxScreenModel(
                         id = 1,
-                        desc = "Front1",
+                        desc = "LIBERAÇÃO: 1\n O.S.: 1\n PROPRIEDADE: Test1",
+                        flag = false
+                    ),
+                    ItemCheckBoxScreenModel(
+                        id = 2,
+                        desc = "LIBERAÇÃO: 2\n O.S.: 2\n PROPRIEDADE: Test2",
+                        flag = false
+                    ),
+                    ItemCheckBoxScreenModel(
+                        id = 3,
+                        desc = "LIBERAÇÃO: 3\n O.S.: 3\n PROPRIEDADE: Test3",
                         flag = false
                     )
                 ),
@@ -145,34 +186,40 @@ class IListFrontTest {
     fun `Check return list with check if function execute successfully and idFront is not null`() =
         runTest {
             whenever(
-                frontRepository.listAll()
+                releaseRepository.listByIdFront(1)
             ).thenReturn(
                 Result.success(
                     listOf(
-                        Front(
+                        Release(
                             id = 1,
-                            cd = 1,
-                            description = "Front1"
+                            nroOS = 1,
+                            idPropAgr = 1,
+                            descPropAgr = "Test1",
+                            idFront = 1
                         ),
-                        Front(
+                        Release(
                             id = 2,
-                            cd = 2,
-                            description = "Front2"
+                            nroOS = 2,
+                            idPropAgr = 2,
+                            descPropAgr = "Test2",
+                            idFront = 2
                         ),
-                        Front(
+                        Release(
                             id = 3,
-                            cd = 3,
-                            description = "Front3"
+                            nroOS = 3,
+                            idPropAgr = 3,
+                            descPropAgr = "Test3",
+                            idFront = 3
                         )
                     )
                 )
             )
             whenever(
-                managerRepository.getIdFront()
+                managerRepository.getIdRelease()
             ).thenReturn(
                 Result.success(2)
             )
-            val result = usecase()
+            val result = usecase(1)
             assertEquals(
                 true,
                 result.isSuccess
@@ -181,81 +228,22 @@ class IListFrontTest {
                 listOf(
                     ItemCheckBoxScreenModel(
                         id = 1,
-                        desc = "Front1",
+                        desc = "LIBERAÇÃO: 1\n O.S.: 1\n PROPRIEDADE: Test1",
                         flag = false
                     ),
                     ItemCheckBoxScreenModel(
                         id = 2,
-                        desc = "Front2",
+                        desc = "LIBERAÇÃO: 2\n O.S.: 2\n PROPRIEDADE: Test2",
                         flag = true
                     ),
                     ItemCheckBoxScreenModel(
                         id = 3,
-                        desc = "Front3",
+                        desc = "LIBERAÇÃO: 3\n O.S.: 3\n PROPRIEDADE: Test3",
                         flag = false
                     )
                 ),
                 result.getOrNull()!!
             )
         }
-
-    @Test
-    fun `Check return list with check if function execute successfully and idFront is non-existent`() =
-        runTest {
-            whenever(
-                frontRepository.listAll()
-            ).thenReturn(
-                Result.success(
-                    listOf(
-                        Front(
-                            id = 1,
-                            cd = 1,
-                            description = "Front1"
-                        ),
-                        Front(
-                            id = 2,
-                            cd = 2,
-                            description = "Front2"
-                        ),
-                        Front(
-                            id = 3,
-                            cd = 3,
-                            description = "Front3"
-                        )
-                    )
-                )
-            )
-            whenever(
-                managerRepository.getIdFront()
-            ).thenReturn(
-                Result.success(10)
-            )
-            val result = usecase()
-            assertEquals(
-                true,
-                result.isSuccess
-            )
-            assertEquals(
-                listOf(
-                    ItemCheckBoxScreenModel(
-                        id = 1,
-                        desc = "Front1",
-                        flag = false
-                    ),
-                    ItemCheckBoxScreenModel(
-                        id = 2,
-                        desc = "Front2",
-                        flag = false
-                    ),
-                    ItemCheckBoxScreenModel(
-                        id = 3,
-                        desc = "Front3",
-                        flag = false
-                    )
-                ),
-                result.getOrNull()!!
-            )
-        }
-
 
 }

@@ -16,7 +16,7 @@ class IManagerSharedPreferencesDatasource @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ): ManagerSharedPreferencesDatasource {
 
-    suspend fun save(model: ManagerSharedPreferencesModel): EmptyResult =
+    override suspend fun save(model: ManagerSharedPreferencesModel): EmptyResult =
         result(getClassAndMethod()) {
             sharedPreferences.edit {
                 putString(
@@ -46,6 +46,12 @@ class IManagerSharedPreferencesDatasource @Inject constructor(
         result(getClassAndMethod()) {
             if (!has().getOrThrow()) return@result null
             get().getOrThrow().idFront
+        }
+
+    override suspend fun getIdRelease(): Result<Int?> =
+        result(getClassAndMethod()) {
+            if (!has().getOrThrow()) return@result null
+            get().getOrThrow().idRelease
         }
 
     suspend fun get(): Result<ManagerSharedPreferencesModel> =

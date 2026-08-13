@@ -6,6 +6,7 @@ import br.com.usinasantafe.cvf.infra.datasource.retrofit.stable.ReleaseRetrofitD
 import br.com.usinasantafe.cvf.infra.datasource.room.stable.ReleaseRoomDatasource
 import br.com.usinasantafe.cvf.infra.models.retrofit.stable.retrofitModelToEntity
 import br.com.usinasantafe.cvf.infra.models.room.stable.entityToRoomModel
+import br.com.usinasantafe.cvf.infra.models.room.stable.roomModelToEntity
 import br.com.usinasantafe.cvf.utils.EmptyResult
 import br.com.usinasantafe.cvf.utils.call
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
@@ -32,6 +33,12 @@ class IReleaseRepository @Inject constructor(
         call(getClassAndMethod()) {
             val modelList = releaseRetrofitDatasource.listAll(token).getOrThrow()
             modelList.map { it.retrofitModelToEntity() }
+        }
+
+    override suspend fun listByIdFront(idFront: Int): Result<List<Release>> =
+        call(getClassAndMethod()) {
+            val roomModelList = releaseRoomDatasource.listByIdFront(idFront).getOrThrow()
+            roomModelList.map { it.roomModelToEntity() }
         }
 
 }
