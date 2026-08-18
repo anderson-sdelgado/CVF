@@ -37,7 +37,7 @@ import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
 fun ReleaseScreen(
     viewModel: ReleaseViewModel = hiltViewModel(),
     onNavFront: () -> Unit,
-    onNavColab: () -> Unit
+    onNavDriver: () -> Unit
 ) {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -45,7 +45,7 @@ fun ReleaseScreen(
             val list = viewModel.list
 
             LaunchedEffect(Unit) {
-                viewModel.list()
+                viewModel.start()
             }
 
             ReleaseContent(
@@ -55,7 +55,7 @@ fun ReleaseScreen(
                 onCloseDialog = viewModel::onCloseDialog,
                 status = uiState.status,
                 onNavFront = onNavFront,
-                onNavColab = onNavColab,
+                onNavDriver = onNavDriver,
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -70,7 +70,7 @@ fun ReleaseContent(
     onCloseDialog: () -> Unit,
     status: UiStatusStateUpdate,
     onNavFront: () -> Unit,
-    onNavColab: () -> Unit,
+    onNavDriver: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -109,7 +109,6 @@ fun ReleaseContent(
                     text = stringResource(
                         id = R.string.text_pattern_return
                     ),
-                    padding = 10
                 )
             }
             Button(
@@ -121,12 +120,11 @@ fun ReleaseContent(
                     text = stringResource(
                         id = R.string.text_pattern_next
                     ),
-                    padding = 10
                 )
             }
         }
-        Spacer(modifier = Modifier.padding(vertical = 4.dp))
-        ButtonMaxWidth(R.string.text_pattern_update, padding = 10, onClick = update)
+        Spacer(modifier = Modifier.padding(vertical = 2.dp))
+        ButtonMaxWidth(R.string.text_pattern_update, onClick = update)
         BackHandler {}
 
         if (status.flagDialog) {
@@ -141,7 +139,7 @@ fun ReleaseContent(
 
     LaunchedEffect(status.flagAccess) {
         if (status.flagAccess) {
-            onNavColab()
+            onNavDriver()
         }
     }
 
@@ -169,7 +167,7 @@ fun ReleasePagePreview() {
                     currentProgress = 0f,
                 ),
                 onNavFront = {},
-                onNavColab = {},
+                onNavDriver = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -220,7 +218,7 @@ fun ReleasePagePreviewWithData() {
                     currentProgress = 0f,
                 ),
                 onNavFront = {},
-                onNavColab = {},
+                onNavDriver = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }

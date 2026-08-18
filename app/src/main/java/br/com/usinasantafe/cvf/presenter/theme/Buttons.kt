@@ -248,21 +248,6 @@ fun ButtonsGenericNumeric(
                 Modifier.weight(1f),
                 tag = number0
             )
-            ButtonNumericDesign(
-                {
-                    TextButtonNumericDesign(
-                        text = ok
-                    )
-                },
-                {
-                    onTextField(
-                        ok,
-                        TypeButton.OK
-                    )
-                },
-                Modifier.weight(1f),
-                tag = "OK"
-            )
         }
         if(flagUpdate){
             Row(
@@ -286,6 +271,27 @@ fun ButtonsGenericNumeric(
                     tag = "UPDATE"
                 )
             }
+        }
+        Row(
+            modifier = Modifier
+                .weight(1f),
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            ButtonNumericDesign(
+                {
+                    TextButtonNumericDesign(
+                        text = stringResource(R.string.text_pattern_next)
+                    )
+                },
+                {
+                    onTextField(
+                        ok,
+                        TypeButton.OK
+                    )
+                },
+                Modifier.weight(1f),
+                tag = "OK"
+            )
         }
     }
 }

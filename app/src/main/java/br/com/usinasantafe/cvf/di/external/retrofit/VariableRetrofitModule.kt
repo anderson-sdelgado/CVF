@@ -1,5 +1,7 @@
 package br.com.usinasantafe.cvf.di.external.retrofit
 
+import br.com.usinasantafe.cvf.di.provider.DefaultApi
+import br.com.usinasantafe.cvf.di.provider.DefaultRetrofit
 import br.com.usinasantafe.cvf.external.retrofit.api.variable.ConfigApi
 import dagger.Module
 import dagger.Provides
@@ -14,8 +16,9 @@ object VariableRetrofitModule {
 
     @Provides
     @Singleton
+    @DefaultApi
     fun configApiRetrofit(
-        retrofit: Retrofit
+        @DefaultRetrofit retrofit: Retrofit
     ): ConfigApi = retrofit.create(ConfigApi::class.java)
 
 }

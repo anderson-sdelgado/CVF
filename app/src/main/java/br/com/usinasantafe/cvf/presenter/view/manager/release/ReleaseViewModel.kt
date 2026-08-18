@@ -12,6 +12,7 @@ import br.com.usinasantafe.cvf.lib.LevelUpdate
 import br.com.usinasantafe.cvf.presenter.model.ItemCheckBoxScreenModel
 import br.com.usinasantafe.cvf.presenter.navigation.Args.ID_FRONT_ARG
 import br.com.usinasantafe.cvf.presenter.view.manager.front.FrontState
+import br.com.usinasantafe.cvf.utils.CheckNetwork
 import br.com.usinasantafe.cvf.utils.UiStateWithStatusUpdate
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
 import br.com.usinasantafe.cvf.utils.executeUpdateSteps
@@ -44,7 +45,8 @@ class ReleaseViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val updateTableRelease: UpdateTableRelease,
     private val listRelease: ListRelease,
-    private val saveManager: SaveManager
+    private val saveManager: SaveManager,
+    private val checkNetwork: CheckNetwork,
 ) : ViewModel() {
 
     private val idFront: Int = savedStateHandle[ID_FRONT_ARG]!!
@@ -68,6 +70,10 @@ class ReleaseViewModel @Inject constructor(
                 idFront = this@ReleaseViewModel.idFront,
             )
         }
+    }
+
+    fun start() {
+        if(state.idFront == 0 && checkNetwork.isConnected()) update(false) else list()
     }
 
     fun list() = viewModelScope.launch {
@@ -105,18 +111,19 @@ class ReleaseViewModel @Inject constructor(
             .onFailureUpdate(getClassAndMethod(), ::updateState)
     }
 
-    fun update() = viewModelScope.launch {
-        updateAllDatabase().collect { stateUpdate -> _uiState.value = stateUpdate }
+    fun update(flagDialog: Boolean = true) = viewModelScope.launch {
+        updateAllDatabase(flagDialog).collect { stateUpdate -> _uiState.value = stateUpdate }
         if (_uiState.value.status.levelUpdate == LevelUpdate.FINISH_UPDATE_COMPLETED) { list() }
     }
 
-    suspend fun updateAllDatabase(): Flow<ReleaseState> =
+    suspend fun updateAllDatabase(flagDialog: Boolean = true): Flow<ReleaseState> =
         executeUpdateSteps(
             steps = listOf(updateTableRelease(sizeUpdate())),
             getState = { _uiState.value },
             getStatus = { it.status },
             copyStateWithStatus = { state, status -> state.copy(status = status) },
             classAndMethod = getClassAndMethod(),
+            flagDialog = flagDialog
         )
 
 }

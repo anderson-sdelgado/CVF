@@ -114,7 +114,6 @@ fun FrontContent(
                     text = stringResource(
                         id = R.string.text_pattern_return
                     ),
-                    padding = 10
                 )
             }
             Button(
@@ -126,12 +125,11 @@ fun FrontContent(
                     text = stringResource(
                         id = R.string.text_pattern_next
                     ),
-                    padding = 10
                 )
             }
         }
         Spacer(modifier = Modifier.padding(vertical = 4.dp))
-        ButtonMaxWidth(R.string.text_pattern_update, padding = 10, onClick = update)
+        ButtonMaxWidth(R.string.text_pattern_update, onClick = update)
         BackHandler {}
 
         if (status.flagDialog) {

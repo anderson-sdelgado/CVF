@@ -1,6 +1,5 @@
 package br.com.usinasantafe.cvf.presenter.view.configuration.config
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -90,7 +89,7 @@ fun ConfigContent(
         TitleDesign(
             font = 32,
             text = stringResource(
-                id = R.string.text_title_config
+                id = R.string.text_config
             )
         )
         TitleDesign(

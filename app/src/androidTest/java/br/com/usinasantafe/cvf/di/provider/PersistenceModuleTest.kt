@@ -28,7 +28,8 @@ object PersistenceModuleTest {
 
     @Singleton
     @Provides
-    fun provideHttpClient(): OkHttpClient {
+    @DefaultHttpClient
+    fun provideDefaultHttpClient(): OkHttpClient {
 
         val logging = HttpLoggingInterceptor()
         logging.level = HttpLoggingInterceptor.Level.BODY
@@ -43,8 +44,38 @@ object PersistenceModuleTest {
 
     @Singleton
     @Provides
-    fun provideRetrofit(
-        client: OkHttpClient,
+    @ShortTimeoutHttpClient
+    fun provideShortTimeoutHttpClient(): OkHttpClient {
+
+        val logging = HttpLoggingInterceptor()
+        logging.level = HttpLoggingInterceptor.Level.BODY
+
+        return OkHttpClient.Builder()
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .writeTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
+            .addInterceptor(logging)
+            .build()
+    }
+
+
+    @Singleton
+    @Provides
+    @DefaultRetrofit
+    fun provideDefaultRetrofit(
+        @DefaultHttpClient client: OkHttpClient,
+        url: String
+    ): Retrofit = Retrofit.Builder()
+        .baseUrl(url)
+        .addConverterFactory(GsonConverterFactory.create())
+        .client(client)
+        .build()
+
+    @Singleton
+    @Provides
+    @ShortTimeoutRetrofit
+    fun provideShortTimeoutRetrofit(
+        @ShortTimeoutHttpClient client: OkHttpClient,
         url: String
     ): Retrofit = Retrofit.Builder()
         .baseUrl(url)

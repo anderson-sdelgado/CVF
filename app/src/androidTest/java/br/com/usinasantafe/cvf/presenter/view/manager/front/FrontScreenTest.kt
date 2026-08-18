@@ -1,15 +1,18 @@
 package br.com.usinasantafe.cvf.presenter.view.manager.front
 
-import android.util.Log
+import android.annotation.SuppressLint
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cav.utils.waitUntilTimeout
 import br.com.usinasantafe.cvf.HiltTestActivity
 import br.com.usinasantafe.cvf.di.provider.BaseUrlModuleTest
+import br.com.usinasantafe.cvf.domain.usecases.manager.ListFront
+import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableFront
 import br.com.usinasantafe.cvf.external.room.dao.stable.FrontDao
 import br.com.usinasantafe.cvf.external.sharedPreferences.IConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cvf.external.sharedPreferences.IManagerSharedPreferencesDatasource
@@ -17,16 +20,17 @@ import br.com.usinasantafe.cvf.infra.models.room.stable.FrontRoomModel
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ManagerSharedPreferencesModel
 import br.com.usinasantafe.cvf.lib.StatusSend
+import br.com.usinasantafe.cvf.presenter.navigation.Args.ID_FRONT_ARG
 import br.com.usinasantafe.cvf.presenter.theme.TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE
+import br.com.usinasantafe.cvf.presenter.view.manager.release.ReleaseViewModel
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import jakarta.inject.Inject
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import javax.inject.Inject
 
 @HiltAndroidTest
 class FrontScreenTest {
@@ -45,6 +49,12 @@ class FrontScreenTest {
 
     @Inject
     lateinit var configSharedPreferencesDatasource: IConfigSharedPreferencesDatasource
+
+    @Inject
+    lateinit var listFront: ListFront
+
+    @Inject
+    lateinit var updateTableFront: UpdateTableFront
 
     @Test
     fun check_open_screen() =
@@ -124,6 +134,45 @@ class FrontScreenTest {
             )
 
             setContent()
+
+            composeTestRule.waitUntilTimeout(20_000)
+
+        }
+
+    @Test
+    fun check_open_screen_with_data_and_selected_item_and_id_selection_is_not_null() =
+        runTest {
+
+            hiltRule.inject()
+
+            frontDao.insertAll(
+                listOf(
+                    FrontRoomModel(
+                        id = 1,
+                        cd = 1,
+                        description = "Test1"
+                    ),
+                    FrontRoomModel(
+                        id = 3,
+                        cd = 3,
+                        description = "Test3"
+                    ),
+                    FrontRoomModel(
+                        id = 2,
+                        cd = 2,
+                        description = "Test2"
+                    ),
+                )
+            )
+
+            managerSharedPreferencesDatasource.save(
+                ManagerSharedPreferencesModel(
+                    idFront = 2,
+                    idRelease = 1
+                )
+            )
+
+            setContent(3)
 
             composeTestRule.waitUntilTimeout(20_000)
 
@@ -349,9 +398,17 @@ class FrontScreenTest {
 
         }
 
-    private fun setContent() {
+    @SuppressLint("ViewModelConstructorInComposable")
+    private fun setContent(idFront: Int = 0) {
         composeTestRule.setContent {
             FrontScreen (
+                viewModel = FrontViewModel(
+                    savedStateHandle = SavedStateHandle(
+                        mapOf(ID_FRONT_ARG to idFront)
+                    ),
+                    updateTableFront = updateTableFront,
+                    listFront = listFront
+                ),
                 onNavRelease = {},
                 onNavConfig = {}
             )

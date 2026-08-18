@@ -10,6 +10,7 @@ import br.com.usinasantafe.cvf.lib.LevelUpdate
 import br.com.usinasantafe.cvf.presenter.model.ItemCheckBoxScreenModel
 import br.com.usinasantafe.cvf.presenter.navigation.Args
 import br.com.usinasantafe.cvf.presenter.view.manager.front.FrontState
+import br.com.usinasantafe.cvf.utils.CheckNetwork
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
 import br.com.usinasantafe.cvf.utils.percentage
 import br.com.usinasantafe.cvf.utils.resultFailure
@@ -33,6 +34,7 @@ class ReleaseViewModelTest {
     private val updateTableRelease = mock<UpdateTableRelease>()
     private val listRelease = mock<ListRelease>()
     private val saveManager = mock<SaveManager>()
+    private val checkNetwork = mock<CheckNetwork>()
 
     private fun createdViewModel(
         idFront: Int = 1
@@ -44,7 +46,8 @@ class ReleaseViewModelTest {
         ),
         updateTableRelease = updateTableRelease,
         listRelease = listRelease,
-        saveManager = saveManager
+        saveManager = saveManager,
+        checkNetwork = checkNetwork
     )
 
     @Test

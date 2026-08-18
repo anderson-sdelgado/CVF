@@ -30,15 +30,69 @@ import javax.net.ssl.X509TrustManager
 @InstallIn(SingletonComponent::class)
 object PersistenceModule {
 
-    @Singleton
     @Provides
-    fun provideRetrofit(
+    @Singleton
+    @DefaultHttpClient
+    fun provideDefaultHttpClient(): OkHttpClient {
+
+        val logging = HttpLoggingInterceptor()
+        logging.level = HttpLoggingInterceptor.Level.BODY
+
+        return getUnsafeOkHttpClient(
+            connectTimeout = 1,
+            readTimeout = 1,
+            writeTimeout = 1,
+            timeUnit = TimeUnit.MINUTES,
+            logging = logging
+        )
+    }
+
+    @Provides
+    @Singleton
+    @ShortTimeoutHttpClient
+    fun provideShortTimeoutHttpClient(): OkHttpClient {
+
+        val logging = HttpLoggingInterceptor()
+        logging.level = HttpLoggingInterceptor.Level.BODY
+
+        return getUnsafeOkHttpClient(
+            connectTimeout = 10,
+            readTimeout = 10,
+            writeTimeout = 10,
+            timeUnit = TimeUnit.SECONDS,
+            logging = logging
+        )
+    }
+
+    @Provides
+    @Singleton
+    @DefaultRetrofit
+    fun provideDefaultRetrofit(
+        @DefaultHttpClient client: OkHttpClient,
         url: String
-    ): Retrofit = Retrofit.Builder()
-        .baseUrl(url)
-        .addConverterFactory(GsonConverterFactory.create())
-        .client(getUnsafeOkHttpClient())
-        .build()
+    ): Retrofit {
+
+        return Retrofit.Builder()
+            .baseUrl(url)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    @ShortTimeoutRetrofit
+    fun provideShortTimeoutRetrofit(
+        @ShortTimeoutHttpClient client: OkHttpClient,
+        url: String
+    ): Retrofit {
+
+        return Retrofit.Builder()
+            .baseUrl(url)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
+            .build()
+    }
 
     @Singleton
     @Provides
@@ -76,42 +130,60 @@ object BaseUrlModule {
     fun provideUrl(@ApplicationContext appContext: Context): String = appContext.getString(R.string.base_url)
 }
 
-fun getUnsafeOkHttpClient(): OkHttpClient {
-
-    val logging = HttpLoggingInterceptor()
-    logging.level = HttpLoggingInterceptor.Level.BODY
+@SuppressLint("CustomX509TrustManager")
+fun getUnsafeOkHttpClient(
+    connectTimeout: Long,
+    readTimeout: Long,
+    writeTimeout: Long,
+    timeUnit: TimeUnit,
+    logging: HttpLoggingInterceptor
+): OkHttpClient {
 
     val trustAllCertificates = arrayOf<TrustManager>(
-        @SuppressLint("CustomX509TrustManager")
+        @SuppressLint("TrustAllX509TrustManager")
         object : X509TrustManager {
+
             @SuppressLint("TrustAllX509TrustManager")
             override fun checkClientTrusted(
                 chain: Array<out X509Certificate>?,
                 authType: String?
-            ) {}
+            ) {
+            }
 
             @SuppressLint("TrustAllX509TrustManager")
             override fun checkServerTrusted(
                 chain: Array<out X509Certificate>?,
                 authType: String?
-            ) {}
+            ) {
+            }
 
-            override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
+            override fun getAcceptedIssuers(): Array<X509Certificate> {
+                return arrayOf()
+            }
         }
     )
 
+    val trustManager = trustAllCertificates[0] as X509TrustManager
+
     val sslContext = SSLContext.getInstance("TLS")
-    sslContext.init(null, trustAllCertificates, SecureRandom())
+
+    sslContext.init(
+        null,
+        arrayOf<TrustManager>(trustManager),
+        SecureRandom()
+    )
 
     return OkHttpClient.Builder()
         .sslSocketFactory(
             sslContext.socketFactory,
-            trustAllCertificates[0] as X509TrustManager
+            trustManager
         )
-        .hostnameVerifier { _, _ -> true }
+        .hostnameVerifier { _, _ ->
+            true
+        }
         .addInterceptor(logging)
-        .connectTimeout(1, TimeUnit.MINUTES)
-        .readTimeout(1, TimeUnit.MINUTES)
-        .writeTimeout(1, TimeUnit.MINUTES)
+        .connectTimeout(connectTimeout, timeUnit)
+        .readTimeout(readTimeout, timeUnit)
+        .writeTimeout(writeTimeout, timeUnit)
         .build()
 }

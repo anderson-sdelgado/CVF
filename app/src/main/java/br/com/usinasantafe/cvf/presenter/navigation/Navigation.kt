@@ -25,7 +25,7 @@ object Routes {
     const val SPLASH_ROUTE = SPLASH_SCREEN
     const val PASSWORD_ROUTE = PASSWORD_SCREEN
     const val CONFIG_ROUTE = CONFIG_SCREEN
-    const val FRONT_ROUTE = FRONT_SCREEN
+    const val FRONT_ROUTE = "$FRONT_SCREEN/{$ID_FRONT_ARG}"
     const val RELEASE_ROUTE = "$RELEASE_SCREEN/{$ID_FRONT_ARG}"
 }
 
@@ -49,8 +49,8 @@ class NavigationActions(private val navController: NavHostController) {
         navController.navigate(CONFIG_SCREEN)
     }
 
-    fun navigateToFront() {
-        navController.navigate(FRONT_SCREEN)
+    fun navigateToFront(idFront: Int = 0) {
+        navController.navigate("$FRONT_SCREEN/$idFront")
     }
 
     fun navigateToRelease(idFront: Int = 0) {

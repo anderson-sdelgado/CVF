@@ -1,11 +1,13 @@
 package br.com.usinasantafe.cvf.presenter.view.manager.front
 
+import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cvf.MainCoroutineRule
 import br.com.usinasantafe.cvf.domain.usecases.manager.ListFront
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableFront
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.LevelUpdate
 import br.com.usinasantafe.cvf.presenter.model.ItemCheckBoxScreenModel
+import br.com.usinasantafe.cvf.presenter.navigation.Args
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
 import br.com.usinasantafe.cvf.utils.percentage
 import br.com.usinasantafe.cvf.utils.resultFailure
@@ -29,7 +31,14 @@ class FrontViewModelTest {
     private val listFront = mock<ListFront>()
     private val updateTableFront = mock<UpdateTableFront>()
 
-    private val viewModel = FrontViewModel(
+    private fun createdViewModel(
+        idFront: Int = 0
+    ) = FrontViewModel(
+        savedStateHandle = SavedStateHandle(
+            mapOf(
+                Args.ID_FRONT_ARG to idFront
+            )
+        ),
         listFront = listFront,
         updateTableFront = updateTableFront
     )
@@ -46,6 +55,7 @@ class FrontViewModelTest {
                     cause = Exception()
                 )
             )
+            val viewModel = createdViewModel()
             viewModel.list()
             assertEquals(
                 true,
@@ -91,6 +101,7 @@ class FrontViewModelTest {
                     )
                 )
             )
+            val viewModel = createdViewModel()
             viewModel.list()
             val list = viewModel.list.toList()
             assertEquals(
@@ -113,6 +124,61 @@ class FrontViewModelTest {
                         id = 3,
                         desc = "Test3",
                         flag = false
+                    )
+                ),
+                list
+            )
+        }
+
+    @Test
+    fun `list - Check return correct if function execute successfully with idSelection is not null`() =
+        runTest {
+            whenever(
+                listFront()
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        ItemCheckBoxScreenModel(
+                            id = 1,
+                            desc = "Test1",
+                            flag = false
+                        ),
+                        ItemCheckBoxScreenModel(
+                            id = 2,
+                            desc = "Test2",
+                            flag = true
+                        ),
+                        ItemCheckBoxScreenModel(
+                            id = 3,
+                            desc = "Test3",
+                            flag = false
+                        )
+                    )
+                )
+            )
+            val viewModel = createdViewModel(3)
+            viewModel.list()
+            val list = viewModel.list.toList()
+            assertEquals(
+                3,
+                list.size
+            )
+            assertEquals(
+                listOf(
+                    ItemCheckBoxScreenModel(
+                        id = 1,
+                        desc = "Test1",
+                        flag = false
+                    ),
+                    ItemCheckBoxScreenModel(
+                        id = 2,
+                        desc = "Test2",
+                        flag = false
+                    ),
+                    ItemCheckBoxScreenModel(
+                        id = 3,
+                        desc = "Test3",
+                        flag = true
                     )
                 ),
                 list
@@ -144,6 +210,7 @@ class FrontViewModelTest {
                     )
                 )
             )
+            val viewModel = createdViewModel()
             val result = viewModel.updateAllDatabase().toList()
             assertEquals(result.count(), 2)
             assertEquals(
@@ -233,6 +300,7 @@ class FrontViewModelTest {
                     ),
                 )
             )
+            val viewModel = createdViewModel()
             val result = viewModel.updateAllDatabase().toList()
             assertEquals(result.count(), 4)
             assertEquals(
@@ -315,6 +383,7 @@ class FrontViewModelTest {
     @Test
     fun `check - Check return failure if not selection any item`() =
         runTest {
+            val viewModel = createdViewModel()
             viewModel.check()
             assertEquals(
                 true,
@@ -364,6 +433,7 @@ class FrontViewModelTest {
                     )
                 )
             )
+            val viewModel = createdViewModel()
             viewModel.list()
             viewModel.onCheckChanged(
                 id = 3,

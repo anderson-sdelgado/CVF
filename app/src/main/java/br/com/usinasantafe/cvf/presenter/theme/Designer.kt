@@ -1,6 +1,8 @@
 package br.com.usinasantafe.cvf.presenter.theme
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,20 +12,36 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import br.com.usinasantafe.cvf.R
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,6 +61,17 @@ import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.errors
 import br.com.usinasantafe.cvf.lib.msg
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
+
+
+const val TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE = "tag_button_ok_alert_dialog_simple"
+const val TAG_BUTTON_YES_ALERT_DIALOG_CHECK = "tag_button_yes_alert_dialog_check"
+const val TAG_BUTTON_NO_ALERT_DIALOG_CHECK = "tag_button_no_alert_dialog_check"
+const val TAG_TOP_BAR_MENU = "tag_top_bar_menu"
+const val TAG_TOP_BAR_DELETE = "tag_top_bar_delete"
+const val TAG_TOP_BAR_MENU_ITEM_CONFIG = "tag_top_bar_menu_item_config"
+const val TAG_TOP_BAR_MENU_ITEM_FRONT = "tag_top_bar_menu_item_front"
+const val TAG_TOP_BAR_MENU_ITEM_RELEASE = "tag_top_bar_menu_item_release"
+const val TAG_TOP_BAR_MENU_ITEM_CLOSE = "tag_top_bar_menu_item_close"
 
 @Composable
 fun ItemDefaultListDesign(
@@ -84,10 +113,6 @@ fun TitleDesign(
     )
 }
 
-
-const val TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE = "tag_button_ok_alert_dialog_simple"
-const val TAG_BUTTON_YES_ALERT_DIALOG_CHECK = "tag_button_yes_alert_dialog_check"
-const val TAG_BUTTON_NO_ALERT_DIALOG_CHECK = "tag_button_no_alert_dialog_check"
 @Composable
 fun AlertDialogSimpleDesign(
     text: String,
@@ -173,18 +198,28 @@ fun TextFieldPasswordDesign(
 @Composable
 fun TextButtonDesign(
     text: String,
-    font: Int = 20,
-    padding: Int = 12
+    flagMax: Boolean = false
 ) {
-    return Text(
-        textAlign = TextAlign.Center,
-        text = text,
-        fontWeight = FontWeight.Bold,
-        fontSize = font.sp,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(padding.dp)
-    )
+    BoxWithConstraints(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        val fontSize = if(flagMax) {
+            (16f * (maxWidth.value / 180f))
+                .coerceIn(12f, 22f)
+        } else {
+            (24f * (maxWidth.value / 180f))
+                .coerceIn(18f, 28f)
+        }
+        Text(
+            textAlign = TextAlign.Center,
+            text = text,
+            fontWeight = FontWeight.Bold,
+            fontSize = fontSize.sp,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 12.dp)
+        )
+    }
 }
 
 @Composable
@@ -258,7 +293,6 @@ fun MsgUpdate(status : UiStatusStateUpdate, onClickOk: () -> Unit, value: String
         } else {
             msg(status.levelUpdate, status.failure, status.tableUpdate)
         }
-
     AlertDialogSimpleDesign(
         text = text,
         onClickOk = onClickOk,
@@ -323,8 +357,6 @@ fun ButtonNumericDesign(
 @Composable
 fun ButtonMaxWidth(
     id: Int,
-    font: Int = 20,
-    padding: Int = 12,
     flagDelete: Boolean = false,
     onClick: () -> Unit
 ) {
@@ -346,8 +378,7 @@ fun ButtonMaxWidth(
     ) {
         TextButtonDesign(
             text = stringResource(id = id),
-            font = font,
-            padding = padding
+            flagMax = true
         )
     }
 }
@@ -446,10 +477,18 @@ fun CheckboxDefault(
             modifier = Modifier
                 .padding(end = 10.dp)
         )
-        Text(
-            text = text,
-            fontSize = font.sp,
-        )
+
+        BoxWithConstraints(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            val fontSize =
+                (14f * (maxWidth.value / 180f))
+                    .coerceIn(10f, 20f)
+            Text(
+                text = text,
+                fontSize = fontSize.sp,
+            )
+        }
     }
 }
 
@@ -459,6 +498,123 @@ fun MsgErrors(errors: Errors, onClickOk: () -> Unit, failure: String, value: Str
     AlertDialogSimpleDesign(
         text = text,
         onClickOk = onClickOk,
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun topBar(title: String): @Composable () -> Unit = {
+    var menuExpanded by remember { mutableStateOf(false) }
+    TopAppBar(
+        title = {
+            Text(
+                text = title,
+                style = TextStyle(
+                    color = Color.White
+                )
+            )
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = Color.Blue,
+        ),
+        actions = {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(
+                    onClick = {},
+                    Modifier.testTag(TAG_TOP_BAR_DELETE)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = stringResource(R.string.text_cancel_note),
+                        tint = Color.White
+                    )
+                }
+                Box {
+                    IconButton(
+                        onClick = {
+                            menuExpanded = !menuExpanded
+                        },
+                        Modifier.testTag(TAG_TOP_BAR_MENU)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.MoreVert,
+                            contentDescription = stringResource(R.string.text_menu),
+                            tint = Color.White
+                        )
+                    }
+
+                    DropdownMenu(
+                        expanded = menuExpanded,
+                        onDismissRequest = {
+                            menuExpanded = false
+                        }
+                    ) {
+                        DropdownMenuItem(
+                            text = {
+                                Text(stringResource(R.string.text_config))
+                            },
+                            onClick = {
+                                menuExpanded = false
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.Default.Settings,
+                                    contentDescription = null
+                                )
+                            },
+                            modifier = Modifier.testTag(TAG_TOP_BAR_MENU_ITEM_CONFIG)
+                        )
+                        DropdownMenuItem(
+                            text = {
+                                Text(stringResource(R.string.text_front))
+                            },
+                            onClick = {
+                                menuExpanded = false
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.Default.LocationOn,
+                                    contentDescription = null
+                                )
+                            },
+                            modifier = Modifier.testTag(TAG_TOP_BAR_MENU_ITEM_FRONT)
+                        )
+                        DropdownMenuItem(
+                            text = {
+                                Text(stringResource(R.string.text_release))
+                            },
+                            onClick = {
+                                menuExpanded = false
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.Default.Edit,
+                                    contentDescription = null
+                                )
+                            },
+                            modifier = Modifier.testTag(TAG_TOP_BAR_MENU_ITEM_RELEASE)
+                        )
+                        DropdownMenuItem(
+                            text = {
+                                Text(stringResource(R.string.text_close))
+                            },
+                            onClick = {
+                                menuExpanded = false
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.Default.Close,
+                                    contentDescription = null
+                                )
+                            },
+                            modifier = Modifier.testTag(TAG_TOP_BAR_MENU_ITEM_CLOSE)
+                        )
+                    }
+                }
+            }
+        }
     )
 }
 

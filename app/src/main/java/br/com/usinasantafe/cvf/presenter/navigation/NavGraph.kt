@@ -46,7 +46,12 @@ fun NavigationGraph(
             )
         }
 
-        composable(FRONT_ROUTE){
+        composable(
+            FRONT_ROUTE,
+            arguments = listOf(
+                navArgument(ID_FRONT_ARG) { type = NavType.IntType }
+            )
+        ){
             FrontScreen(
                 onNavRelease = {
                     navActions.navigateToRelease(it)
@@ -60,10 +65,14 @@ fun NavigationGraph(
             arguments = listOf(
                 navArgument(ID_FRONT_ARG) { type = NavType.IntType }
             )
-        ){
+        ){ entry ->
             ReleaseScreen(
-                onNavFront = {},
-                onNavColab = {}
+                onNavFront = {
+                    navActions.navigateToFront(
+                        idFront = entry.arguments?.getInt(ID_FRONT_ARG)!!
+                    )
+                },
+                onNavDriver = {}
             )
         }
 

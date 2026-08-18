@@ -147,7 +147,8 @@ fun <STATE> executeUpdateSteps(
     copyStateWithStatus: (STATE, UiStatusStateUpdate) -> STATE,
     classAndMethod: String,
     flagUpdateFinish: Boolean = true,
-    flagProgressOnFailure: Boolean = false
+    flagProgressOnFailure: Boolean = false,
+    flagDialog: Boolean = true
 ): Flow<STATE> = flow {
 
     for (step in steps) {
@@ -164,7 +165,7 @@ fun <STATE> executeUpdateSteps(
 
     if (flagUpdateFinish) {
         val finalStatus = getStatus(getState()).copy(
-            flagDialog = true,
+            flagDialog = flagDialog,
             flagProgress = false,
             flagFailure = false,
             levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,

@@ -31,12 +31,16 @@
     <string name="text_pattern_ok">OK</string>
     <string name="text_pattern_cancel">CANCELAR</string>
     <string name="text_pattern_return">RETORNAR</string>
-    <string name="text_title_config">CONFIGURAÇÃO</string>
+    <string name="text_config">CONFIGURAÇÃO</string>
     <string name="text_number">NRO APARELHO</string>
     S<string name="text_password">SENHA</string>
     <string name="text_pattern_save">SALVAR</string>
     <string name="text_front">FRENTE</string>
     <string name="text_pattern_next">AVANÇAR</string>
     <string name="text_release">LIBERAÇÃO</string>
-    <string name="text_item_release">LIBERAÇÃO: %1$s\n O.S.: %2$s\n PROPRIEDADE: %3$s</string>
+    <string name="text_item_release">LIBERAÇÃO: %1$s\nO.S.: %2$s\nPROPRIEDADE: %3$s</string>
+    <string name="text_driver">MATRIC. MOTORISTA</string>
+    <string name="text_cancel_note">CANCELAR APONTAMENTO</string>
+    <string name="text_menu">MENU</string>
+    <string name="text_close">SAIR</string>
 </resources>

@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cvf.presenter.view.manager.front
 
 import androidx.compose.runtime.mutableStateListOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cvf.domain.usecases.manager.ListFront
@@ -8,6 +9,7 @@ import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableFront
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.LevelUpdate
 import br.com.usinasantafe.cvf.presenter.model.ItemCheckBoxScreenModel
+import br.com.usinasantafe.cvf.presenter.navigation.Args.ID_FRONT_ARG
 import br.com.usinasantafe.cvf.utils.UiStateWithStatusUpdate
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
 import br.com.usinasantafe.cvf.utils.executeUpdateSteps
@@ -35,20 +37,33 @@ data class FrontState(
 
 @HiltViewModel
 class FrontViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val listFront: ListFront,
     private val updateTableFront: UpdateTableFront
 ) : ViewModel() {
+
+    private val idFront: Int = savedStateHandle[ID_FRONT_ARG]!!
 
     val list = mutableStateListOf<ItemCheckBoxScreenModel>()
 
     private val _uiState = MutableStateFlow(FrontState())
     val uiState = _uiState.asStateFlow()
 
+    private val state get() = uiState.value
+
     private fun updateState(block: FrontState.() -> FrontState) {
         _uiState.update(block)
     }
 
     fun onCloseDialog() = updateState { copy(status = status.copy(flagDialog = false, flagFailure = false)) }
+
+    init {
+        updateState {
+            copy(
+                idSelection = if(this@FrontViewModel.idFront == 0) null else this@FrontViewModel.idFront,
+            )
+        }
+    }
 
     fun list() = viewModelScope.launch {
         runCatching {
@@ -57,6 +72,7 @@ class FrontViewModel @Inject constructor(
             .onSuccess {
                 list.clear()
                 list.addAll(it)
+                state.idSelection?.let { id -> onCheckChanged(id, true) }
             }
             .onFailureUpdate(getClassAndMethod(), ::updateState)
     }

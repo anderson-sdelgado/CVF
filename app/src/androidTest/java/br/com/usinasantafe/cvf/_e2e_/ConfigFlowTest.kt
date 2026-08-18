@@ -102,8 +102,11 @@ class ConfigFlowTest {
 
         val resultRelease = """
             [
-              {"id":1,"nroOS":1,"idPropAgr":1,"descPropAgr":"Release1","idFront":1},
-              {"id":2,"nroOS":2,"idPropAgr":2,"descPropAgr":"Release2","idFront":2}
+              {"id":1,"nroOS":123456,"idPropAgr":1,"descPropAgr":"Release1","idFront":1},
+              {"id":2,"nroOS":234567,"idPropAgr":2,"descPropAgr":"Release2","idFront":2},
+              {"id":3,"nroOS":345678,"idPropAgr":3,"descPropAgr":"Release3","idFront":3},
+              {"id":4,"nroOS":456789,"idPropAgr":4,"descPropAgr":"Release4","idFront":2},
+              {"id":5,"nroOS":225687,"idPropAgr":2,"descPropAgr":"Release5","idFront":3}
             ]
         """.trimIndent()
 
@@ -212,6 +215,55 @@ class ConfigFlowTest {
 
             Log.d("TestDebug", "Position 9")
 
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag("item_check_box_3")
+                .performClick()
+
+            Log.d("TestDebug", "Position 10")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithText("AVANÇAR")
+                .performClick()
+
+            Log.d("TestDebug", "Position 11")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithText("RETORNAR")
+                .performClick()
+
+            Log.d("TestDebug", "Position 12")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithText("AVANÇAR")
+                .performClick()
+
+            Log.d("TestDebug", "Position 13")
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag("item_check_box_5")
+                .performClick()
+
+            Log.d("TestDebug", "Position 14")
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag("item_check_box_3")
+                .performClick()
+
+            Log.d("TestDebug", "Position 15")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithText("AVANÇAR")
+                .performClick()
+
+            Log.d("TestDebug", "Position 16")
+
             composeTestRule.waitUntilTimeout(10_000)
 
         }
@@ -319,14 +371,14 @@ class ConfigFlowTest {
 
         val releaseRoomModelList = releaseDao.all()
         assertEquals(
-            2,
+            5,
             releaseRoomModelList.size
         )
         val releaseRoomModel1 = releaseRoomModelList[0]
         assertEquals(
             ReleaseRoomModel(
                 id = 1,
-                nroOS = 1,
+                nroOS = 123456,
                 idPropAgr = 1,
                 descPropAgr = "Release1",
                 idFront = 1
@@ -337,12 +389,45 @@ class ConfigFlowTest {
         assertEquals(
             ReleaseRoomModel(
                 id = 2,
-                nroOS = 2,
+                nroOS = 234567,
                 idPropAgr = 2,
                 descPropAgr = "Release2",
                 idFront = 2
             ),
             releaseRoomModel2
+        )
+        val releaseRoomModel3 = releaseRoomModelList[2]
+        assertEquals(
+            ReleaseRoomModel(
+                id = 3,
+                nroOS = 345678,
+                idPropAgr = 3,
+                descPropAgr = "Release3",
+                idFront = 3
+            ),
+            releaseRoomModel3
+        )
+        val releaseRoomModel4 = releaseRoomModelList[3]
+        assertEquals(
+            ReleaseRoomModel(
+                id = 4,
+                nroOS = 456789,
+                idPropAgr = 4,
+                descPropAgr = "Release4",
+                idFront = 2
+            ),
+            releaseRoomModel4
+        )
+        val releaseRoomModel5 = releaseRoomModelList[4]
+        assertEquals(
+            ReleaseRoomModel(
+                id = 5,
+                nroOS = 225687,
+                idPropAgr = 2,
+                descPropAgr = "Release5",
+                idFront = 3
+            ),
+            releaseRoomModel5
         )
 
     }
