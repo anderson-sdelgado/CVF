@@ -9,4 +9,6 @@ interface ManagerRepository {
     suspend fun getIdFront(): Result<Int?>
     suspend fun getIdRelease(): Result<Int?>
     suspend fun save(entity: Manager): EmptyResult
+    suspend fun hasSend(): Result<Boolean>
+    suspend fun send(token: String, idServ: Int): EmptyResult
 }

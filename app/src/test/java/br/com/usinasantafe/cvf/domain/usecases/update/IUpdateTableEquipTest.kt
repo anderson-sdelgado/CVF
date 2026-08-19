@@ -2,7 +2,7 @@ package br.com.usinasantafe.cvf.domain.usecases.update
 
 import br.com.usinasantafe.cvf.domain.entities.stable.Equip
 import br.com.usinasantafe.cvf.domain.repositories.stable.EquipRepository
-import br.com.usinasantafe.cvf.domain.usecases.common.GetToken
+import br.com.usinasantafe.cvf.domain.usecases.common.Token
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.LevelUpdate
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
@@ -20,10 +20,10 @@ import kotlin.test.assertEquals
 
 class IUpdateTableEquipTest {
 
-    private val getToken = mock<GetToken>()
+    private val token = mock<Token>()
     private val equipRepository = mock<EquipRepository>()
     private val usecase = IUpdateTableEquip(
-        getToken = getToken,
+        token = token,
         equipRepository = equipRepository
     )
 
@@ -31,7 +31,7 @@ class IUpdateTableEquipTest {
     fun `Check return failure if have error in GetToken`() =
         runTest {
             whenever(
-                getToken()
+                token()
             ).thenReturn(
                 resultFailure(
                     "GetToken",
@@ -73,7 +73,7 @@ class IUpdateTableEquipTest {
     fun `Check return failure if have error in EquipRepository recoverAll`() =
         runTest {
             whenever(
-                getToken()
+                token()
             ).thenReturn(
                 Result.success("token")
             )
@@ -128,7 +128,7 @@ class IUpdateTableEquipTest {
                 )
             )
             whenever(
-                getToken()
+                token()
             ).thenReturn(
                 Result.success("token")
             )
@@ -199,7 +199,7 @@ class IUpdateTableEquipTest {
                 )
             )
             whenever(
-                getToken()
+                token()
             ).thenReturn(
                 Result.success("token")
             )
@@ -281,7 +281,7 @@ class IUpdateTableEquipTest {
                 )
             )
             whenever(
-                getToken()
+                token()
             ).thenReturn(
                 Result.success("token")
             )

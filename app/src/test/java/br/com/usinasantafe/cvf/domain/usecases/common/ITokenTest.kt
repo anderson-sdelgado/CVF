@@ -9,10 +9,10 @@ import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
 import kotlin.test.assertEquals
 
-class IGetTokenTest {
+class ITokenTest {
 
     private val configRepository = mock<ConfigRepository>()
-    private val usecase = IGetToken(
+    private val usecase = IToken(
         configRepository = configRepository
     )
 

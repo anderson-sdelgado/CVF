@@ -43,4 +43,5 @@
     <string name="text_cancel_note">CANCELAR APONTAMENTO</string>
     <string name="text_menu">MENU</string>
     <string name="text_close">SAIR</string>
+    <string name="text_unknown_error">ERRO DESCONHECIDO</string>
 </resources>

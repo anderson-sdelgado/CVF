@@ -9,7 +9,9 @@ data class ConfigRetrofitModelOutput(
 )
 
 data class ConfigRetrofitModelInput(
-    val idServ: Int,
+    val status: String,
+    val idServ: Int?,
+    val failure: String?
 )
 
 fun Config.entityToRetrofitModel(): ConfigRetrofitModelOutput {

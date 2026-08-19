@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cvf.domain.usecases.update
 
 import br.com.usinasantafe.cvf.domain.repositories.stable.FrontRepository
-import br.com.usinasantafe.cvf.domain.usecases.common.GetToken
+import br.com.usinasantafe.cvf.domain.usecases.common.Token
 import br.com.usinasantafe.cvf.lib.LevelUpdate
 import br.com.usinasantafe.cvf.lib.TB_FRONT
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
@@ -20,7 +20,7 @@ interface UpdateTableFront {
 }
 
 class IUpdateTableFront @Inject constructor(
-    private val getToken: GetToken,
+    private val token: Token,
     private val frontRepository: FrontRepository
 ): UpdateTableFront {
 
@@ -32,7 +32,7 @@ class IUpdateTableFront @Inject constructor(
         flowCallUpdate(getClassAndMethod()) {
 
             emitProgress(count, sizeAll, LevelUpdate.RECOVERY, TB_FRONT)
-            val token = getToken().getOrThrow()
+            val token = token().getOrThrow()
             val entityList = frontRepository.listAll(token).getOrThrow()
 
             emitProgress(count, sizeAll, LevelUpdate.CLEAN, TB_FRONT)

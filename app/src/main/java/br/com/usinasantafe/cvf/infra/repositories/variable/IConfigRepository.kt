@@ -8,6 +8,7 @@ import br.com.usinasantafe.cvf.infra.models.retrofit.variable.entityToRetrofitMo
 import br.com.usinasantafe.cvf.infra.models.retrofit.variable.retrofitModelToEntity
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.entityToSharedPreferencesModel
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.sharedPreferencesModelToEntity
+import br.com.usinasantafe.cvf.lib.StatusSend
 import br.com.usinasantafe.cvf.utils.EmptyResult
 import br.com.usinasantafe.cvf.utils.call
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
@@ -44,6 +45,11 @@ class IConfigRepository @Inject constructor(
     override suspend fun setFlagUpdate(): EmptyResult =
         call(getClassAndMethod()) {
             configSharedPreferencesDatasource.setFlagUpdate().getOrThrow()
+        }
+
+    override suspend fun setStatusSend(statusSend: StatusSend): EmptyResult =
+        call(getClassAndMethod()) {
+            configSharedPreferencesDatasource.setStatusSend(statusSend).getOrThrow()
         }
 
 }

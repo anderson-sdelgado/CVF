@@ -13,10 +13,18 @@ interface NoteModule {
 
     @Binds
     @Singleton
-    fun bindGetDriver(usecase: IGetDriver): GetDriver
+    fun bindGetDriver(usecase: IGetRegDriver): GetRegDriver
 
     @Binds
     @Singleton
-    fun bindSetDriver(usecase: ISetDriver): SetDriver
+    fun bindSetDriver(usecase: ISetRegDriver): SetRegDriver
+
+    @Binds
+    @Singleton
+    fun bindHasSendNote(usecase: IHasSendNote): HasSendNote
+
+    @Binds
+    @Singleton
+    fun bindSendNote(usecase: ISendNote): SendNote
 
 }

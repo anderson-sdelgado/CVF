@@ -1,7 +1,10 @@
 package br.com.usinasantafe.cvf.infra.repositories.variable
 
 import br.com.usinasantafe.cvf.domain.entities.variable.Manager
+import br.com.usinasantafe.cvf.infra.datasource.retrofit.variable.ManagerRetrofitDatasource
 import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.ManagerSharedPreferencesDatasource
+import br.com.usinasantafe.cvf.infra.models.retrofit.variable.ManagerRetrofitModelOutput
+import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ManagerSharedPreferencesModel
 import br.com.usinasantafe.cvf.utils.resultFailure
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -16,8 +19,10 @@ import kotlin.test.assertEquals
 class IManagerRepositoryTest {
     
     private val managerSharedPreferencesDatasource = mock<ManagerSharedPreferencesDatasource>()
+    private val managerRetrofitDatasource = mock<ManagerRetrofitDatasource>()
     private val repository = IManagerRepository(
-        managerSharedPreferencesDatasource = managerSharedPreferencesDatasource
+        managerSharedPreferencesDatasource = managerSharedPreferencesDatasource,
+        managerRetrofitDatasource = managerRetrofitDatasource
     )
 
     @Test
@@ -265,6 +270,154 @@ class IManagerRepositoryTest {
                 argThat {
                     idRelease == 1 && idFront == 1
                 }
+            )
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+        }
+
+    @Test
+    fun `hasSend - Check return failure if have error in ManagerSharedPreferencesDatasource hasSend`() =
+        runTest {
+            whenever(
+                managerSharedPreferencesDatasource.hasSend()
+            ).thenReturn(
+                resultFailure(
+                    "IManagerSharedPreferencesDatasource.hasSend",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.hasSend()
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IManagerRepository.hasSend -> IManagerSharedPreferencesDatasource.hasSend",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `hasSend - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                managerSharedPreferencesDatasource.hasSend()
+            ).thenReturn(
+                Result.success(false)
+            )
+            val result = repository.hasSend()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                false,
+                result.getOrNull()!!
+            )
+        }
+
+    @Test
+    fun `send - Check return failure if have error in ManagerSharedPreferencesDatasource get`() =
+        runTest {
+            whenever(
+                managerSharedPreferencesDatasource.get()
+            ).thenReturn(
+                resultFailure(
+                    "IManagerSharedPreferencesDatasource.get",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.send("token", 1)
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IManagerRepository.send -> IManagerSharedPreferencesDatasource.get",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `send - Check return failure if have error in ManagerRetrofitDatasource send`() =
+        runTest {
+            whenever(
+                managerSharedPreferencesDatasource.get()
+            ).thenReturn(
+                Result.success(
+                    ManagerSharedPreferencesModel(
+                        idRelease = 1,
+                        idFront = 2
+                    )
+                )
+            )
+            whenever(
+                managerRetrofitDatasource.send(
+                    "token",
+                    ManagerRetrofitModelOutput(
+                        idRelease = 1,
+                        idFront = 2,
+                        idServ = 3
+                    )
+                )
+            ).thenReturn(
+                resultFailure(
+                    "IManagerRetrofitDatasource.send",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.send("token", 3)
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IManagerRepository.send -> IManagerRetrofitDatasource.send",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `send - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                managerSharedPreferencesDatasource.get()
+            ).thenReturn(
+                Result.success(
+                    ManagerSharedPreferencesModel(
+                        idRelease = 1,
+                        idFront = 2
+                    )
+                )
+            )
+            val result = repository.send(
+                "token",
+                3
+            )
+            verify(managerRetrofitDatasource, atLeastOnce()).send(
+                "token",
+                ManagerRetrofitModelOutput(
+                    idRelease = 1,
+                    idFront = 2,
+                    idServ = 3
+                )
             )
             assertEquals(
                 true,

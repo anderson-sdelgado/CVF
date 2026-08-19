@@ -20,4 +20,8 @@ interface VariableRepositoryModule {
     @Singleton
     fun bindManagerRepository(repository: IManagerRepository): ManagerRepository
 
+    @Binds
+    @Singleton
+    fun bindNoteRepository(repository: INoteRepository): NoteRepository
+
 }

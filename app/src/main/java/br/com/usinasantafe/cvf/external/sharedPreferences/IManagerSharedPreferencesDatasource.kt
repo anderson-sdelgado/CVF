@@ -6,6 +6,7 @@ import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.ManagerSharedP
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ManagerSharedPreferencesModel
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.sharedPreferencesModelToEntity
 import br.com.usinasantafe.cvf.lib.BASE_SHARED_PREFERENCES_TABLE_MANAGER
+import br.com.usinasantafe.cvf.lib.StatusSend
 import br.com.usinasantafe.cvf.utils.EmptyResult
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
 import br.com.usinasantafe.cvf.utils.result
@@ -24,6 +25,13 @@ class IManagerSharedPreferencesDatasource @Inject constructor(
                     Gson().toJson(model)
                 )
             }
+        }
+
+    override suspend fun hasSend(): Result<Boolean> =
+        result(getClassAndMethod()) {
+            if(!has().getOrThrow()) return@result false
+            val model = get().getOrThrow()
+            model.stateSend == StatusSend.SEND
         }
 
     override suspend fun clean(): EmptyResult =
@@ -54,7 +62,7 @@ class IManagerSharedPreferencesDatasource @Inject constructor(
             get().getOrThrow().idRelease
         }
 
-    suspend fun get(): Result<ManagerSharedPreferencesModel> =
+    override suspend fun get(): Result<ManagerSharedPreferencesModel> =
         result(getClassAndMethod()) {
             val data = sharedPreferences.getString(
                 BASE_SHARED_PREFERENCES_TABLE_MANAGER,
@@ -67,5 +75,9 @@ class IManagerSharedPreferencesDatasource @Inject constructor(
             model.sharedPreferencesModelToEntity()
             model
         }
+
+    override suspend fun setStatusSend(statusSend: StatusSend): EmptyResult {
+        TODO("Not yet implemented")
+    }
 
 }

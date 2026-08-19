@@ -7,15 +7,14 @@ import br.com.usinasantafe.cvf.utils.getClassAndMethod
 import br.com.usinasantafe.cvf.utils.required
 import br.com.usinasantafe.cvf.utils.tryCatch
 import javax.inject.Inject
-import kotlin.text.get
 
-interface GetToken {
+interface Token {
     suspend operator fun invoke(): Result<String>
 }
 
-class IGetToken @Inject constructor(
+class IToken @Inject constructor(
     private val configRepository: ConfigRepository
-): GetToken {
+): Token {
 
     override suspend fun invoke(): Result<String> =
         call(getClassAndMethod()) {

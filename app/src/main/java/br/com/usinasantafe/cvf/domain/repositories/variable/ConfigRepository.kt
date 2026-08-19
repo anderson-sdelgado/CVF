@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cvf.domain.repositories.variable
 
 import br.com.usinasantafe.cvf.domain.entities.variable.Config
+import br.com.usinasantafe.cvf.lib.StatusSend
 import br.com.usinasantafe.cvf.utils.EmptyResult
 
 interface ConfigRepository {
@@ -9,4 +10,5 @@ interface ConfigRepository {
     suspend fun save(entity: Config): EmptyResult
     suspend fun has(): Result<Boolean>
     suspend fun setFlagUpdate(): EmptyResult
+    suspend fun setStatusSend(statusSend: StatusSend): EmptyResult
 }

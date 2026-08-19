@@ -22,7 +22,6 @@ import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ManagerSharedPrefe
 import br.com.usinasantafe.cvf.lib.StatusSend
 import br.com.usinasantafe.cvf.presenter.navigation.Args.ID_FRONT_ARG
 import br.com.usinasantafe.cvf.presenter.theme.TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE
-import br.com.usinasantafe.cvf.presenter.view.manager.release.ReleaseViewModel
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -256,7 +255,7 @@ class FrontScreenTest {
             val server = MockWebServer()
             server.start()
             server.enqueue(
-                MockResponse().setBody("{ error : Authorization header is missing }")
+                MockResponse().setBody("{ \"status\": \"error\", \"failure\": \"Authorization header is missing\" }")
             )
             BaseUrlModuleTest.url = server.url("/").toString()
 
@@ -293,12 +292,10 @@ class FrontScreenTest {
             composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. FrontViewModel.updateAllDatabase -> FrontViewModel.update -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableFront -> IFrontRepository.listAll -> IFrontRetrofitDatasource.listAll -> java.lang.IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 2 path \$\n" +
-                    "See https://github.com/google/gson/blob/main/Troubleshooting.md#unexpected-json-structure"
-            )
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. FrontViewModel.updateAllDatabase -> FrontViewModel.update -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableFront -> IFrontRepository.listAll -> IFrontRetrofitDatasource.listAll -> java.lang.Exception: Authorization header is missing")
 
             composeTestRule.waitUntilTimeout(20_000)
-
+            server.shutdown()
         }
 
     @Test
@@ -306,11 +303,14 @@ class FrontScreenTest {
         runTest {
 
             val response = """
-                [
-                  {"id":1,"cd":1,"description":"Test1"},
-                  {"id":3,"cd":3,"description":"Test3"},
-                  {"id":2,"cd":2,"description":"Test2"}
-                ]
+                {
+                    "status": "success",
+                    "data": [
+                      {"id":1,"cd":1,"description":"Test1"},
+                      {"id":3,"cd":3,"description":"Test3"},
+                      {"id":2,"cd":2,"description":"Test2"}
+                    ]
+                }
             """
             val mockWebServer = MockWebServer()
             mockWebServer.start()
@@ -353,7 +353,7 @@ class FrontScreenTest {
                 .performClick()
 
             composeTestRule.waitUntilTimeout(20_000)
-
+            mockWebServer.shutdown()
         }
 
     @Test

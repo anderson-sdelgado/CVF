@@ -14,6 +14,14 @@ interface VariableRetrofitDatasourceModule {
 
     @Binds
     @Singleton
-    fun bindConfigRetrofitDatasource(dataSource: IConfigRetrofitDatasource): ConfigRetrofitDatasource
+    fun bindConfigRetrofitDatasource(datasource: IConfigRetrofitDatasource): ConfigRetrofitDatasource
+
+    @Binds
+    @Singleton
+    fun bindManagerRetrofitDatasource(datasource: IManagerRetrofitDatasource): ManagerRetrofitDatasource
+
+    @Binds
+    @Singleton
+    fun bindNoteRetrofitDatasource(datasource: INoteRetrofitDatasource): NoteRetrofitDatasource
 
 }

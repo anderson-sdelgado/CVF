@@ -18,3 +18,6 @@ const val WEB_ALL_FRONT = "front.php"
 const val WEB_ALL_RELEASE = "release.php"
 
 const val WEB_SAVE_TOKEN = "find-token.php"
+const val WEB_SAVE_MANAGER = "save-manager.php"
+
+const val SUCCESS = "success"

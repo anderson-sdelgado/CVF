@@ -20,4 +20,12 @@ interface SharedPreferencesDatasourceModule {
     @Singleton
     fun bindManagerSharedPreferencesDatasource(dataSource: IManagerSharedPreferencesDatasource): ManagerSharedPreferencesDatasource
 
+    @Binds
+    @Singleton
+    fun bindPreCECSharedPreferencesDatasource(dataSource: IPreCECSharedPreferencesDatasource): PreCECSharedPreferencesDatasource
+
+    @Binds
+    @Singleton
+    fun bindTrailerSharedPreferencesDatasource(dataSource: ITrailerSharedPreferencesDatasource): TrailerSharedPreferencesDatasource
+
 }

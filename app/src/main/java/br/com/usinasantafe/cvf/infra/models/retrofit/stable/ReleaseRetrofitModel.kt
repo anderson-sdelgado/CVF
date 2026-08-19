@@ -2,6 +2,12 @@ package br.com.usinasantafe.cvf.infra.models.retrofit.stable
 
 import br.com.usinasantafe.cvf.domain.entities.stable.Release
 
+data class ReleaseRetrofitInput(
+    val status: String,
+    val failure: String?,
+    val data: List<ReleaseRetrofitModel>?
+)
+
 data class ReleaseRetrofitModel(
     val id: Int,
     val nroOS: Int,

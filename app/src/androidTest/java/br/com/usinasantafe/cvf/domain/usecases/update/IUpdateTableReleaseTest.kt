@@ -64,7 +64,7 @@ class IUpdateTableReleaseTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableRelease -> IGetToken -> IConfigRepository.get -> number is required",
+                    failure = "IUpdateTableRelease -> IReleaseRepository.listAll -> IReleaseRetrofitDatasource.listAll -> IGetToken -> IConfigRepository.get -> number is required -> java.lang.NullPointerException: number is required",
                     currentProgress = 1f,
                     levelUpdate = null,
                 ),
@@ -119,7 +119,7 @@ class IUpdateTableReleaseTest {
             val server = MockWebServer()
             server.start()
             server.enqueue(
-                MockResponse().setBody("{ error : Authorization header is missing }")
+                MockResponse().setBody("{ \"status\": \"error\", \"failure\": \"Authorization header is missing\" }")
             )
             BaseUrlModuleTest.url = server.url("/").toString()
 
@@ -150,13 +150,13 @@ class IUpdateTableReleaseTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableRelease -> IReleaseRepository.listAll -> IReleaseRetrofitDatasource.listAll -> java.lang.IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 2 path \$\n" +
-                            "See https://github.com/google/gson/blob/main/Troubleshooting.md#unexpected-json-structure",
+                    failure = "IUpdateTableRelease -> IReleaseRepository.listAll -> IReleaseRetrofitDatasource.listAll -> java.lang.Exception: Authorization header is missing",
                     currentProgress = 1f,
                     levelUpdate = null,
                 ),
                 list[1]
             )
+            server.shutdown()
         }
 
     @Test
@@ -203,16 +203,20 @@ class IUpdateTableReleaseTest {
                 ),
                 list[1]
             )
+            server.shutdown()
         }
 
     @Test
     fun check_return_failure_if_row_is_repeated() =
         runTest {
             val response = """
-                [
-                  {"id":1,"nroOS":1,"idPropAgr":1,"descPropAgr":"Test1","idFront":1},
-                  {"id":1,"nroOS":1,"idPropAgr":1,"descPropAgr":"Test1","idFront":1}
-                ]
+                {
+                    "status": "success",
+                    "data": [
+                      {"id":1,"nroOS":1,"idPropAgr":1,"descPropAgr":"Test1","idFront":1},
+                      {"id":1,"nroOS":1,"idPropAgr":1,"descPropAgr":"Test1","idFront":1}
+                    ]
+                }
             """
             val server = MockWebServer()
             server.start()
@@ -272,6 +276,7 @@ class IUpdateTableReleaseTest {
                 ),
                 list[3]
             )
+            server.shutdown()
         }
 
     @Test
@@ -279,10 +284,13 @@ class IUpdateTableReleaseTest {
         runTest {
 
             val response = """
-                [
-                  {"id":1,"nroOS":1,"idPropAgr":1,"descPropAgr":"Test1","idFront":1},
-                  {"id":2,"nroOS":2,"idPropAgr":2,"descPropAgr":"Test2","idFront":2}
-                ]
+                {
+                    "status": "success",
+                    "data": [
+                      {"id":1,"nroOS":1,"idPropAgr":1,"descPropAgr":"Test1","idFront":1},
+                      {"id":2,"nroOS":2,"idPropAgr":2,"descPropAgr":"Test2","idFront":2}
+                    ]
+                }
             """
             val mockWebServer = MockWebServer()
             mockWebServer.start()
@@ -335,8 +343,8 @@ class IUpdateTableReleaseTest {
             )
             val modelList = releaseDao.all()
             assertEquals(
-                2,
-                modelList.size
+                modelList.size,
+                2
             )
             val model1 = modelList[0]
             assertEquals(
@@ -360,6 +368,7 @@ class IUpdateTableReleaseTest {
                 ),
                 model2
             )
+            mockWebServer.shutdown()
         }
 
     private suspend fun initialRegister() {

@@ -188,5 +188,62 @@ class IManagerSharedPreferencesDatasourceTest {
 
         }
 
+    @Test
+    fun `hasSend - Check return false if not have data`() =
+        runTest {
+            val result = datasource.hasSend()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                false,
+                result.getOrNull()!!
+            )
+        }
+
+    @Test
+    fun `hasSend - Check return false if have data and stateSend is not SEND`() =
+        runTest {
+            val data = ManagerSharedPreferencesModel(
+                idRelease = 1,
+                idFront = 20,
+                dateHourCreate = Date(1786647885000),
+                dateHourUpdate = Date(1786647885000),
+                stateSend = StatusSend.SENT
+            )
+            datasource.save(data)
+            val result = datasource.hasSend()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                false,
+                result.getOrNull()!!
+            )
+        }
+
+    @Test
+    fun `hasSend - Check return true if have data and stateSend is SEND`() =
+        runTest {
+            val data = ManagerSharedPreferencesModel(
+                idRelease = 1,
+                idFront = 20,
+                dateHourCreate = Date(1786647885000),
+                dateHourUpdate = Date(1786647885000),
+                stateSend = StatusSend.SEND
+            )
+            datasource.save(data)
+            val result = datasource.hasSend()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                true,
+                result.getOrNull()!!
+            )
+        }
 
 }

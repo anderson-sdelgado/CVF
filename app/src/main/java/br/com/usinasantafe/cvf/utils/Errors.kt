@@ -3,6 +3,9 @@ package br.com.usinasantafe.cvf.utils
 import br.com.usinasantafe.cvf.lib.Errors
 import timber.log.Timber
 
+const val ERROR_STRING_TO_LONG = "stringToLong"
+
+
 fun resultFailure(
     context: String,
     cause: Throwable

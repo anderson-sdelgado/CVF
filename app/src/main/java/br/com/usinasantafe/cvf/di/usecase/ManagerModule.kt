@@ -26,4 +26,12 @@ interface ManagerModule {
     @Binds
     @Singleton
     fun bindSaveManager(usecase: ISaveManager): SaveManager
+
+    @Binds
+    @Singleton
+    fun bindHasSendManager(usecase: IHasSendManager): HasSendManager
+
+    @Binds
+    @Singleton
+    fun bindSendManager(usecase: ISendManager): SendManager
 }

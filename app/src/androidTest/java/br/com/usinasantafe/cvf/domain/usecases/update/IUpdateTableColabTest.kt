@@ -18,7 +18,6 @@ import okhttp3.mockwebserver.MockWebServer
 import org.junit.Rule
 import org.junit.Test
 import javax.inject.Inject
-import kotlin.collections.get
 import kotlin.test.assertEquals
 
 @HiltAndroidTest
@@ -65,7 +64,7 @@ class IUpdateTableColabTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableColab -> IGetToken -> IConfigRepository.get -> number is required",
+                    failure = "IUpdateTableColab -> IColabRepository.listAll -> IColabRetrofitDatasource.listAll -> IGetToken -> IConfigRepository.get -> number is required -> java.lang.NullPointerException: number is required",
                     currentProgress = 1f,
                     levelUpdate = null,
                 ),
@@ -119,7 +118,7 @@ class IUpdateTableColabTest {
             val server = MockWebServer()
             server.start()
             server.enqueue(
-                MockResponse().setBody("{ error : Authorization header is missing }")
+                MockResponse().setBody("{ \"status\": \"error\", \"failure\": \"Authorization header is missing\" }")
             )
             BaseUrlModuleTest.url = server.url("/").toString()
 
@@ -150,13 +149,13 @@ class IUpdateTableColabTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableColab -> IColabRepository.listAll -> IColabRetrofitDatasource.listAll -> java.lang.IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 2 path \$\n" +
-                            "See https://github.com/google/gson/blob/main/Troubleshooting.md#unexpected-json-structure",
+                    failure = "IUpdateTableColab -> IColabRepository.listAll -> IColabRetrofitDatasource.listAll -> java.lang.Exception: Authorization header is missing",
                     currentProgress = 1f,
                     levelUpdate = null,
                 ),
                 list[1]
             )
+            server.shutdown()
         }
 
     @Test
@@ -203,16 +202,20 @@ class IUpdateTableColabTest {
                 ),
                 list[1]
             )
+            server.shutdown()
         }
 
     @Test
     fun check_return_failure_if_row_is_repeated() =
         runTest {
             val response = """
-                [
-                  {"reg":12345,"name":"João da Silva"},
-                  {"reg":12345,"name":"João da Silva"}
-                ]
+                {
+                    "status": "success",
+                    "data": [
+                      {"reg":12345,"name":"João da Silva"},
+                      {"reg":12345,"name":"João da Silva"}
+                    ]
+                }
             """
             val server = MockWebServer()
             server.start()
@@ -272,6 +275,7 @@ class IUpdateTableColabTest {
                 ),
                 list[3]
             )
+            server.shutdown()
         }
 
     @Test
@@ -279,10 +283,13 @@ class IUpdateTableColabTest {
         runTest {
 
             val response = """
-                [
-                  {"reg":123456,"name":"João da Silva"},
-                  {"reg":456789,"name":"Maria de Souza"}
-                ]
+                {
+                    "status": "success",
+                    "data": [
+                      {"reg":123456,"name":"João da Silva"},
+                      {"reg":456789,"name":"Maria de Souza"}
+                    ]
+                }
             """
             val mockWebServer = MockWebServer()
             mockWebServer.start()
@@ -354,6 +361,7 @@ class IUpdateTableColabTest {
                 ),
                 model2
             )
+            mockWebServer.shutdown()
         }
 
     private suspend fun initialRegister() {

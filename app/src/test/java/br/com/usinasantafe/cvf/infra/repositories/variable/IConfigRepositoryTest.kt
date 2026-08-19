@@ -6,6 +6,7 @@ import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.ConfigSharedPr
 import br.com.usinasantafe.cvf.infra.models.retrofit.variable.ConfigRetrofitModelInput
 import br.com.usinasantafe.cvf.infra.models.retrofit.variable.ConfigRetrofitModelOutput
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cvf.lib.StatusSend
 import br.com.usinasantafe.cvf.utils.resultFailure
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -198,6 +199,8 @@ class IConfigRepositoryTest {
             ).thenReturn(
                 Result.success(
                     ConfigRetrofitModelInput(
+                        status = "success",
+                        failure = null,
                         idServ = 1
                     )
                 )
@@ -380,6 +383,44 @@ class IConfigRepositoryTest {
         runTest {
             val result = repository.setFlagUpdate()
             verify(configSharedPreferencesDatasource, atLeastOnce()).setFlagUpdate()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+        }
+
+    @Test
+    fun `setStatusSend - Check return failure if have error in ConfigSharedPreferencesDatasource setStatusSend`() =
+        runTest {
+            whenever(
+                configSharedPreferencesDatasource.setStatusSend(StatusSend.SEND)
+            ).thenReturn(
+                resultFailure(
+                    "IConfigSharedPreferencesDatasource.setStatusSend",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.setStatusSend(StatusSend.SEND)
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IConfigRepository.setStatusSend -> IConfigSharedPreferencesDatasource.setStatusSend",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `setStatusSend - Check return correct if function execute successfully`() =
+        runTest {
+            val result = repository.setStatusSend(StatusSend.SEND)
+            verify(configSharedPreferencesDatasource, atLeastOnce()).setStatusSend(StatusSend.SEND)
             assertEquals(
                 true,
                 result.isSuccess

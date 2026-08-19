@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cvf.external.retrofit.datasource.stable
 
+import android.content.Context
 import br.com.usinasantafe.cvf.di.external.ApiModuleTest.provideRetrofitTest
 import br.com.usinasantafe.cvf.external.retrofit.api.stable.FrontApi
 import br.com.usinasantafe.cvf.infra.models.retrofit.stable.FrontRetrofitModel
@@ -7,9 +8,18 @@ import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.Mockito.mock
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
+import kotlin.intArrayOf
 import kotlin.test.assertEquals
 
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = [34])
 class IFrontRetrofitDatasourceTest {
+
+    private val context = mock<Context>()
 
     @Test
     fun `Check return failure if token is invalid`() =
@@ -17,13 +27,13 @@ class IFrontRetrofitDatasourceTest {
             val server = MockWebServer()
             server.start()
             server.enqueue(
-                MockResponse().setBody("{ error : Authorization header is missing }")
+                MockResponse().setBody(resultFailureAuthorization)
             )
             val retrofit = provideRetrofitTest(
-                server.url("").toString()
+                server.url("/").toString()
             )
             val service = retrofit.create(FrontApi::class.java)
-            val datasource = IFrontRetrofitDatasource(service)
+            val datasource = IFrontRetrofitDatasource(context, service)
             val result = datasource.listAll("TOKEN")
             assertEquals(
                 true,
@@ -34,8 +44,7 @@ class IFrontRetrofitDatasourceTest {
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
-                "java.lang.IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 2 path \$\n" +
-                        "See https://github.com/google/gson/blob/main/Troubleshooting.md#unexpected-json-structure",
+                "java.lang.Exception: Authorization header is missing",
                 result.exceptionOrNull()!!.cause.toString()
             )
             server.shutdown()
@@ -50,10 +59,10 @@ class IFrontRetrofitDatasourceTest {
                 MockResponse().setResponseCode(404)
             )
             val retrofit = provideRetrofitTest(
-                server.url("").toString()
+                server.url("/").toString()
             )
             val service = retrofit.create(FrontApi::class.java)
-            val datasource = IFrontRetrofitDatasource(service)
+            val datasource = IFrontRetrofitDatasource(context, service)
             val result = datasource.listAll("TOKEN")
 
             assertEquals(
@@ -65,7 +74,7 @@ class IFrontRetrofitDatasourceTest {
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
-                NullPointerException().toString(),
+                "java.lang.NullPointerException",
                 result.exceptionOrNull()!!.cause.toString()
             )
             server.shutdown()
@@ -74,22 +83,16 @@ class IFrontRetrofitDatasourceTest {
     @Test
     fun `Check return correct`() =
         runTest {
-            val response = """
-                [
-                  {"id":1,"cd":1,"description":"Test1"},
-                  {"id":2,"cd":2,"description":"Test2"}
-                ]
-            """.trimIndent()
             val server = MockWebServer()
             server.start()
             server.enqueue(
-                MockResponse().setBody(response)
+                MockResponse().setBody(result)
             )
             val retrofit = provideRetrofitTest(
                 server.url("").toString()
             )
             val service = retrofit.create(FrontApi::class.java)
-            val datasource = IFrontRetrofitDatasource(service)
+            val datasource = IFrontRetrofitDatasource(context, service)
             val result = datasource.listAll("TOKEN")
 
             assertEquals(
@@ -115,5 +118,23 @@ class IFrontRetrofitDatasourceTest {
             )
             server.shutdown()
         }
+
+    private val resultFailureAuthorization = """
+        {
+            "status": "error",
+            "failure": "Authorization header is missing"
+        }
+    """.trimIndent()
+
+    private val result = """
+        {
+            "status": "success",
+            "data": 
+                [
+                  {"id":1,"cd":1,"description":"Test1"},
+                  {"id":2,"cd":2,"description":"Test2"}
+                ]
+        }
+    """.trimIndent()
 
 }

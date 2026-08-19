@@ -23,4 +23,8 @@ interface ConfigModule {
     @Singleton
     fun bindGetConfig(usecase: IGetConfig): GetConfig
 
+    @Binds
+    @Singleton
+    fun bindSetStatusSend(usecase: ISetStatusSend): SetStatusSend
+
 }

@@ -74,40 +74,53 @@ class ConfigFlowTest {
 
         private val resultToken = """
             {
+                "status": "success",
                 "idServ": 1
             }
         """.trimIndent()
 
         private val resultColab = """
-            [
-                {"reg":19759,"name":"ANDERSON DA SILVA DELGADO"},
-                {"reg":18017,"name":"RONALDO GOMES"}
-            ]
+            {
+                "status": "success",
+                "data": [
+                    {"reg":19759,"name":"ANDERSON DA SILVA DELGADO"},
+                    {"reg":18017,"name":"RONALDO GOMES"}
+                ]
+            }
         """.trimIndent()
 
         private val resultEquip = """
-            [
-                {"id":1,"nro":1,"cdOperClass":1,"description":"Equip1"},
-                {"id":2,"nro":2,"cdOperClass":2,"description":"Equip2"}
-            ]
+            {
+                "status": "success",
+                "data": [
+                    {"id":1,"nro":1,"cdOperClass":1,"description":"Equip1"},
+                    {"id":2,"nro":2,"cdOperClass":2,"description":"Equip2"}
+                ]
+            }
         """.trimIndent()
 
         private val resultFront = """
-            [
-                {"id":1,"cd":1,"description":"Front1"},
-                {"id":3,"cd":3,"description":"Front3"},
-                {"id":2,"cd":2,"description":"Front2"}
-            ]
+            {
+                "status": "success",
+                "data": [
+                    {"id":1,"cd":1,"description":"Front1"},
+                    {"id":3,"cd":3,"description":"Front3"},
+                    {"id":2,"cd":2,"description":"Front2"}
+                ]
+            }
         """.trimIndent()
 
         val resultRelease = """
-            [
-              {"id":1,"nroOS":123456,"idPropAgr":1,"descPropAgr":"Release1","idFront":1},
-              {"id":2,"nroOS":234567,"idPropAgr":2,"descPropAgr":"Release2","idFront":2},
-              {"id":3,"nroOS":345678,"idPropAgr":3,"descPropAgr":"Release3","idFront":3},
-              {"id":4,"nroOS":456789,"idPropAgr":4,"descPropAgr":"Release4","idFront":2},
-              {"id":5,"nroOS":225687,"idPropAgr":2,"descPropAgr":"Release5","idFront":3}
-            ]
+            {
+                "status": "success",
+                "data": [
+                  {"id":1,"nroOS":123456,"idPropAgr":1,"descPropAgr":"Release1","idFront":1},
+                  {"id":2,"nroOS":234567,"idPropAgr":2,"descPropAgr":"Release2","idFront":2},
+                  {"id":3,"nroOS":345678,"idPropAgr":3,"descPropAgr":"Release3","idFront":3},
+                  {"id":4,"nroOS":456789,"idPropAgr":4,"descPropAgr":"Release4","idFront":2},
+                  {"id":5,"nroOS":225687,"idPropAgr":2,"descPropAgr":"Release5","idFront":3}
+                ]
+            }
         """.trimIndent()
 
         @BeforeClass

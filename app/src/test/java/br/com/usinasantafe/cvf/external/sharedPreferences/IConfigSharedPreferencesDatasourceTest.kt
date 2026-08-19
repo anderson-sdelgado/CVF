@@ -175,4 +175,42 @@ class IConfigSharedPreferencesDatasourceTest {
             )
         }
 
+    @Test
+    fun `setStatusSend - Check return data correct the Config SharedPreferences internal`() =
+        runTest {
+            val data = ConfigSharedPreferencesModel(
+                number = 16997417840,
+                password = "123456",
+                idServ = 1,
+                version = "1.00",
+                statusSend = StatusSend.STARTED
+            )
+            datasource.save(data)
+            val resultBefore = datasource.get()
+            assertEquals(
+                true,
+                resultBefore.isSuccess
+            )
+            val modelBefore = resultBefore.getOrNull()!!
+            assertEquals(
+                StatusSend.STARTED,
+                modelBefore.statusSend
+            )
+            val result = datasource.setStatusSend(StatusSend.SEND)
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            val resultAfter = datasource.get()
+            assertEquals(
+                true,
+                resultAfter.isSuccess
+            )
+            val modelAfter = resultAfter.getOrNull()!!
+            assertEquals(
+                StatusSend.SEND,
+                modelAfter.statusSend
+            )
+        }
+
 }

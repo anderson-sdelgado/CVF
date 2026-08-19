@@ -159,6 +159,54 @@ class IUpdateConfigTest {
                 ),
                 list[1]
             )
+            server.shutdown()
+        }
+
+    @Test
+    fun check_return_failure_if_token_is_invalid() =
+        runTest {
+
+            val server = MockWebServer()
+            server.start()
+            server.enqueue(
+                MockResponse().setBody("{ \"status\": \"error\", \"failure\": \"Authorization header is missing\" }")
+            )
+            BaseUrlModuleTest.url = server.url("/").toString()
+
+            hiltRule.inject()
+
+            val result = usecase(
+                number = "16997417840",
+                password = "12345",
+                version = "1.00",
+                sizeAll = 3f,
+                count = 1f
+            )
+            val list = result.toList()
+            assertEquals(
+                2,
+                list.count()
+            )
+            assertEquals(
+                UiStatusStateUpdate(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.GET_TOKEN,
+                    currentProgress = updatePercentage(1f, 1f, 3f)
+                ),
+                list[0]
+            )
+            assertEquals(
+                UiStatusStateUpdate(
+                    errors = Errors.TOKEN,
+                    flagDialog = true,
+                    flagFailure = true,
+                    failure = "IUpdateConfig -> IConfigRepository.send -> IConfigRetrofitDatasource.recoverToken -> java.lang.Exception: Authorization header is missing",
+                    currentProgress = 1f,
+                    levelUpdate = null,
+                ),
+                list[1]
+            )
+            server.shutdown()
         }
 
     @Test
@@ -167,6 +215,7 @@ class IUpdateConfigTest {
 
             val response = """
                 {
+                    "status": "success",
                     "idServ": 16
                 }
             """
@@ -238,6 +287,7 @@ class IUpdateConfigTest {
                 false,
                 flagManager
             )
+            mockWebServer.shutdown()
         }
 
 }

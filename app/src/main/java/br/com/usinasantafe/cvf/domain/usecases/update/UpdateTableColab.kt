@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cvf.domain.usecases.update
 
 import br.com.usinasantafe.cvf.domain.repositories.stable.ColabRepository
-import br.com.usinasantafe.cvf.domain.usecases.common.GetToken
+import br.com.usinasantafe.cvf.domain.usecases.common.Token
 import br.com.usinasantafe.cvf.lib.LevelUpdate
 import br.com.usinasantafe.cvf.lib.TB_COLAB
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
@@ -20,7 +20,7 @@ interface UpdateTableColab {
 }
 
 class IUpdateTableColab @Inject constructor(
-    private val getToken: GetToken,
+    private val token: Token,
     private val colabRepository: ColabRepository
 ): UpdateTableColab {
 
@@ -31,7 +31,7 @@ class IUpdateTableColab @Inject constructor(
         flowCallUpdate(getClassAndMethod()) {
 
             emitProgress(count, sizeAll, LevelUpdate.RECOVERY, TB_COLAB)
-            val token = getToken().getOrThrow()
+            val token = token().getOrThrow()
             val entityList = colabRepository.listAll(token).getOrThrow()
 
             emitProgress(count, sizeAll, LevelUpdate.CLEAN, TB_COLAB)

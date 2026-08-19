@@ -68,92 +68,128 @@ class ConfigScreenTest {
     @Inject
     lateinit var releaseDao: ReleaseDao
 
-    private val resultTokenFailure = """{"idServ":1a}""".trimIndent()
+    private val resultTokenFailure = """{"status": "success", "idServ": "1a"}""".trimIndent()
 
-    private val resultToken = """{"idServ":1}""".trimIndent()
+    private val resultToken = """{"status": "success", "idServ": 1}""".trimIndent()
 
     private val resultColabFailure = """
-        [
-            {"reg":19759a,"name":"ANDERSON DA SILVA DELGADO"},
-            {"reg":18017,"name":"RONALDO"}
-        ]
+        {
+            "status": "success",
+            "data": [
+                {"reg":"19759a","name":"ANDERSON DA SILVA DELGADO"},
+                {"reg":18017,"name":"RONALDO"}
+            ]
+        }
     """.trimIndent()
 
     private val resultColabRepeated = """
-        [
-            {"reg":19759,"name":"ANDERSON DA SILVA DELGADO"},
-            {"reg":19759,"name":"ANDERSON DA SILVA DELGADO"}
-        ]
+        {
+            "status": "success",
+            "data": [
+                {"reg":19759,"name":"ANDERSON DA SILVA DELGADO"},
+                {"reg":19759,"name":"ANDERSON DA SILVA DELGADO"}
+            ]
+        }
     """.trimIndent()
 
     private val resultColab = """
-        [
-            {"reg":19759,"name":"ANDERSON DA SILVA DELGADO"},
-            {"reg":18017,"name":"RONALDO GOMES"}
-        ]
+        {
+            "status": "success",
+            "data": [
+                {"reg":19759,"name":"ANDERSON DA SILVA DELGADO"},
+                {"reg":18017,"name":"RONALDO GOMES"}
+            ]
+        }
     """.trimIndent()
 
     private val resultEquipFailure = """
-        [
-            {"id":1a,"nro":1,"cdOperClass":1,"description":"Equip1"},
-            {"id":2,"nro":2,"cdOperClass":2,"description":"Equip2"}
-        ]
+        {
+            "status": "success",
+            "data": [
+                {"id":"1a","nro":1,"cdOperClass":1,"description":"Equip1"},
+                {"id":2,"nro":2,"cdOperClass":2,"description":"Equip2"}
+            ]
+        }
     """.trimIndent()
 
     private val resultEquipRepeated = """
-        [
-            {"id":1,"nro":1,"cdOperClass":1,"description":"Equip1"},
-            {"id":1,"nro":1,"cdOperClass":1,"description":"Equip1"}
-        ]
+        {
+            "status": "success",
+            "data": [
+                {"id":1,"nro":1,"cdOperClass":1,"description":"Equip1"},
+                {"id":1,"nro":1,"cdOperClass":1,"description":"Equip1"}
+            ]
+        }
     """.trimIndent()
 
     private val resultEquip = """
-        [
-            {"id":1,"nro":1,"cdOperClass":1,"description":"Equip1"},
-            {"id":2,"nro":2,"cdOperClass":2,"description":"Equip2"}
-        ]
+        {
+            "status": "success",
+            "data": [
+                {"id":1,"nro":1,"cdOperClass":1,"description":"Equip1"},
+                {"id":2,"nro":2,"cdOperClass":2,"description":"Equip2"}
+            ]
+        }
     """.trimIndent()
 
     private val resultFrontFailure = """
-        [
-            {"id":1a,"cd":1,"description":"Front1"},
-            {"id":2,"cd":2,"description":"Front2"}
-        ]
+        {
+            "status": "success",
+            "data": [
+                {"id":"1a","cd":1,"description":"Front1"},
+                {"id":2,"cd":2,"description":"Front2"}
+            ]
+        }
     """.trimIndent()
 
     private val resultFrontRepeated = """
-        [
-            {"id":1,"cd":1,"description":"Front1"},
-            {"id":1,"cd":1,"description":"Front2"}
-        ]
+        {
+            "status": "success",
+            "data": [
+                {"id":1,"cd":1,"description":"Front1"},
+                {"id":1,"cd":1,"description":"Front2"}
+            ]
+        }
     """.trimIndent()
 
     private val resultFront = """
-        [
-            {"id":1,"cd":1,"description":"Front1"},
-            {"id":2,"cd":2,"description":"Front2"}
-        ]
+        {
+            "status": "success",
+            "data": [
+                {"id":1,"cd":1,"description":"Front1"},
+                {"id":2,"cd":2,"description":"Front2"}
+            ]
+        }
     """.trimIndent()
 
     val resultReleaseFailure = """
-        [
-          {"id":1a,"nroOS":1,"idPropAgr":1,"descPropAgr":"Release1","idFront":1},
-          {"id":2,"nroOS":2,"idPropAgr":2,"descPropAgr":"Release2","idFront":2}
-        ]
+        {
+            "status": "success",
+            "data": [
+              {"id":"1a","nroOS":1,"idPropAgr":1,"descPropAgr":"Release1","idFront":1},
+              {"id":2,"nroOS":2,"idPropAgr":2,"descPropAgr":"Release2","idFront":2}
+            ]
+        }
     """.trimIndent()
 
     val resultReleaseRepeated = """
-        [
-          {"id":1,"nroOS":1,"idPropAgr":1,"descPropAgr":"Release1","idFront":1},
-          {"id":1,"nroOS":1,"idPropAgr":1,"descPropAgr":"Release1","idFront":1}
-        ]
+        {
+            "status": "success",
+            "data": [
+              {"id":1,"nroOS":1,"idPropAgr":1,"descPropAgr":"Release1","idFront":1},
+              {"id":1,"nroOS":1,"idPropAgr":1,"descPropAgr":"Release1","idFront":1}
+            ]
+        }
     """.trimIndent()
 
     val resultRelease = """
-        [
-          {"id":1,"nroOS":1,"idPropAgr":1,"descPropAgr":"Release1","idFront":1},
-          {"id":2,"nroOS":2,"idPropAgr":2,"descPropAgr":"Release2","idFront":2}
-        ]
+        {
+            "status": "success",
+            "data": [
+              {"id":1,"nroOS":1,"idPropAgr":1,"descPropAgr":"Release1","idFront":1},
+              {"id":2,"nroOS":2,"idPropAgr":2,"descPropAgr":"Release2","idFront":2}
+            ]
+        }
     """.trimIndent()
 
     private val dispatcherTokenFailure: Dispatcher = object : Dispatcher() {
@@ -509,7 +545,7 @@ class ConfigScreenTest {
             composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE RECUPERACAO DE TOKEN! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.onSaveAndUpdate -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateConfig -> IConfigRepository.send -> IConfigRetrofitDatasource.recoverToken -> com.google.gson.stream.MalformedJsonException: Use JsonReader.setStrictness(Strictness.LENIENT) to accept malformed JSON at line 1 column 11 path \$.idServ\n" +
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE RECUPERACAO DE TOKEN! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.onSaveAndUpdate -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateConfig -> IConfigRepository.send -> IConfigRetrofitDatasource.recoverToken -> com.google.gson.stream.MalformedJsonException: Use JsonReader.setStrictness(Strictness.LENIENT) to accept malformed JSON at line 1 column 12 path \$.idServ\n" +
                     "See https://github.com/google/gson/blob/main/Troubleshooting.md#malformed-json")
 
             composeTestRule.waitUntilTimeout()
@@ -525,6 +561,7 @@ class ConfigScreenTest {
             )
 
             composeTestRule.waitUntilTimeout(10_000)
+            mockWebServer.shutdown()
         }
 
     @Test
@@ -553,7 +590,7 @@ class ConfigScreenTest {
             composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> ConfigViewModel.onSaveAndUpdate -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableColab -> IColabRepository.listAll -> IColabRetrofitDatasource.listAll -> java.io.EOFException: End of input at line 1 column 1 path \$")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> ConfigViewModel.onSaveAndUpdate -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableColab -> IColabRepository.listAll -> IColabRetrofitDatasource.listAll -> java.lang.NullPointerException")
 
             composeTestRule.waitUntilTimeout()
 
@@ -586,6 +623,7 @@ class ConfigScreenTest {
             )
 
             composeTestRule.waitUntilTimeout(10_000)
+            mockWebServer.shutdown()
         }
 
     @Test
@@ -614,8 +652,7 @@ class ConfigScreenTest {
             composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> ConfigViewModel.onSaveAndUpdate -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableColab -> IColabRepository.listAll -> IColabRetrofitDatasource.listAll -> com.google.gson.stream.MalformedJsonException: Use JsonReader.setStrictness(Strictness.LENIENT) to accept malformed JSON at line 2 column 12 path \$[0].reg\n" +
-                    "See https://github.com/google/gson/blob/main/Troubleshooting.md#malformed-json")
+            assert(composeTestRule.onNodeWithTag("text_alert_dialog_simple").fetchSemanticsNode().config.getOrElse(androidx.compose.ui.semantics.SemanticsProperties.Text) { emptyList() }.any { it.text.contains("MalformedJsonException") })
 
             composeTestRule.waitUntilTimeout()
 
@@ -654,6 +691,7 @@ class ConfigScreenTest {
             )
 
             composeTestRule.waitUntilTimeout(10_000)
+            mockWebServer.shutdown()
         }
 
     @Test
@@ -721,6 +759,7 @@ class ConfigScreenTest {
             )
 
             composeTestRule.waitUntilTimeout(10_000)
+            mockWebServer.shutdown()
 
         }
 
@@ -750,13 +789,14 @@ class ConfigScreenTest {
             composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. ConfigViewModel.onSaveAndUpdate -> ConfigViewModel.updateAllDatabase -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableEquip -> IEquipRepository.listAll -> IEquipRetrofitDatasource.listAll -> java.io.EOFException: End of input at line 1 column 1 path \$")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. ConfigViewModel.onSaveAndUpdate -> ConfigViewModel.updateAllDatabase -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableEquip -> IEquipRepository.listAll -> IEquipRetrofitDatasource.listAll -> java.lang.NullPointerException")
 
             composeTestRule.waitUntilTimeout()
 
             asserts(1)
 
             composeTestRule.waitUntilTimeout(10_000)
+            mockWebServer.shutdown()
 
         }
 
@@ -786,8 +826,7 @@ class ConfigScreenTest {
             composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. ConfigViewModel.onSaveAndUpdate -> ConfigViewModel.updateAllDatabase -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableEquip -> IEquipRepository.listAll -> IEquipRetrofitDatasource.listAll -> com.google.gson.stream.MalformedJsonException: Use JsonReader.setStrictness(Strictness.LENIENT) to accept malformed JSON at line 2 column 11 path \$[0].id\n" +
-                    "See https://github.com/google/gson/blob/main/Troubleshooting.md#malformed-json")
+            assert(composeTestRule.onNodeWithTag("text_alert_dialog_simple").fetchSemanticsNode().config.getOrElse(androidx.compose.ui.semantics.SemanticsProperties.Text) { emptyList() }.any { it.text.contains("MalformedJsonException") })
 
             composeTestRule.waitUntilTimeout()
 
@@ -800,6 +839,7 @@ class ConfigScreenTest {
             )
 
             composeTestRule.waitUntilTimeout(10_000)
+            mockWebServer.shutdown()
 
         }
 
@@ -842,6 +882,7 @@ class ConfigScreenTest {
             )
 
             composeTestRule.waitUntilTimeout(10_000)
+            mockWebServer.shutdown()
 
         }
 
@@ -871,7 +912,7 @@ class ConfigScreenTest {
             composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. ConfigViewModel.onSaveAndUpdate -> ConfigViewModel.updateAllDatabase -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableFront -> IFrontRepository.listAll -> IFrontRetrofitDatasource.listAll -> java.io.EOFException: End of input at line 1 column 1 path \$")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. ConfigViewModel.onSaveAndUpdate -> ConfigViewModel.updateAllDatabase -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableFront -> IFrontRepository.listAll -> IFrontRetrofitDatasource.listAll -> java.lang.NullPointerException")
 
             composeTestRule.waitUntilTimeout()
 
@@ -884,6 +925,7 @@ class ConfigScreenTest {
             )
 
             composeTestRule.waitUntilTimeout(10_000)
+            mockWebServer.shutdown()
 
         }
 
@@ -913,8 +955,7 @@ class ConfigScreenTest {
             composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. ConfigViewModel.onSaveAndUpdate -> ConfigViewModel.updateAllDatabase -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableFront -> IFrontRepository.listAll -> IFrontRetrofitDatasource.listAll -> com.google.gson.stream.MalformedJsonException: Use JsonReader.setStrictness(Strictness.LENIENT) to accept malformed JSON at line 2 column 11 path \$[0].id\n" +
-                    "See https://github.com/google/gson/blob/main/Troubleshooting.md#malformed-json")
+            assert(composeTestRule.onNodeWithTag("text_alert_dialog_simple").fetchSemanticsNode().config.getOrElse(androidx.compose.ui.semantics.SemanticsProperties.Text) { emptyList() }.any { it.text.contains("MalformedJsonException") })
 
             composeTestRule.waitUntilTimeout()
 
@@ -927,6 +968,7 @@ class ConfigScreenTest {
             )
 
             composeTestRule.waitUntilTimeout(10_000)
+            mockWebServer.shutdown()
 
         }
 
@@ -969,6 +1011,7 @@ class ConfigScreenTest {
             )
 
             composeTestRule.waitUntilTimeout(10_000)
+            mockWebServer.shutdown()
 
         }
 
@@ -998,7 +1041,7 @@ class ConfigScreenTest {
             composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. ConfigViewModel.onSaveAndUpdate -> ConfigViewModel.updateAllDatabase -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableRelease -> IReleaseRepository.listAll -> IReleaseRetrofitDatasource.listAll -> java.io.EOFException: End of input at line 1 column 1 path \$")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. ConfigViewModel.onSaveAndUpdate -> ConfigViewModel.updateAllDatabase -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableRelease -> IReleaseRepository.listAll -> IReleaseRetrofitDatasource.listAll -> java.lang.NullPointerException")
 
             composeTestRule.waitUntilTimeout()
 
@@ -1011,6 +1054,7 @@ class ConfigScreenTest {
             )
 
             composeTestRule.waitUntilTimeout(10_000)
+            mockWebServer.shutdown()
 
         }
 
@@ -1040,8 +1084,7 @@ class ConfigScreenTest {
             composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. ConfigViewModel.onSaveAndUpdate -> ConfigViewModel.updateAllDatabase -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableRelease -> IReleaseRepository.listAll -> IReleaseRetrofitDatasource.listAll -> com.google.gson.stream.MalformedJsonException: Use JsonReader.setStrictness(Strictness.LENIENT) to accept malformed JSON at line 2 column 9 path \$[0].id\n" +
-                    "See https://github.com/google/gson/blob/main/Troubleshooting.md#malformed-json")
+            assert(composeTestRule.onNodeWithTag("text_alert_dialog_simple").fetchSemanticsNode().config.getOrElse(androidx.compose.ui.semantics.SemanticsProperties.Text) { emptyList() }.any { it.text.contains("MalformedJsonException") })
 
             composeTestRule.waitUntilTimeout()
 
@@ -1054,6 +1097,7 @@ class ConfigScreenTest {
             )
 
             composeTestRule.waitUntilTimeout(10_000)
+            mockWebServer.shutdown()
 
         }
 
@@ -1096,6 +1140,7 @@ class ConfigScreenTest {
             )
 
             composeTestRule.waitUntilTimeout(10_000)
+            mockWebServer.shutdown()
 
         }
 
@@ -1132,6 +1177,7 @@ class ConfigScreenTest {
             asserts(4, true)
 
             composeTestRule.waitUntilTimeout(10_000)
+            mockWebServer.shutdown()
 
         }
 

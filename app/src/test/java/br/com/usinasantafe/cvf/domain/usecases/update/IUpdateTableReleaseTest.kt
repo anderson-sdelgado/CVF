@@ -2,7 +2,7 @@ package br.com.usinasantafe.cvf.domain.usecases.update
 
 import br.com.usinasantafe.cvf.domain.entities.stable.Release
 import br.com.usinasantafe.cvf.domain.repositories.stable.ReleaseRepository
-import br.com.usinasantafe.cvf.domain.usecases.common.GetToken
+import br.com.usinasantafe.cvf.domain.usecases.common.Token
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.LevelUpdate
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
@@ -20,10 +20,10 @@ import kotlin.test.assertEquals
 
 class IUpdateTableReleaseTest {
 
-    private val getToken = mock<GetToken>()
+    private val token = mock<Token>()
     private val releaseRepository = mock<ReleaseRepository>()
     private val usecase = IUpdateTableRelease(
-        getToken = getToken,
+        token = token,
         releaseRepository = releaseRepository
     )
 
@@ -31,7 +31,7 @@ class IUpdateTableReleaseTest {
     fun `Check return failure if have error in GetToken`() =
         runTest {
             whenever(
-                getToken()
+                token()
             ).thenReturn(
                 resultFailure(
                     "GetToken",
@@ -73,7 +73,7 @@ class IUpdateTableReleaseTest {
     fun `Check return failure if have error in ReleaseRepository recoverAll`() =
         runTest {
             whenever(
-                getToken()
+                token()
             ).thenReturn(
                 Result.success("token")
             )
@@ -129,7 +129,7 @@ class IUpdateTableReleaseTest {
                 )
             )
             whenever(
-                getToken()
+                token()
             ).thenReturn(
                 Result.success("token")
             )
@@ -201,7 +201,7 @@ class IUpdateTableReleaseTest {
                 )
             )
             whenever(
-                getToken()
+                token()
             ).thenReturn(
                 Result.success("token")
             )
@@ -283,7 +283,7 @@ class IUpdateTableReleaseTest {
                 )
             )
             whenever(
-                getToken()
+                token()
             ).thenReturn(
                 Result.success("token")
             )

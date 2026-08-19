@@ -169,7 +169,7 @@ class ReleaseScreenTest {
             composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. ReleaseViewModel.updateAllDatabase -> ReleaseViewModel.update -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableRelease -> IGetToken -> IConfigRepository.get -> number is required -> java.lang.NullPointerException: number is required")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. ReleaseViewModel.updateAllDatabase -> ReleaseViewModel.update -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableRelease -> IReleaseRepository.listAll -> IReleaseRetrofitDatasource.listAll -> IGetToken -> IConfigRepository.get -> number is required -> java.lang.NullPointerException: number is required")
 
             composeTestRule.waitUntilTimeout(20_000)
 
@@ -215,7 +215,7 @@ class ReleaseScreenTest {
             val server = MockWebServer()
             server.start()
             server.enqueue(
-                MockResponse().setBody("{ error : Authorization header is missing }")
+                MockResponse().setBody("{ \"status\": \"error\", \"failure\": \"Authorization header is missing\" }")
             )
             BaseUrlModuleTest.url = server.url("/").toString()
 
@@ -242,11 +242,10 @@ class ReleaseScreenTest {
             composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. ReleaseViewModel.updateAllDatabase -> ReleaseViewModel.update -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableRelease -> IReleaseRepository.listAll -> IReleaseRetrofitDatasource.listAll -> java.lang.IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 2 path \$\n" +
-                    "See https://github.com/google/gson/blob/main/Troubleshooting.md#unexpected-json-structure")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. ReleaseViewModel.updateAllDatabase -> ReleaseViewModel.update -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableRelease -> IReleaseRepository.listAll -> IReleaseRetrofitDatasource.listAll -> java.lang.Exception: Authorization header is missing")
 
             composeTestRule.waitUntilTimeout(20_000)
-
+            server.shutdown()
         }
 
     @Test
@@ -254,10 +253,13 @@ class ReleaseScreenTest {
         runTest {
 
             val response = """
-                [
-                  {"id":6,"nroOS":6,"idPropAgr":6,"descPropAgr":"Test6","idFront":3},
-                  {"id":7,"nroOS":7,"idPropAgr":7,"descPropAgr":"Test7","idFront":3}
-                ]
+                {
+                    "status": "success",
+                    "data": [
+                      {"id":6,"nroOS":6,"idPropAgr":6,"descPropAgr":"Test6","idFront":3},
+                      {"id":7,"nroOS":7,"idPropAgr":7,"descPropAgr":"Test7","idFront":3}
+                    ]
+                }
             """.trimIndent()
             val server = MockWebServer()
             server.start()
@@ -283,8 +285,16 @@ class ReleaseScreenTest {
 
             setContent(3)
 
-            composeTestRule.waitUntilTimeout(20_000)
+            composeTestRule.onNodeWithText("ATUALIZAR DADOS")
+                .performClick()
 
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("tag_button_ok_alert_dialog_simple")
+                .performClick()
+
+            composeTestRule.waitUntilTimeout(20_000)
+            server.shutdown()
         }
 
     @Test
@@ -292,10 +302,13 @@ class ReleaseScreenTest {
         runTest {
 
             val response = """
-                [
-                  {"id":6,"nroOS":6,"idPropAgr":6,"descPropAgr":"Test6","idFront":3},
-                  {"id":7,"nroOS":7,"idPropAgr":7,"descPropAgr":"Test7","idFront":3}
-                ]
+                {
+                    "status": "success",
+                    "data": [
+                      {"id":6,"nroOS":6,"idPropAgr":6,"descPropAgr":"Test6","idFront":3},
+                      {"id":7,"nroOS":7,"idPropAgr":7,"descPropAgr":"Test7","idFront":3}
+                    ]
+                }
             """.trimIndent()
             val server = MockWebServer()
             server.start()
@@ -329,7 +342,7 @@ class ReleaseScreenTest {
             setContent(0)
 
             composeTestRule.waitUntilTimeout(20_000)
-
+            server.shutdown()
         }
 
     @SuppressLint("ViewModelConstructorInComposable")
