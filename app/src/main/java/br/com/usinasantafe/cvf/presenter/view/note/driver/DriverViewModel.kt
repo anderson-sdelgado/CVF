@@ -3,8 +3,13 @@ package br.com.usinasantafe.cvf.presenter.view.note.driver
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cvf.domain.usecases.manager.GetDescRelease
+import br.com.usinasantafe.cvf.domain.usecases.note.CheckRegDriver
+import br.com.usinasantafe.cvf.domain.usecases.note.DeleteNote
 import br.com.usinasantafe.cvf.domain.usecases.note.GetRegDriver
+import br.com.usinasantafe.cvf.domain.usecases.note.SetRegDriver
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableColab
+import br.com.usinasantafe.cvf.lib.Errors
+import br.com.usinasantafe.cvf.lib.OptionMenu
 import br.com.usinasantafe.cvf.lib.TypeButton
 import br.com.usinasantafe.cvf.presenter.view.addTextField
 import br.com.usinasantafe.cvf.presenter.view.clearTextField
@@ -13,7 +18,9 @@ import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
 import br.com.usinasantafe.cvf.utils.executeUpdateSteps
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
 import br.com.usinasantafe.cvf.utils.onFailureUpdate
+import br.com.usinasantafe.cvf.utils.onSuccessUpdateAccess
 import br.com.usinasantafe.cvf.utils.sizeUpdate
+import br.com.usinasantafe.cvf.utils.withFailure
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,6 +30,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class DriverState(
+    val flagMenu: Boolean = false,
+    val optionMenu: OptionMenu = OptionMenu.DELETE,
     val descRelease: String = "",
     val text: String = "",
     override val status: UiStatusStateUpdate = UiStatusStateUpdate()
@@ -36,7 +45,10 @@ data class DriverState(
 @HiltViewModel
 class DriverViewModel @Inject constructor(
     private val getDescRelease: GetDescRelease,
-    private val getRegDriver: GetRegDriver
+    private val getRegDriver: GetRegDriver,
+    private val deleteNote: DeleteNote,
+    private val checkRegDriver: CheckRegDriver,
+    private val setRegDriver: SetRegDriver
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(DriverState())
@@ -50,13 +62,27 @@ class DriverViewModel @Inject constructor(
 
     fun onCloseDialog() = updateState { copy(status = status.copy(flagDialog = false, flagFailure = false)) }
 
-    fun recoverData() = viewModelScope.launch {
+    fun onOptionMenu(optionMenu: OptionMenu) = viewModelScope.launch {
+        runCatching {
+            if (optionMenu == OptionMenu.DELETE) {
+                deleteNote().getOrThrow()
+            }
+        }
+            .onSuccess {
+                updateState {
+                    copy(optionMenu = optionMenu, flagMenu = true)
+                }
+            }
+            .onFailureUpdate(getClassAndMethod(), ::updateState)
+    }
 
+
+
+    fun recoverData() = viewModelScope.launch {
         data class RecoverDriver(
             val descRelease: String,
             val text: String
         )
-
         runCatching {
             val descRelease = getDescRelease().getOrThrow()
             val text = getRegDriver().getOrThrow() ?: ""
@@ -66,7 +92,7 @@ class DriverViewModel @Inject constructor(
             )
         }
             .onSuccess {
-                updateState { copy(descRelease = it.descRelease, text = it.text) }
+                updateState { copy(descRelease = it.descRelease, text = it.text, flagMenu = false) }
             }
             .onFailureUpdate(getClassAndMethod(), ::updateState)
     }
@@ -75,11 +101,27 @@ class DriverViewModel @Inject constructor(
         when (typeButton) {
             TypeButton.NUMERIC -> updateState { copy(text = addTextField(this.text, text)) }
             TypeButton.CLEAN -> updateState { copy(text = clearTextField(this.text)) }
-            TypeButton.OK -> {}
+            TypeButton.OK -> set()
             TypeButton.UPDATE -> {}
         }
     }
 
-    fun set() {}
+    fun set() = viewModelScope.launch {
+        runCatching {
+            if(state.text.isEmpty()) {
+                updateState { withFailure(getClassAndMethod(), Errors.FIELD_EMPTY) }
+                return@launch
+            }
+            updateState { copy(status = status.copy(flagProgress = true)) }
+            val check = checkRegDriver(state.text).getOrThrow()
+            if(!check) {
+                updateState { withFailure(getClassAndMethod(), Errors.INVALID) }
+                return@launch
+            }
+            setRegDriver(state.text).getOrThrow()
+        }
+            .onSuccessUpdateAccess(::updateState)
+            .onFailureUpdate(getClassAndMethod(), ::updateState)
+    }
 
 }

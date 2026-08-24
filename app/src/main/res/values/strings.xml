@@ -44,4 +44,5 @@
     <string name="text_menu">MENU</string>
     <string name="text_close">SAIR</string>
     <string name="text_unknown_error">UNKNONW ERROR</string>
+    <string name="text_msg_check_data">CHECANDO \"%1$s\" NO WEB SERVICE. POR FAVOR, AGUARDE A CHECAGEM PARA DAR ANDAMENTO AO APONTAMENTO.</string>
 </resources>

@@ -100,7 +100,10 @@ class DriverScreenTest {
 
     private fun setContent(){
         composeTestRule.setContent {
-            DriverScreen()
+            DriverScreen(
+                onNavTruck = {},
+                onNavPassword = {}
+            )
         }
     }
 

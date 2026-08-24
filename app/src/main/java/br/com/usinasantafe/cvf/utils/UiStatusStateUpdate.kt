@@ -204,7 +204,12 @@ interface UiStateWithStatusUpdate<T : UiStateWithStatusUpdate<T>> {
                 flagAccess = check,
                 flagDialog = !check,
                 flagFailure = !check,
-                errors = Errors.INVALID
+                errors = Errors.INVALID,
+                failure = "",
+                flagProgress = false,
+                currentProgress = 0f,
+                levelUpdate = null,
+                tableUpdate = ""
             )
         )
 

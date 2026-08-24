@@ -14,6 +14,7 @@ fun msg(levelUpdate: LevelUpdate?, failure: String, tableUpdate: String): String
         LevelUpdate.SAVE_TOKEN -> stringResource(id = R.string.text_msg_save_token)
         LevelUpdate.FINISH_UPDATE_INITIAL -> stringResource(id = R.string.text_msg_finish_update_initial)
         LevelUpdate.FINISH_UPDATE_COMPLETED -> stringResource(id = R.string.text_msg_finish_update_completed)
+        LevelUpdate.CHECK_DATA -> stringResource(id = R.string.text_msg_check_data, tableUpdate)
         else -> failure
     }
 }

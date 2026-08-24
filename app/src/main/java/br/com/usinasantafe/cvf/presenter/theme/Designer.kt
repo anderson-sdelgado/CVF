@@ -58,6 +58,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.usinasantafe.cvf.lib.Errors
+import br.com.usinasantafe.cvf.lib.OptionMenu
 import br.com.usinasantafe.cvf.lib.errors
 import br.com.usinasantafe.cvf.lib.msg
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
@@ -454,7 +455,6 @@ fun AlertDialogCheckDesign(
 fun CheckboxDefault(
     id: Int,
     text: String,
-    font: Int = 22,
     paddingStart: Int = 10,
     checked: Boolean,
     onChecked: (Boolean) -> Unit
@@ -503,7 +503,10 @@ fun MsgErrors(errors: Errors, onClickOk: () -> Unit, failure: String, value: Str
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun topBar(title: String): @Composable () -> Unit = {
+fun topBar(
+    title: String,
+    onOptionMenu: (OptionMenu) -> Unit
+): @Composable () -> Unit = {
     var menuExpanded by remember { mutableStateOf(false) }
     TopAppBar(
         title = {
@@ -522,7 +525,7 @@ fun topBar(title: String): @Composable () -> Unit = {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(
-                    onClick = {},
+                    onClick = { onOptionMenu(OptionMenu.DELETE) },
                     Modifier.testTag(TAG_TOP_BAR_DELETE)
                 ) {
                     Icon(
@@ -557,6 +560,7 @@ fun topBar(title: String): @Composable () -> Unit = {
                             },
                             onClick = {
                                 menuExpanded = false
+                                onOptionMenu(OptionMenu.CONFIG)
                             },
                             leadingIcon = {
                                 Icon(
@@ -572,6 +576,7 @@ fun topBar(title: String): @Composable () -> Unit = {
                             },
                             onClick = {
                                 menuExpanded = false
+                                onOptionMenu(OptionMenu.FRONT)
                             },
                             leadingIcon = {
                                 Icon(
@@ -587,6 +592,7 @@ fun topBar(title: String): @Composable () -> Unit = {
                             },
                             onClick = {
                                 menuExpanded = false
+                                onOptionMenu(OptionMenu.RELEASE)
                             },
                             leadingIcon = {
                                 Icon(
@@ -602,6 +608,7 @@ fun topBar(title: String): @Composable () -> Unit = {
                             },
                             onClick = {
                                 menuExpanded = false
+                                onOptionMenu(OptionMenu.CLOSE)
                             },
                             leadingIcon = {
                                 Icon(
@@ -617,4 +624,49 @@ fun topBar(title: String): @Composable () -> Unit = {
         }
     )
 }
+
+@Composable
+fun ProgressIndeterminate(status : UiStatusStateUpdate){
+    val msgProgress = msg(status.levelUpdate, status.failure, status.tableUpdate)
+    AlertDialogProgressIndeterminateDesign(
+        text = msgProgress
+    )
+}
+
+@Composable
+fun AlertDialogProgressIndeterminateDesign(
+    text: String,
+) {
+    return Dialog(
+        onDismissRequest = {}
+    ) {
+        Card {
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+            ) {
+                Text(
+                    text = "ATENÇÃO",
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.padding(vertical = 4.dp))
+                LinearProgressIndicator(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(30.dp),
+                )
+                Spacer(modifier = Modifier.padding(vertical = 4.dp))
+                Text(
+                    text = text,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            }
+        }
+    }
+}
+
 

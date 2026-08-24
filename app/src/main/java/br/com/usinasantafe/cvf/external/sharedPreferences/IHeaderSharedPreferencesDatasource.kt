@@ -5,6 +5,7 @@ import androidx.core.content.edit
 import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.HeaderSharedPreferencesDatasource
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.HeaderSharedPreferencesModel
 import br.com.usinasantafe.cvf.lib.BASE_SHARED_PREFERENCES_TABLE_HEADER
+import br.com.usinasantafe.cvf.lib.BASE_SHARED_PREFERENCES_TABLE_MANAGER
 import br.com.usinasantafe.cvf.utils.EmptyResult
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
 import br.com.usinasantafe.cvf.utils.result
@@ -37,6 +38,13 @@ class IHeaderSharedPreferencesDatasource @Inject constructor(
             save(model).getOrThrow()
         }
 
+    override suspend fun clean(): EmptyResult =
+        result(getClassAndMethod()) {
+            sharedPreferences.edit {
+                remove(BASE_SHARED_PREFERENCES_TABLE_HEADER)
+            }
+        }
+
     suspend fun get(): Result<HeaderSharedPreferencesModel> =
         result(getClassAndMethod()) {
             val data = sharedPreferences.getString(
@@ -49,5 +57,14 @@ class IHeaderSharedPreferencesDatasource @Inject constructor(
                 HeaderSharedPreferencesModel::class.java
             )
             model
+        }
+
+    suspend fun has(): Result<Boolean> =
+        result(getClassAndMethod()) {
+            val data = sharedPreferences.getString(
+                BASE_SHARED_PREFERENCES_TABLE_MANAGER,
+                null
+            )
+            !data.isNullOrEmpty()
         }
 }

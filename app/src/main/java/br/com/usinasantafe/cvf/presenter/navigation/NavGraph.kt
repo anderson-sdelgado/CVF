@@ -79,7 +79,10 @@ fun NavigationGraph(
         }
 
         composable(DRIVER_ROUTE) {
-            DriverScreen()
+            DriverScreen(
+                onNavPassword = {},
+                onNavTruck = {}
+            )
         }
 
     }

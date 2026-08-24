@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cvf.infra.repositories.variable
 
 import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.HeaderSharedPreferencesDatasource
+import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.TrailerSharedPreferencesDatasource
 import br.com.usinasantafe.cvf.utils.resultFailure
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -13,8 +14,10 @@ import kotlin.test.assertEquals
 class INoteRepositoryTest {
 
     private val headerSharedPreferencesDatasource = mock<HeaderSharedPreferencesDatasource>()
+    private val trailerSharedPreferencesDatasource = mock<TrailerSharedPreferencesDatasource>()
     private val repository = INoteRepository(
-        headerSharedPreferencesDatasource = headerSharedPreferencesDatasource
+        headerSharedPreferencesDatasource = headerSharedPreferencesDatasource,
+        trailerSharedPreferencesDatasource = trailerSharedPreferencesDatasource
     )
 
     @Test
@@ -120,4 +123,70 @@ class INoteRepositoryTest {
             )
         }
 
+    @Test
+    fun `deleteNote - Check return failure if have error in TrailerSharedPreferencesDatasource clean`() =
+        runTest {
+            whenever(
+                trailerSharedPreferencesDatasource.clean()
+            ).thenReturn(
+                resultFailure(
+                    "ITrailerSharedPreferencesDatasource.clean",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.deleteNote()
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "INoteRepository.deleteNote -> ITrailerSharedPreferencesDatasource.clean",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `deleteNote - Check return failure if have error in HeaderSharedPreferencesDatasource clean`() =
+        runTest {
+            whenever(
+                headerSharedPreferencesDatasource.clean()
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderSharedPreferencesDatasource.clean",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.deleteNote()
+            verify(trailerSharedPreferencesDatasource, atLeastOnce()).clean()
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "INoteRepository.deleteNote -> IHeaderSharedPreferencesDatasource.clean",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `deleteNote - Check return correct if function execute successfully`() =
+        runTest {
+            val result = repository.deleteNote()
+            verify(trailerSharedPreferencesDatasource, atLeastOnce()).clean()
+            verify(headerSharedPreferencesDatasource, atLeastOnce()).clean()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+        }
 }

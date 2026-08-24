@@ -92,5 +92,37 @@ class IHeaderSharedPreferencesDatasourceTest {
             )
         }
 
+    @Test
+    fun `clean - Check clean data in table`() =
+        runTest {
+            val data = HeaderSharedPreferencesModel(
+                regDriver = 19759
+            )
+            datasource.save(data)
+            val resultBefore = datasource.getRegDriver()
+            assertEquals(
+                true,
+                resultBefore.isSuccess
+            )
+            assertEquals(
+                19759,
+                resultBefore.getOrNull()
+            )
+            val result = datasource.clean()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            val resultAfter = datasource.getRegDriver()
+            assertEquals(
+                true,
+                resultAfter.isSuccess
+            )
+            assertEquals(
+                null,
+                resultAfter.getOrNull()
+            )
+        }
+
 
 }

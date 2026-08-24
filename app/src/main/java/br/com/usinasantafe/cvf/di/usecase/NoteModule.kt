@@ -31,4 +31,8 @@ interface NoteModule {
     @Singleton
     fun bindCheckRegDriver(usecase: ICheckRegDriver): CheckRegDriver
 
+    @Binds
+    @Singleton
+    fun bindDeleteNote(usecase: IDeleteNote): DeleteNote
+
 }

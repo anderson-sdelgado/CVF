@@ -28,12 +28,13 @@ class ICheckRegDriverTest {
     @get:Rule
     val hiltRule = HiltAndroidRule(this)
 
+    @Inject
+    lateinit var usecase: CheckRegDriver
+
     @BindValue
     @JvmField
     val checkNetwork: CheckNetwork = mock()
 
-    @Inject
-    lateinit var usecase: CheckRegDriver
 
     @Inject
     lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource

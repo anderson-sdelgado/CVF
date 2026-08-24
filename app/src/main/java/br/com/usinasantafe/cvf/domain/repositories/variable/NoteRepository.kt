@@ -7,4 +7,5 @@ interface NoteRepository {
     suspend fun send(token: String, idServ: Int): EmptyResult
     suspend fun getRegDriver(): Result<Long?>
     suspend fun setRegDriver(reg: Long): EmptyResult
+    suspend fun deleteNote(): EmptyResult
 }
