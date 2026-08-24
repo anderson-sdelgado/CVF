@@ -139,7 +139,7 @@ dependencies {
 
     // --- Local Unit Tests (test) ---
     testImplementation(libs.junit)
-    testImplementation(libs.mockito)
+    testImplementation(libs.mockito.kotlin)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.core.ktx)
     testImplementation(libs.robolectric)
@@ -165,7 +165,8 @@ dependencies {
     androidTestImplementation(libs.room.testing)
     androidTestImplementation(libs.work.testing)
     androidTestImplementation(libs.hilt.android.testing)
-    androidTestImplementation(libs.mockito)
+    androidTestImplementation(libs.mockito.kotlin)
+    androidTestImplementation(libs.mockito.android)
     androidTestImplementation(kotlin("test"))
 }
 

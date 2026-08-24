@@ -10,7 +10,7 @@ import br.com.usinasantafe.cvf.lib.TB_FRONT
 interface FrontDao {
 
     @Insert
-    fun insertAll(list: List<FrontRoomModel>)
+    suspend fun insertAll(list: List<FrontRoomModel>)
 
     @Query("DELETE FROM $TB_FRONT")
     suspend fun deleteAll()

@@ -29,13 +29,13 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
 
     override suspend fun get(): Result<ConfigSharedPreferencesModel> =
         result(getClassAndMethod()) {
-            val config = sharedPreferences.getString(
+            val data = sharedPreferences.getString(
                 BASE_SHARED_PREFERENCES_TABLE_CONFIG,
                 null
             )
-            if(config.isNullOrEmpty()) return@result ConfigSharedPreferencesModel()
+            if(data.isNullOrEmpty()) return@result ConfigSharedPreferencesModel()
             val model = Gson().fromJson(
-                config,
+                data,
                 ConfigSharedPreferencesModel::class.java
             )
             model.sharedPreferencesModelToEntity()

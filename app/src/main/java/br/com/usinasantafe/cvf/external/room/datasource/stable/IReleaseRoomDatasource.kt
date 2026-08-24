@@ -27,4 +27,9 @@ class IReleaseRoomDatasource @Inject constructor(
             releaseDao.listByIdFront(idFront)
         }
 
+    override suspend fun getById(id: Int): Result<ReleaseRoomModel> =
+        result(getClassAndMethod()) {
+            releaseDao.getById(id)
+        }
+
 }

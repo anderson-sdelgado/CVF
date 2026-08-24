@@ -3,7 +3,6 @@ package br.com.usinasantafe.cvf.external.sharedPreferences
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.test.core.app.ApplicationProvider
-import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ManagerSharedPreferencesModel
 import br.com.usinasantafe.cvf.lib.StatusSend
 import kotlinx.coroutines.test.runTest
@@ -167,7 +166,7 @@ class IManagerSharedPreferencesDatasourceTest {
                 idFront = 20,
                 dateHourCreate = Date(1786647885000),
                 dateHourUpdate = Date(1786647885000),
-                stateSend = StatusSend.SENT
+                statusSend = StatusSend.SENT
             )
             datasource.save(data)
             val result = datasource.get()
@@ -181,7 +180,7 @@ class IManagerSharedPreferencesDatasourceTest {
                     idFront = 20,
                     dateHourCreate = Date(1786647885000),
                     dateHourUpdate = Date(1786647885000),
-                    stateSend = StatusSend.SENT
+                    statusSend = StatusSend.SENT
                 ),
                 result.getOrNull()!!
             )
@@ -210,7 +209,7 @@ class IManagerSharedPreferencesDatasourceTest {
                 idFront = 20,
                 dateHourCreate = Date(1786647885000),
                 dateHourUpdate = Date(1786647885000),
-                stateSend = StatusSend.SENT
+                statusSend = StatusSend.SENT
             )
             datasource.save(data)
             val result = datasource.hasSend()
@@ -232,7 +231,7 @@ class IManagerSharedPreferencesDatasourceTest {
                 idFront = 20,
                 dateHourCreate = Date(1786647885000),
                 dateHourUpdate = Date(1786647885000),
-                stateSend = StatusSend.SEND
+                statusSend = StatusSend.SEND
             )
             datasource.save(data)
             val result = datasource.hasSend()
@@ -246,4 +245,41 @@ class IManagerSharedPreferencesDatasourceTest {
             )
         }
 
+    @Test
+    fun `setFlagUpdate - Check return data correct the Config SharedPreferences internal`() =
+        runTest {
+            val data = ManagerSharedPreferencesModel(
+                idRelease = 1,
+                idFront = 20,
+                dateHourCreate = Date(1786647885000),
+                dateHourUpdate = Date(1786647885000),
+                statusSend = StatusSend.SEND
+            )
+            datasource.save(data)
+            val resultBefore = datasource.get()
+            assertEquals(
+                true,
+                resultBefore.isSuccess
+            )
+            val modelBefore = resultBefore.getOrNull()!!
+            assertEquals(
+                StatusSend.SEND,
+                modelBefore.statusSend
+            )
+            val result = datasource.setStatusSend(StatusSend.SENT)
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            val resultAfter = datasource.get()
+            assertEquals(
+                true,
+                resultAfter.isSuccess
+            )
+            val modelAfter = resultAfter.getOrNull()!!
+            assertEquals(
+                StatusSend.SENT,
+                modelAfter.statusSend
+            )
+        }
 }

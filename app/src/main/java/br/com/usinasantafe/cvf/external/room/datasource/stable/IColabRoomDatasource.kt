@@ -22,4 +22,19 @@ class IColabRoomDatasource @Inject constructor(
             colabDao.deleteAll()
         }
 
+    override suspend fun deleteByReg(reg: Long): EmptyResult =
+        result(getClassAndMethod()) {
+            colabDao.deleteByReg(reg)
+        }
+
+    override suspend fun add(model: ColabRoomModel): EmptyResult =
+        result(getClassAndMethod()) {
+            if (!colabDao.checkByReg(model.reg)) colabDao.insert(model)
+        }
+
+    override suspend fun checkByReg(reg: Long): Result<Boolean> =
+        result(getClassAndMethod()) {
+            colabDao.checkByReg(reg)
+        }
+
 }

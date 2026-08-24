@@ -27,4 +27,8 @@ interface NoteModule {
     @Singleton
     fun bindSendNote(usecase: ISendNote): SendNote
 
+    @Binds
+    @Singleton
+    fun bindCheckRegDriver(usecase: ICheckRegDriver): CheckRegDriver
+
 }

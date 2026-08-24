@@ -22,16 +22,16 @@ class ISetRegDriverTest {
         runTest {
             val result = usecase("de25")
             assertEquals(
-                result.isFailure,
-                true
+                true,
+                result.isFailure
             )
             assertEquals(
+                "ISetRegDriver -> stringToLong",
                 result.exceptionOrNull()!!.message,
-                "ISetRegDriver -> toLong"
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.NumberFormatException: For input string: \"de25\""
+                "java.lang.NumberFormatException: For input string: \"de25\"",
+                result.exceptionOrNull()!!.cause.toString()
             )
         }
 

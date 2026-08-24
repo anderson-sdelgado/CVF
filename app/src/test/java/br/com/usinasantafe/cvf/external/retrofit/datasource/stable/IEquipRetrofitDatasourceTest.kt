@@ -15,11 +15,7 @@ import org.robolectric.annotation.Config
 import kotlin.intArrayOf
 import kotlin.test.assertEquals
 
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [34])
 class IEquipRetrofitDatasourceTest {
-
-    private val context = mock<Context>()
 
     @Test
     fun `Check return failure if token is invalid`() =
@@ -33,7 +29,7 @@ class IEquipRetrofitDatasourceTest {
                 server.url("/").toString()
             )
             val service = retrofit.create(EquipApi::class.java)
-            val datasource = IEquipRetrofitDatasource(context, service)
+            val datasource = IEquipRetrofitDatasource(service)
             val result = datasource.listAll("TOKEN")
             assertEquals(
                 true,
@@ -62,7 +58,7 @@ class IEquipRetrofitDatasourceTest {
                 server.url("/").toString()
             )
             val service = retrofit.create(EquipApi::class.java)
-            val datasource = IEquipRetrofitDatasource(context, service)
+            val datasource = IEquipRetrofitDatasource(service)
             val result = datasource.listAll("TOKEN")
 
             assertEquals(
@@ -92,7 +88,7 @@ class IEquipRetrofitDatasourceTest {
                 server.url("").toString()
             )
             val service = retrofit.create(EquipApi::class.java)
-            val datasource = IEquipRetrofitDatasource(context, service)
+            val datasource = IEquipRetrofitDatasource( service)
             val result = datasource.listAll("TOKEN")
 
             assertEquals(

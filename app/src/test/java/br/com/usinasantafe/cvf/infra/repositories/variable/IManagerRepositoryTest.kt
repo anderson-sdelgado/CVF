@@ -5,6 +5,7 @@ import br.com.usinasantafe.cvf.infra.datasource.retrofit.variable.ManagerRetrofi
 import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.ManagerSharedPreferencesDatasource
 import br.com.usinasantafe.cvf.infra.models.retrofit.variable.ManagerRetrofitModelOutput
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ManagerSharedPreferencesModel
+import br.com.usinasantafe.cvf.lib.StatusSend
 import br.com.usinasantafe.cvf.utils.resultFailure
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -12,6 +13,7 @@ import org.mockito.Mockito.mock
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.atLeastOnce
+import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import kotlin.test.assertEquals
@@ -380,6 +382,7 @@ class IManagerRepositoryTest {
                 )
             )
             val result = repository.send("token", 3)
+            verify(managerSharedPreferencesDatasource, never()).setStatusSend(StatusSend.SENT)
             assertEquals(
                 true,
                 result.isFailure
@@ -393,6 +396,52 @@ class IManagerRepositoryTest {
                 result.exceptionOrNull()!!.cause.toString()
             )
         }
+
+    @Test
+    fun `send - Check return failure if have error in ManagerSharedPreferencesDatasource setStatusSend`() =
+        runTest {
+            whenever(
+                managerSharedPreferencesDatasource.get()
+            ).thenReturn(
+                Result.success(
+                    ManagerSharedPreferencesModel(
+                        idRelease = 1,
+                        idFront = 2
+                    )
+                )
+            )
+            whenever(
+                managerSharedPreferencesDatasource.setStatusSend(StatusSend.SENT)
+            ).thenReturn(
+                resultFailure(
+                    "IManagerSharedPreferencesDatasource.setStatusSend",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.send("token", 3)
+            verify(managerRetrofitDatasource, atLeastOnce()).send(
+                "token",
+                ManagerRetrofitModelOutput(
+                    idRelease = 1,
+                    idFront = 2,
+                    idServ = 3
+                )
+            )
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IManagerRepository.send -> IManagerSharedPreferencesDatasource.setStatusSend",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
 
     @Test
     fun `send - Check return correct if function execute successfully`() =
@@ -419,6 +468,7 @@ class IManagerRepositoryTest {
                     idServ = 3
                 )
             )
+            verify(managerSharedPreferencesDatasource, atLeastOnce()).setStatusSend(StatusSend.SENT)
             assertEquals(
                 true,
                 result.isSuccess

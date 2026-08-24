@@ -13,6 +13,7 @@ import br.com.usinasantafe.cvf.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cvf.external.room.dao.stable.FrontDao
 import br.com.usinasantafe.cvf.external.room.dao.stable.ReleaseDao
 import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
+import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.ManagerSharedPreferencesDatasource
 import br.com.usinasantafe.cvf.infra.models.room.stable.ColabRoomModel
 import br.com.usinasantafe.cvf.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cvf.infra.models.room.stable.FrontRoomModel
@@ -23,6 +24,7 @@ import br.com.usinasantafe.cvf.lib.WEB_ALL_COLAB
 import br.com.usinasantafe.cvf.lib.WEB_ALL_EQUIP
 import br.com.usinasantafe.cvf.lib.WEB_ALL_FRONT
 import br.com.usinasantafe.cvf.lib.WEB_ALL_RELEASE
+import br.com.usinasantafe.cvf.lib.WEB_SAVE_MANAGER
 import br.com.usinasantafe.cvf.lib.WEB_SAVE_TOKEN
 import br.com.usinasantafe.cvf.presenter.MainActivity
 import br.com.usinasantafe.cvf.presenter.theme.TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE
@@ -67,6 +69,9 @@ class ConfigFlowTest {
 
     @Inject
     lateinit var releaseDao: ReleaseDao
+
+    @Inject
+    lateinit var managerSharedPreferencesDatasource: ManagerSharedPreferencesDatasource
 
     companion object {
 
@@ -123,6 +128,13 @@ class ConfigFlowTest {
             }
         """.trimIndent()
 
+        private val resultManager = """
+            {
+                "status": "success",
+                "idServ": 1
+            }
+        """.trimIndent()
+
         @BeforeClass
         @JvmStatic
         fun setupClass() {
@@ -136,6 +148,7 @@ class ConfigFlowTest {
                         "/$WEB_ALL_EQUIP" -> MockResponse().setBody(resultEquip)
                         "/$WEB_ALL_FRONT" -> MockResponse().setBody(resultFront)
                         "/$WEB_ALL_RELEASE" -> MockResponse().setBody(resultRelease)
+                        "/$WEB_SAVE_MANAGER" -> MockResponse().setBody(resultManager)
                         else -> MockResponse().setResponseCode(404)
                     }
                 }
@@ -277,9 +290,30 @@ class ConfigFlowTest {
 
             Log.d("TestDebug", "Position 16")
 
+            composeTestRule.waitUntilTimeout()
+
+            checkData()
+
+            Log.d("TestDebug", "Position 17")
+
             composeTestRule.waitUntilTimeout(10_000)
 
         }
+
+    private suspend fun checkData() {
+
+        val resultGet = managerSharedPreferencesDatasource.get()
+        assertEquals(
+            resultGet.isSuccess,
+            true
+        )
+        val model = resultGet.getOrNull()!!
+        assertEquals(
+            StatusSend.SENT,
+            model.statusSend
+        )
+
+    }
 
     private suspend fun asserts() {
 

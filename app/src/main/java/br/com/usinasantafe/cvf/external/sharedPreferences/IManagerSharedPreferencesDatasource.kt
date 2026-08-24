@@ -31,7 +31,7 @@ class IManagerSharedPreferencesDatasource @Inject constructor(
         result(getClassAndMethod()) {
             if(!has().getOrThrow()) return@result false
             val model = get().getOrThrow()
-            model.stateSend == StatusSend.SEND
+            model.statusSend == StatusSend.SEND
         }
 
     override suspend fun clean(): EmptyResult =
@@ -76,8 +76,11 @@ class IManagerSharedPreferencesDatasource @Inject constructor(
             model
         }
 
-    override suspend fun setStatusSend(statusSend: StatusSend): EmptyResult {
-        TODO("Not yet implemented")
-    }
+    override suspend fun setStatusSend(statusSend: StatusSend): EmptyResult =
+        result(getClassAndMethod()) {
+            val model = get().getOrThrow()
+            model.statusSend = statusSend
+            save(model).getOrThrow()
+        }
 
 }

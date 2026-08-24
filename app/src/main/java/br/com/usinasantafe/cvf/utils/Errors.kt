@@ -4,7 +4,8 @@ import br.com.usinasantafe.cvf.lib.Errors
 import timber.log.Timber
 
 const val ERROR_STRING_TO_LONG = "stringToLong"
-
+const val UNKNOWN_ERROR = "Unknown Error"
+const val NO_CONNECTION = "No Connection"
 
 fun resultFailure(
     context: String,

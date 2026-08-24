@@ -15,11 +15,7 @@ import org.robolectric.annotation.Config
 import kotlin.intArrayOf
 import kotlin.test.assertEquals
 
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [34])
 class IConfigRetrofitDatasourceTest {
-
-    private val context = mock<Context>()
 
     @Test
     fun `recoverToken - Check return failure if have failure Connection`() =
@@ -33,7 +29,7 @@ class IConfigRetrofitDatasourceTest {
             server.enqueue(MockResponse().setBody(resultFailureBD))
             val retrofit = provideRetrofitTest(server.url("/").toString())
             val service = retrofit.create(ConfigApi::class.java)
-            val dataSource = IConfigRetrofitDatasource(context, service)
+            val dataSource = IConfigRetrofitDatasource(service)
             val result = dataSource.recoverToken(retrofitModelOutput)
             assertEquals(
                 true,
@@ -62,7 +58,7 @@ class IConfigRetrofitDatasourceTest {
             server.enqueue(MockResponse().setBody(resultFailureInfoIncorrect))
             val retrofit = provideRetrofitTest(server.url("/").toString())
             val service = retrofit.create(ConfigApi::class.java)
-            val dataSource = IConfigRetrofitDatasource(context, service)
+            val dataSource = IConfigRetrofitDatasource(service)
             val result = dataSource.recoverToken(retrofitModelOutput)
             assertEquals(
                 true,
@@ -92,7 +88,7 @@ class IConfigRetrofitDatasourceTest {
             server.enqueue(MockResponse().setResponseCode(404))
             val retrofit = provideRetrofitTest(server.url("/").toString())
             val service = retrofit.create(ConfigApi::class.java)
-            val dataSource = IConfigRetrofitDatasource(context, service)
+            val dataSource = IConfigRetrofitDatasource(service)
             val result = dataSource.recoverToken(retrofitModelOutput)
             assertEquals(
                 true,
@@ -121,7 +117,7 @@ class IConfigRetrofitDatasourceTest {
             server.enqueue(MockResponse().setBody(result))
             val retrofit = provideRetrofitTest(server.url("/").toString())
             val service = retrofit.create(ConfigApi::class.java)
-            val dataSource = IConfigRetrofitDatasource(context, service)
+            val dataSource = IConfigRetrofitDatasource(service)
             val result = dataSource.recoverToken(retrofitModelOutput)
             assertEquals(
                 true,

@@ -10,12 +10,14 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import br.com.usinasantafe.cvf.presenter.navigation.Args.ID_FRONT_ARG
 import br.com.usinasantafe.cvf.presenter.navigation.Routes.CONFIG_ROUTE
+import br.com.usinasantafe.cvf.presenter.navigation.Routes.DRIVER_ROUTE
 import br.com.usinasantafe.cvf.presenter.navigation.Routes.FRONT_ROUTE
 import br.com.usinasantafe.cvf.presenter.navigation.Routes.RELEASE_ROUTE
 import br.com.usinasantafe.cvf.presenter.navigation.Routes.SPLASH_ROUTE
 import br.com.usinasantafe.cvf.presenter.view.configuration.config.ConfigScreen
 import br.com.usinasantafe.cvf.presenter.view.manager.front.FrontScreen
 import br.com.usinasantafe.cvf.presenter.view.manager.release.ReleaseScreen
+import br.com.usinasantafe.cvf.presenter.view.note.driver.DriverScreen
 import br.com.usinasantafe.cvf.presenter.view.splash.SplashScreen
 
 
@@ -72,8 +74,12 @@ fun NavigationGraph(
                         idFront = entry.arguments?.getInt(ID_FRONT_ARG)!!
                     )
                 },
-                onNavDriver = {}
+                onNavDriver = navActions::navigateToDriver
             )
+        }
+
+        composable(DRIVER_ROUTE) {
+            DriverScreen()
         }
 
     }

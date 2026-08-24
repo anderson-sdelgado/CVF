@@ -22,7 +22,7 @@ interface SharedPreferencesDatasourceModule {
 
     @Binds
     @Singleton
-    fun bindPreCECSharedPreferencesDatasource(dataSource: IPreCECSharedPreferencesDatasource): PreCECSharedPreferencesDatasource
+    fun bindPreCECSharedPreferencesDatasource(dataSource: IHeaderSharedPreferencesDatasource): HeaderSharedPreferencesDatasource
 
     @Binds
     @Singleton

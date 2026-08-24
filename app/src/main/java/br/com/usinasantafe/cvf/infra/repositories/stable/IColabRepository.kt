@@ -5,6 +5,7 @@ import br.com.usinasantafe.cvf.domain.repositories.stable.ColabRepository
 import br.com.usinasantafe.cvf.infra.datasource.retrofit.stable.ColabRetrofitDatasource
 import br.com.usinasantafe.cvf.infra.datasource.room.stable.ColabRoomDatasource
 import br.com.usinasantafe.cvf.infra.models.retrofit.stable.retrofitModelToEntity
+import br.com.usinasantafe.cvf.infra.models.retrofit.stable.retrofitModelToRoomModel
 import br.com.usinasantafe.cvf.infra.models.room.stable.entityToRoomModel
 import br.com.usinasantafe.cvf.utils.EmptyResult
 import br.com.usinasantafe.cvf.utils.call
@@ -32,6 +33,22 @@ class IColabRepository @Inject constructor(
         call(getClassAndMethod()) {
             val modelList = colabRetrofitDatasource.listAll(token).getOrThrow()
             modelList.map { it.retrofitModelToEntity() }
+        }
+
+    override suspend fun check(token: String, reg: Long): Result<Boolean> =
+        call(getClassAndMethod()) {
+            val model = colabRetrofitDatasource.check(token, reg).getOrThrow()
+            if(model.reg == 0L) {
+                colabRoomDatasource.deleteByReg(reg).getOrThrow()
+                return@call false
+            }
+            colabRoomDatasource.add(model.retrofitModelToRoomModel()).getOrThrow()
+            return@call true
+        }
+
+    override suspend fun check(reg: Long): Result<Boolean> =
+        call(getClassAndMethod()) {
+            colabRoomDatasource.checkByReg(reg).getOrThrow()
         }
 
 }

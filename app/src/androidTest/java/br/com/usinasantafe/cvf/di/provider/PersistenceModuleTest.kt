@@ -35,9 +35,9 @@ object PersistenceModuleTest {
         logging.level = HttpLoggingInterceptor.Level.BODY
 
         return OkHttpClient.Builder()
-            .connectTimeout(1, TimeUnit.MINUTES)
-            .writeTimeout(1, TimeUnit.MINUTES)
-            .readTimeout(1, TimeUnit.MINUTES)
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
+            .writeTimeout(10, TimeUnit.SECONDS)
             .addInterceptor(logging)
             .build()
     }

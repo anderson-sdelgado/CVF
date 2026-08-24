@@ -14,7 +14,7 @@ interface VariableRoomDatasourceModule {
 
     @Binds
     @Singleton
-    fun bindPreCECRoomDatasource(datasource: IPreCECRoomDatasource): PreCECRoomDatasource
+    fun bindPreCECRoomDatasource(datasource: IHeaderRoomDatasource): HeaderRoomDatasource
 
     @Binds
     @Singleton

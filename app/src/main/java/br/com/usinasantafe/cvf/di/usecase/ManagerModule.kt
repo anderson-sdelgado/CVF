@@ -34,4 +34,8 @@ interface ManagerModule {
     @Binds
     @Singleton
     fun bindSendManager(usecase: ISendManager): SendManager
+
+    @Binds
+    @Singleton
+    fun bindGetDescRelease(usecase: IGetDescRelease): GetDescRelease
 }

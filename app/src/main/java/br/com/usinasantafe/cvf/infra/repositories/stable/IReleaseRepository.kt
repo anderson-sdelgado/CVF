@@ -41,4 +41,9 @@ class IReleaseRepository @Inject constructor(
             roomModelList.map { it.roomModelToEntity() }
         }
 
+    override suspend fun getById(id: Int): Result<Release> =
+        call(getClassAndMethod()) {
+            releaseRoomDatasource.getById(id).getOrThrow().roomModelToEntity()
+        }
+
 }

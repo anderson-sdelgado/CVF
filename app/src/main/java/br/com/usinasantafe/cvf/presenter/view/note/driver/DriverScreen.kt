@@ -36,9 +36,11 @@ fun DriverScreen(
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
         LaunchedEffect(Unit) {
+            viewModel.recoverData()
         }
 
         DriverContent(
+            descRelease = uiState.descRelease,
             text = uiState.text,
             onTextField = viewModel::onTextField,
             onCloseDialog = viewModel::onCloseDialog,
@@ -50,6 +52,7 @@ fun DriverScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DriverContent(
+    descRelease: String,
     text: String,
     onTextField: (String, TypeButton) -> Unit,
     onCloseDialog: () -> Unit,
@@ -58,12 +61,7 @@ fun DriverContent(
 ) {
     Scaffold(
         topBar = topBar(
-            stringResource(
-                id = R.string.text_item_release,
-                "1235456",
-                "125426",
-                "RANCHO AZUL"
-            )
+            title = descRelease
         ),
         modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
@@ -111,6 +109,7 @@ fun DriverPagePreview() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             DriverContent(
+                descRelease = "LIBERAÇÃO: 3\nO.S.: 3\nPROPRIEDADE: Test3",
                 text = "",
                 onTextField = { _, _ -> },
                 onCloseDialog = {},

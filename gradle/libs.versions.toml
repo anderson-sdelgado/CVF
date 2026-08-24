@@ -1,5 +1,5 @@
 [versions]
-agp = "9.3.1"
+agp = "9.3.2"
 kotlin = "2.4.10"
 coreKtx = "1.19.0"
 junit = "4.13.2"
@@ -18,17 +18,16 @@ kotlinxCoroutines = "1.11.0"
 coreKtxVersion = "1.7.0"
 robolectric = "4.16.1"
 retrofit = "3.0.0"
-okhttp = "5.4.0"
+okhttp = "5.5.0"
 kotlinxSerializationJson = "1.11.0"
-mockWebServer = "5.4.0"
-guava = "33.6.0-android"
+mockWebServer = "5.5.0"
+guava = "33.7.1-android"
 room = "2.8.4"
 ksp = "2.3.9"
 work = "2.11.2"
 hilt = "2.60.1"
 hiltExt = "1.4.0"
 androidxHiltNavigationCompose = "1.4.0"
-core = "1.47.0"
 timber = "5.0.1"
 material3 = "1.4.0"
 
@@ -55,8 +54,9 @@ androidx-navigation-testing = { group = "androidx.navigation", name = "navigatio
 androidx-tracing = { group = "androidx.tracing", name = "tracing", version.ref = "tracing" }
 androidx-lifecycle-compose-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 androidx-lifecycle-compose-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
-mockito = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockitoKotlin" }
+mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockitoKotlin" }
 mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockitoCore" }
+mockito-android = { group = "org.mockito", name = "mockito-android", version.ref = "mockitoCore" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
 core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "coreKtxVersion" }

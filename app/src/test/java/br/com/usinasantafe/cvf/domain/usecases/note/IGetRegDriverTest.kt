@@ -43,6 +43,25 @@ class IGetRegDriverTest {
         }
 
     @Test
+    fun `Check return correct if regDriver is null`() =
+        runTest {
+            whenever(
+                noteRepository.getRegDriver()
+            ).thenReturn(
+                Result.success(null)
+            )
+            val result = usecase()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                null,
+                result.getOrNull()
+            )
+        }
+
+    @Test
     fun `Check return correct if function execute successfully`() =
         runTest {
             whenever(
@@ -56,7 +75,7 @@ class IGetRegDriverTest {
                 result.isSuccess
             )
             assertEquals(
-                19759,
+                "19759",
                 result.getOrNull()!!
             )
         }

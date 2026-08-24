@@ -9,19 +9,19 @@ import br.com.usinasantafe.cvf.infra.models.retrofit.variable.ConfigRetrofitMode
 import br.com.usinasantafe.cvf.infra.models.retrofit.variable.ConfigRetrofitModelOutput
 import br.com.usinasantafe.cvf.infra.models.retrofit.variable.retrofitModelToEntity
 import br.com.usinasantafe.cvf.lib.SUCCESS
+import br.com.usinasantafe.cvf.utils.UNKNOWN_ERROR
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
 import br.com.usinasantafe.cvf.utils.result
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class IConfigRetrofitDatasource @Inject constructor(
-    @ApplicationContext private val context: Context,
     @DefaultApi private val configApi: ConfigApi
 ): ConfigRetrofitDatasource {
     override suspend fun recoverToken(retrofitModelOutput: ConfigRetrofitModelOutput): Result<ConfigRetrofitModelInput> =
         result(getClassAndMethod()) {
             val result = configApi.send(retrofitModelOutput).body()!!
-            if (result.status != SUCCESS) throw Exception(result.failure ?: context.getString(R.string.text_unknown_error))
+            if (result.status != SUCCESS) throw Exception(result.failure ?: UNKNOWN_ERROR)
             result.retrofitModelToEntity()
             result
         }

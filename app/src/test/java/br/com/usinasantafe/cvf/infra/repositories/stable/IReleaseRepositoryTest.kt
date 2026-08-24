@@ -279,4 +279,64 @@ class IReleaseRepositoryTest {
             )
         }
 
+    @Test
+    fun `getById - Check return failure if have error in ReleaseRoomDatasource getById`() =
+        runTest {
+            whenever(
+                releaseRoomDatasource.getById(1)
+            ).thenReturn(
+                resultFailure(
+                    "IReleaseRoomDatasource.getById",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getById(1)
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IReleaseRepository.getById -> IReleaseRoomDatasource.getById",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `getById - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                releaseRoomDatasource.getById(1)
+            ).thenReturn(
+                Result.success(
+                    ReleaseRoomModel(
+                        id = 1,
+                        nroOS = 1,
+                        idPropAgr = 1,
+                        descPropAgr = "Test",
+                        idFront = 1
+                    )
+                )
+            )
+            val result = repository.getById(1)
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                Release(
+                    id = 1,
+                    nroOS = 1,
+                    idPropAgr = 1,
+                    descPropAgr = "Test",
+                    idFront = 1
+                ),
+                result.getOrNull()!!
+            )
+        }
+
 }

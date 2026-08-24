@@ -10,7 +10,7 @@ import br.com.usinasantafe.cvf.lib.TB_RELEASE
 interface ReleaseDao {
 
     @Insert
-    fun insertAll(list: List<ReleaseRoomModel>)
+    suspend fun insertAll(list: List<ReleaseRoomModel>)
 
     @Query("DELETE FROM $TB_RELEASE")
     suspend fun deleteAll()
@@ -20,5 +20,8 @@ interface ReleaseDao {
 
     @Query("SELECT * FROM $TB_RELEASE WHERE idFront = :idFront")
     suspend fun listByIdFront(idFront: Int): List<ReleaseRoomModel>
+
+    @Query("SELECT * FROM $TB_RELEASE WHERE id = :id")
+    suspend fun getById(id: Int): ReleaseRoomModel
 
 }

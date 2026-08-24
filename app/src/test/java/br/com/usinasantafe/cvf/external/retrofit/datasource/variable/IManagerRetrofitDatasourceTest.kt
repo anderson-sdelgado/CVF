@@ -1,27 +1,15 @@
 package br.com.usinasantafe.cvf.external.retrofit.datasource.variable
 
-import android.content.Context
 import br.com.usinasantafe.cvf.di.external.ApiModuleTest.provideRetrofitTest
-import br.com.usinasantafe.cvf.external.retrofit.api.variable.ConfigApi
 import br.com.usinasantafe.cvf.external.retrofit.api.variable.ManagerApi
-import br.com.usinasantafe.cvf.infra.models.retrofit.variable.ConfigRetrofitModelOutput
 import br.com.usinasantafe.cvf.infra.models.retrofit.variable.ManagerRetrofitModelOutput
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mockito.mock
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
-import kotlin.intArrayOf
 import kotlin.test.assertEquals
 
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [34])
 class IManagerRetrofitDatasourceTest {
-
-    private val context = mock<Context>()
 
     private val model = ManagerRetrofitModelOutput(
         idFront = 1,
@@ -42,7 +30,7 @@ class IManagerRetrofitDatasourceTest {
                 server.url("/").toString()
             )
             val service = retrofit.create(ManagerApi::class.java)
-            val datasource = IManagerRetrofitDatasource(context, service)
+            val datasource = IManagerRetrofitDatasource(service)
             val result = datasource.send("TOKEN", model)
             assertEquals(
                 true,
@@ -60,14 +48,14 @@ class IManagerRetrofitDatasourceTest {
         }
 
     @Test
-    fun `send - Check return failure if sent data incorrect`() =
+    fun `send - Check return failure if web service return data incorrect`() =
         runTest {
             val server = MockWebServer()
             server.start()
             server.enqueue(MockResponse().setBody(resultFailureInfoIncorrect))
             val retrofit = provideRetrofitTest(server.url("/").toString())
             val service = retrofit.create(ManagerApi::class.java)
-            val datasource = IManagerRetrofitDatasource(context, service)
+            val datasource = IManagerRetrofitDatasource(service)
             val result = datasource.send("TOKEN", model)
             assertEquals(
                 true,
@@ -86,7 +74,7 @@ class IManagerRetrofitDatasourceTest {
         }
 
     @Test
-    fun `send - Check return failure if have Error 404`() =
+    fun `send - Check return failure if web service return Error 404`() =
         runTest {
             val server = MockWebServer()
             server.start()
@@ -97,7 +85,7 @@ class IManagerRetrofitDatasourceTest {
                 server.url("/").toString()
             )
             val service = retrofit.create(ManagerApi::class.java)
-            val datasource = IManagerRetrofitDatasource(context, service)
+            val datasource = IManagerRetrofitDatasource(service)
             val result = datasource.send("TOKEN", model)
             assertEquals(
                 true,
@@ -122,7 +110,7 @@ class IManagerRetrofitDatasourceTest {
             server.enqueue(MockResponse().setBody(result))
             val retrofit = provideRetrofitTest(server.url("/").toString())
             val service = retrofit.create(ManagerApi::class.java)
-            val datasource = IManagerRetrofitDatasource(context, service)
+            val datasource = IManagerRetrofitDatasource(service)
             val result = datasource.send("TOKEN", model)
             assertEquals(
                 true,
@@ -156,4 +144,5 @@ class IManagerRetrofitDatasourceTest {
             "idServ": 16
         }
     """.trimIndent()
+
 }

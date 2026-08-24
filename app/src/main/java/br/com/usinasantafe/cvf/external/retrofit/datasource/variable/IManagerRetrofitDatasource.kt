@@ -8,13 +8,13 @@ import br.com.usinasantafe.cvf.infra.datasource.retrofit.variable.ManagerRetrofi
 import br.com.usinasantafe.cvf.infra.models.retrofit.variable.ManagerRetrofitModelInput
 import br.com.usinasantafe.cvf.infra.models.retrofit.variable.ManagerRetrofitModelOutput
 import br.com.usinasantafe.cvf.lib.SUCCESS
+import br.com.usinasantafe.cvf.utils.UNKNOWN_ERROR
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
 import br.com.usinasantafe.cvf.utils.result
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class IManagerRetrofitDatasource @Inject constructor(
-    @ApplicationContext private val context: Context,
     @DefaultApi private val managerApi: ManagerApi
 ): ManagerRetrofitDatasource {
     override suspend fun send(
@@ -23,7 +23,7 @@ class IManagerRetrofitDatasource @Inject constructor(
     ): Result<ManagerRetrofitModelInput> =
         result(getClassAndMethod()) {
             val model = managerApi.send(token, model).body()!!
-            if (model.status != SUCCESS) throw Exception(model.failure ?: context.getString(R.string.text_unknown_error))
+            if (model.status != SUCCESS) throw Exception(model.failure ?: UNKNOWN_ERROR)
             model
         }
 }

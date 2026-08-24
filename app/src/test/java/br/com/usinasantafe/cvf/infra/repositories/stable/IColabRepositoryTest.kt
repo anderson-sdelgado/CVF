@@ -191,4 +191,212 @@ class IColabRepositoryTest {
             )
         }
 
+    @Test
+    fun `check(Retrofit) - Check return failure if have error in ColabRetrofitDatasource check`() =
+        runTest {
+            whenever(
+                colabRetrofitDatasource.check("token", 12345L)
+            ).thenReturn(
+                resultFailure(
+                    "IColabRetrofitDatasource.check",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.check("token", 12345L)
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IColabRepository.check -> IColabRetrofitDatasource.check",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `check(Retrofit) - Check return failure if have error in ColabRoomDatasource deleteByReg`() =
+        runTest {
+            whenever(
+                colabRetrofitDatasource.check("token", 12345L)
+            ).thenReturn(
+                Result.success(
+                    ColabRetrofitModel(
+                        reg = 0L,
+                        name = "NON-EXISTENT"
+                    )
+                )
+            )
+            whenever(
+                colabRoomDatasource.deleteByReg(12345L)
+            ).thenReturn(
+                resultFailure(
+                    "IColabRoomDatasource.deleteByReg",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.check("token", 12345L)
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IColabRepository.check -> IColabRoomDatasource.deleteByReg",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `check(Retrofit) - Check return false if function execute successfully and non-existent reg in web service`() =
+        runTest {
+            whenever(
+                colabRetrofitDatasource.check("token", 12345L)
+            ).thenReturn(
+                Result.success(
+                    ColabRetrofitModel(
+                        reg = 0L,
+                        name = "NON-EXISTENT"
+                    )
+                )
+            )
+            val result = repository.check("token", 12345L)
+            verify(colabRoomDatasource, atLeastOnce()).deleteByReg(12345L)
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                false,
+                result.getOrNull()!!
+            )
+        }
+
+    @Test
+    fun `check(Retrofit) - Check return failure if have error in ColabRoomDatasource add`() =
+        runTest {
+            whenever(
+                colabRetrofitDatasource.check("token", 12345L)
+            ).thenReturn(
+                Result.success(
+                    ColabRetrofitModel(
+                        reg = 12345L,
+                        name = "ANDERSON DA SILVA"
+                    )
+                )
+            )
+            whenever(
+                colabRoomDatasource.add(
+                    ColabRoomModel(
+                        reg = 12345L,
+                        name = "ANDERSON DA SILVA"
+                    )
+                )
+            ).thenReturn(
+                resultFailure(
+                    "IColabRoomDatasource.add",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.check("token", 12345L)
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IColabRepository.check -> IColabRoomDatasource.add",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `check(Retrofit) - Check return false if function execute successfully and existent reg in web service`() =
+        runTest {
+            whenever(
+                colabRetrofitDatasource.check("token", 12345L)
+            ).thenReturn(
+                Result.success(
+                    ColabRetrofitModel(
+                        reg = 12345L,
+                        name = "ANDERSON DA SILVA"
+                    )
+                )
+            )
+            val result = repository.check("token", 12345L)
+            verify(colabRoomDatasource, atLeastOnce()).add(
+                ColabRoomModel(
+                    reg = 12345L,
+                    name = "ANDERSON DA SILVA"
+                )
+            )
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                true,
+                result.getOrNull()!!
+            )
+        }
+
+    @Test
+    fun `check(Room) - Check return failure if have error in ColabRoomDatasource checkByReg`() =
+        runTest {
+            whenever(
+                colabRoomDatasource.checkByReg(12345L)
+            ).thenReturn(
+                resultFailure(
+                    "IColabRoomDatasource.checkByReg",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.check(12345L)
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IColabRepository.check -> IColabRoomDatasource.checkByReg",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `check - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                colabRoomDatasource.checkByReg(12345L)
+            ).thenReturn(
+                Result.success(false)
+            )
+            val result = repository.check(12345L)
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                false,
+                result.getOrNull()!!
+            )
+        }
+
+
 }

@@ -164,17 +164,17 @@ class IListReleaseTest {
                 listOf(
                     ItemCheckBoxScreenModel(
                         id = 1,
-                        desc = "LIBERAÇÃO: 1\n O.S.: 1\n PROPRIEDADE: Test1",
+                        desc = "LIBERAÇÃO: 1\nO.S.: 1\nPROPRIEDADE: Test1",
                         flag = false
                     ),
                     ItemCheckBoxScreenModel(
                         id = 2,
-                        desc = "LIBERAÇÃO: 2\n O.S.: 2\n PROPRIEDADE: Test2",
+                        desc = "LIBERAÇÃO: 2\nO.S.: 2\nPROPRIEDADE: Test2",
                         flag = false
                     ),
                     ItemCheckBoxScreenModel(
                         id = 3,
-                        desc = "LIBERAÇÃO: 3\n O.S.: 3\n PROPRIEDADE: Test3",
+                        desc = "LIBERAÇÃO: 3\nO.S.: 3\nPROPRIEDADE: Test3",
                         flag = false
                     )
                 ),
@@ -228,17 +228,17 @@ class IListReleaseTest {
                 listOf(
                     ItemCheckBoxScreenModel(
                         id = 1,
-                        desc = "LIBERAÇÃO: 1\n O.S.: 1\n PROPRIEDADE: Test1",
+                        desc = "LIBERAÇÃO: 1\nO.S.: 1\nPROPRIEDADE: Test1",
                         flag = false
                     ),
                     ItemCheckBoxScreenModel(
                         id = 2,
-                        desc = "LIBERAÇÃO: 2\n O.S.: 2\n PROPRIEDADE: Test2",
+                        desc = "LIBERAÇÃO: 2\nO.S.: 2\nPROPRIEDADE: Test2",
                         flag = true
                     ),
                     ItemCheckBoxScreenModel(
                         id = 3,
-                        desc = "LIBERAÇÃO: 3\n O.S.: 3\n PROPRIEDADE: Test3",
+                        desc = "LIBERAÇÃO: 3\nO.S.: 3\nPROPRIEDADE: Test3",
                         flag = false
                     )
                 ),

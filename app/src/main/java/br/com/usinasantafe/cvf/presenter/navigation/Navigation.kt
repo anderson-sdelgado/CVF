@@ -3,6 +3,7 @@ package br.com.usinasantafe.cvf.presenter.navigation
 import androidx.navigation.NavHostController
 import br.com.usinasantafe.cvf.presenter.navigation.Args.ID_FRONT_ARG
 import br.com.usinasantafe.cvf.presenter.navigation.Screens.CONFIG_SCREEN
+import br.com.usinasantafe.cvf.presenter.navigation.Screens.DRIVER_SCREEN
 import br.com.usinasantafe.cvf.presenter.navigation.Screens.FRONT_SCREEN
 import br.com.usinasantafe.cvf.presenter.navigation.Screens.PASSWORD_SCREEN
 import br.com.usinasantafe.cvf.presenter.navigation.Screens.RELEASE_SCREEN
@@ -14,6 +15,7 @@ object Screens {
     const val CONFIG_SCREEN = "configScreen"
     const val FRONT_SCREEN = "frontScreen"
     const val RELEASE_SCREEN = "releaseScreen"
+    const val DRIVER_SCREEN = "driverScreen"
 }
 
 object Args {
@@ -27,6 +29,7 @@ object Routes {
     const val CONFIG_ROUTE = CONFIG_SCREEN
     const val FRONT_ROUTE = "$FRONT_SCREEN/{$ID_FRONT_ARG}"
     const val RELEASE_ROUTE = "$RELEASE_SCREEN/{$ID_FRONT_ARG}"
+    const val DRIVER_ROUTE = DRIVER_SCREEN
 }
 
 class NavigationActions(private val navController: NavHostController) {
@@ -55,6 +58,10 @@ class NavigationActions(private val navController: NavHostController) {
 
     fun navigateToRelease(idFront: Int = 0) {
         navController.navigate("$RELEASE_SCREEN/$idFront")
+    }
+
+    fun navigateToDriver() {
+        navController.navigate(DRIVER_SCREEN)
     }
 
     //////////////////////////////////////////////////////////////////////

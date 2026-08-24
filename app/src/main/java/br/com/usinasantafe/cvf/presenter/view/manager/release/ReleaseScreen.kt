@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cvf.presenter.view.manager.release
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -51,6 +52,7 @@ fun ReleaseScreen(
             ReleaseContent(
                 list = list,
                 onCheckChanged = viewModel::onCheckChanged,
+                onSave = viewModel::save,
                 update = viewModel::update,
                 onCloseDialog = viewModel::onCloseDialog,
                 status = uiState.status,
@@ -66,6 +68,7 @@ fun ReleaseScreen(
 fun ReleaseContent(
     list: List<ItemCheckBoxScreenModel>,
     onCheckChanged: (Int, Boolean) -> Unit,
+    onSave: () -> Unit,
     update: () -> Unit,
     onCloseDialog: () -> Unit,
     status: UiStatusStateUpdate,
@@ -112,7 +115,7 @@ fun ReleaseContent(
                 )
             }
             Button(
-                onClick = {},
+                onClick = onSave,
                 modifier = Modifier
                     .weight(1f)
             ) {
@@ -153,6 +156,7 @@ fun ReleasePagePreview() {
             ReleaseContent(
                 list = listOf(),
                 onCheckChanged = { _, _ -> },
+                onSave = {},
                 update = {},
                 onCloseDialog = {},
                 status = UiStatusStateUpdate(
@@ -204,6 +208,7 @@ fun ReleasePagePreviewWithData() {
                     ),
                 ),
                 onCheckChanged = { _, _ -> },
+                onSave = {},
                 update = {},
                 onCloseDialog = {},
                 status = UiStatusStateUpdate(

@@ -159,4 +159,245 @@ class IColabRoomDatasourceTest {
             )
         }
 
+    @Test
+    fun `deleteByReg - Check delete row if execution correct`() =
+        runTest {
+            datasource.addAll(
+                listOf(
+                    ColabRoomModel(
+                        reg = 1,
+                        name = "TEST",
+                    ),
+                    ColabRoomModel(
+                        reg = 2,
+                        name = "TEST2",
+                    ),
+                    ColabRoomModel(
+                        reg = 3,
+                        name = "TEST3",
+                    ),
+                )
+            )
+            val qtdBefore = colabDao.all().size
+            assertEquals(
+                3,
+                qtdBefore
+            )
+            val result = datasource.deleteByReg(2)
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            val qtdAfter = colabDao.all().size
+            assertEquals(
+                2,
+                qtdAfter
+            )
+            val list = colabDao.all()
+            assertEquals(
+                2,
+                list.size
+            )
+            val model1 = list[0]
+            assertEquals(
+                ColabRoomModel(
+                    reg = 1,
+                    name = "TEST",
+                ),
+                model1
+            )
+            val model2 = list[1]
+            assertEquals(
+                ColabRoomModel(
+                    reg = 3,
+                    name = "TEST3",
+                ),
+                model2
+            )
+        }
+
+    @Test
+    fun `checkByReg - Check return false if not have row fielded`() =
+        runTest {
+            datasource.addAll(
+                listOf(
+                    ColabRoomModel(
+                        reg = 1,
+                        name = "TEST",
+                    ),
+                    ColabRoomModel(
+                        reg = 2,
+                        name = "TEST2",
+                    ),
+                    ColabRoomModel(
+                        reg = 3,
+                        name = "TEST3",
+                    ),
+                )
+            )
+            val result = datasource.checkByReg(4)
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                false,
+                result.getOrNull()!!
+            )
+        }
+
+    @Test
+    fun `checkByReg - Check return true if have row fielded`() =
+        runTest {
+            datasource.addAll(
+                listOf(
+                    ColabRoomModel(
+                        reg = 1,
+                        name = "TEST",
+                    ),
+                    ColabRoomModel(
+                        reg = 2,
+                        name = "TEST2",
+                    ),
+                    ColabRoomModel(
+                        reg = 3,
+                        name = "TEST3",
+                    ),
+                )
+            )
+            val result = datasource.checkByReg(3)
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                true,
+                result.getOrNull()!!
+            )
+        }
+
+    @Test
+    fun `add - Check not add if have row repeated`() =
+        runTest {
+            datasource.addAll(
+                listOf(
+                    ColabRoomModel(
+                        reg = 1,
+                        name = "TEST",
+                    ),
+                    ColabRoomModel(
+                        reg = 2,
+                        name = "TEST2",
+                    ),
+                    ColabRoomModel(
+                        reg = 3,
+                        name = "TEST3",
+                    ),
+                )
+            )
+            val qtdBefore = colabDao.all().size
+            assertEquals(
+                3,
+                qtdBefore
+            )
+            val result = datasource.add(
+                ColabRoomModel(
+                    reg = 2,
+                    name = "TEST2",
+                )
+            )
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            val qtdAfter = colabDao.all().size
+            assertEquals(
+                3,
+                qtdAfter
+            )
+            val list = colabDao.all()
+            assertEquals(
+                3,
+                list.size
+            )
+            assertEquals(
+                listOf(
+                    ColabRoomModel(
+                        reg = 1,
+                        name = "TEST",
+                    ),
+                    ColabRoomModel(
+                        reg = 2,
+                        name = "TEST2",
+                    ),
+                    ColabRoomModel(
+                        reg = 3,
+                        name = "TEST3",
+                    ),
+                ),
+                list
+            )
+        }
+
+    @Test
+    fun `add - Check add if not have row repeated`() =
+        runTest {
+            datasource.addAll(
+                listOf(
+                    ColabRoomModel(
+                        reg = 1,
+                        name = "TEST",
+                    ),
+                    ColabRoomModel(
+                        reg = 3,
+                        name = "TEST3",
+                    ),
+                )
+            )
+            val qtdBefore = colabDao.all().size
+            assertEquals(
+                2,
+                qtdBefore
+            )
+            val result = datasource.add(
+                ColabRoomModel(
+                    reg = 2,
+                    name = "TEST2",
+                )
+            )
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            val qtdAfter = colabDao.all().size
+            assertEquals(
+                3,
+                qtdAfter
+            )
+            val list = colabDao.all()
+            assertEquals(
+                3,
+                list.size
+            )
+            assertEquals(
+                listOf(
+                    ColabRoomModel(
+                        reg = 1,
+                        name = "TEST",
+                    ),
+                    ColabRoomModel(
+                        reg = 2,
+                        name = "TEST2",
+                    ),
+                    ColabRoomModel(
+                        reg = 3,
+                        name = "TEST3",
+                    ),
+                ),
+                list
+            )
+        }
+
+
+
 }

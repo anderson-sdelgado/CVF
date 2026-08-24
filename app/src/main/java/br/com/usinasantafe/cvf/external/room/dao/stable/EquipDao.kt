@@ -10,7 +10,7 @@ import br.com.usinasantafe.cvf.lib.TB_EQUIP
 interface EquipDao {
 
     @Insert
-    fun insertAll(list: List<EquipRoomModel>)
+    suspend fun insertAll(list: List<EquipRoomModel>)
 
     @Query("DELETE FROM $TB_EQUIP")
     suspend fun deleteAll()

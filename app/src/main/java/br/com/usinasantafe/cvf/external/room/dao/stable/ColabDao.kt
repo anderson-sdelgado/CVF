@@ -10,7 +10,10 @@ import br.com.usinasantafe.cvf.lib.TB_COLAB
 interface ColabDao {
 
     @Insert
-    fun insertAll(list: List<ColabRoomModel>)
+    suspend fun insert(colab: ColabRoomModel)
+
+    @Insert
+    suspend fun insertAll(list: List<ColabRoomModel>)
 
     @Query("DELETE FROM $TB_COLAB")
     suspend fun deleteAll()
@@ -18,4 +21,9 @@ interface ColabDao {
     @Query("SELECT * FROM $TB_COLAB")
     suspend fun all(): List<ColabRoomModel>
 
+    @Query("DELETE FROM $TB_COLAB WHERE reg = :reg")
+    suspend fun deleteByReg(reg: Long)
+
+    @Query("SELECT EXISTS(SELECT 1 FROM $TB_COLAB WHERE reg = :reg)")
+    suspend fun checkByReg(reg: Long): Boolean
 }

@@ -294,5 +294,54 @@ class IReleaseRoomDatasourceTest {
             )
         }
 
+    @Test
+    fun `getById - Check return failure if table is empty`() =
+        runTest {
+            val result = datasource.getById(1)
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IReleaseRoomDatasource.getById",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.IllegalStateException: The query result was empty, but expected a single row to return a NON-NULL object of type 'br.com.usinasantafe.cvf.infra.models.room.stable.ReleaseRoomModel'.",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `getById - Check return correct if table contains data and the searched id`() =
+        runTest {
+            releaseDao.insertAll(
+                listOf(
+                    ReleaseRoomModel(
+                        id = 1,
+                        nroOS = 1,
+                        idPropAgr = 1,
+                        descPropAgr = "Test1",
+                        idFront = 1
+                    )
+                )
+            )
+            val result = datasource.getById(1)
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                ReleaseRoomModel(
+                    id = 1,
+                    nroOS = 1,
+                    idPropAgr = 1,
+                    descPropAgr = "Test1",
+                    idFront = 1
+                ),
+                result.getOrNull()!!
+            )
+        }
+
 
 }
