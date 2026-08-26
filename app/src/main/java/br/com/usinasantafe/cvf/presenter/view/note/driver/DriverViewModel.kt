@@ -73,7 +73,7 @@ class DriverViewModel @Inject constructor(
                     copy(optionMenu = optionMenu, flagMenu = true)
                 }
             }
-            .onFailureUpdate(getClassAndMethod(), ::updateState)
+            .onFailureUpdate(::updateState)
     }
 
 
@@ -94,7 +94,7 @@ class DriverViewModel @Inject constructor(
             .onSuccess {
                 updateState { copy(descRelease = it.descRelease, text = it.text, flagMenu = false) }
             }
-            .onFailureUpdate(getClassAndMethod(), ::updateState)
+            .onFailureUpdate(::updateState)
     }
 
     fun onTextField(text: String, typeButton: TypeButton) {
@@ -109,19 +109,19 @@ class DriverViewModel @Inject constructor(
     fun set() = viewModelScope.launch {
         runCatching {
             if(state.text.isEmpty()) {
-                updateState { withFailure(getClassAndMethod(), Errors.FIELD_EMPTY) }
+                updateState { withFailure( Errors.FIELD_EMPTY) }
                 return@launch
             }
             updateState { copy(status = status.copy(flagProgress = true)) }
             val check = checkRegDriver(state.text).getOrThrow()
             if(!check) {
-                updateState { withFailure(getClassAndMethod(), Errors.INVALID) }
+                updateState { withFailure(Errors.INVALID) }
                 return@launch
             }
             setRegDriver(state.text).getOrThrow()
         }
             .onSuccessUpdateAccess(::updateState)
-            .onFailureUpdate(getClassAndMethod(), ::updateState)
+            .onFailureUpdate(::updateState)
     }
 
 }

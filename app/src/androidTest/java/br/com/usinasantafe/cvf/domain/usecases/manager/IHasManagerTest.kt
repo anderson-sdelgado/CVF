@@ -45,7 +45,7 @@ class IHasManagerTest {
     @Test
     fun check_return_true_if_have_data() =
         runTest {
-            managerDatasource.save(
+            managerDatasource.setIdRelease(
                 ManagerSharedPreferencesModel(
                     idRelease = 1,
                     idFront = 1

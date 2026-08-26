@@ -11,4 +11,5 @@ interface ConfigRepository {
     suspend fun has(): Result<Boolean>
     suspend fun setFlagUpdate(): EmptyResult
     suspend fun setStatusSend(statusSend: StatusSend): EmptyResult
+    suspend fun getPassword(): Result<String>
 }

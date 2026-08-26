@@ -46,7 +46,7 @@ class IHasSendManagerTest {
     @Test
     fun check_return_false_if_have_data_and_state_send_is_not_send() =
         runTest {
-            managerDatasource.save(
+            managerDatasource.setIdRelease(
                 ManagerSharedPreferencesModel(
                     idRelease = 1,
                     idFront = 1,
@@ -67,7 +67,7 @@ class IHasSendManagerTest {
     @Test
     fun check_return_true_if_have_data_and_state_send_is_send() =
         runTest {
-            managerDatasource.save(
+            managerDatasource.setIdRelease(
                 ManagerSharedPreferencesModel(
                     idRelease = 1,
                     idFront = 1,

@@ -49,6 +49,11 @@ fun errors(errors: Errors, failure: String, value: String = ""): String {
                 value
             )
         }
+        Errors.PASSWORD_INVALID -> {
+            stringResource(
+                id = R.string.text_password_invalid
+            )
+        }
         else -> stringResource(
             id = R.string.text_failure,
             failure

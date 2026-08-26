@@ -584,7 +584,7 @@ class ConfigViewModelTest {
                         flagDialog = true,
                         flagProgress = true,
                         currentProgress = 1f,
-                        failure = "ConfigViewModel.onSaveAndUpdate -> ISetFinishUpdateAllTable -> java.lang.Exception",
+                        failure = "ConfigViewModel.onSaveAndUpdate -> ConfigViewModel.updateState -> ISetFinishUpdateAllTable -> java.lang.Exception",
                     )
                 ),
                 configState
@@ -661,7 +661,7 @@ class ConfigViewModelTest {
                 viewModel.uiState.value.status.flagDialog
             )
             assertEquals(
-                "ConfigViewModel.recoverData -> GetConfig -> java.lang.Exception",
+                "ConfigViewModel.recoverData -> ConfigViewModel.updateState -> GetConfig -> java.lang.Exception",
                 viewModel.uiState.value.status.failure
             )
             assertEquals(
@@ -697,7 +697,7 @@ class ConfigViewModelTest {
                 viewModel.uiState.value.status.flagDialog
             )
             assertEquals(
-                "ConfigViewModel.recoverData -> HasManager -> java.lang.Exception",
+                "ConfigViewModel.recoverData -> ConfigViewModel.updateState -> HasManager -> java.lang.Exception",
                 viewModel.uiState.value.status.failure
             )
             assertEquals(

@@ -84,6 +84,10 @@ fun <T : UiStateWithStatus<T>> Result<*>.onFailureState(
         }
     }
 
+fun <T : UiStateWithStatus<T>> Result<*>.onFailureState(
+    updateState: ((T.() -> T)) -> Unit
+): Result<*> = onFailureState(getClassAndMethod(), updateState)
+
 fun <T : UiStateWithStatus<T>> UiStateWithStatus<T>.withFailure(
     classAndMethod: String,
     error: Errors = Errors.INVALID,
@@ -96,3 +100,8 @@ fun <T : UiStateWithStatus<T>> UiStateWithStatus<T>.withFailure(
             errors = error,
         )
     )
+
+fun <T : UiStateWithStatus<T>> T.withFailure(
+    error: Errors = Errors.INVALID,
+    failure: String = ""
+): T = withFailure(getClassAndMethod(), error, failure)

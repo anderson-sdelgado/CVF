@@ -1,4 +1,4 @@
-package br.com.usinasantafe.cvf.presenter.view.note.cart
+package br.com.usinasantafe.cvf.presenter.view.note.review
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,10 +12,10 @@ import br.com.usinasantafe.cvf.presenter.theme.CVFTheme
 import br.com.usinasantafe.cvf.presenter.theme.TitleDesign
 
 @Composable
-fun CartScreen() {
+fun ReviewScreen() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            CartContent(
+            ReviewContent(
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -23,7 +23,7 @@ fun CartScreen() {
 }
 
 @Composable
-fun CartContent(
+fun ReviewContent(
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -36,10 +36,10 @@ fun CartContent(
 
 @Preview(showBackground = true)
 @Composable
-fun CartPagePreview() {
+fun ReviewPagePreview() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            CartContent(
+            ReviewContent(
                 modifier = Modifier.padding(innerPadding)
             )
         }

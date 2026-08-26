@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cvf.domain.usecases.config
 
 import br.com.usinasantafe.cvf.domain.repositories.variable.ConfigRepository
+import br.com.usinasantafe.cvf.domain.repositories.variable.ManagerRepository
 import br.com.usinasantafe.cvf.utils.EmptyResult
 import br.com.usinasantafe.cvf.utils.call
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
@@ -11,12 +12,14 @@ interface SetFinishUpdateAllTable {
 }
 
 class ISetFinishUpdateAllTable @Inject constructor(
-    private val configRepository: ConfigRepository
+    private val configRepository: ConfigRepository,
+    private val managerRepository: ManagerRepository
 ): SetFinishUpdateAllTable {
 
     override suspend fun invoke(): EmptyResult =
         call(getClassAndMethod()) {
             configRepository.setFlagUpdate().getOrThrow()
+            managerRepository.clean().getOrThrow()
         }
 
 }

@@ -6,8 +6,8 @@ import br.com.usinasantafe.cvf.utils.required
 import java.util.Date
 
 data class ManagerSharedPreferencesModel(
-    val idRelease: Int,
-    val idFront: Int,
+    var idRelease: Int? = null,
+    var idFront: Int? = null,
     val dateHourCreate: Date = Date(),
     val dateHourUpdate: Date = Date(),
     var statusSend: StatusSend = StatusSend.SEND

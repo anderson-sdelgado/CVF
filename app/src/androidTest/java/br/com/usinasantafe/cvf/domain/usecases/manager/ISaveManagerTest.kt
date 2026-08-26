@@ -17,7 +17,7 @@ class ISaveManagerTest {
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: SaveManager
+    lateinit var usecase: SetRelease
 
     @Inject
     lateinit var managerSharedPreferencesDatasource: IManagerSharedPreferencesDatasource

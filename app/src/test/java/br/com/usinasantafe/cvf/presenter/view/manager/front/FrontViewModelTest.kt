@@ -62,7 +62,7 @@ class FrontViewModelTest {
                 viewModel.uiState.value.status.flagDialog
             )
             assertEquals(
-                "FrontViewModel.list -> ListFront -> java.lang.Exception",
+                "FrontViewModel.list -> FrontViewModel.updateState -> ListFront -> java.lang.Exception",
                 viewModel.uiState.value.status.failure
             )
             assertEquals(
@@ -230,7 +230,7 @@ class FrontViewModelTest {
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
-                        failure = "FrontViewModel.updateAllDatabase -> CleanFront -> java.lang.NullPointerException",
+                        failure = "FrontViewModel.updateAllDatabase -> UiStatusStateUpdateKt.executeUpdateSteps -> CleanFront -> java.lang.NullPointerException",
                         currentProgress = 1f,
                     )
                 ),
@@ -242,7 +242,7 @@ class FrontViewModelTest {
                 viewModel.uiState.value.status.flagDialog
             )
             assertEquals(
-                "FrontViewModel.update -> FrontViewModel.updateAllDatabase -> CleanFront -> java.lang.NullPointerException",
+                "FrontViewModel.update -> FrontViewModel.updateAllDatabase -> UiStatusStateUpdateKt.executeUpdateSteps -> CleanFront -> java.lang.NullPointerException",
                 viewModel.uiState.value.status.failure
             )
         }
@@ -384,7 +384,7 @@ class FrontViewModelTest {
     fun `check - Check return failure if not selection any item`() =
         runTest {
             val viewModel = createdViewModel()
-            viewModel.check()
+            viewModel.set()
             assertEquals(
                 true,
                 viewModel.uiState.value.status.flagDialog
@@ -439,7 +439,7 @@ class FrontViewModelTest {
                 id = 3,
                 checked = true
             )
-            viewModel.check()
+            viewModel.set()
             assertEquals(
                 3,
                 viewModel.uiState.value.idSelection

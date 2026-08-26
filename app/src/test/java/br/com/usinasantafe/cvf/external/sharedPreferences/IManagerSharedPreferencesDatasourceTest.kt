@@ -51,7 +51,7 @@ class IManagerSharedPreferencesDatasourceTest {
                 idRelease = 1,
                 idFront = 1
             )
-            datasource.save(data)
+            datasource.setIdRelease(data)
             val result = datasource.has()
             assertEquals(
                 true,
@@ -70,7 +70,7 @@ class IManagerSharedPreferencesDatasourceTest {
                 idRelease = 1,
                 idFront = 1
             )
-            datasource.save(data)
+            datasource.setIdRelease(data)
             val result = datasource.has()
             assertEquals(
                 true,
@@ -113,7 +113,7 @@ class IManagerSharedPreferencesDatasourceTest {
                 idRelease = 1,
                 idFront = 20
             )
-            datasource.save(data)
+            datasource.setIdRelease(data)
             val result = datasource.getIdFront()
             assertEquals(
                 true,
@@ -146,7 +146,7 @@ class IManagerSharedPreferencesDatasourceTest {
                 idRelease = 1,
                 idFront = 20
             )
-            datasource.save(data)
+            datasource.setIdRelease(data)
             val result = datasource.getIdRelease()
             assertEquals(
                 true,
@@ -168,7 +168,7 @@ class IManagerSharedPreferencesDatasourceTest {
                 dateHourUpdate = Date(1786647885000),
                 statusSend = StatusSend.SENT
             )
-            datasource.save(data)
+            datasource.setIdRelease(data)
             val result = datasource.get()
             assertEquals(
                 true,
@@ -211,7 +211,7 @@ class IManagerSharedPreferencesDatasourceTest {
                 dateHourUpdate = Date(1786647885000),
                 statusSend = StatusSend.SENT
             )
-            datasource.save(data)
+            datasource.setIdRelease(data)
             val result = datasource.hasSend()
             assertEquals(
                 true,
@@ -233,7 +233,7 @@ class IManagerSharedPreferencesDatasourceTest {
                 dateHourUpdate = Date(1786647885000),
                 statusSend = StatusSend.SEND
             )
-            datasource.save(data)
+            datasource.setIdRelease(data)
             val result = datasource.hasSend()
             assertEquals(
                 true,
@@ -255,7 +255,7 @@ class IManagerSharedPreferencesDatasourceTest {
                 dateHourUpdate = Date(1786647885000),
                 statusSend = StatusSend.SEND
             )
-            datasource.save(data)
+            datasource.setIdRelease(data)
             val resultBefore = datasource.get()
             assertEquals(
                 true,

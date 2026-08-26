@@ -23,6 +23,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cvf.R
 import br.com.usinasantafe.cvf.lib.Errors
+import br.com.usinasantafe.cvf.lib.Option
 import br.com.usinasantafe.cvf.presenter.model.ItemCheckBoxScreenModel
 import br.com.usinasantafe.cvf.presenter.theme.ButtonMaxWidth
 import br.com.usinasantafe.cvf.presenter.theme.CVFTheme
@@ -37,8 +38,9 @@ import br.com.usinasantafe.cvf.utils.required
 @Composable
 fun FrontScreen(
     viewModel: FrontViewModel = hiltViewModel(),
-    onNavRelease: (Int) -> Unit,
-    onNavConfig: () -> Unit
+    onNavRelease: () -> Unit,
+    onNavConfig: () -> Unit,
+    onNavNote: () -> Unit
 ) {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -50,15 +52,16 @@ fun FrontScreen(
             }
 
             FrontContent(
-                idSelection = uiState.idSelection,
+                option = uiState.option,
                 list = list,
                 onCheckChanged = viewModel::onCheckChanged,
-                check = viewModel::check,
+                check = viewModel::set,
                 update = viewModel::update,
                 onCloseDialog = viewModel::onCloseDialog,
                 status = uiState.status,
                 onNavRelease = onNavRelease,
                 onNavConfig = onNavConfig,
+                onNavNote = onNavNote,
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -67,15 +70,16 @@ fun FrontScreen(
 
 @Composable
 fun FrontContent(
-    idSelection: Int?,
+    option: Option,
     list: List<ItemCheckBoxScreenModel>,
     onCheckChanged: (Int, Boolean) -> Unit,
     check: () -> Unit,
     update: () -> Unit,
     onCloseDialog: () -> Unit,
     status: UiStatusStateUpdate,
-    onNavRelease: (Int) -> Unit,
+    onNavRelease: () -> Unit,
     onNavConfig: () -> Unit,
+    onNavNote: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -106,7 +110,7 @@ fun FrontContent(
             horizontalArrangement = Arrangement.Center,
         )  {
             Button(
-                onClick = onNavConfig,
+                onClick = if(option == Option.EDIT) onNavNote else onNavConfig,
                 modifier = Modifier
                     .weight(1f)
             ) {
@@ -144,7 +148,7 @@ fun FrontContent(
 
     LaunchedEffect(status.flagAccess) {
         if (status.flagAccess) {
-            onNavRelease(idSelection.required("idSelection"))
+            onNavRelease()
         }
     }
 
@@ -157,7 +161,7 @@ fun FrontPagePreview() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             FrontContent(
-                idSelection = null,
+                option = Option.INSERT,
                 list = listOf(),
                 onCheckChanged = { _, _ -> },
                 check = {},
@@ -176,6 +180,7 @@ fun FrontPagePreview() {
                 ),
                 onNavRelease = {},
                 onNavConfig = {},
+                onNavNote = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -188,7 +193,7 @@ fun FrontPagePreviewWithData() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             FrontContent(
-                idSelection = null,
+                option = Option.INSERT,
                 list = listOf(
                     ItemCheckBoxScreenModel(
                         id = 1,
@@ -223,6 +228,7 @@ fun FrontPagePreviewWithData() {
                 ),
                 onNavRelease = {},
                 onNavConfig = {},
+                onNavNote = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }

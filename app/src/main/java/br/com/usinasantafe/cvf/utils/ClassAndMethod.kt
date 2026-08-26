@@ -36,6 +36,8 @@ fun getClassAndMethod(): String {
                     !it.contains("lambda") &&
                     !it.contains("Screen") &&
                     !it.endsWith("Failure") &&
+                    !it.contains("onFailure") &&
+                    !it.contains("onSuccess") &&
                     !it.endsWith("getClassAndMethod") &&
                     !it.endsWith("default")
         }

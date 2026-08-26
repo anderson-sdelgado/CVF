@@ -3,8 +3,10 @@ package br.com.usinasantafe.cvf.external.sharedPreferences
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.ManagerSharedPreferencesDatasource
+import br.com.usinasantafe.cvf.infra.models.sharedpreferences.HeaderSharedPreferencesModel
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ManagerSharedPreferencesModel
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.sharedPreferencesModelToEntity
+import br.com.usinasantafe.cvf.lib.BASE_SHARED_PREFERENCES_TABLE_HEADER
 import br.com.usinasantafe.cvf.lib.BASE_SHARED_PREFERENCES_TABLE_MANAGER
 import br.com.usinasantafe.cvf.lib.StatusSend
 import br.com.usinasantafe.cvf.utils.EmptyResult
@@ -17,7 +19,7 @@ class IManagerSharedPreferencesDatasource @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ): ManagerSharedPreferencesDatasource {
 
-    override suspend fun save(model: ManagerSharedPreferencesModel): EmptyResult =
+    suspend fun save(model: ManagerSharedPreferencesModel): EmptyResult =
         result(getClassAndMethod()) {
             sharedPreferences.edit {
                 putString(
@@ -60,6 +62,20 @@ class IManagerSharedPreferencesDatasource @Inject constructor(
         result(getClassAndMethod()) {
             if (!has().getOrThrow()) return@result null
             get().getOrThrow().idRelease
+        }
+
+    override suspend fun setIdFront(idFront: Int): EmptyResult =
+        result(getClassAndMethod()) {
+            val model = get().getOrThrow()
+            model.idFront = idFront
+            save(model).getOrThrow()
+        }
+
+    override suspend fun setIdRelease(idRelease: Int): EmptyResult =
+        result(getClassAndMethod()) {
+            val model = get().getOrThrow()
+            model.idRelease = idRelease
+            save(model).getOrThrow()
         }
 
     override suspend fun get(): Result<ManagerSharedPreferencesModel> =

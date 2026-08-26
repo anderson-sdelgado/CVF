@@ -11,7 +11,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 interface ListRelease {
-    suspend operator fun invoke(idFront: Int): Result<List<ItemCheckBoxScreenModel>>
+    suspend operator fun invoke(): Result<List<ItemCheckBoxScreenModel>>
 }
 
 class IListRelease @Inject constructor(
@@ -20,9 +20,9 @@ class IListRelease @Inject constructor(
     private val managerRepository: ManagerRepository
 ): ListRelease {
 
-    override suspend fun invoke(idFront: Int): Result<List<ItemCheckBoxScreenModel>> =
+    override suspend fun invoke(): Result<List<ItemCheckBoxScreenModel>> =
         call(getClassAndMethod()) {
-            val idFront = if(idFront > 0) idFront else managerRepository.getIdFront().getOrThrow() ?: 0
+            val idFront = managerRepository.getIdFront().getOrThrow() ?: 0
             val releaseList = releaseRepository.listByIdFront(idFront).getOrThrow()
             val idRelease = managerRepository.getIdRelease().getOrThrow()
             releaseList.map {

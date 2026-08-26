@@ -119,7 +119,7 @@ class IListFrontTest {
                     ),
                 )
             )
-            managerSharedPreferencesDatasource.save(
+            managerSharedPreferencesDatasource.setIdRelease(
                 ManagerSharedPreferencesModel(
                     idFront = 2,
                     idRelease = 1

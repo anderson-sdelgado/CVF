@@ -25,7 +25,7 @@ interface ManagerModule {
 
     @Binds
     @Singleton
-    fun bindSaveManager(usecase: ISaveManager): SaveManager
+    fun bindSaveManager(usecase: ISetRelease): SetRelease
 
     @Binds
     @Singleton

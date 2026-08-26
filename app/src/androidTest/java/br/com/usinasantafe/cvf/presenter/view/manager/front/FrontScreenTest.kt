@@ -125,7 +125,7 @@ class FrontScreenTest {
                 )
             )
 
-            managerSharedPreferencesDatasource.save(
+            managerSharedPreferencesDatasource.setIdRelease(
                 ManagerSharedPreferencesModel(
                     idFront = 2,
                     idRelease = 1
@@ -164,7 +164,7 @@ class FrontScreenTest {
                 )
             )
 
-            managerSharedPreferencesDatasource.save(
+            managerSharedPreferencesDatasource.setIdRelease(
                 ManagerSharedPreferencesModel(
                     idFront = 2,
                     idRelease = 1

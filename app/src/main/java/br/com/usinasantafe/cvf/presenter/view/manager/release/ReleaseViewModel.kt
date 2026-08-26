@@ -5,13 +5,14 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cvf.domain.usecases.manager.ListRelease
-import br.com.usinasantafe.cvf.domain.usecases.manager.SaveManager
+import br.com.usinasantafe.cvf.domain.usecases.manager.SetRelease
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableRelease
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.LevelUpdate
+import br.com.usinasantafe.cvf.lib.Option
+import br.com.usinasantafe.cvf.lib.OptionReturn
 import br.com.usinasantafe.cvf.presenter.model.ItemCheckBoxScreenModel
-import br.com.usinasantafe.cvf.presenter.navigation.Args.ID_FRONT_ARG
-import br.com.usinasantafe.cvf.presenter.view.manager.front.FrontState
+import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_ARG
 import br.com.usinasantafe.cvf.utils.CheckNetwork
 import br.com.usinasantafe.cvf.utils.UiStateWithStatusUpdate
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
@@ -28,10 +29,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.collections.get
 
 data class ReleaseState(
-    val idFront: Int = 0,
+    val option: Option = Option.INSERT,
     override val status: UiStatusStateUpdate = UiStatusStateUpdate()
 ) : UiStateWithStatusUpdate<ReleaseState> {
 
@@ -45,11 +45,11 @@ class ReleaseViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val updateTableRelease: UpdateTableRelease,
     private val listRelease: ListRelease,
-    private val saveManager: SaveManager,
+    private val setRelease: SetRelease,
     private val checkNetwork: CheckNetwork,
 ) : ViewModel() {
 
-    private val idFront: Int = savedStateHandle[ID_FRONT_ARG]!!
+    private val option: Int = savedStateHandle[OPTION_ARG]!!
 
     val list = mutableStateListOf<ItemCheckBoxScreenModel>()
 
@@ -67,24 +67,24 @@ class ReleaseViewModel @Inject constructor(
     init {
         updateState {
             copy(
-                idFront = this@ReleaseViewModel.idFront,
+                option = Option.entries[this@ReleaseViewModel.option],
             )
         }
     }
 
     fun start() {
-        if(state.idFront == 0 && checkNetwork.isConnected()) update(false) else list()
+        if(checkNetwork.isConnected()) update(false) else list()
     }
 
     fun list() = viewModelScope.launch {
         runCatching {
-            listRelease(state.idFront).getOrThrow()
+            listRelease().getOrThrow()
         }
             .onSuccess {
                 list.clear()
                 list.addAll(it)
             }
-            .onFailureUpdate(getClassAndMethod(), ::updateState)
+            .onFailureUpdate(::updateState)
     }
 
     fun onCheckChanged(id: Int, checked: Boolean) {
@@ -102,13 +102,13 @@ class ReleaseViewModel @Inject constructor(
         runCatching {
             val id = list.find { it.flag }?.id
             if (id == null) {
-                updateState { withFailure(getClassAndMethod(), Errors.NOT_SELECTION) }
+                updateState { withFailure(Errors.NOT_SELECTION) }
                 return@launch
             }
-            saveManager(state.idFront, id).getOrThrow()
+            setRelease(id).getOrThrow()
         }
             .onSuccessUpdateAccess(::updateState)
-            .onFailureUpdate(getClassAndMethod(), ::updateState)
+            .onFailureUpdate(::updateState)
     }
 
     fun update(flagDialog: Boolean = true) = viewModelScope.launch {

@@ -59,7 +59,7 @@ class DriverViewModelTest {
                 viewModel.uiState.value.status.flagDialog
             )
             assertEquals(
-                "DriverViewModel.onOptionMenu -> DeleteNote -> java.lang.Exception",
+                "DriverViewModel.onOptionMenu -> DriverViewModel.updateState -> DeleteNote -> java.lang.Exception",
                 viewModel.uiState.value.status.failure
             )
             assertEquals(
@@ -111,7 +111,7 @@ class DriverViewModelTest {
                 viewModel.uiState.value.status.flagDialog
             )
             assertEquals(
-                "DriverViewModel.recoverData -> Parameter specified as non-null is null: method br.com.usinasantafe.cvf.presenter.view.note.driver.DriverViewModel\$recoverData\$1\$RecoverDriver.<init>, parameter descRelease -> null",
+                "DriverViewModel.recoverData -> DriverViewModel.updateState -> Parameter specified as non-null is null: method br.com.usinasantafe.cvf.presenter.view.note.driver.DriverViewModel\$recoverData\$1\$RecoverDriver.<init>, parameter descRelease -> null",
                 viewModel.uiState.value.status.failure
             )
             assertEquals(
@@ -142,7 +142,7 @@ class DriverViewModelTest {
                 viewModel.uiState.value.status.flagDialog
             )
             assertEquals(
-                "DriverViewModel.recoverData -> GetDescRelease -> java.lang.Exception",
+                "DriverViewModel.recoverData -> DriverViewModel.updateState -> GetDescRelease -> java.lang.Exception",
                 viewModel.uiState.value.status.failure
             )
             assertEquals(
@@ -178,7 +178,7 @@ class DriverViewModelTest {
                 viewModel.uiState.value.status.flagDialog
             )
             assertEquals(
-                "DriverViewModel.recoverData -> GetRegDriver -> java.lang.Exception",
+                "DriverViewModel.recoverData -> DriverViewModel.updateState -> GetRegDriver -> java.lang.Exception",
                 viewModel.uiState.value.status.failure
             )
             assertEquals(
@@ -315,7 +315,7 @@ class DriverViewModelTest {
                 viewModel.uiState.value.status.flagDialog
             )
             assertEquals(
-                "DriverViewModel.onTextField -> DriverViewModel.set -> CheckRegDriver -> java.lang.Exception",
+                "DriverViewModel.onTextField -> DriverViewModel.set -> DriverViewModel.updateState -> CheckRegDriver -> java.lang.Exception",
                 viewModel.uiState.value.status.failure
             )
             assertEquals(
@@ -400,7 +400,7 @@ class DriverViewModelTest {
                 viewModel.uiState.value.status.flagDialog
             )
             assertEquals(
-                "DriverViewModel.onTextField -> DriverViewModel.set -> SetRegDriver -> java.lang.Exception",
+                "DriverViewModel.onTextField -> DriverViewModel.set -> DriverViewModel.updateState -> SetRegDriver -> java.lang.Exception",
                 viewModel.uiState.value.status.failure
             )
             assertEquals(

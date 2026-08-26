@@ -135,7 +135,7 @@ class ISendManagerTest {
                     version = "1.0"
                 )
             )
-            managerSharedPreferencesDatasource.save(
+            managerSharedPreferencesDatasource.setIdRelease(
                 ManagerSharedPreferencesModel(
                     idFront = 1,
                     idRelease = 1
@@ -194,7 +194,7 @@ class ISendManagerTest {
                     version = "1.0"
                 )
             )
-            managerSharedPreferencesDatasource.save(
+            managerSharedPreferencesDatasource.setIdRelease(
                 ManagerSharedPreferencesModel(
                     idFront = 1,
                     idRelease = 1
@@ -253,7 +253,7 @@ class ISendManagerTest {
                     version = "1.0"
                 )
             )
-            managerSharedPreferencesDatasource.save(
+            managerSharedPreferencesDatasource.setIdRelease(
                 ManagerSharedPreferencesModel(
                     idFront = 1,
                     idRelease = 1
@@ -313,7 +313,7 @@ class ISendManagerTest {
                     version = "1.0"
                 )
             )
-            managerSharedPreferencesDatasource.save(
+            managerSharedPreferencesDatasource.setIdRelease(
                 ManagerSharedPreferencesModel(
                     idFront = 1,
                     idRelease = 1
@@ -372,7 +372,7 @@ class ISendManagerTest {
                     version = "1.0"
                 )
             )
-            managerSharedPreferencesDatasource.save(
+            managerSharedPreferencesDatasource.setIdRelease(
                 ManagerSharedPreferencesModel(
                     idFront = 1,
                     idRelease = 1

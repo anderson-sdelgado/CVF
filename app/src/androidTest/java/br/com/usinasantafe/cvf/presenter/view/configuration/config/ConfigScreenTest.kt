@@ -406,7 +406,7 @@ class ConfigScreenTest {
 
             hiltRule.inject()
 
-            managerSharedPreferencesDatasource.save(
+            managerSharedPreferencesDatasource.setIdRelease(
                 ManagerSharedPreferencesModel(
                     idFront = 1,
                     idRelease = 1

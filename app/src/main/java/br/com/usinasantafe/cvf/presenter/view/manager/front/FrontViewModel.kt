@@ -5,16 +5,19 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cvf.domain.usecases.manager.ListFront
+import br.com.usinasantafe.cvf.domain.usecases.manager.SetFront
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableFront
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.LevelUpdate
+import br.com.usinasantafe.cvf.lib.Option
+import br.com.usinasantafe.cvf.lib.OptionReturn
 import br.com.usinasantafe.cvf.presenter.model.ItemCheckBoxScreenModel
-import br.com.usinasantafe.cvf.presenter.navigation.Args.ID_FRONT_ARG
+import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_ARG
 import br.com.usinasantafe.cvf.utils.UiStateWithStatusUpdate
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
 import br.com.usinasantafe.cvf.utils.executeUpdateSteps
-import br.com.usinasantafe.cvf.utils.getClassAndMethod
 import br.com.usinasantafe.cvf.utils.onFailureUpdate
+import br.com.usinasantafe.cvf.utils.onSuccessUpdateAccess
 import br.com.usinasantafe.cvf.utils.sizeUpdate
 import br.com.usinasantafe.cvf.utils.withFailure
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,7 +29,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class FrontState(
-    val idSelection: Int? = null,
+    val option: Option = Option.INSERT,
     override val status: UiStatusStateUpdate = UiStatusStateUpdate()
 ) : UiStateWithStatusUpdate<FrontState> {
 
@@ -39,10 +42,11 @@ data class FrontState(
 class FrontViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val listFront: ListFront,
+    private val setFront: SetFront,
     private val updateTableFront: UpdateTableFront
 ) : ViewModel() {
 
-    private val idFront: Int = savedStateHandle[ID_FRONT_ARG]!!
+    private val option: Int = savedStateHandle[OPTION_ARG]!!
 
     val list = mutableStateListOf<ItemCheckBoxScreenModel>()
 
@@ -60,7 +64,7 @@ class FrontViewModel @Inject constructor(
     init {
         updateState {
             copy(
-                idSelection = if(this@FrontViewModel.idFront == 0) null else this@FrontViewModel.idFront,
+                option = Option.entries[this@FrontViewModel.option],
             )
         }
     }
@@ -72,9 +76,8 @@ class FrontViewModel @Inject constructor(
             .onSuccess {
                 list.clear()
                 list.addAll(it)
-                state.idSelection?.let { id -> onCheckChanged(id, true) }
             }
-            .onFailureUpdate(getClassAndMethod(), ::updateState)
+            .onFailureUpdate(::updateState)
     }
 
     fun onCheckChanged(id: Int, checked: Boolean) {
@@ -88,13 +91,17 @@ class FrontViewModel @Inject constructor(
         }
     }
 
-    fun check() = viewModelScope.launch {
-        val id = list.find { it.flag }?.id
-        if (id == null) {
-            updateState { withFailure(getClassAndMethod(), Errors.NOT_SELECTION) }
-            return@launch
+    fun set() = viewModelScope.launch {
+        runCatching {
+            val id = list.find { it.flag }?.id
+            if (id == null) {
+                updateState { withFailure(Errors.NOT_SELECTION) }
+                return@launch
+            }
+            setFront(id).getOrThrow()
         }
-        updateState { copy(idSelection = id, status = status.copy(flagAccess = true)) }
+            .onSuccessUpdateAccess(::updateState)
+            .onFailureUpdate(::updateState)
     }
 
     fun update() = viewModelScope.launch {
@@ -108,7 +115,6 @@ class FrontViewModel @Inject constructor(
             getState = { _uiState.value },
             getStatus = { it.status },
             copyStateWithStatus = { state, status -> state.copy(status = status) },
-            classAndMethod = getClassAndMethod(),
         )
 
 

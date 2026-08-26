@@ -24,6 +24,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cvf.R
 import br.com.usinasantafe.cvf.lib.Errors
+import br.com.usinasantafe.cvf.lib.Option
 import br.com.usinasantafe.cvf.presenter.model.ItemCheckBoxScreenModel
 import br.com.usinasantafe.cvf.presenter.theme.ButtonMaxWidth
 import br.com.usinasantafe.cvf.presenter.theme.CVFTheme
@@ -38,7 +39,8 @@ import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
 fun ReleaseScreen(
     viewModel: ReleaseViewModel = hiltViewModel(),
     onNavFront: () -> Unit,
-    onNavDriver: () -> Unit
+    onNavDriver: () -> Unit,
+    onNavNote: () -> Unit
 ) {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -50,6 +52,7 @@ fun ReleaseScreen(
             }
 
             ReleaseContent(
+                option = uiState.option,
                 list = list,
                 onCheckChanged = viewModel::onCheckChanged,
                 onSave = viewModel::save,
@@ -58,6 +61,7 @@ fun ReleaseScreen(
                 status = uiState.status,
                 onNavFront = onNavFront,
                 onNavDriver = onNavDriver,
+                onNavNote = onNavNote,
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -66,6 +70,7 @@ fun ReleaseScreen(
 
 @Composable
 fun ReleaseContent(
+    option: Option,
     list: List<ItemCheckBoxScreenModel>,
     onCheckChanged: (Int, Boolean) -> Unit,
     onSave: () -> Unit,
@@ -74,6 +79,7 @@ fun ReleaseContent(
     status: UiStatusStateUpdate,
     onNavFront: () -> Unit,
     onNavDriver: () -> Unit,
+    onNavNote: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -104,7 +110,7 @@ fun ReleaseContent(
             horizontalArrangement = Arrangement.Center,
         )  {
             Button(
-                onClick = onNavFront,
+                onClick = if(option == Option.INSERT) onNavFront else onNavNote,
                 modifier = Modifier
                     .weight(1f)
             ) {
@@ -154,6 +160,7 @@ fun ReleasePagePreview() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             ReleaseContent(
+                option = Option.INSERT,
                 list = listOf(),
                 onCheckChanged = { _, _ -> },
                 onSave = {},
@@ -172,6 +179,7 @@ fun ReleasePagePreview() {
                 ),
                 onNavFront = {},
                 onNavDriver = {},
+                onNavNote = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -184,6 +192,7 @@ fun ReleasePagePreviewWithData() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             ReleaseContent(
+                option = Option.INSERT,
                 list = listOf(
                     ItemCheckBoxScreenModel(
                         id = 1,
@@ -224,6 +233,7 @@ fun ReleasePagePreviewWithData() {
                 ),
                 onNavFront = {},
                 onNavDriver = {},
+                onNavNote = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }

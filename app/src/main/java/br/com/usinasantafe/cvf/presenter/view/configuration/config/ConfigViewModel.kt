@@ -1,18 +1,19 @@
 package br.com.usinasantafe.cvf.presenter.view.configuration.config
 
-import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cvf.domain.usecases.config.GetConfig
 import br.com.usinasantafe.cvf.domain.usecases.config.SetFinishUpdateAllTable
 import br.com.usinasantafe.cvf.domain.usecases.config.UpdateConfig
-import br.com.usinasantafe.cvf.domain.usecases.manager.HasManager
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableColab
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableEquip
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableFront
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableRelease
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.LevelUpdate
+import br.com.usinasantafe.cvf.lib.Option
+import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_ARG
 import br.com.usinasantafe.cvf.utils.UiStateWithStatusUpdate
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
 import br.com.usinasantafe.cvf.utils.collectUpdateStep
@@ -31,10 +32,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class ConfigState(
+    val option: Option = Option.INSERT,
     val number: String = "",
     val password: String = "",
     val version: String = "",
-    val flagReturn: Boolean = false,
     override val status: UiStatusStateUpdate = UiStatusStateUpdate()
 ) : UiStateWithStatusUpdate<ConfigState> {
 
@@ -45,7 +46,7 @@ data class ConfigState(
 
 @HiltViewModel
 class ConfigViewModel @Inject constructor(
-    private val hasManager: HasManager,
+    savedStateHandle: SavedStateHandle,
     private val getConfig: GetConfig,
     private val updateConfig: UpdateConfig,
     private val setFinishUpdateAllTable: SetFinishUpdateAllTable,
@@ -54,6 +55,8 @@ class ConfigViewModel @Inject constructor(
     private val updateTableFront: UpdateTableFront,
     private val updateTableRelease: UpdateTableRelease
 ) : ViewModel() {
+
+    private val option: Int = savedStateHandle[OPTION_ARG]!!
 
     private val _uiState = MutableStateFlow(ConfigState())
     val uiState = _uiState.asStateFlow()
@@ -78,32 +81,37 @@ class ConfigViewModel @Inject constructor(
 
     private fun ConfigState.isValid() = number.isNotBlank() && password.isNotBlank()
 
+    init {
+        updateState {
+            copy(
+                option = Option.entries[this@ConfigViewModel.option],
+            )
+        }
+    }
+
     fun recoverData() = viewModelScope.launch {
 
         data class RecoverConfig(
             val number: String,
             val password: String,
-            val flagManager: Boolean
         )
 
         runCatching {
             val config = getConfig().getOrThrow()
-            val manager = hasManager().getOrThrow()
             RecoverConfig(
                 number = config?.number ?: "",
-                password = config?.password ?: "",
-                flagManager = manager
+                password = config?.password ?: ""
             )
         }
             .onSuccess {
-                updateState { copy(number = it.number, password = it.password, flagReturn = it.flagManager) }
+                updateState { copy(number = it.number, password = it.password) }
             }
-            .onFailureUpdate(getClassAndMethod(), ::updateState)
+            .onFailureUpdate(::updateState)
     }
 
     fun onSaveAndUpdate() = viewModelScope.launch {
         if (!state.isValid()) {
-            updateState { withFailure(getClassAndMethod(), Errors.FIELD_EMPTY) }
+            updateState { withFailure(Errors.FIELD_EMPTY) }
             return@launch
         }
 
@@ -117,11 +125,10 @@ class ConfigViewModel @Inject constructor(
             if (!state.status.flagFailure) {
                 setFinishUpdateAllTable()
                     .onSuccessUpdateFinish(::updateState)
-                    .onFailureUpdate(getClassAndMethod(), ::updateState, Errors.UPDATE, true)
+                    .onFailureUpdate(::updateState, Errors.UPDATE, true)
             }
         }
     }
-
 
     suspend fun updateAllDatabase(): Flow<ConfigState> {
         return executeUpdateSteps(

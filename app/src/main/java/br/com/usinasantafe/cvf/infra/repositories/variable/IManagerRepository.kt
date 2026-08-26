@@ -1,6 +1,5 @@
 package br.com.usinasantafe.cvf.infra.repositories.variable
 
-import br.com.usinasantafe.cvf.domain.entities.variable.Manager
 import br.com.usinasantafe.cvf.domain.repositories.variable.ManagerRepository
 import br.com.usinasantafe.cvf.infra.datasource.retrofit.variable.ManagerRetrofitDatasource
 import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.ManagerSharedPreferencesDatasource
@@ -37,9 +36,15 @@ class IManagerRepository @Inject constructor(
             managerSharedPreferencesDatasource.getIdRelease().getOrThrow()
         }
 
-    override suspend fun save(entity: Manager): EmptyResult =
+    override suspend fun setIdFront(idFront: Int): EmptyResult =
         call(getClassAndMethod()) {
-            managerSharedPreferencesDatasource.save(entity.entityToSharedPreferencesModel()).getOrThrow()
+            managerSharedPreferencesDatasource.clean().getOrThrow()
+            managerSharedPreferencesDatasource.setIdFront(idFront).getOrThrow()
+        }
+
+    override suspend fun setIdRelease(idRelease: Int): EmptyResult =
+        call(getClassAndMethod()) {
+            managerSharedPreferencesDatasource.setIdRelease(idRelease).getOrThrow()
         }
 
     override suspend fun hasSend(): Result<Boolean> =

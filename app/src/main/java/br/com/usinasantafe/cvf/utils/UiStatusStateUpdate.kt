@@ -178,6 +178,19 @@ fun <STATE> executeUpdateSteps(
 
 }
 
+fun <STATE> executeUpdateSteps(
+    steps: List<Flow<UiStatusStateUpdate>>,
+    getState: () -> STATE,
+    getStatus: (STATE) -> UiStatusStateUpdate,
+    copyStateWithStatus: (STATE, UiStatusStateUpdate) -> STATE,
+    flagUpdateFinish: Boolean = true,
+    flagProgressOnFailure: Boolean = false,
+    flagDialog: Boolean = true
+): Flow<STATE> = executeUpdateSteps(
+    steps, getState, getStatus, copyStateWithStatus, getClassAndMethod(),
+    flagUpdateFinish, flagProgressOnFailure, flagDialog
+)
+
 interface UiStateWithStatusUpdate<T : UiStateWithStatusUpdate<T>> {
     val status: UiStatusStateUpdate
 
@@ -242,6 +255,12 @@ fun <T : UiStateWithStatusUpdate<T>> UiStateWithStatusUpdate<T>.withFailure(
         )
     )
 
+fun <T : UiStateWithStatusUpdate<T>> T.withFailure(
+    error: Errors = Errors.INVALID,
+    flagProgress: Boolean = false,
+    failure: String = ""
+): T = withFailure(getClassAndMethod(), error, flagProgress, failure)
+
 fun <T : UiStateWithStatusUpdate<T>> Result<*>.onSuccessUpdateAccess(
     updateState: ((T.() -> T)) -> Unit
 ): Result<*> =
@@ -265,14 +284,13 @@ fun <T : UiStateWithStatusUpdate<T>> Result<Boolean>.onSuccessUpdateCheckAccess(
 
 
 fun <T : UiStateWithStatusUpdate<T>> Result<*>.onFailureUpdate(
-    classAndMethod: String,
     updateState: ((T.() -> T)) -> Unit,
     errors: Errors = Errors.EXCEPTION,
     flagProgress: Boolean = false
 ): Result<*> =
     onFailure { failure ->
         updateState {
-            withFailure(classAndMethod, failure, errors, flagProgress)
+            withFailure(getClassAndMethod(), failure, errors, flagProgress)
         }
     }
 

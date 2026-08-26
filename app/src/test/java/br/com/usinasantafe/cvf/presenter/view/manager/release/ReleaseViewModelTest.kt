@@ -3,13 +3,12 @@ package br.com.usinasantafe.cvf.presenter.view.manager.release
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cvf.MainCoroutineRule
 import br.com.usinasantafe.cvf.domain.usecases.manager.ListRelease
-import br.com.usinasantafe.cvf.domain.usecases.manager.SaveManager
+import br.com.usinasantafe.cvf.domain.usecases.manager.SetRelease
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableRelease
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.LevelUpdate
 import br.com.usinasantafe.cvf.presenter.model.ItemCheckBoxScreenModel
 import br.com.usinasantafe.cvf.presenter.navigation.Args
-import br.com.usinasantafe.cvf.presenter.view.manager.front.FrontState
 import br.com.usinasantafe.cvf.utils.CheckNetwork
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
 import br.com.usinasantafe.cvf.utils.percentage
@@ -33,7 +32,7 @@ class ReleaseViewModelTest {
 
     private val updateTableRelease = mock<UpdateTableRelease>()
     private val listRelease = mock<ListRelease>()
-    private val saveManager = mock<SaveManager>()
+    private val setRelease = mock<SetRelease>()
     private val checkNetwork = mock<CheckNetwork>()
 
     private fun createdViewModel(
@@ -46,7 +45,7 @@ class ReleaseViewModelTest {
         ),
         updateTableRelease = updateTableRelease,
         listRelease = listRelease,
-        saveManager = saveManager,
+        setRelease = setRelease,
         checkNetwork = checkNetwork
     )
 
@@ -69,7 +68,7 @@ class ReleaseViewModelTest {
                 viewModel.uiState.value.status.flagDialog
             )
             assertEquals(
-                "ReleaseViewModel.list -> ListRelease -> java.lang.Exception",
+                "ReleaseViewModel.list -> ReleaseViewModel.updateState -> ListRelease -> java.lang.Exception",
                 viewModel.uiState.value.status.failure
             )
             assertEquals(
@@ -388,7 +387,7 @@ class ReleaseViewModelTest {
                 )
             )
             whenever(
-                saveManager(2, 10)
+                setRelease(2, 10)
             ).thenReturn(
                 resultFailure(
                     context = "SaveManager",
@@ -408,7 +407,7 @@ class ReleaseViewModelTest {
                 viewModel.uiState.value.status.flagDialog
             )
             assertEquals(
-                "ReleaseViewModel.save -> SaveManager -> java.lang.Exception",
+                "ReleaseViewModel.save -> ReleaseViewModel.updateState -> SaveManager -> java.lang.Exception",
                 viewModel.uiState.value.status.failure
             )
             assertEquals(

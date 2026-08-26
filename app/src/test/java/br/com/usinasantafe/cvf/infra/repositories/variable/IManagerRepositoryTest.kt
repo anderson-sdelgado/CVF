@@ -226,7 +226,7 @@ class IManagerRepositoryTest {
     fun `save - Check return failure if have error in ManagerSharedPreferencesDatasource save`() =
         runTest {
             whenever(
-                managerSharedPreferencesDatasource.save(any())
+                managerSharedPreferencesDatasource.setIdRelease(any())
             ).thenReturn(
                 resultFailure(
                     "IManagerSharedPreferencesDatasource.save",
@@ -234,13 +234,13 @@ class IManagerRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.save(
+            val result = repository.setRelease(
                 Manager(
                     idRelease = 1,
                     idFront = 1
                 )
             )
-            verify(managerSharedPreferencesDatasource, atLeastOnce()).save(
+            verify(managerSharedPreferencesDatasource, atLeastOnce()).setIdRelease(
                 argThat {
                     idRelease == 1 && idFront == 1
                 }
@@ -262,13 +262,13 @@ class IManagerRepositoryTest {
     @Test
     fun `save - Check return correct if function execute successfully`() =
         runTest {
-            val result = repository.save(
+            val result = repository.setRelease(
                 Manager(
                     idRelease = 1,
                     idFront = 1
                 )
             )
-            verify(managerSharedPreferencesDatasource, atLeastOnce()).save(
+            verify(managerSharedPreferencesDatasource, atLeastOnce()).setIdRelease(
                 argThat {
                     idRelease == 1 && idFront == 1
                 }

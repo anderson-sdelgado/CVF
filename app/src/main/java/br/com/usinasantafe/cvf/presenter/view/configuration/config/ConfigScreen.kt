@@ -24,6 +24,7 @@ import br.com.usinasantafe.cvf.BuildConfig
 import br.com.usinasantafe.cvf.R
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.LevelUpdate
+import br.com.usinasantafe.cvf.lib.Option
 import br.com.usinasantafe.cvf.lib.msg
 import br.com.usinasantafe.cvf.presenter.theme.ButtonMaxWidth
 import br.com.usinasantafe.cvf.presenter.theme.CVFTheme
@@ -52,6 +53,7 @@ fun ConfigScreen(
             }
 
             ConfigContent(
+                option = uiState.option,
                 number = uiState.number,
                 onNumberChanged = viewModel::onNumberChanged,
                 password = uiState.password,
@@ -59,7 +61,6 @@ fun ConfigScreen(
                 onSaveAndUpdate = viewModel::onSaveAndUpdate,
                 onCloseDialog = viewModel::onCloseDialog,
                 status = uiState.status,
-                flagReturn = uiState.flagReturn,
                 onNavFront = onNavFront,
                 onNavNote = onNavNote,
                 modifier = Modifier.padding(innerPadding)
@@ -70,6 +71,7 @@ fun ConfigScreen(
 
 @Composable
 fun ConfigContent(
+    option: Option,
     number: String,
     onNumberChanged: (String) -> Unit,
     password: String,
@@ -77,7 +79,6 @@ fun ConfigContent(
     onSaveAndUpdate: () -> Unit,
     onCloseDialog: () -> Unit,
     status: UiStatusStateUpdate,
-    flagReturn: Boolean,
     onNavFront: () -> Unit,
     onNavNote: () -> Unit,
     modifier: Modifier = Modifier
@@ -115,7 +116,7 @@ fun ConfigContent(
         ButtonMaxWidth(id = R.string.text_pattern_save, onClick = onSaveAndUpdate)
         Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
-        if(flagReturn) ButtonMaxWidth(id = R.string.text_pattern_return, onClick = onNavNote)
+        if(option == Option.EDIT) ButtonMaxWidth(id = R.string.text_pattern_return, onClick = onNavNote)
 
         if (status.flagProgress) {
             Spacer(modifier = Modifier.padding(vertical = 16.dp))
@@ -154,6 +155,7 @@ fun ConfigPagePreview() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             ConfigContent(
+                option = Option.INSERT,
                 number = "",
                 onNumberChanged = {},
                 password = "",
@@ -161,7 +163,6 @@ fun ConfigPagePreview() {
                 onSaveAndUpdate = {},
                 onCloseDialog = {},
                 status = UiStatusStateUpdate(),
-                flagReturn = false,
                 onNavFront = {},
                 onNavNote = {},
                 modifier = Modifier.padding(innerPadding)
@@ -176,6 +177,7 @@ fun ConfigPagePreviewWithData() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             ConfigContent(
+                option = Option.EDIT,
                 number = "16997417840",
                 onNumberChanged = {},
                 password = "12345",
@@ -193,7 +195,6 @@ fun ConfigPagePreviewWithData() {
                     errors = Errors.FIELD_EMPTY,
                     failure = "",
                 ),
-                flagReturn = true,
                 onNavFront = {},
                 onNavNote = {},
                 modifier = Modifier.padding(innerPadding)
@@ -208,6 +209,7 @@ fun ConfigPagePreviewShowProgress() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             ConfigContent(
+                option = Option.INSERT,
                 number = "16997417840",
                 onNumberChanged = {},
                 password = "12345",
@@ -224,7 +226,6 @@ fun ConfigPagePreviewShowProgress() {
                     errors = Errors.FIELD_EMPTY,
                     failure = "",
                 ),
-                flagReturn = false,
                 onNavFront = {},
                 onNavNote = {},
                 modifier = Modifier.padding(innerPadding)
@@ -239,6 +240,7 @@ fun ConfigPagePreviewShowMsgFieldEmpty() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             ConfigContent(
+                option = Option.INSERT,
                 number = "",
                 onNumberChanged = {},
                 password = "",
@@ -255,7 +257,6 @@ fun ConfigPagePreviewShowMsgFieldEmpty() {
                     errors = Errors.FIELD_EMPTY,
                     failure = "",
                 ),
-                flagReturn = false,
                 onNavFront = {},
                 onNavNote = {},
                 modifier = Modifier.padding(innerPadding)
@@ -270,6 +271,7 @@ fun ConfigPagePreviewShowMsgSuccess() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             ConfigContent(
+                option = Option.INSERT,
                 number = "16997417840",
                 onNumberChanged = {},
                 password = "12345",
@@ -286,7 +288,6 @@ fun ConfigPagePreviewShowMsgSuccess() {
                     errors = Errors.FIELD_EMPTY,
                     failure = "",
                 ),
-                flagReturn = false,
                 onNavFront = {},
                 onNavNote = {},
                 modifier = Modifier.padding(innerPadding)

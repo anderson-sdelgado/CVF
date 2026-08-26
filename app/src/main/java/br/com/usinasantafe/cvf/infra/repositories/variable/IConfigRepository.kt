@@ -52,4 +52,8 @@ class IConfigRepository @Inject constructor(
             configSharedPreferencesDatasource.setStatusSend(statusSend).getOrThrow()
         }
 
+    override suspend fun getPassword(): Result<String> {
+        TODO("Not yet implemented")
+    }
+
 }

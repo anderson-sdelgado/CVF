@@ -27,4 +27,8 @@ interface ConfigModule {
     @Singleton
     fun bindSetStatusSend(usecase: ISetStatusSend): SetStatusSend
 
+    @Binds
+    @Singleton
+    fun bindCheckPassword(usecase: ICheckPassword): CheckPassword
+
 }

@@ -12,10 +12,10 @@ import br.com.usinasantafe.cvf.presenter.theme.CVFTheme
 import br.com.usinasantafe.cvf.presenter.theme.TitleDesign
 
 @Composable
-fun CartScreen() {
+fun MsgCartScreen() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            CartContent(
+            MsgCartContent(
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -23,7 +23,7 @@ fun CartScreen() {
 }
 
 @Composable
-fun CartContent(
+fun MsgCartContent(
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -36,10 +36,10 @@ fun CartContent(
 
 @Preview(showBackground = true)
 @Composable
-fun CartPagePreview() {
+fun MsgCartPagePreview() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            CartContent(
+            MsgCartContent(
                 modifier = Modifier.padding(innerPadding)
             )
         }

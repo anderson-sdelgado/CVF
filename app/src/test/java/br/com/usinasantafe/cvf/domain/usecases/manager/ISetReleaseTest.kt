@@ -13,11 +13,11 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import kotlin.test.assertEquals
 
-class ISaveManagerTest {
+class ISetReleaseTest {
 
     private val managerRepository = mock<ManagerRepository>()
     private val startWorkManager = mock<StartWorkManager>()
-    private val usecase = ISaveManager(
+    private val usecase = ISetRelease(
         managerRepository = managerRepository,
         startWorkManager = startWorkManager
     )
@@ -26,7 +26,7 @@ class ISaveManagerTest {
     fun `Check return failure if have error in ManagerRepository save`() =
         runTest {
             whenever(
-                managerRepository.save(
+                managerRepository.setIdRelease(
                     Manager(
                         idFront = 1,
                         idRelease = 1
@@ -65,7 +65,7 @@ class ISaveManagerTest {
                 idFront = 1,
                 idRelease = 1
             )
-            verify(managerRepository, atLeastOnce()).save(
+            verify(managerRepository, atLeastOnce()).setIdRelease(
                 Manager(
                     idFront = 1,
                     idRelease = 1

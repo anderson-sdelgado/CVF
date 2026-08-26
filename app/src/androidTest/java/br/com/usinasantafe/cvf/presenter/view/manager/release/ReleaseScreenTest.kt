@@ -12,7 +12,7 @@ import br.com.usinasantafe.cav.utils.waitUntilTimeout
 import br.com.usinasantafe.cvf.HiltTestActivity
 import br.com.usinasantafe.cvf.di.provider.BaseUrlModuleTest
 import br.com.usinasantafe.cvf.domain.usecases.manager.ListRelease
-import br.com.usinasantafe.cvf.domain.usecases.manager.SaveManager
+import br.com.usinasantafe.cvf.domain.usecases.manager.SetRelease
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableRelease
 import br.com.usinasantafe.cvf.external.room.dao.stable.ReleaseDao
 import br.com.usinasantafe.cvf.external.sharedPreferences.IConfigSharedPreferencesDatasource
@@ -48,7 +48,7 @@ class ReleaseScreenTest {
     lateinit var updateTableRelease: UpdateTableRelease
 
     @Inject
-    lateinit var saveManager: SaveManager
+    lateinit var setRelease: SetRelease
 
     @Inject
     lateinit var checkNetwork: CheckNetwork
@@ -141,7 +141,7 @@ class ReleaseScreenTest {
 
             releaseDao.insertAll(list)
 
-            managerSharedPreferencesDatasource.save(
+            managerSharedPreferencesDatasource.setIdRelease(
                 ManagerSharedPreferencesModel(
                     idFront = 0,
                     idRelease = 4
@@ -321,7 +321,7 @@ class ReleaseScreenTest {
 
             releaseDao.insertAll(list)
 
-            managerSharedPreferencesDatasource.save(
+            managerSharedPreferencesDatasource.setIdRelease(
                 ManagerSharedPreferencesModel(
                     idFront = 3,
                     idRelease = 4
@@ -355,7 +355,7 @@ class ReleaseScreenTest {
                     ),
                     listRelease = listRelease,
                     updateTableRelease = updateTableRelease,
-                    saveManager = saveManager,
+                    setRelease = setRelease,
                     checkNetwork = checkNetwork
                 ),
                 onNavFront = {},
