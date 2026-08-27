@@ -37,7 +37,7 @@ class IListReleaseTest {
     @Test
     fun check_return_empty_list_if_function_execute_successfully_and_list_is_empty() =
         runTest {
-            val result = usecase(1)
+            val result = usecase()
             assertEquals(
                 true,
                 result.isSuccess
@@ -76,7 +76,7 @@ class IListReleaseTest {
                     ),
                 )
             )
-            val result = usecase(2)
+            val result = usecase()
             assertEquals(
                 true,
                 result.isSuccess
@@ -115,7 +115,7 @@ class IListReleaseTest {
                     ),
                 )
             )
-            val result = usecase(1)
+            val result = usecase()
             assertEquals(
                 true,
                 result.isSuccess
@@ -170,13 +170,8 @@ class IListReleaseTest {
                     ),
                 )
             )
-            managerSharedPreferencesDatasource.setIdRelease(
-                ManagerSharedPreferencesModel(
-                    idFront = 1,
-                    idRelease = 2
-                )
-            )
-            val result = usecase(1)
+            managerSharedPreferencesDatasource.setIdRelease(2)
+            val result = usecase()
             assertEquals(
                 true,
                 result.isSuccess

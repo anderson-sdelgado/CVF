@@ -33,6 +33,11 @@ interface NoteModule {
 
     @Binds
     @Singleton
+    fun bindGetNroTruck(usecase: IGetNroTruck): GetNroTruck
+
+    @Binds
+    @Singleton
     fun bindDeleteNote(usecase: IDeleteNote): DeleteNote
+
 
 }

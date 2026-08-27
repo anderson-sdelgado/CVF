@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cvf.domain.usecases.manager
 
 import br.com.usinasantafe.cvf.external.sharedPreferences.IManagerSharedPreferencesDatasource
-import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ManagerSharedPreferencesModel
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -21,7 +20,7 @@ class IHasManagerTest {
     lateinit var usecase: HasManager
 
     @Inject
-    lateinit var managerDatasource: IManagerSharedPreferencesDatasource
+    lateinit var managerSharedPreferencesDatasource: IManagerSharedPreferencesDatasource
 
     @Before
     fun setup() {
@@ -45,12 +44,7 @@ class IHasManagerTest {
     @Test
     fun check_return_true_if_have_data() =
         runTest {
-            managerDatasource.setIdRelease(
-                ManagerSharedPreferencesModel(
-                    idRelease = 1,
-                    idFront = 1
-                )
-            )
+            managerSharedPreferencesDatasource.setIdRelease(1)
             val result = usecase()
             assertEquals(
                 true,

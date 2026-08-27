@@ -46,4 +46,13 @@
     <string name="text_unknown_error">UNKNONW ERROR</string>
     <string name="text_msg_check_data">CHECANDO \"%1$s\" NO WEB SERVICE. POR FAVOR, AGUARDE A CHECAGEM PARA DAR ANDAMENTO AO APONTAMENTO.</string>
     <string name="text_password_invalid">SENHA INVÁLIDA!</string>
+    <string name="text_truck">NRO. CAMINHÃO</string>
+    <string name="text_title_msg">ATENÇÃO</string>
+    <string name="text_msg_cart">DESEJA ADICIONAR A CARRETA %1$s?</string>
+    <string name="text_pattern_no">NÃO</string>
+    <string name="text_pattern_yes">SIM</string>
+    <string name="text_cart">NRO. CARRETA %1$s</string>
+    <string name="text_title_travel">VIAGEM</string>
+    <string name="text_finish_travel">FINALIZAR VIAGEM</string>
+    <string name="text_clean_travel">APAGAR VIAGEM</string>
 </resources>

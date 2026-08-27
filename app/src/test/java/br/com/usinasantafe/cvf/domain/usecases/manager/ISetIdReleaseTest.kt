@@ -1,6 +1,5 @@
 package br.com.usinasantafe.cvf.domain.usecases.manager
 
-import br.com.usinasantafe.cvf.domain.entities.variable.Manager
 import br.com.usinasantafe.cvf.domain.repositories.variable.ManagerRepository
 import br.com.usinasantafe.cvf.domain.usecases.background.StartWorkManager
 import br.com.usinasantafe.cvf.utils.resultFailure
@@ -13,43 +12,35 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import kotlin.test.assertEquals
 
-class ISetReleaseTest {
+class ISetIdReleaseTest {
 
     private val managerRepository = mock<ManagerRepository>()
     private val startWorkManager = mock<StartWorkManager>()
-    private val usecase = ISetRelease(
+    private val usecase = ISetIdRelease(
         managerRepository = managerRepository,
         startWorkManager = startWorkManager
     )
 
     @Test
-    fun `Check return failure if have error in ManagerRepository save`() =
+    fun `Check return failure if have error in ManagerRepository setIdRelease`() =
         runTest {
             whenever(
-                managerRepository.setIdRelease(
-                    Manager(
-                        idFront = 1,
-                        idRelease = 1
-                    )
-                )
+                managerRepository.setIdRelease(1)
             ).thenReturn(
                 resultFailure(
-                    "IManagerRepository.save",
+                    "IManagerRepository.setIdRelease",
                     "-",
                     Exception()
                 )
             )
-            val result = usecase(
-                idFront = 1,
-                idRelease = 1
-            )
+            val result = usecase(1)
             verify(startWorkManager, never()).invoke()
             assertEquals(
                 true,
                 result.isFailure
             )
             assertEquals(
-                "ISaveManager -> IManagerRepository.save",
+                "ISetRelease -> IManagerRepository.setIdRelease",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -61,16 +52,8 @@ class ISetReleaseTest {
     @Test
     fun `Check return correct if function execute successfully`() =
         runTest {
-            val result = usecase(
-                idFront = 1,
-                idRelease = 1
-            )
-            verify(managerRepository, atLeastOnce()).setIdRelease(
-                Manager(
-                    idFront = 1,
-                    idRelease = 1
-                )
-            )
+            val result = usecase(1)
+            verify(managerRepository, atLeastOnce()).setIdRelease(1)
             verify(startWorkManager, atLeastOnce()).invoke()
             assertEquals(
                 true,

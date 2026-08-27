@@ -25,7 +25,7 @@ interface ManagerModule {
 
     @Binds
     @Singleton
-    fun bindSaveManager(usecase: ISetRelease): SetRelease
+    fun bindSetRelease(usecase: ISetIdRelease): SetIdRelease
 
     @Binds
     @Singleton
@@ -38,4 +38,8 @@ interface ManagerModule {
     @Binds
     @Singleton
     fun bindGetDescRelease(usecase: IGetDescRelease): GetDescRelease
+
+    @Binds
+    @Singleton
+    fun bindSetFront(usecase: ISetIdFront): SetIdFront
 }

@@ -36,7 +36,7 @@ class PasswordViewModel @Inject constructor(
     private val checkPassword: CheckPassword,
 ) : ViewModel() {
 
-    private val flowMenu: Int = savedStateHandle[OPTION_MENU_ARG]!!
+
 
     private val _uiState = MutableStateFlow(PasswordState())
     val uiState = _uiState.asStateFlow()

@@ -47,11 +47,7 @@ class IManagerSharedPreferencesDatasourceTest {
     @Test
     fun `has - Check return true if have data`() =
         runTest {
-            val data = ManagerSharedPreferencesModel(
-                idRelease = 1,
-                idFront = 1
-            )
-            datasource.setIdRelease(data)
+            datasource.setIdRelease(1)
             val result = datasource.has()
             assertEquals(
                 true,
@@ -66,11 +62,7 @@ class IManagerSharedPreferencesDatasourceTest {
     @Test
     fun `clean - Check altered data`() =
         runTest {
-            val data = ManagerSharedPreferencesModel(
-                idRelease = 1,
-                idFront = 1
-            )
-            datasource.setIdRelease(data)
+            datasource.setIdRelease(1)
             val result = datasource.has()
             assertEquals(
                 true,
@@ -109,11 +101,7 @@ class IManagerSharedPreferencesDatasourceTest {
     @Test
     fun `getIdFront - Check return correct if have data`() =
         runTest {
-            val data = ManagerSharedPreferencesModel(
-                idRelease = 1,
-                idFront = 20
-            )
-            datasource.setIdRelease(data)
+            datasource.setIdRelease(1)
             val result = datasource.getIdFront()
             assertEquals(
                 true,
@@ -142,11 +130,7 @@ class IManagerSharedPreferencesDatasourceTest {
     @Test
     fun `getIdRelease - Check return correct if have data`() =
         runTest {
-            val data = ManagerSharedPreferencesModel(
-                idRelease = 1,
-                idFront = 20
-            )
-            datasource.setIdRelease(data)
+            datasource.setIdRelease(1)
             val result = datasource.getIdRelease()
             assertEquals(
                 true,
@@ -159,32 +143,51 @@ class IManagerSharedPreferencesDatasourceTest {
         }
 
     @Test
-    fun `save - Check data save`() =
+    fun `setIdFront - Check altered field idFront`() =
         runTest {
-            val data = ManagerSharedPreferencesModel(
-                idRelease = 1,
-                idFront = 20,
-                dateHourCreate = Date(1786647885000),
-                dateHourUpdate = Date(1786647885000),
-                statusSend = StatusSend.SENT
-            )
-            datasource.setIdRelease(data)
+            datasource.setIdFront(1)
             val result = datasource.get()
             assertEquals(
                 true,
                 result.isSuccess
             )
+            val model = result.getOrNull()!!
             assertEquals(
-                ManagerSharedPreferencesModel(
-                    idRelease = 1,
-                    idFront = 20,
-                    dateHourCreate = Date(1786647885000),
-                    dateHourUpdate = Date(1786647885000),
-                    statusSend = StatusSend.SENT
-                ),
-                result.getOrNull()!!
+                1,
+                model.idFront
             )
+            assertEquals(
+                null,
+                model.idRelease
+            )
+            assertEquals(
+                StatusSend.STARTED,
+                model.statusSend
+            )
+        }
 
+    @Test
+    fun `setIdRelease - Check altered field idRelease`() =
+        runTest {
+            datasource.setIdRelease(1)
+            val result = datasource.get()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            val model = result.getOrNull()!!
+            assertEquals(
+                null,
+                model.idFront
+            )
+            assertEquals(
+                1,
+                model.idRelease
+            )
+            assertEquals(
+                StatusSend.SEND,
+                model.statusSend
+            )
         }
 
     @Test
@@ -204,14 +207,7 @@ class IManagerSharedPreferencesDatasourceTest {
     @Test
     fun `hasSend - Check return false if have data and stateSend is not SEND`() =
         runTest {
-            val data = ManagerSharedPreferencesModel(
-                idRelease = 1,
-                idFront = 20,
-                dateHourCreate = Date(1786647885000),
-                dateHourUpdate = Date(1786647885000),
-                statusSend = StatusSend.SENT
-            )
-            datasource.setIdRelease(data)
+            datasource.setIdRelease(1)
             val result = datasource.hasSend()
             assertEquals(
                 true,
@@ -226,14 +222,7 @@ class IManagerSharedPreferencesDatasourceTest {
     @Test
     fun `hasSend - Check return true if have data and stateSend is SEND`() =
         runTest {
-            val data = ManagerSharedPreferencesModel(
-                idRelease = 1,
-                idFront = 20,
-                dateHourCreate = Date(1786647885000),
-                dateHourUpdate = Date(1786647885000),
-                statusSend = StatusSend.SEND
-            )
-            datasource.setIdRelease(data)
+            datasource.setIdRelease(1)
             val result = datasource.hasSend()
             assertEquals(
                 true,
@@ -248,14 +237,7 @@ class IManagerSharedPreferencesDatasourceTest {
     @Test
     fun `setFlagUpdate - Check return data correct the Config SharedPreferences internal`() =
         runTest {
-            val data = ManagerSharedPreferencesModel(
-                idRelease = 1,
-                idFront = 20,
-                dateHourCreate = Date(1786647885000),
-                dateHourUpdate = Date(1786647885000),
-                statusSend = StatusSend.SEND
-            )
-            datasource.setIdRelease(data)
+            datasource.setIdRelease(1)
             val resultBefore = datasource.get()
             assertEquals(
                 true,

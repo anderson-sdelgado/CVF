@@ -9,6 +9,7 @@ import br.com.usinasantafe.cvf.lib.BASE_SHARED_PREFERENCES_TABLE_CONFIG
 import br.com.usinasantafe.cvf.lib.StatusSend
 import br.com.usinasantafe.cvf.utils.EmptyResult
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
+import br.com.usinasantafe.cvf.utils.required
 import br.com.usinasantafe.cvf.utils.result
 import com.google.gson.Gson
 import javax.inject.Inject
@@ -64,6 +65,12 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
             val model = get().getOrThrow()
             model.statusSend = statusSend
             save(model).getOrThrow()
+        }
+
+    override suspend fun getPassword(): Result<String> =
+        result(getClassAndMethod()) {
+            val model = get().getOrThrow()
+            model::password.required()
         }
 
 }

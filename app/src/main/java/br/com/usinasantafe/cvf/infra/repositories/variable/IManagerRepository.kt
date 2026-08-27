@@ -4,7 +4,6 @@ import br.com.usinasantafe.cvf.domain.repositories.variable.ManagerRepository
 import br.com.usinasantafe.cvf.infra.datasource.retrofit.variable.ManagerRetrofitDatasource
 import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.ManagerSharedPreferencesDatasource
 import br.com.usinasantafe.cvf.infra.models.retrofit.variable.sharedPreferencesModelToRetrofitModel
-import br.com.usinasantafe.cvf.infra.models.sharedpreferences.entityToSharedPreferencesModel
 import br.com.usinasantafe.cvf.lib.StatusSend
 import br.com.usinasantafe.cvf.utils.EmptyResult
 import br.com.usinasantafe.cvf.utils.call
@@ -36,15 +35,15 @@ class IManagerRepository @Inject constructor(
             managerSharedPreferencesDatasource.getIdRelease().getOrThrow()
         }
 
-    override suspend fun setIdFront(idFront: Int): EmptyResult =
+    override suspend fun setIdFront(id: Int): EmptyResult =
         call(getClassAndMethod()) {
             managerSharedPreferencesDatasource.clean().getOrThrow()
-            managerSharedPreferencesDatasource.setIdFront(idFront).getOrThrow()
+            managerSharedPreferencesDatasource.setIdFront(id).getOrThrow()
         }
 
-    override suspend fun setIdRelease(idRelease: Int): EmptyResult =
+    override suspend fun setIdRelease(id: Int): EmptyResult =
         call(getClassAndMethod()) {
-            managerSharedPreferencesDatasource.setIdRelease(idRelease).getOrThrow()
+            managerSharedPreferencesDatasource.setIdRelease(id).getOrThrow()
         }
 
     override suspend fun hasSend(): Result<Boolean> =

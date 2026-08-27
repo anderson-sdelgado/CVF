@@ -36,8 +36,40 @@ class IListReleaseTest {
     }
 
     @Test
+    fun `Check return failure if have error in ManagerRepository getIdFront`() =
+        runTest {
+            whenever(
+                managerRepository.getIdFront()
+            ).thenReturn(
+                resultFailure(
+                    "IManagerRepository.getIdFront",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = usecase()
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IListRelease -> IManagerRepository.getIdFront",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
     fun `Check return failure if have error in ReleaseRepository listByIdFront`() =
         runTest {
+            whenever(
+                managerRepository.getIdFront()
+            ).thenReturn(
+                Result.success(1)
+            )
             whenever(
                 releaseRepository.listByIdFront(1)
             ).thenReturn(
@@ -47,7 +79,7 @@ class IListReleaseTest {
                     Exception()
                 )
             )
-            val result = usecase(1)
+            val result = usecase()
             assertEquals(
                 true,
                 result.isFailure
@@ -66,6 +98,11 @@ class IListReleaseTest {
     fun `Check return failure if have error in ManagerRepository getIdRelease`() =
         runTest {
             whenever(
+                managerRepository.getIdFront()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
                 releaseRepository.listByIdFront(1)
             ).thenReturn(
                 Result.success(emptyList())
@@ -79,7 +116,7 @@ class IListReleaseTest {
                     Exception()
                 )
             )
-            val result = usecase(1)
+            val result = usecase()
             assertEquals(
                 true,
                 result.isFailure
@@ -98,6 +135,11 @@ class IListReleaseTest {
     fun `Check return empty list if function execute successfully and list is empty`() =
         runTest {
             whenever(
+                managerRepository.getIdFront()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
                 releaseRepository.listByIdFront(1)
             ).thenReturn(
                 Result.success(emptyList())
@@ -107,7 +149,7 @@ class IListReleaseTest {
             ).thenReturn(
                 Result.success(null)
             )
-            val result = usecase(1)
+            val result = usecase()
             assertEquals(
                 true,
                 result.isSuccess
@@ -119,8 +161,13 @@ class IListReleaseTest {
         }
 
     @Test
-    fun `Check return list without check if function execute successfully and idFront is null`() =
+    fun `Check return list without check if function execute successfully and idRelease is null`() =
         runTest {
+            whenever(
+                managerRepository.getIdFront()
+            ).thenReturn(
+                Result.success(1)
+            )
             whenever(
                 releaseRepository.listByIdFront(1)
             ).thenReturn(
@@ -155,7 +202,7 @@ class IListReleaseTest {
             ).thenReturn(
                 Result.success(null)
             )
-            val result = usecase(1)
+            val result = usecase()
             assertEquals(
                 true,
                 result.isSuccess
@@ -183,8 +230,13 @@ class IListReleaseTest {
         }
 
     @Test
-    fun `Check return list with check if function execute successfully and idFront is not null`() =
+    fun `Check return list with check if function execute successfully and idRelease is not null`() =
         runTest {
+            whenever(
+                managerRepository.getIdFront()
+            ).thenReturn(
+                Result.success(1)
+            )
             whenever(
                 releaseRepository.listByIdFront(1)
             ).thenReturn(
@@ -219,7 +271,7 @@ class IListReleaseTest {
             ).thenReturn(
                 Result.success(2)
             )
-            val result = usecase(1)
+            val result = usecase()
             assertEquals(
                 true,
                 result.isSuccess

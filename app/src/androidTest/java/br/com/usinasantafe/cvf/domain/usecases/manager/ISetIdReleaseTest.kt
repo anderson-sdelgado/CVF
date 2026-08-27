@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cvf.domain.usecases.manager
 
 import br.com.usinasantafe.cvf.external.sharedPreferences.IManagerSharedPreferencesDatasource
+import br.com.usinasantafe.cvf.lib.StatusSend
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -11,7 +12,7 @@ import javax.inject.Inject
 import kotlin.test.assertEquals
 
 @HiltAndroidTest
-class ISaveManagerTest {
+class ISetIdReleaseTest {
 
     @get:Rule
     val hiltRule = HiltAndroidRule(this)
@@ -28,29 +29,25 @@ class ISaveManagerTest {
     }
 
     @Test
-    fun check_save_data() =
+    fun check_altered_data() =
         runTest {
-            assertEquals(
-                false,
-                managerSharedPreferencesDatasource.has().getOrThrow()
-            )
             val result = usecase(1)
             assertEquals(
                 true,
                 result.isSuccess
             )
+            val modelAfter = managerSharedPreferencesDatasource.get().getOrThrow()
             assertEquals(
-                true,
-                managerSharedPreferencesDatasource.has().getOrThrow()
-            )
-            val model = managerSharedPreferencesDatasource.get().getOrThrow()
-            assertEquals(
-                1,
-                model.idFront
+                null,
+                modelAfter.idFront
             )
             assertEquals(
                 1,
-                model.idRelease
+                modelAfter.idRelease
+            )
+            assertEquals(
+                StatusSend.SEND,
+                modelAfter.statusSend
             )
         }
 

@@ -1,7 +1,9 @@
 package br.com.usinasantafe.cvf.domain.usecases.config
 
+import br.com.usinasantafe.cvf.external.sharedPreferences.IManagerSharedPreferencesDatasource
 import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ManagerSharedPreferencesModel
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -23,6 +25,9 @@ class ISetFinishUpdateAllTableTest {
     @Inject
     lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource
 
+    @Inject
+    lateinit var managerSharedPreferencesDatasource: IManagerSharedPreferencesDatasource
+
     @Before
     fun setUp() {
         hiltRule.inject()
@@ -31,6 +36,12 @@ class ISetFinishUpdateAllTableTest {
     @Test
     fun check_altered_data() =
         runTest {
+            managerSharedPreferencesDatasource.save(
+                ManagerSharedPreferencesModel(
+                    idRelease = 1,
+                    idFront = 1
+                )
+            )
             configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
                     number = 16997417840,
@@ -39,10 +50,15 @@ class ISetFinishUpdateAllTableTest {
                     version = "1.0"
                 )
             )
-            val modelBefore = configSharedPreferencesDatasource.get().getOrThrow()
+            val modelConfigBefore = configSharedPreferencesDatasource.get().getOrThrow()
             assertEquals(
                 false,
-                modelBefore.flagUpdate
+                modelConfigBefore.flagUpdate
+            )
+            val hasManagerAfter = managerSharedPreferencesDatasource.has().getOrThrow()
+            assertEquals(
+                true,
+                hasManagerAfter
             )
             val result = usecase()
             assertEquals(
@@ -53,6 +69,11 @@ class ISetFinishUpdateAllTableTest {
             assertEquals(
                 true,
                 modelAfter.flagUpdate
+            )
+            val modelManagerAfter = managerSharedPreferencesDatasource.has().getOrThrow()
+            assertEquals(
+                false,
+                modelManagerAfter
             )
         }
 }

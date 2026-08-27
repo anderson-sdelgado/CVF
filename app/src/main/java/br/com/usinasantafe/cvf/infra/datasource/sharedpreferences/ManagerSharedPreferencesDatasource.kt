@@ -9,8 +9,8 @@ interface ManagerSharedPreferencesDatasource {
     suspend fun has(): Result<Boolean>
     suspend fun getIdFront(): Result<Int?>
     suspend fun getIdRelease(): Result<Int?>
-    suspend fun setIdFront(idFront: Int): EmptyResult
-    suspend fun setIdRelease(idRelease: Int): EmptyResult
+    suspend fun setIdFront(id: Int): EmptyResult
+    suspend fun setIdRelease(id: Int): EmptyResult
     suspend fun hasSend(): Result<Boolean>
     suspend fun get(): Result<ManagerSharedPreferencesModel>
     suspend fun setStatusSend(statusSend: StatusSend): EmptyResult

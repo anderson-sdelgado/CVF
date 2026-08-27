@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import br.com.usinasantafe.cvf.lib.Option
 import br.com.usinasantafe.cvf.lib.OptionReturn
+import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_ARG
 import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_MENU_ARG
 import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_RETURN_ARG
 import br.com.usinasantafe.cvf.presenter.navigation.Routes.CONFIG_ROUTE
@@ -18,11 +19,13 @@ import br.com.usinasantafe.cvf.presenter.navigation.Routes.FRONT_ROUTE
 import br.com.usinasantafe.cvf.presenter.navigation.Routes.PASSWORD_ROUTE
 import br.com.usinasantafe.cvf.presenter.navigation.Routes.RELEASE_ROUTE
 import br.com.usinasantafe.cvf.presenter.navigation.Routes.SPLASH_ROUTE
+import br.com.usinasantafe.cvf.presenter.navigation.Routes.TRUCK_ROUTE
 import br.com.usinasantafe.cvf.presenter.view.configuration.config.ConfigScreen
 import br.com.usinasantafe.cvf.presenter.view.configuration.password.PasswordScreen
 import br.com.usinasantafe.cvf.presenter.view.manager.front.FrontScreen
 import br.com.usinasantafe.cvf.presenter.view.manager.release.ReleaseScreen
 import br.com.usinasantafe.cvf.presenter.view.note.driver.DriverScreen
+import br.com.usinasantafe.cvf.presenter.view.note.truck.TruckScreen
 import br.com.usinasantafe.cvf.presenter.view.splash.SplashScreen
 
 @Composable
@@ -48,7 +51,7 @@ fun NavigationGraph(
         composable(
             CONFIG_ROUTE,
             arguments = listOf(
-                navArgument(OPTION_MENU_ARG) { type = NavType.IntType },
+                navArgument(OPTION_ARG) { type = NavType.IntType },
                 navArgument(OPTION_RETURN_ARG) { type = NavType.IntType },
             )
         ) { entry ->
@@ -100,7 +103,7 @@ fun NavigationGraph(
         composable(
             FRONT_ROUTE,
             arguments = listOf(
-                navArgument(OPTION_MENU_ARG) { type = NavType.IntType },
+                navArgument(OPTION_ARG) { type = NavType.IntType },
                 navArgument(OPTION_RETURN_ARG) { type = NavType.IntType },
             )
         ){ entry ->
@@ -125,15 +128,13 @@ fun NavigationGraph(
         composable(
             RELEASE_ROUTE,
             arguments = listOf(
-                navArgument(OPTION_MENU_ARG) { type = NavType.IntType },
+                navArgument(OPTION_ARG) { type = NavType.IntType },
                 navArgument(OPTION_RETURN_ARG) { type = NavType.IntType },
             )
         ){ entry ->
             val optionReturn = OptionReturn.entries[entry.arguments?.getInt(OPTION_RETURN_ARG)!!]
             ReleaseScreen(
-                onNavFront = {
-                    navActions.navigateToFront()
-                },
+                onNavFront = navActions::navigateToFront,
                 onNavDriver = navActions::navigateToDriver,
                 onNavNote = {
                     when(optionReturn) {
@@ -153,6 +154,17 @@ fun NavigationGraph(
                     navActions.navigateToPassword(it.ordinal, OptionReturn.DRIVER.ordinal)
                 },
                 onNavTruck = {}
+            )
+        }
+
+        composable(TRUCK_ROUTE) {
+            TruckScreen(
+                onNavPassword = {
+                    navActions.navigateToPassword(it.ordinal, OptionReturn.TRUCK.ordinal)
+                },
+                onNavDriver = navActions::navigateToDriver,
+                onNavCart = navActions::navigateToCart,
+                onNavMsgCart = navActions::navigateToMsgCart
             )
         }
 

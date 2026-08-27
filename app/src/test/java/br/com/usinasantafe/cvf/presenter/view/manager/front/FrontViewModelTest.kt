@@ -3,9 +3,11 @@ package br.com.usinasantafe.cvf.presenter.view.manager.front
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cvf.MainCoroutineRule
 import br.com.usinasantafe.cvf.domain.usecases.manager.ListFront
+import br.com.usinasantafe.cvf.domain.usecases.manager.SetIdFront
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableFront
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.LevelUpdate
+import br.com.usinasantafe.cvf.lib.Option
 import br.com.usinasantafe.cvf.presenter.model.ItemCheckBoxScreenModel
 import br.com.usinasantafe.cvf.presenter.navigation.Args
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
@@ -29,17 +31,19 @@ class FrontViewModelTest {
     val mainCoroutineRule = MainCoroutineRule()
 
     private val listFront = mock<ListFront>()
+    private val setIdFront = mock<SetIdFront>()
     private val updateTableFront = mock<UpdateTableFront>()
 
     private fun createdViewModel(
-        idFront: Int = 0
+        option: Option = Option.INSERT
     ) = FrontViewModel(
         savedStateHandle = SavedStateHandle(
             mapOf(
-                Args.ID_FRONT_ARG to idFront
+                Args.OPTION_ARG to option.ordinal
             )
         ),
         listFront = listFront,
+        setIdFront = setIdFront,
         updateTableFront = updateTableFront
     )
 
@@ -156,7 +160,7 @@ class FrontViewModelTest {
                     )
                 )
             )
-            val viewModel = createdViewModel(3)
+            val viewModel = createdViewModel()
             viewModel.list()
             val list = viewModel.list.toList()
             assertEquals(
@@ -173,12 +177,12 @@ class FrontViewModelTest {
                     ItemCheckBoxScreenModel(
                         id = 2,
                         desc = "Test2",
-                        flag = false
+                        flag = true
                     ),
                     ItemCheckBoxScreenModel(
                         id = 3,
                         desc = "Test3",
-                        flag = true
+                        flag = false
                     )
                 ),
                 list
@@ -440,10 +444,6 @@ class FrontViewModelTest {
                 checked = true
             )
             viewModel.set()
-            assertEquals(
-                3,
-                viewModel.uiState.value.idSelection
-            )
             assertEquals(
                 true,
                 viewModel.uiState.value.status.flagAccess

@@ -30,6 +30,7 @@ import br.com.usinasantafe.cvf.presenter.MainActivity
 import br.com.usinasantafe.cvf.presenter.theme.TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE
 import br.com.usinasantafe.cvf.presenter.view.configuration.config.TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN
 import br.com.usinasantafe.cvf.presenter.view.configuration.config.TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN
+import br.com.usinasantafe.cvf.presenter.view.configuration.password.TAG_PASSWORD_TEXT_FIELD_SCREEN
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -295,6 +296,50 @@ class ConfigFlowTest {
             checkData()
 
             Log.d("TestDebug", "Position 17")
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag("tag_top_bar_menu")
+                .performClick()
+
+            Log.d("TestDebug", "Position 18")
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag("tag_top_bar_menu_item_config")
+                .performClick()
+
+            Log.d("TestDebug", "Position 19")
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithText("CANCELAR")
+                .performClick()
+
+            Log.d("TestDebug", "Position 20")
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag("tag_top_bar_menu")
+                .performClick()
+
+            Log.d("TestDebug", "Position 21")
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag("tag_top_bar_menu_item_config")
+                .performClick()
+
+            Log.d("TestDebug", "Position 22")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("OK")
+                .performClick()
+
+            Log.d("TestDebug", "Position 23")
 
             composeTestRule.waitUntilTimeout(10_000)
 

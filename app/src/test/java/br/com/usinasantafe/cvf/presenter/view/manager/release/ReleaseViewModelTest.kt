@@ -3,10 +3,11 @@ package br.com.usinasantafe.cvf.presenter.view.manager.release
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cvf.MainCoroutineRule
 import br.com.usinasantafe.cvf.domain.usecases.manager.ListRelease
-import br.com.usinasantafe.cvf.domain.usecases.manager.SetRelease
+import br.com.usinasantafe.cvf.domain.usecases.manager.SetIdRelease
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableRelease
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.LevelUpdate
+import br.com.usinasantafe.cvf.lib.Option
 import br.com.usinasantafe.cvf.presenter.model.ItemCheckBoxScreenModel
 import br.com.usinasantafe.cvf.presenter.navigation.Args
 import br.com.usinasantafe.cvf.utils.CheckNetwork
@@ -32,20 +33,20 @@ class ReleaseViewModelTest {
 
     private val updateTableRelease = mock<UpdateTableRelease>()
     private val listRelease = mock<ListRelease>()
-    private val setRelease = mock<SetRelease>()
+    private val setIdRelease = mock<SetIdRelease>()
     private val checkNetwork = mock<CheckNetwork>()
 
     private fun createdViewModel(
-        idFront: Int = 1
+        option: Option = Option.INSERT
     ) = ReleaseViewModel(
         savedStateHandle = SavedStateHandle(
             mapOf(
-                Args.ID_FRONT_ARG to idFront
+                Args.OPTION_ARG to option.ordinal
             )
         ),
         updateTableRelease = updateTableRelease,
         listRelease = listRelease,
-        setRelease = setRelease,
+        setIdRelease = setIdRelease,
         checkNetwork = checkNetwork
     )
 
@@ -53,7 +54,7 @@ class ReleaseViewModelTest {
     fun `list - Check return failure if have error in ListRelease`() =
         runTest {
             whenever(
-                listRelease(2)
+                listRelease()
             ).thenReturn(
                 resultFailure(
                     context = "ListRelease",
@@ -61,7 +62,7 @@ class ReleaseViewModelTest {
                     cause = Exception()
                 )
             )
-            val viewModel = createdViewModel(2)
+            val viewModel = createdViewModel()
             viewModel.list()
             assertEquals(
                 true,
@@ -85,7 +86,7 @@ class ReleaseViewModelTest {
     fun `list - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                listRelease(2)
+                listRelease()
             ).thenReturn(
                 Result.success(
                     listOf(
@@ -107,7 +108,7 @@ class ReleaseViewModelTest {
                     )
                 )
             )
-            val viewModel = createdViewModel(2)
+            val viewModel = createdViewModel()
             viewModel.list()
             val list = viewModel.list.toList()
             assertEquals(
@@ -166,7 +167,6 @@ class ReleaseViewModelTest {
             assertEquals(result.count(), 2)
             assertEquals(
                 ReleaseState(
-                    idFront = 1,
                     status = UiStatusStateUpdate(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
@@ -178,12 +178,11 @@ class ReleaseViewModelTest {
             )
             assertEquals(
                 ReleaseState(
-                    idFront = 1,
                     status = UiStatusStateUpdate(
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
-                        failure = "ReleaseViewModel.updateAllDatabase -> CleanRelease -> java.lang.NullPointerException",
+                        failure = "ReleaseViewModel.updateAllDatabase -> UiStatusStateUpdateKt.executeUpdateSteps -> CleanRelease -> java.lang.NullPointerException",
                         currentProgress = 1f,
                     )
                 ),
@@ -204,7 +203,7 @@ class ReleaseViewModelTest {
     fun `update - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                listRelease(1)
+                listRelease()
             ).thenReturn(
                 Result.success(
                     listOf(
@@ -258,7 +257,6 @@ class ReleaseViewModelTest {
             assertEquals(result.count(), 4)
             assertEquals(
                 ReleaseState(
-                    idFront = 1,
                     status = UiStatusStateUpdate(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
@@ -270,7 +268,6 @@ class ReleaseViewModelTest {
             )
             assertEquals(
                 ReleaseState(
-                    idFront = 1,
                     status = UiStatusStateUpdate(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.CLEAN,
@@ -282,7 +279,6 @@ class ReleaseViewModelTest {
             )
             assertEquals(
                 ReleaseState(
-                    idFront = 1,
                     status = UiStatusStateUpdate(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.SAVE,
@@ -294,7 +290,6 @@ class ReleaseViewModelTest {
             )
             assertEquals(
                 ReleaseState(
-                    idFront = 1,
                     status = UiStatusStateUpdate(
                         flagDialog = true,
                         flagProgress = false,
@@ -364,7 +359,7 @@ class ReleaseViewModelTest {
     fun `save - Check return failure if have error in SaveManager`() =
         runTest {
             whenever(
-                listRelease(2)
+                listRelease()
             ).thenReturn(
                 Result.success(
                     listOf(
@@ -387,7 +382,7 @@ class ReleaseViewModelTest {
                 )
             )
             whenever(
-                setRelease(2, 10)
+                setIdRelease(10)
             ).thenReturn(
                 resultFailure(
                     context = "SaveManager",
@@ -395,7 +390,7 @@ class ReleaseViewModelTest {
                     cause = Exception()
                 )
             )
-            val viewModel = createdViewModel(2)
+            val viewModel = createdViewModel()
             viewModel.list()
             viewModel.onCheckChanged(
                 id = 10,
@@ -424,7 +419,7 @@ class ReleaseViewModelTest {
     fun `save - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                listRelease(2)
+                listRelease()
             ).thenReturn(
                 Result.success(
                     listOf(
@@ -446,7 +441,7 @@ class ReleaseViewModelTest {
                     )
                 )
             )
-            val viewModel = createdViewModel(2)
+            val viewModel = createdViewModel()
             viewModel.list()
             viewModel.onCheckChanged(
                 id = 10,

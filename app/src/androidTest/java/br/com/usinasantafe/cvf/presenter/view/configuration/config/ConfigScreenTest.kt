@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cvf.presenter.view.configuration.config
 
+import android.annotation.SuppressLint
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
@@ -7,9 +8,17 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
+import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cav.utils.waitUntilTimeout
 import br.com.usinasantafe.cvf.HiltTestActivity
 import br.com.usinasantafe.cvf.di.provider.BaseUrlModuleTest
+import br.com.usinasantafe.cvf.domain.usecases.config.GetConfig
+import br.com.usinasantafe.cvf.domain.usecases.config.SetFinishUpdateAllTable
+import br.com.usinasantafe.cvf.domain.usecases.config.UpdateConfig
+import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableColab
+import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableEquip
+import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableFront
+import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableRelease
 import br.com.usinasantafe.cvf.external.room.dao.stable.ColabDao
 import br.com.usinasantafe.cvf.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cvf.external.room.dao.stable.FrontDao
@@ -22,12 +31,14 @@ import br.com.usinasantafe.cvf.infra.models.room.stable.FrontRoomModel
 import br.com.usinasantafe.cvf.infra.models.room.stable.ReleaseRoomModel
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ManagerSharedPreferencesModel
+import br.com.usinasantafe.cvf.lib.Option
 import br.com.usinasantafe.cvf.lib.StatusSend
 import br.com.usinasantafe.cvf.lib.WEB_ALL_COLAB
 import br.com.usinasantafe.cvf.lib.WEB_ALL_EQUIP
 import br.com.usinasantafe.cvf.lib.WEB_ALL_FRONT
 import br.com.usinasantafe.cvf.lib.WEB_ALL_RELEASE
 import br.com.usinasantafe.cvf.lib.WEB_SAVE_TOKEN
+import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_ARG
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -55,6 +66,27 @@ class ConfigScreenTest {
 
     @Inject
     lateinit var managerSharedPreferencesDatasource: IManagerSharedPreferencesDatasource
+
+    @Inject
+    lateinit var getConfig: GetConfig
+
+    @Inject
+    lateinit var updateConfig: UpdateConfig
+
+    @Inject
+    lateinit var setFinishUpdateAllTable: SetFinishUpdateAllTable
+
+    @Inject
+    lateinit var updateTableColab: UpdateTableColab
+
+    @Inject
+    lateinit var updateTableEquip: UpdateTableEquip
+
+    @Inject
+    lateinit var updateTableFront: UpdateTableFront
+
+    @Inject
+    lateinit var updateTableRelease: UpdateTableRelease
 
     @Inject
     lateinit var colabDao: ColabDao
@@ -401,19 +433,12 @@ class ConfigScreenTest {
         }
 
     @Test
-    fun check_open_screen_with_data_manager() =
+    fun check_open_screen_if_option_is_edit() =
         runTest {
 
             hiltRule.inject()
 
-            managerSharedPreferencesDatasource.setIdRelease(
-                ManagerSharedPreferencesModel(
-                    idFront = 1,
-                    idRelease = 1
-                )
-            )
-
-            setContent()
+            setContent(Option.EDIT)
 
             composeTestRule.waitUntilTimeout(20_000)
 
@@ -545,8 +570,7 @@ class ConfigScreenTest {
             composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE RECUPERACAO DE TOKEN! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.onSaveAndUpdate -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateConfig -> IConfigRepository.send -> IConfigRetrofitDatasource.recoverToken -> com.google.gson.stream.MalformedJsonException: Use JsonReader.setStrictness(Strictness.LENIENT) to accept malformed JSON at line 1 column 12 path \$.idServ\n" +
-                    "See https://github.com/google/gson/blob/main/Troubleshooting.md#malformed-json")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE RECUPERACAO DE TOKEN! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.onSaveAndUpdate -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateConfig -> IConfigRepository.send -> IConfigRetrofitDatasource.recoverToken -> com.google.gson.JsonSyntaxException: java.lang.NumberFormatException: For input string: \"1a\" ")
 
             composeTestRule.waitUntilTimeout()
 
@@ -590,7 +614,7 @@ class ConfigScreenTest {
             composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> ConfigViewModel.onSaveAndUpdate -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableColab -> IColabRepository.listAll -> IColabRetrofitDatasource.listAll -> java.lang.NullPointerException")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> ConfigViewModel.onSaveAndUpdate -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableColab -> IColabRepository.listAll -> IColabRetrofitDatasource.listAll -> java.io.EOFException: End of input at line 1 column 1 path \$")
 
             composeTestRule.waitUntilTimeout()
 
@@ -652,7 +676,7 @@ class ConfigScreenTest {
             composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            assert(composeTestRule.onNodeWithTag("text_alert_dialog_simple").fetchSemanticsNode().config.getOrElse(androidx.compose.ui.semantics.SemanticsProperties.Text) { emptyList() }.any { it.text.contains("MalformedJsonException") })
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> ConfigViewModel.onSaveAndUpdate -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableColab -> IColabRepository.listAll -> IColabRetrofitDatasource.listAll -> com.google.gson.JsonSyntaxException: java.lang.NumberFormatException: For input string: \"19759a\"")
 
             composeTestRule.waitUntilTimeout()
 
@@ -789,7 +813,7 @@ class ConfigScreenTest {
             composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. ConfigViewModel.onSaveAndUpdate -> ConfigViewModel.updateAllDatabase -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableEquip -> IEquipRepository.listAll -> IEquipRetrofitDatasource.listAll -> java.lang.NullPointerException")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. ConfigViewModel.onSaveAndUpdate -> ConfigViewModel.updateAllDatabase -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableEquip -> IEquipRepository.listAll -> IEquipRetrofitDatasource.listAll -> java.io.EOFException: End of input at line 1 column 1 path \$")
 
             composeTestRule.waitUntilTimeout()
 
@@ -826,7 +850,7 @@ class ConfigScreenTest {
             composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            assert(composeTestRule.onNodeWithTag("text_alert_dialog_simple").fetchSemanticsNode().config.getOrElse(androidx.compose.ui.semantics.SemanticsProperties.Text) { emptyList() }.any { it.text.contains("MalformedJsonException") })
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. ConfigViewModel.onSaveAndUpdate -> ConfigViewModel.updateAllDatabase -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableEquip -> IEquipRepository.listAll -> IEquipRetrofitDatasource.listAll -> com.google.gson.JsonSyntaxException: java.lang.NumberFormatException: For input string: \"1a\"")
 
             composeTestRule.waitUntilTimeout()
 
@@ -912,7 +936,7 @@ class ConfigScreenTest {
             composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. ConfigViewModel.onSaveAndUpdate -> ConfigViewModel.updateAllDatabase -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableFront -> IFrontRepository.listAll -> IFrontRetrofitDatasource.listAll -> java.lang.NullPointerException")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. ConfigViewModel.onSaveAndUpdate -> ConfigViewModel.updateAllDatabase -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableFront -> IFrontRepository.listAll -> IFrontRetrofitDatasource.listAll -> java.io.EOFException: End of input at line 1 column 1 path \$")
 
             composeTestRule.waitUntilTimeout()
 
@@ -955,7 +979,7 @@ class ConfigScreenTest {
             composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            assert(composeTestRule.onNodeWithTag("text_alert_dialog_simple").fetchSemanticsNode().config.getOrElse(androidx.compose.ui.semantics.SemanticsProperties.Text) { emptyList() }.any { it.text.contains("MalformedJsonException") })
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. ConfigViewModel.onSaveAndUpdate -> ConfigViewModel.updateAllDatabase -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableFront -> IFrontRepository.listAll -> IFrontRetrofitDatasource.listAll -> com.google.gson.JsonSyntaxException: java.lang.NumberFormatException: For input string: \"1a\"")
 
             composeTestRule.waitUntilTimeout()
 
@@ -1041,7 +1065,7 @@ class ConfigScreenTest {
             composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. ConfigViewModel.onSaveAndUpdate -> ConfigViewModel.updateAllDatabase -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableRelease -> IReleaseRepository.listAll -> IReleaseRetrofitDatasource.listAll -> java.lang.NullPointerException")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. ConfigViewModel.onSaveAndUpdate -> ConfigViewModel.updateAllDatabase -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableRelease -> IReleaseRepository.listAll -> IReleaseRetrofitDatasource.listAll -> java.io.EOFException: End of input at line 1 column 1 path \$")
 
             composeTestRule.waitUntilTimeout()
 
@@ -1084,7 +1108,7 @@ class ConfigScreenTest {
             composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            assert(composeTestRule.onNodeWithTag("text_alert_dialog_simple").fetchSemanticsNode().config.getOrElse(androidx.compose.ui.semantics.SemanticsProperties.Text) { emptyList() }.any { it.text.contains("MalformedJsonException") })
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. ConfigViewModel.onSaveAndUpdate -> ConfigViewModel.updateAllDatabase -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableRelease -> IReleaseRepository.listAll -> IReleaseRetrofitDatasource.listAll -> com.google.gson.JsonSyntaxException: java.lang.NumberFormatException: For input string: \"1a\"")
 
             composeTestRule.waitUntilTimeout()
 
@@ -1160,6 +1184,24 @@ class ConfigScreenTest {
 
             setContent()
 
+            managerSharedPreferencesDatasource.save(
+                ManagerSharedPreferencesModel(
+                    idRelease = 1,
+                    idFront = 1
+                )
+            )
+
+            val modelConfigBefore = configSharedPreferencesDatasource.get().getOrThrow()
+            assertEquals(
+                false,
+                modelConfigBefore.flagUpdate
+            )
+            val hasManagerAfter = managerSharedPreferencesDatasource.has().getOrThrow()
+            assertEquals(
+                true,
+                hasManagerAfter
+            )
+
             composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
                 .performTextInput("16997417840")
             composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN)
@@ -1173,6 +1215,17 @@ class ConfigScreenTest {
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("ATUALIZAÇÃO DE DADOS REALIZADO COM SUCESSO!")
 
             composeTestRule.waitUntilTimeout()
+
+            val modelAfter = configSharedPreferencesDatasource.get().getOrThrow()
+            assertEquals(
+                true,
+                modelAfter.flagUpdate
+            )
+            val modelManagerAfter = managerSharedPreferencesDatasource.has().getOrThrow()
+            assertEquals(
+                false,
+                modelManagerAfter
+            )
 
             asserts(4, true)
 
@@ -1198,7 +1251,7 @@ class ConfigScreenTest {
             composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.recoverData -> IGetConfig -> IConfigRepository.get -> IConfigSharedPreferencesDatasource.get -> java.lang.NullPointerException: number is required")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateState -> UiStatusStateUpdateKt -> ConfigViewModel.recoverData -> IGetConfig -> IConfigRepository.get -> IConfigSharedPreferencesDatasource.get -> java.lang.NullPointerException: number is required")
 
             composeTestRule.waitUntilTimeout()
 
@@ -1225,7 +1278,7 @@ class ConfigScreenTest {
             composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.recoverData -> IGetConfig -> IConfigRepository.get -> IConfigSharedPreferencesDatasource.get -> java.lang.NullPointerException: password is required")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateState -> UiStatusStateUpdateKt -> ConfigViewModel.recoverData -> IGetConfig -> IConfigRepository.get -> IConfigSharedPreferencesDatasource.get -> java.lang.NullPointerException: password is required")
 
             composeTestRule.waitUntilTimeout(20_000)
 
@@ -1257,9 +1310,22 @@ class ConfigScreenTest {
 
         }
 
-    private fun setContent() {
+    @SuppressLint("ViewModelConstructorInComposable")
+    private fun setContent(option: Option = Option.INSERT) {
         composeTestRule.setContent {
             ConfigScreen (
+                viewModel = ConfigViewModel(
+                    savedStateHandle = SavedStateHandle(
+                        mapOf(OPTION_ARG to option.ordinal)
+                    ),
+                    getConfig = getConfig,
+                    updateConfig = updateConfig,
+                    setFinishUpdateAllTable = setFinishUpdateAllTable,
+                    updateTableColab = updateTableColab,
+                    updateTableEquip = updateTableEquip,
+                    updateTableFront = updateTableFront,
+                    updateTableRelease = updateTableRelease
+                ),
                 onNavFront = {},
                 onNavNote = {}
             )

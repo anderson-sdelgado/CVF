@@ -7,16 +7,16 @@ import br.com.usinasantafe.cvf.utils.call
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
 import javax.inject.Inject
 
-interface SetRelease {
+interface SetIdRelease {
     suspend operator fun invoke(
         idRelease: Int
     ): EmptyResult
 }
 
-class ISetRelease @Inject constructor(
+class ISetIdRelease @Inject constructor(
     private val managerRepository: ManagerRepository,
     private val startWorkManager: StartWorkManager
-): SetRelease {
+): SetIdRelease {
 
     override suspend fun invoke(
         idRelease: Int

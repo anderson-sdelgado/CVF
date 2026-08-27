@@ -5,12 +5,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cvf.domain.usecases.manager.ListRelease
-import br.com.usinasantafe.cvf.domain.usecases.manager.SetRelease
+import br.com.usinasantafe.cvf.domain.usecases.manager.SetIdRelease
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableRelease
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.LevelUpdate
 import br.com.usinasantafe.cvf.lib.Option
-import br.com.usinasantafe.cvf.lib.OptionReturn
 import br.com.usinasantafe.cvf.presenter.model.ItemCheckBoxScreenModel
 import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_ARG
 import br.com.usinasantafe.cvf.utils.CheckNetwork
@@ -45,7 +44,7 @@ class ReleaseViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val updateTableRelease: UpdateTableRelease,
     private val listRelease: ListRelease,
-    private val setRelease: SetRelease,
+    private val setIdRelease: SetIdRelease,
     private val checkNetwork: CheckNetwork,
 ) : ViewModel() {
 
@@ -73,7 +72,7 @@ class ReleaseViewModel @Inject constructor(
     }
 
     fun start() {
-        if(checkNetwork.isConnected()) update(false) else list()
+        if(checkNetwork.isConnected() && state.option == Option.EDIT) update(false) else list()
     }
 
     fun list() = viewModelScope.launch {
@@ -105,7 +104,7 @@ class ReleaseViewModel @Inject constructor(
                 updateState { withFailure(Errors.NOT_SELECTION) }
                 return@launch
             }
-            setRelease(id).getOrThrow()
+            setIdRelease(id).getOrThrow()
         }
             .onSuccessUpdateAccess(::updateState)
             .onFailureUpdate(::updateState)

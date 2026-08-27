@@ -135,12 +135,7 @@ class ISendManagerTest {
                     version = "1.0"
                 )
             )
-            managerSharedPreferencesDatasource.setIdRelease(
-                ManagerSharedPreferencesModel(
-                    idFront = 1,
-                    idRelease = 1
-                )
-            )
+            managerSharedPreferencesDatasource.setIdRelease(1)
             val resultBefore = managerSharedPreferencesDatasource.get()
             assertEquals(
                 true,
@@ -194,12 +189,7 @@ class ISendManagerTest {
                     version = "1.0"
                 )
             )
-            managerSharedPreferencesDatasource.setIdRelease(
-                ManagerSharedPreferencesModel(
-                    idFront = 1,
-                    idRelease = 1
-                )
-            )
+            managerSharedPreferencesDatasource.setIdRelease(1)
             val resultBefore = managerSharedPreferencesDatasource.get()
             assertEquals(
                 true,
@@ -253,12 +243,7 @@ class ISendManagerTest {
                     version = "1.0"
                 )
             )
-            managerSharedPreferencesDatasource.setIdRelease(
-                ManagerSharedPreferencesModel(
-                    idFront = 1,
-                    idRelease = 1
-                )
-            )
+            managerSharedPreferencesDatasource.setIdRelease(1)
             val resultBefore = managerSharedPreferencesDatasource.get()
             assertEquals(
                 true,
@@ -313,12 +298,7 @@ class ISendManagerTest {
                     version = "1.0"
                 )
             )
-            managerSharedPreferencesDatasource.setIdRelease(
-                ManagerSharedPreferencesModel(
-                    idFront = 1,
-                    idRelease = 1
-                )
-            )
+            managerSharedPreferencesDatasource.setIdRelease(1)
             val resultBefore = managerSharedPreferencesDatasource.get()
             assertEquals(
                 true,
@@ -372,12 +352,7 @@ class ISendManagerTest {
                     version = "1.0"
                 )
             )
-            managerSharedPreferencesDatasource.setIdRelease(
-                ManagerSharedPreferencesModel(
-                    idFront = 1,
-                    idRelease = 1
-                )
-            )
+            managerSharedPreferencesDatasource.setIdRelease(1)
             val resultBefore = managerSharedPreferencesDatasource.get()
             assertEquals(
                 true,

@@ -213,4 +213,43 @@ class IConfigSharedPreferencesDatasourceTest {
             )
         }
 
+    @Test
+    fun `getPassword - Check return failure if password is null`() =
+        runTest {
+            val result = datasource.getPassword()
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IConfigSharedPreferencesDatasource.getPassword",
+                result.exceptionOrNull()!!.message,
+            )
+            assertEquals(
+                "java.lang.NullPointerException: password is required",
+                result.exceptionOrNull()!!.cause.toString(),
+            )
+        }
+
+    @Test
+    fun `getPassword - Check return correct if function execute successfully`() =
+        runTest {
+            val data = ConfigSharedPreferencesModel(
+                number = 16997417840,
+                password = "123456",
+                idServ = 1,
+                version = "1.00"
+            )
+            datasource.save(data)
+            val result = datasource.getPassword()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                "123456",
+                result.getOrNull()!!
+            )
+        }
+
 }

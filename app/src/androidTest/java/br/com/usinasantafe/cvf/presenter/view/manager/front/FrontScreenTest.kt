@@ -12,15 +12,16 @@ import br.com.usinasantafe.cav.utils.waitUntilTimeout
 import br.com.usinasantafe.cvf.HiltTestActivity
 import br.com.usinasantafe.cvf.di.provider.BaseUrlModuleTest
 import br.com.usinasantafe.cvf.domain.usecases.manager.ListFront
+import br.com.usinasantafe.cvf.domain.usecases.manager.SetIdFront
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableFront
 import br.com.usinasantafe.cvf.external.room.dao.stable.FrontDao
 import br.com.usinasantafe.cvf.external.sharedPreferences.IConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cvf.external.sharedPreferences.IManagerSharedPreferencesDatasource
 import br.com.usinasantafe.cvf.infra.models.room.stable.FrontRoomModel
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ConfigSharedPreferencesModel
-import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ManagerSharedPreferencesModel
+import br.com.usinasantafe.cvf.lib.Option
 import br.com.usinasantafe.cvf.lib.StatusSend
-import br.com.usinasantafe.cvf.presenter.navigation.Args.ID_FRONT_ARG
+import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_ARG
 import br.com.usinasantafe.cvf.presenter.theme.TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -54,6 +55,9 @@ class FrontScreenTest {
 
     @Inject
     lateinit var updateTableFront: UpdateTableFront
+
+    @Inject
+    lateinit var setIdFront: SetIdFront
 
     @Test
     fun check_open_screen() =
@@ -125,12 +129,7 @@ class FrontScreenTest {
                 )
             )
 
-            managerSharedPreferencesDatasource.setIdRelease(
-                ManagerSharedPreferencesModel(
-                    idFront = 2,
-                    idRelease = 1
-                )
-            )
+            managerSharedPreferencesDatasource.setIdFront(id = 2)
 
             setContent()
 
@@ -165,13 +164,10 @@ class FrontScreenTest {
             )
 
             managerSharedPreferencesDatasource.setIdRelease(
-                ManagerSharedPreferencesModel(
-                    idFront = 2,
-                    idRelease = 1
-                )
+                id = 1
             )
 
-            setContent(3)
+            setContent()
 
             composeTestRule.waitUntilTimeout(20_000)
 
@@ -201,7 +197,7 @@ class FrontScreenTest {
             composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. FrontViewModel.updateAllDatabase -> FrontViewModel.update -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableFront -> IGetToken -> IConfigRepository.get -> number is required -> java.lang.NullPointerException: number is required")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. FrontViewModel.updateAllDatabase -> FrontViewModel.update -> UiStatusStateUpdateKt.executeUpdateSteps -> UiStatusStateUpdateKt.collectUpdateStep -> IUpdateTableFront -> IToken -> IConfigRepository.get -> number is required -> java.lang.NullPointerException: number is required")
 
             composeTestRule.waitUntilTimeout(20_000)
 
@@ -399,18 +395,20 @@ class FrontScreenTest {
         }
 
     @SuppressLint("ViewModelConstructorInComposable")
-    private fun setContent(idFront: Int = 0) {
+    private fun setContent(option: Option = Option.INSERT) {
         composeTestRule.setContent {
             FrontScreen (
                 viewModel = FrontViewModel(
                     savedStateHandle = SavedStateHandle(
-                        mapOf(ID_FRONT_ARG to idFront)
+                        mapOf(OPTION_ARG to option.ordinal)
                     ),
                     updateTableFront = updateTableFront,
-                    listFront = listFront
+                    listFront = listFront,
+                    setIdFront = setIdFront
                 ),
                 onNavRelease = {},
-                onNavConfig = {}
+                onNavConfig = {},
+                onNavNote = {}
             )
         }
     }

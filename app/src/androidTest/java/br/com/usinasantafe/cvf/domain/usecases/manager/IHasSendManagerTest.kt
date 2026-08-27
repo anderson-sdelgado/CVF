@@ -22,7 +22,7 @@ class IHasSendManagerTest {
     lateinit var usecase: HasSendManager
 
     @Inject
-    lateinit var managerDatasource: IManagerSharedPreferencesDatasource
+    lateinit var managerSharedPreferencesDatasource: IManagerSharedPreferencesDatasource
 
     @Before
     fun setup() {
@@ -46,13 +46,7 @@ class IHasSendManagerTest {
     @Test
     fun check_return_false_if_have_data_and_state_send_is_not_send() =
         runTest {
-            managerDatasource.setIdRelease(
-                ManagerSharedPreferencesModel(
-                    idRelease = 1,
-                    idFront = 1,
-                    statusSend = StatusSend.SENT
-                )
-            )
+            managerSharedPreferencesDatasource.setIdRelease(1)
             val result = usecase()
             assertEquals(
                 true,
@@ -67,13 +61,7 @@ class IHasSendManagerTest {
     @Test
     fun check_return_true_if_have_data_and_state_send_is_send() =
         runTest {
-            managerDatasource.setIdRelease(
-                ManagerSharedPreferencesModel(
-                    idRelease = 1,
-                    idFront = 1,
-                    statusSend = StatusSend.SEND
-                )
-            )
+            managerSharedPreferencesDatasource.setIdRelease(1)
             val result = usecase()
             assertEquals(
                 true,

@@ -12,10 +12,6 @@ import br.com.usinasantafe.cvf.lib.TypeButton
 import br.com.usinasantafe.cvf.presenter.theme.ButtonNumericDesign
 import br.com.usinasantafe.cvf.presenter.theme.TextButtonCleanDesign
 import br.com.usinasantafe.cvf.presenter.theme.TextButtonNumericDesign
-import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
-import java.util.Locale
-import kotlin.math.pow
 
 fun addTextField(text: String, char: String): String {
     return text + char
@@ -41,7 +37,7 @@ fun ButtonsGenericNumeric(
         text: String,
         typeButton: TypeButton,
     ) -> Unit,
-    flagUpdate: Boolean = true,
+    flagReturn: Boolean = true,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp)
@@ -249,34 +245,28 @@ fun ButtonsGenericNumeric(
                 tag = number0
             )
         }
-        if(flagUpdate){
-            Row(
-                modifier = Modifier
-                    .weight(1f),
-                horizontalArrangement = Arrangement.spacedBy(4.dp)
-            ) {
-                ButtonNumericDesign(
-                    {
-                        TextButtonNumericDesign(
-                            text = update
-                        )
-                    },
-                    {
-                        onTextField(
-                            update,
-                            TypeButton.UPDATE
-                        )
-                    },
-                    Modifier.weight(1f),
-                    tag = "UPDATE"
-                )
-            }
-        }
         Row(
             modifier = Modifier
                 .weight(1f),
             horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
+            if(flagReturn) {
+                ButtonNumericDesign(
+                    {
+                        TextButtonNumericDesign(
+                            text = stringResource(R.string.text_pattern_return)
+                        )
+                    },
+                    {
+                        onTextField(
+                            ok,
+                            TypeButton.OK
+                        )
+                    },
+                    Modifier.weight(1f),
+                    tag = "OK"
+                )
+            }
             ButtonNumericDesign(
                 {
                     TextButtonNumericDesign(

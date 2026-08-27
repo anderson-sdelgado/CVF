@@ -1,6 +1,8 @@
 package br.com.usinasantafe.cvf.domain.usecases.manager
 
 import br.com.usinasantafe.cvf.external.sharedPreferences.IManagerSharedPreferencesDatasource
+import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ManagerSharedPreferencesModel
+import br.com.usinasantafe.cvf.lib.StatusSend
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -11,13 +13,13 @@ import javax.inject.Inject
 import kotlin.test.assertEquals
 
 @HiltAndroidTest
-class ISaveManagerTest {
+class ISetIdFrontTest {
 
     @get:Rule
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: SetIdRelease
+    lateinit var usecase: SetIdFront
 
     @Inject
     lateinit var managerSharedPreferencesDatasource: IManagerSharedPreferencesDatasource
@@ -28,30 +30,40 @@ class ISaveManagerTest {
     }
 
     @Test
-    fun check_save_data() =
+    fun check_altered_data() =
         runTest {
+            managerSharedPreferencesDatasource.save(
+                ManagerSharedPreferencesModel(
+                    idFront = 2,
+                    idRelease = 2
+                )
+            )
+            val modelBefore = managerSharedPreferencesDatasource.get().getOrThrow()
             assertEquals(
-                false,
-                managerSharedPreferencesDatasource.has().getOrThrow()
+                2,
+                modelBefore.idFront
+            )
+            assertEquals(
+                2,
+                modelBefore.idRelease
             )
             val result = usecase(1)
             assertEquals(
                 true,
                 result.isSuccess
             )
-            assertEquals(
-                true,
-                managerSharedPreferencesDatasource.has().getOrThrow()
-            )
-            val model = managerSharedPreferencesDatasource.get().getOrThrow()
+            val modelAfter = managerSharedPreferencesDatasource.get().getOrThrow()
             assertEquals(
                 1,
-                model.idFront
+                modelAfter.idFront
             )
             assertEquals(
-                1,
-                model.idRelease
+                null,
+                modelAfter.idRelease
+            )
+            assertEquals(
+                StatusSend.STARTED,
+                modelAfter.statusSend
             )
         }
-
 }

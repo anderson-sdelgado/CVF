@@ -1,17 +1,19 @@
 package br.com.usinasantafe.cvf.presenter.view.configuration.config
 
+import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cvf.MainCoroutineRule
 import br.com.usinasantafe.cvf.domain.usecases.config.GetConfig
 import br.com.usinasantafe.cvf.domain.usecases.config.SetFinishUpdateAllTable
 import br.com.usinasantafe.cvf.domain.usecases.config.UpdateConfig
-import br.com.usinasantafe.cvf.domain.usecases.manager.HasManager
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableColab
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableEquip
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableFront
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableRelease
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.LevelUpdate
+import br.com.usinasantafe.cvf.lib.Option
 import br.com.usinasantafe.cvf.presenter.model.ConfigScreenModel
+import br.com.usinasantafe.cvf.presenter.navigation.Args
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
 import br.com.usinasantafe.cvf.utils.percentage
 import br.com.usinasantafe.cvf.utils.resultFailure
@@ -42,10 +44,14 @@ class ConfigViewModelTest {
     private val updateTableEquip = mock<UpdateTableEquip>()
     private val updateTableFront = mock<UpdateTableFront>()
     private val updateTableRelease = mock<UpdateTableRelease>()
-    private val hasManager = mock<HasManager>()
     private val getConfig = mock<GetConfig>()
     private var tableList = mutableListOf<String>()
     private val viewModel = ConfigViewModel(
+        savedStateHandle = SavedStateHandle(
+            mapOf(
+                Args.OPTION_ARG to Option.INSERT.ordinal
+            )
+        ),
         getConfig = getConfig,
         updateConfig = updateConfig,
         setFinishUpdateAllTable = setFinishUpdateAllTable,
@@ -53,7 +59,6 @@ class ConfigViewModelTest {
         updateTableEquip = updateTableEquip,
         updateTableFront = updateTableFront,
         updateTableRelease = updateTableRelease,
-        hasManager = hasManager
     )
 
     private val qtdTable = 4f
@@ -675,53 +680,12 @@ class ConfigViewModelTest {
         }
 
     @Test
-    fun `recoverData - Check return failure if have error in HasManager`() =
-        runTest {
-            whenever(
-                getConfig()
-            ).thenReturn(
-                Result.success(null)
-            )
-            whenever(
-                hasManager()
-            ).thenReturn(
-                resultFailure(
-                    context = "HasManager",
-                    message = "-",
-                    cause = Exception()
-                )
-            )
-            viewModel.recoverData()
-            assertEquals(
-                true,
-                viewModel.uiState.value.status.flagDialog
-            )
-            assertEquals(
-                "ConfigViewModel.recoverData -> ConfigViewModel.updateState -> HasManager -> java.lang.Exception",
-                viewModel.uiState.value.status.failure
-            )
-            assertEquals(
-                Errors.EXCEPTION,
-                viewModel.uiState.value.status.errors
-            )
-            assertEquals(
-                true,
-                viewModel.uiState.value.status.flagFailure
-            )
-        }
-
-    @Test
     fun `recoverData - Check return null if GetConfig execute successfully and return null`() =
         runTest {
             whenever(
                 getConfig()
             ).thenReturn(
                 Result.success(null)
-            )
-            whenever(
-                hasManager()
-            ).thenReturn(
-                Result.success(false)
             )
             viewModel.recoverData()
             assertEquals(
@@ -731,10 +695,6 @@ class ConfigViewModelTest {
             assertEquals(
                 "",
                 viewModel.uiState.value.password
-            )
-            assertEquals(
-                false,
-                viewModel.uiState.value.flagReturn
             )
         }
 
@@ -751,11 +711,6 @@ class ConfigViewModelTest {
                     )
                 )
             )
-            whenever(
-                hasManager()
-            ).thenReturn(
-                Result.success(true)
-            )
             viewModel.recoverData()
             assertEquals(
                 "16997417840",
@@ -764,10 +719,6 @@ class ConfigViewModelTest {
             assertEquals(
                 "12345",
                 viewModel.uiState.value.password
-            )
-            assertEquals(
-                true,
-                viewModel.uiState.value.flagReturn
             )
         }
 

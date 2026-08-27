@@ -54,12 +54,7 @@ class IGetDescReleaseTest {
     @Test
     fun check_return_failure_if_not_have_data_in_release() =
         runTest {
-            managerSharedPreferencesDatasource.setIdRelease(
-                ManagerSharedPreferencesModel(
-                    idFront = 1,
-                    idRelease = 1
-                )
-            )
+            managerSharedPreferencesDatasource.setIdRelease(1)
             val result = usecase()
             assertEquals(
                 true,
@@ -78,12 +73,7 @@ class IGetDescReleaseTest {
     @Test
     fun check_return_correct_if_function_execute_successfully() =
         runTest {
-            managerSharedPreferencesDatasource.setIdRelease(
-                ManagerSharedPreferencesModel(
-                    idFront = 1,
-                    idRelease = 2
-                )
-            )
+            managerSharedPreferencesDatasource.setIdRelease(1)
             releaseDao.insertAll(
                 listOf(
                     ReleaseRoomModel(

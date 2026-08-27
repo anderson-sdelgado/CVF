@@ -427,4 +427,50 @@ class IConfigRepositoryTest {
             )
         }
 
+    @Test
+    fun `getPassword - Check return failure if have error in ConfigSharedPreferencesDatasource getPassword`() =
+        runTest {
+            whenever(
+                configSharedPreferencesDatasource.getPassword()
+            ).thenReturn(
+                resultFailure(
+                    "IConfigSharedPreferencesDatasource.getPassword",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getPassword()
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IConfigRepository.getPassword -> IConfigSharedPreferencesDatasource.getPassword",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `getPassword - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                configSharedPreferencesDatasource.getPassword()
+            ).thenReturn(
+                Result.success("12345")
+            )
+            val result = repository.getPassword()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                "12345",
+                result.getOrNull()!!
+            )
+        }
+
 }

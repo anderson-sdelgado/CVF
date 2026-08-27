@@ -50,9 +50,9 @@ fun DriverScreen(
             text = uiState.text,
             onTextField = viewModel::onTextField,
             onCloseDialog = viewModel::onCloseDialog,
+            status = uiState.status,
             onNavPassword = onNavPassword,
             onNavTruck = onNavTruck,
-            status = uiState.status,
         )
     }
 }
@@ -97,7 +97,7 @@ fun DriverContent(
             Spacer(modifier = Modifier.padding(vertical = 8.dp))
             ButtonsGenericNumeric(
                 onTextField = onTextField,
-                flagUpdate = false
+                flagReturn = false
             )
             BackHandler {}
 

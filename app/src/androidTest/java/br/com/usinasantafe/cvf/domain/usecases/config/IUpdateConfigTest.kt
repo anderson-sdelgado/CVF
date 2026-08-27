@@ -228,12 +228,7 @@ class IUpdateConfigTest {
 
             hiltRule.inject()
 
-            managerSharedPreferencesDatasource.setIdRelease(
-                ManagerSharedPreferencesModel(
-                    idFront = 1,
-                    idRelease = 1
-                )
-            )
+            managerSharedPreferencesDatasource.setIdRelease(1)
 
             val result = usecase(
                 number = "16997417840",

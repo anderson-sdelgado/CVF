@@ -12,16 +12,16 @@ import br.com.usinasantafe.cav.utils.waitUntilTimeout
 import br.com.usinasantafe.cvf.HiltTestActivity
 import br.com.usinasantafe.cvf.di.provider.BaseUrlModuleTest
 import br.com.usinasantafe.cvf.domain.usecases.manager.ListRelease
-import br.com.usinasantafe.cvf.domain.usecases.manager.SetRelease
+import br.com.usinasantafe.cvf.domain.usecases.manager.SetIdRelease
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableRelease
 import br.com.usinasantafe.cvf.external.room.dao.stable.ReleaseDao
 import br.com.usinasantafe.cvf.external.sharedPreferences.IConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cvf.external.sharedPreferences.IManagerSharedPreferencesDatasource
 import br.com.usinasantafe.cvf.infra.models.room.stable.ReleaseRoomModel
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ConfigSharedPreferencesModel
-import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ManagerSharedPreferencesModel
+import br.com.usinasantafe.cvf.lib.Option
 import br.com.usinasantafe.cvf.lib.StatusSend
-import br.com.usinasantafe.cvf.presenter.navigation.Args.ID_FRONT_ARG
+import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_ARG
 import br.com.usinasantafe.cvf.utils.CheckNetwork
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -48,7 +48,7 @@ class ReleaseScreenTest {
     lateinit var updateTableRelease: UpdateTableRelease
 
     @Inject
-    lateinit var setRelease: SetRelease
+    lateinit var setIdRelease: SetIdRelease
 
     @Inject
     lateinit var checkNetwork: CheckNetwork
@@ -113,7 +113,7 @@ class ReleaseScreenTest {
 
             releaseDao.insertAll(list)
 
-            setContent(4)
+            setContent()
 
             composeTestRule.waitUntilTimeout(20_000)
 
@@ -127,7 +127,11 @@ class ReleaseScreenTest {
 
             releaseDao.insertAll(list)
 
-            setContent(3)
+            managerSharedPreferencesDatasource.setIdFront(
+                id = 3
+            )
+
+            setContent()
 
             composeTestRule.waitUntilTimeout(20_000)
 
@@ -141,13 +145,14 @@ class ReleaseScreenTest {
 
             releaseDao.insertAll(list)
 
-            managerSharedPreferencesDatasource.setIdRelease(
-                ManagerSharedPreferencesModel(
-                    idFront = 0,
-                    idRelease = 4
-                )
+            managerSharedPreferencesDatasource.setIdFront(
+                id = 3
             )
-            setContent(3)
+
+            managerSharedPreferencesDatasource.setIdRelease(
+                id = 4
+            )
+            setContent()
 
             composeTestRule.waitUntilTimeout(20_000)
 
@@ -161,7 +166,7 @@ class ReleaseScreenTest {
 
             releaseDao.insertAll(list)
 
-            setContent(3)
+            setContent()
 
             composeTestRule.onNodeWithText("ATUALIZAR DADOS")
                 .performClick()
@@ -194,7 +199,7 @@ class ReleaseScreenTest {
                 )
             )
 
-            setContent(3)
+            setContent()
 
             composeTestRule.onNodeWithText("ATUALIZAR DADOS")
                 .performClick()
@@ -234,7 +239,7 @@ class ReleaseScreenTest {
                 )
             )
 
-            setContent(3)
+            setContent()
 
             composeTestRule.onNodeWithText("ATUALIZAR DADOS")
                 .performClick()
@@ -283,7 +288,7 @@ class ReleaseScreenTest {
                 )
             )
 
-            setContent(3)
+            setContent()
 
             composeTestRule.onNodeWithText("ATUALIZAR DADOS")
                 .performClick()
@@ -322,10 +327,7 @@ class ReleaseScreenTest {
             releaseDao.insertAll(list)
 
             managerSharedPreferencesDatasource.setIdRelease(
-                ManagerSharedPreferencesModel(
-                    idFront = 3,
-                    idRelease = 4
-                )
+                id = 4
             )
 
             configSharedPreferencesDatasource.save(
@@ -339,27 +341,28 @@ class ReleaseScreenTest {
                 )
             )
 
-            setContent(0)
+            setContent()
 
             composeTestRule.waitUntilTimeout(20_000)
             server.shutdown()
         }
 
     @SuppressLint("ViewModelConstructorInComposable")
-    private fun setContent(idFront: Int = 1) {
+    private fun setContent(option: Option = Option.INSERT) {
         composeTestRule.setContent {
             ReleaseScreen (
                 viewModel = ReleaseViewModel(
                     savedStateHandle = SavedStateHandle(
-                        mapOf(ID_FRONT_ARG to idFront)
+                        mapOf(OPTION_ARG to option.ordinal)
                     ),
                     listRelease = listRelease,
                     updateTableRelease = updateTableRelease,
-                    setRelease = setRelease,
+                    setIdRelease = setIdRelease,
                     checkNetwork = checkNetwork
                 ),
                 onNavFront = {},
-                onNavDriver = {}
+                onNavDriver = {},
+                onNavNote = {}
             )
         }
     }

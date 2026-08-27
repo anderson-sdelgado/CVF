@@ -62,22 +62,6 @@ class DriverViewModel @Inject constructor(
 
     fun onCloseDialog() = updateState { copy(status = status.copy(flagDialog = false, flagFailure = false)) }
 
-    fun onOptionMenu(optionMenu: OptionMenu) = viewModelScope.launch {
-        runCatching {
-            if (optionMenu == OptionMenu.DELETE) {
-                deleteNote().getOrThrow()
-            }
-        }
-            .onSuccess {
-                updateState {
-                    copy(optionMenu = optionMenu, flagMenu = true)
-                }
-            }
-            .onFailureUpdate(::updateState)
-    }
-
-
-
     fun recoverData() = viewModelScope.launch {
         data class RecoverDriver(
             val descRelease: String,
@@ -93,6 +77,20 @@ class DriverViewModel @Inject constructor(
         }
             .onSuccess {
                 updateState { copy(descRelease = it.descRelease, text = it.text, flagMenu = false) }
+            }
+            .onFailureUpdate(::updateState)
+    }
+
+    fun onOptionMenu(optionMenu: OptionMenu) = viewModelScope.launch {
+        runCatching {
+            if (optionMenu == OptionMenu.DELETE) {
+                deleteNote().getOrThrow()
+            }
+        }
+            .onSuccess {
+                updateState {
+                    copy(optionMenu = optionMenu, flagMenu = true)
+                }
             }
             .onFailureUpdate(::updateState)
     }

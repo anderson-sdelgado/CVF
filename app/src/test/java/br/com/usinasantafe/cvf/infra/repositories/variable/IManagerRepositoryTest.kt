@@ -223,34 +223,24 @@ class IManagerRepositoryTest {
         }
 
     @Test
-    fun `save - Check return failure if have error in ManagerSharedPreferencesDatasource save`() =
+    fun `setIdFront - Check return failure if have error in ManagerSharedPreferencesDatasource clean`() =
         runTest {
             whenever(
-                managerSharedPreferencesDatasource.setIdRelease(any())
+                managerSharedPreferencesDatasource.clean()
             ).thenReturn(
                 resultFailure(
-                    "IManagerSharedPreferencesDatasource.save",
+                    "IManagerSharedPreferencesDatasource.clean",
                     "-",
                     Exception()
                 )
             )
-            val result = repository.setRelease(
-                Manager(
-                    idRelease = 1,
-                    idFront = 1
-                )
-            )
-            verify(managerSharedPreferencesDatasource, atLeastOnce()).setIdRelease(
-                argThat {
-                    idRelease == 1 && idFront == 1
-                }
-            )
+            val result = repository.setIdFront(1)
             assertEquals(
                 true,
                 result.isFailure
             )
             assertEquals(
-                "IManagerRepository.save -> IManagerSharedPreferencesDatasource.save",
+                "IManagerRepository.setIdFront -> IManagerSharedPreferencesDatasource.clean",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -260,19 +250,77 @@ class IManagerRepositoryTest {
         }
 
     @Test
-    fun `save - Check return correct if function execute successfully`() =
+    fun `setIdFront - Check return failure if have error in ManagerSharedPreferencesDatasource setIdFront`() =
         runTest {
-            val result = repository.setRelease(
-                Manager(
-                    idRelease = 1,
-                    idFront = 1
+            whenever(
+                managerSharedPreferencesDatasource.setIdFront(1)
+            ).thenReturn(
+                resultFailure(
+                    "IManagerSharedPreferencesDatasource.setIdFront",
+                    "-",
+                    Exception()
                 )
             )
-            verify(managerSharedPreferencesDatasource, atLeastOnce()).setIdRelease(
-                argThat {
-                    idRelease == 1 && idFront == 1
-                }
+            val result = repository.setIdFront(1)
+            verify(managerSharedPreferencesDatasource, atLeastOnce()).clean()
+            assertEquals(
+                true,
+                result.isFailure
             )
+            assertEquals(
+                "IManagerRepository.setIdFront -> IManagerSharedPreferencesDatasource.setIdFront",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `setIdFront - Check return correct if function execute successfully`() =
+        runTest {
+            val result = repository.setIdFront(1)
+            verify(managerSharedPreferencesDatasource, atLeastOnce()).clean()
+            verify(managerSharedPreferencesDatasource, atLeastOnce()).setIdFront(1)
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+        }
+
+    @Test
+    fun `setIdRelease - Check return failure if have error in ManagerSharedPreferencesDatasource setIdRelease`() =
+        runTest {
+            whenever(
+                managerSharedPreferencesDatasource.setIdRelease(1)
+            ).thenReturn(
+                resultFailure(
+                    "IManagerSharedPreferencesDatasource.setIdRelease",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.setIdRelease(1)
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IManagerRepository.setIdRelease -> IManagerSharedPreferencesDatasource.setIdRelease",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `setIdRelease - Check return correct if function execute successfully`() =
+        runTest {
+            val result = repository.setIdRelease(1)
+            verify(managerSharedPreferencesDatasource, atLeastOnce()).setIdRelease(1)
             assertEquals(
                 true,
                 result.isSuccess

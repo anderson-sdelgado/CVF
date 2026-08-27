@@ -119,12 +119,7 @@ class IListFrontTest {
                     ),
                 )
             )
-            managerSharedPreferencesDatasource.setIdRelease(
-                ManagerSharedPreferencesModel(
-                    idFront = 2,
-                    idRelease = 1
-                )
-            )
+            managerSharedPreferencesDatasource.setIdRelease(1)
             val result = usecase()
             assertEquals(
                 true,

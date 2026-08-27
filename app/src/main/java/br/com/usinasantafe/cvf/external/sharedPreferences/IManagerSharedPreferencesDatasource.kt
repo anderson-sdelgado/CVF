@@ -3,10 +3,7 @@ package br.com.usinasantafe.cvf.external.sharedPreferences
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.ManagerSharedPreferencesDatasource
-import br.com.usinasantafe.cvf.infra.models.sharedpreferences.HeaderSharedPreferencesModel
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ManagerSharedPreferencesModel
-import br.com.usinasantafe.cvf.infra.models.sharedpreferences.sharedPreferencesModelToEntity
-import br.com.usinasantafe.cvf.lib.BASE_SHARED_PREFERENCES_TABLE_HEADER
 import br.com.usinasantafe.cvf.lib.BASE_SHARED_PREFERENCES_TABLE_MANAGER
 import br.com.usinasantafe.cvf.lib.StatusSend
 import br.com.usinasantafe.cvf.utils.EmptyResult
@@ -64,17 +61,19 @@ class IManagerSharedPreferencesDatasource @Inject constructor(
             get().getOrThrow().idRelease
         }
 
-    override suspend fun setIdFront(idFront: Int): EmptyResult =
+    override suspend fun setIdFront(id: Int): EmptyResult =
         result(getClassAndMethod()) {
             val model = get().getOrThrow()
-            model.idFront = idFront
+            model.idFront = id
+            model.statusSend = StatusSend.STARTED
             save(model).getOrThrow()
         }
 
-    override suspend fun setIdRelease(idRelease: Int): EmptyResult =
+    override suspend fun setIdRelease(id: Int): EmptyResult =
         result(getClassAndMethod()) {
             val model = get().getOrThrow()
-            model.idRelease = idRelease
+            model.idRelease = id
+            model.statusSend = StatusSend.SEND
             save(model).getOrThrow()
         }
 
@@ -84,11 +83,11 @@ class IManagerSharedPreferencesDatasource @Inject constructor(
                 BASE_SHARED_PREFERENCES_TABLE_MANAGER,
                 null
             )
+            if(data.isNullOrEmpty()) return@result ManagerSharedPreferencesModel()
             val model = Gson().fromJson(
                 data,
                 ManagerSharedPreferencesModel::class.java
             )
-            model.sharedPreferencesModelToEntity()
             model
         }
 

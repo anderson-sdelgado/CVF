@@ -1,7 +1,8 @@
-package br.com.usinasantafe.cvf.presenter.view.note.cart
+package br.com.usinasantafe.cvf.presenter.view.note.msgCart
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.usinasantafe.cvf.lib.OptionMenu
 import br.com.usinasantafe.cvf.utils.UiStateWithStatus
 import br.com.usinasantafe.cvf.utils.UiStatusState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,6 +13,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class MsgCartState(
+    val nroCart: Int = 0,
+    val flagMenu: Boolean = false,
+    val optionMenu: OptionMenu = OptionMenu.DELETE,
+    val descRelease: String = "",
     override val status: UiStatusState = UiStatusState()
 ) : UiStateWithStatus<MsgCartState> {
 
@@ -34,6 +39,14 @@ class MsgCartViewModel @Inject constructor(
     }
 
     fun onCloseDialog() = updateState { copy(status = status.copy(flagDialog = false, flagFailure = false)) }
+
+    fun recoverData() = viewModelScope.launch {
+
+    }
+
+    fun onOptionMenu(optionMenu: OptionMenu) = viewModelScope.launch {
+
+    }
 
 
 

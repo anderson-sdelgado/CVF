@@ -5,12 +5,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cvf.domain.usecases.manager.ListFront
-import br.com.usinasantafe.cvf.domain.usecases.manager.SetFront
+import br.com.usinasantafe.cvf.domain.usecases.manager.SetIdFront
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableFront
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.LevelUpdate
 import br.com.usinasantafe.cvf.lib.Option
-import br.com.usinasantafe.cvf.lib.OptionReturn
 import br.com.usinasantafe.cvf.presenter.model.ItemCheckBoxScreenModel
 import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_ARG
 import br.com.usinasantafe.cvf.utils.UiStateWithStatusUpdate
@@ -42,7 +41,7 @@ data class FrontState(
 class FrontViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val listFront: ListFront,
-    private val setFront: SetFront,
+    private val setIdFront: SetIdFront,
     private val updateTableFront: UpdateTableFront
 ) : ViewModel() {
 
@@ -52,8 +51,6 @@ class FrontViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(FrontState())
     val uiState = _uiState.asStateFlow()
-
-    private val state get() = uiState.value
 
     private fun updateState(block: FrontState.() -> FrontState) {
         _uiState.update(block)
@@ -98,7 +95,7 @@ class FrontViewModel @Inject constructor(
                 updateState { withFailure(Errors.NOT_SELECTION) }
                 return@launch
             }
-            setFront(id).getOrThrow()
+            setIdFront(id).getOrThrow()
         }
             .onSuccessUpdateAccess(::updateState)
             .onFailureUpdate(::updateState)

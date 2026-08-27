@@ -5,17 +5,17 @@ import br.com.usinasantafe.cvf.utils.call
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
 import javax.inject.Inject
 
-interface SetFront {
+interface SetIdFront {
     suspend operator fun invoke(id: Int): Result<Unit>
 }
 
-class ISetFront @Inject constructor(
+class ISetIdFront @Inject constructor(
     private val managerRepository: ManagerRepository
-): SetFront {
+): SetIdFront {
 
     override suspend fun invoke(id: Int): Result<Unit> =
         call(getClassAndMethod()) {
-            TODO("Not yet implemented")
+            managerRepository.setIdFront(id).getOrThrow()
         }
 
 }
