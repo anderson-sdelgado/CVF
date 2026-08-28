@@ -23,7 +23,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cvf.R
 import br.com.usinasantafe.cvf.lib.Errors
-import br.com.usinasantafe.cvf.lib.Option
+import br.com.usinasantafe.cvf.lib.OptionMenu
 import br.com.usinasantafe.cvf.presenter.model.ItemCheckBoxScreenModel
 import br.com.usinasantafe.cvf.presenter.theme.ButtonMaxWidth
 import br.com.usinasantafe.cvf.presenter.theme.CVFTheme
@@ -33,7 +33,6 @@ import br.com.usinasantafe.cvf.presenter.theme.Progress
 import br.com.usinasantafe.cvf.presenter.theme.TextButtonDesign
 import br.com.usinasantafe.cvf.presenter.theme.TitleDesign
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
-import br.com.usinasantafe.cvf.utils.required
 
 @Composable
 fun FrontScreen(
@@ -52,10 +51,12 @@ fun FrontScreen(
             }
 
             FrontContent(
-                option = uiState.option,
+                checkReturn = uiState.checkReturn,
+                optionMenu = uiState.optionMenu,
                 list = list,
                 onCheckChanged = viewModel::onCheckChanged,
-                check = viewModel::set,
+                check = viewModel::check,
+                set = viewModel::set,
                 update = viewModel::update,
                 onCloseDialog = viewModel::onCloseDialog,
                 status = uiState.status,
@@ -70,10 +71,12 @@ fun FrontScreen(
 
 @Composable
 fun FrontContent(
-    option: Option,
+    checkReturn: Boolean,
+    optionMenu: OptionMenu,
     list: List<ItemCheckBoxScreenModel>,
     onCheckChanged: (Int, Boolean) -> Unit,
     check: () -> Unit,
+    set: () -> Unit,
     update: () -> Unit,
     onCloseDialog: () -> Unit,
     status: UiStatusStateUpdate,
@@ -110,7 +113,7 @@ fun FrontContent(
             horizontalArrangement = Arrangement.Center,
         )  {
             Button(
-                onClick = if(option == Option.EDIT) onNavNote else onNavConfig,
+                onClick = if(optionMenu == OptionMenu.FRONT) check else onNavConfig,
                 modifier = Modifier
                     .weight(1f)
             ) {
@@ -121,7 +124,7 @@ fun FrontContent(
                 )
             }
             Button(
-                onClick = check,
+                onClick = set,
                 modifier = Modifier
                     .weight(1f)
             ) {
@@ -152,6 +155,12 @@ fun FrontContent(
         }
     }
 
+    LaunchedEffect(checkReturn) {
+        if (checkReturn) {
+            onNavNote()
+        }
+    }
+
 
 }
 
@@ -161,10 +170,12 @@ fun FrontPagePreview() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             FrontContent(
-                option = Option.INSERT,
+                checkReturn = false,
+                optionMenu = OptionMenu.FRONT,
                 list = listOf(),
                 onCheckChanged = { _, _ -> },
                 check = {},
+                set = {},
                 update = {},
                 onCloseDialog = {},
                 status = UiStatusStateUpdate(
@@ -193,7 +204,8 @@ fun FrontPagePreviewWithData() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             FrontContent(
-                option = Option.INSERT,
+                checkReturn = false,
+                optionMenu = OptionMenu.FRONT,
                 list = listOf(
                     ItemCheckBoxScreenModel(
                         id = 1,
@@ -213,6 +225,7 @@ fun FrontPagePreviewWithData() {
                 ),
                 onCheckChanged = { _, _ -> },
                 check = {},
+                set = {},
                 update = {},
                 onCloseDialog = {},
                 status = UiStatusStateUpdate(

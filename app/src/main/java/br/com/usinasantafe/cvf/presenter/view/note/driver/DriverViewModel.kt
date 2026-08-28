@@ -2,12 +2,11 @@ package br.com.usinasantafe.cvf.presenter.view.note.driver
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.usinasantafe.cvf.domain.usecases.manager.GetDescRelease
+import br.com.usinasantafe.cvf.domain.usecases.manager.GetTitleMenu
 import br.com.usinasantafe.cvf.domain.usecases.note.CheckRegDriver
 import br.com.usinasantafe.cvf.domain.usecases.note.DeleteNote
 import br.com.usinasantafe.cvf.domain.usecases.note.GetRegDriver
 import br.com.usinasantafe.cvf.domain.usecases.note.SetRegDriver
-import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableColab
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.OptionMenu
 import br.com.usinasantafe.cvf.lib.TypeButton
@@ -15,14 +14,10 @@ import br.com.usinasantafe.cvf.presenter.view.addTextField
 import br.com.usinasantafe.cvf.presenter.view.clearTextField
 import br.com.usinasantafe.cvf.utils.UiStateWithStatusUpdate
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
-import br.com.usinasantafe.cvf.utils.executeUpdateSteps
-import br.com.usinasantafe.cvf.utils.getClassAndMethod
 import br.com.usinasantafe.cvf.utils.onFailureUpdate
 import br.com.usinasantafe.cvf.utils.onSuccessUpdateAccess
-import br.com.usinasantafe.cvf.utils.sizeUpdate
 import br.com.usinasantafe.cvf.utils.withFailure
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -44,7 +39,7 @@ data class DriverState(
 
 @HiltViewModel
 class DriverViewModel @Inject constructor(
-    private val getDescRelease: GetDescRelease,
+    private val getTitleMenu: GetTitleMenu,
     private val getRegDriver: GetRegDriver,
     private val deleteNote: DeleteNote,
     private val checkRegDriver: CheckRegDriver,
@@ -68,7 +63,7 @@ class DriverViewModel @Inject constructor(
             val text: String
         )
         runCatching {
-            val descRelease = getDescRelease().getOrThrow()
+            val descRelease = getTitleMenu().getOrThrow()
             val text = getRegDriver().getOrThrow() ?: ""
             RecoverDriver(
                 descRelease = descRelease,

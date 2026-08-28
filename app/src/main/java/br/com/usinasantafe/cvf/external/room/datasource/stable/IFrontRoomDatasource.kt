@@ -27,4 +27,9 @@ class IFrontRoomDatasource @Inject constructor(
             frontDao.all()
         }
 
+    override suspend fun getById(id: Int): Result<FrontRoomModel> =
+        result(getClassAndMethod()) {
+            frontDao.getById(id)
+        }
+
 }

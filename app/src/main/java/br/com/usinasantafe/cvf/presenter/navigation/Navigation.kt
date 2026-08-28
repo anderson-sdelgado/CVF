@@ -2,6 +2,7 @@ package br.com.usinasantafe.cvf.presenter.navigation
 
 import androidx.navigation.NavHostController
 import br.com.usinasantafe.cvf.lib.Option
+import br.com.usinasantafe.cvf.lib.OptionMenu
 import br.com.usinasantafe.cvf.lib.OptionReturn
 import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_MENU_ARG
 import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_ARG
@@ -40,8 +41,8 @@ object Routes {
     const val SPLASH_ROUTE = SPLASH_SCREEN
     const val PASSWORD_ROUTE = "$PASSWORD_SCREEN/{$OPTION_MENU_ARG}/{$OPTION_RETURN_ARG}"
     const val CONFIG_ROUTE = "$CONFIG_SCREEN/{$OPTION_ARG}/{$OPTION_RETURN_ARG}"
-    const val FRONT_ROUTE = "$FRONT_SCREEN/{$OPTION_ARG}/{$OPTION_RETURN_ARG}"
-    const val RELEASE_ROUTE = "$RELEASE_SCREEN/{$OPTION_ARG}/{$OPTION_RETURN_ARG}"
+    const val FRONT_ROUTE = "$FRONT_SCREEN/{$OPTION_ARG}/{$OPTION_RETURN_ARG}/{$OPTION_MENU_ARG}"
+    const val RELEASE_ROUTE = "$RELEASE_SCREEN/{$OPTION_ARG}/{$OPTION_RETURN_ARG}/{$OPTION_MENU_ARG}"
     const val DRIVER_ROUTE = DRIVER_SCREEN
     const val TRUCK_ROUTE = TRUCK_SCREEN
     const val CART_ROUTE = CART_SCREEN
@@ -77,16 +78,18 @@ class NavigationActions(private val navController: NavHostController) {
 
     fun navigateToFront(
         option: Int = Option.INSERT.ordinal,
-        optionReturn: Int = OptionReturn.DRIVER.ordinal
+        optionReturn: Int = OptionReturn.DRIVER.ordinal,
+        optionMenu: Int = OptionMenu.CONFIG.ordinal
     ) {
-        navController.navigate("$FRONT_SCREEN/$option/$optionReturn")
+        navController.navigate("$FRONT_SCREEN/$option/$optionReturn/$optionMenu")
     }
 
     fun navigateToRelease(
         option: Int = Option.INSERT.ordinal,
-        optionReturn: Int = OptionReturn.DRIVER.ordinal
+        optionReturn: Int = OptionReturn.DRIVER.ordinal,
+        optionMenu: Int = OptionMenu.CONFIG.ordinal
     ) {
-        navController.navigate("$RELEASE_SCREEN/$option/$optionReturn")
+        navController.navigate("$RELEASE_SCREEN/$option/$optionReturn/$optionMenu")
     }
 
     fun navigateToDriver() {

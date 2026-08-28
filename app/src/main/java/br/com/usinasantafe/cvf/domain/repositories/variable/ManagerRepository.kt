@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cvf.domain.repositories.variable
 
+import br.com.usinasantafe.cvf.lib.StatusSend
 import br.com.usinasantafe.cvf.utils.EmptyResult
 
 interface ManagerRepository {
@@ -11,4 +12,5 @@ interface ManagerRepository {
     suspend fun setIdRelease(id: Int): EmptyResult
     suspend fun hasSend(): Result<Boolean>
     suspend fun send(token: String, idServ: Int): EmptyResult
+    suspend fun getStatusSend(): Result<StatusSend>
 }

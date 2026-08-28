@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cvf.presenter.view.note.driver
 
 import br.com.usinasantafe.cvf.MainCoroutineRule
-import br.com.usinasantafe.cvf.domain.usecases.manager.GetDescRelease
+import br.com.usinasantafe.cvf.domain.usecases.manager.GetTitleMenu
 import br.com.usinasantafe.cvf.domain.usecases.note.CheckRegDriver
 import br.com.usinasantafe.cvf.domain.usecases.note.DeleteNote
 import br.com.usinasantafe.cvf.domain.usecases.note.GetRegDriver
@@ -27,13 +27,13 @@ class DriverViewModelTest {
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
 
-    private val getDescRelease = mock<GetDescRelease>()
+    private val getTitleMenu = mock<GetTitleMenu>()
     private val getRegDriver = mock<GetRegDriver>()
     private val deleteNote = mock<DeleteNote>()
     private val checkRegDriver = mock<CheckRegDriver>()
     private val setRegDriver = mock<SetRegDriver>()
     private val viewModel = DriverViewModel(
-        getDescRelease = getDescRelease,
+        getTitleMenu = getTitleMenu,
         getRegDriver = getRegDriver,
         deleteNote = deleteNote,
         checkRegDriver = checkRegDriver,
@@ -128,7 +128,7 @@ class DriverViewModelTest {
     fun `recoverData - Check return failure if have error in GetDescRelease`() =
         runTest {
             whenever(
-                getDescRelease()
+                getTitleMenu()
             ).thenReturn(
                 resultFailure(
                     context = "GetDescRelease",
@@ -159,7 +159,7 @@ class DriverViewModelTest {
     fun `recoverData - Check return failure if have error in GetRegDriver`() =
         runTest {
             whenever(
-                getDescRelease()
+                getTitleMenu()
             ).thenReturn(
                 Result.success("Test")
             )
@@ -205,7 +205,7 @@ class DriverViewModelTest {
                 viewModel.uiState.value.flagMenu
             )
             whenever(
-                getDescRelease()
+                getTitleMenu()
             ).thenReturn(
                 Result.success("Test")
             )

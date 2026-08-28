@@ -2,6 +2,7 @@ package br.com.usinasantafe.cvf.presenter.view.manager.front
 
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cvf.MainCoroutineRule
+import br.com.usinasantafe.cvf.domain.usecases.manager.CheckStatusManager
 import br.com.usinasantafe.cvf.domain.usecases.manager.ListFront
 import br.com.usinasantafe.cvf.domain.usecases.manager.SetIdFront
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableFront
@@ -33,6 +34,7 @@ class FrontViewModelTest {
     private val listFront = mock<ListFront>()
     private val setIdFront = mock<SetIdFront>()
     private val updateTableFront = mock<UpdateTableFront>()
+    private val checkStatusManager = mock<CheckStatusManager>()
 
     private fun createdViewModel(
         option: Option = Option.INSERT
@@ -44,7 +46,8 @@ class FrontViewModelTest {
         ),
         listFront = listFront,
         setIdFront = setIdFront,
-        updateTableFront = updateTableFront
+        updateTableFront = updateTableFront,
+        checkStatusManager = checkStatusManager
     )
 
     @Test

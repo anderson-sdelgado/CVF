@@ -11,6 +11,7 @@ import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cav.utils.waitUntilTimeout
 import br.com.usinasantafe.cvf.HiltTestActivity
 import br.com.usinasantafe.cvf.di.provider.BaseUrlModuleTest
+import br.com.usinasantafe.cvf.domain.usecases.manager.CheckStatusManager
 import br.com.usinasantafe.cvf.domain.usecases.manager.ListFront
 import br.com.usinasantafe.cvf.domain.usecases.manager.SetIdFront
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableFront
@@ -58,6 +59,9 @@ class FrontScreenTest {
 
     @Inject
     lateinit var setIdFront: SetIdFront
+
+    @Inject
+    lateinit var checkStatusManager: CheckStatusManager
 
     @Test
     fun check_open_screen() =
@@ -404,7 +408,8 @@ class FrontScreenTest {
                     ),
                     updateTableFront = updateTableFront,
                     listFront = listFront,
-                    setIdFront = setIdFront
+                    setIdFront = setIdFront,
+                    checkStatusManager = checkStatusManager
                 ),
                 onNavRelease = {},
                 onNavConfig = {},

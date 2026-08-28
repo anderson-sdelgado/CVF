@@ -8,4 +8,5 @@ interface FrontRepository {
     suspend fun deleteAll(): EmptyResult
     suspend fun listAll(token: String): Result<List<Front>>
     suspend fun listAll(): Result<List<Front>>
+    suspend fun getById(id: Int): Result<Front>
 }

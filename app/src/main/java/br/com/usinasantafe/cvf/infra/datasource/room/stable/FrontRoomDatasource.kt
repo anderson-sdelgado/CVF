@@ -7,4 +7,5 @@ interface FrontRoomDatasource {
     suspend fun addAll(list: List<FrontRoomModel>): EmptyResult
     suspend fun deleteAll(): EmptyResult
     suspend fun listAll(): Result<List<FrontRoomModel>>
+    suspend fun getById(id: Int): Result<FrontRoomModel>
 }

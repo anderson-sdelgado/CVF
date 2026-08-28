@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import br.com.usinasantafe.cvf.lib.Option
+import br.com.usinasantafe.cvf.lib.OptionMenu
 import br.com.usinasantafe.cvf.lib.OptionReturn
 import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_ARG
 import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_MENU_ARG
@@ -57,7 +58,9 @@ fun NavigationGraph(
         ) { entry ->
             val optionReturn = OptionReturn.entries[entry.arguments?.getInt(OPTION_RETURN_ARG)!!]
             ConfigScreen(
-                onNavFront = navActions::navigateToFront,
+                onNavFront = {
+                    navActions.navigateToFront(optionReturn = optionReturn.ordinal)
+                },
                 onNavNote = {
                     when(optionReturn) {
                         OptionReturn.DRIVER -> navActions.navigateToDriver()
@@ -78,15 +81,16 @@ fun NavigationGraph(
             )
         ){ entry ->
             val optionReturn = OptionReturn.entries[entry.arguments?.getInt(OPTION_RETURN_ARG)!!]
+            val optionMenu = OptionMenu.entries[entry.arguments?.getInt(OPTION_MENU_ARG)!!]
             PasswordScreen(
                 onNavConfig = {
                     navActions.navigateToConfig(option = Option.EDIT.ordinal, optionReturn.ordinal)
                 },
                 onNavFront = {
-                    navActions.navigateToFront(option = Option.EDIT.ordinal, optionReturn.ordinal)
+                    navActions.navigateToFront(option = Option.EDIT.ordinal, optionReturn.ordinal, optionMenu.ordinal)
                 },
                 onNavRelease = {
-                    navActions.navigateToRelease(option = Option.EDIT.ordinal, optionReturn.ordinal)
+                    navActions.navigateToRelease(option = Option.EDIT.ordinal, optionReturn.ordinal, optionMenu.ordinal)
                 },
                 onNavNote = {
                     when(optionReturn) {
@@ -105,12 +109,14 @@ fun NavigationGraph(
             arguments = listOf(
                 navArgument(OPTION_ARG) { type = NavType.IntType },
                 navArgument(OPTION_RETURN_ARG) { type = NavType.IntType },
+                navArgument(OPTION_MENU_ARG) { type = NavType.IntType },
             )
         ){ entry ->
             val optionReturn = OptionReturn.entries[entry.arguments?.getInt(OPTION_RETURN_ARG)!!]
+            val optionMenu = OptionMenu.entries[entry.arguments?.getInt(OPTION_MENU_ARG)!!]
             FrontScreen(
                 onNavRelease = {
-                    navActions.navigateToRelease()
+                    navActions.navigateToRelease(optionMenu = optionMenu.ordinal)
                 },
                 onNavConfig = navActions::navigateToConfig,
                 onNavNote = {
@@ -130,11 +136,15 @@ fun NavigationGraph(
             arguments = listOf(
                 navArgument(OPTION_ARG) { type = NavType.IntType },
                 navArgument(OPTION_RETURN_ARG) { type = NavType.IntType },
+                navArgument(OPTION_MENU_ARG) { type = NavType.IntType },
             )
         ){ entry ->
             val optionReturn = OptionReturn.entries[entry.arguments?.getInt(OPTION_RETURN_ARG)!!]
+            val optionMenu = OptionMenu.entries[entry.arguments?.getInt(OPTION_MENU_ARG)!!]
             ReleaseScreen(
-                onNavFront = navActions::navigateToFront,
+                onNavFront = {
+                    navActions.navigateToFront(optionMenu = optionMenu.ordinal)
+                },
                 onNavDriver = navActions::navigateToDriver,
                 onNavNote = {
                     when(optionReturn) {

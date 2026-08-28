@@ -18,4 +18,7 @@ interface FrontDao {
     @Query("SELECT * FROM $TB_FRONT ORDER BY cd ASC")
     suspend fun all(): List<FrontRoomModel>
 
+    @Query("SELECT * FROM $TB_FRONT WHERE id = :id")
+    suspend fun getById(id: Int): FrontRoomModel
+
 }

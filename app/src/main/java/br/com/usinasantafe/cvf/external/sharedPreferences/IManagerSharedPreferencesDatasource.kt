@@ -8,6 +8,7 @@ import br.com.usinasantafe.cvf.lib.BASE_SHARED_PREFERENCES_TABLE_MANAGER
 import br.com.usinasantafe.cvf.lib.StatusSend
 import br.com.usinasantafe.cvf.utils.EmptyResult
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
+import br.com.usinasantafe.cvf.utils.required
 import br.com.usinasantafe.cvf.utils.result
 import com.google.gson.Gson
 import javax.inject.Inject
@@ -96,6 +97,12 @@ class IManagerSharedPreferencesDatasource @Inject constructor(
             val model = get().getOrThrow()
             model.statusSend = statusSend
             save(model).getOrThrow()
+        }
+
+    override suspend fun getStatusSend(): Result<StatusSend> =
+        result(getClassAndMethod()) {
+            val model = get().getOrThrow()
+            model::statusSend.required()
         }
 
 }

@@ -10,7 +10,7 @@ data class ManagerSharedPreferencesModel(
     var idFront: Int? = null,
     val dateHourCreate: Date = Date(),
     val dateHourUpdate: Date = Date(),
-    var statusSend: StatusSend = StatusSend.SEND
+    var statusSend: StatusSend? = null
 )
 
 fun ManagerSharedPreferencesModel.sharedPreferencesModelToEntity(): Manager {

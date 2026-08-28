@@ -37,9 +37,13 @@ interface ManagerModule {
 
     @Binds
     @Singleton
-    fun bindGetDescRelease(usecase: IGetDescRelease): GetDescRelease
+    fun bindGetDescRelease(usecase: IGetTitleMenu): GetTitleMenu
 
     @Binds
     @Singleton
     fun bindSetFront(usecase: ISetIdFront): SetIdFront
+
+    @Binds
+    @Singleton
+    fun bindCheckStatusManager(usecase: ICheckStatusManager): CheckStatusManager
 }

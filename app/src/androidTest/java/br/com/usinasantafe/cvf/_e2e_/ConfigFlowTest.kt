@@ -228,21 +228,21 @@ class ConfigFlowTest {
 
             Log.d("TestDebug", "Position 7")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("item_check_box_3")
                 .performClick()
 
             Log.d("TestDebug", "Position 8")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("item_check_box_1")
                 .performClick()
 
             Log.d("TestDebug", "Position 9")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("item_check_box_3")
                 .performClick()
@@ -270,14 +270,14 @@ class ConfigFlowTest {
 
             Log.d("TestDebug", "Position 13")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("item_check_box_5")
                 .performClick()
 
             Log.d("TestDebug", "Position 14")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("item_check_box_3")
                 .performClick()
@@ -297,35 +297,35 @@ class ConfigFlowTest {
 
             Log.d("TestDebug", "Position 17")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("tag_top_bar_menu")
                 .performClick()
 
             Log.d("TestDebug", "Position 18")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("tag_top_bar_menu_item_config")
                 .performClick()
 
             Log.d("TestDebug", "Position 19")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithText("CANCELAR")
                 .performClick()
 
             Log.d("TestDebug", "Position 20")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("tag_top_bar_menu")
                 .performClick()
 
             Log.d("TestDebug", "Position 21")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("tag_top_bar_menu_item_config")
                 .performClick()
@@ -340,6 +340,310 @@ class ConfigFlowTest {
                 .performClick()
 
             Log.d("TestDebug", "Position 23")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithText("RETORNAR")
+                .performClick()
+
+            Log.d("TestDebug", "Position 24")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("tag_top_bar_menu")
+                .performClick()
+
+            Log.d("TestDebug", "Position 25")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("tag_top_bar_menu_item_config")
+                .performClick()
+
+            Log.d("TestDebug", "Position 26")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("OK")
+                .performClick()
+
+            Log.d("TestDebug", "Position 27")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithText("SALVAR")
+                .performClick()
+
+            Log.d("TestDebug", "Position 28")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag(TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE)
+                .performClick()
+
+            Log.d("TestDebug", "Position 29")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithText("RETORNAR")
+                .performClick()
+
+            Log.d("TestDebug", "Position 30")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithText("SALVAR")
+                .performClick()
+
+            Log.d("TestDebug", "Position 31")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag(TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE)
+                .performClick()
+
+            Log.d("TestDebug", "Position 32")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("item_check_box_3")
+                .performClick()
+
+            Log.d("TestDebug", "Position 33")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithText("AVANÇAR")
+                .performClick()
+
+            Log.d("TestDebug", "Position 34")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("item_check_box_5")
+                .performClick()
+
+            Log.d("TestDebug", "Position 35")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithText("AVANÇAR")
+                .performClick()
+
+            Log.d("TestDebug", "Position 36")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("tag_top_bar_menu")
+                .performClick()
+
+            Log.d("TestDebug", "Position 37")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("tag_top_bar_menu_item_front")
+                .performClick()
+
+            Log.d("TestDebug", "Position 38")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithText("CANCELAR")
+                .performClick()
+
+            Log.d("TestDebug", "Position 39")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("tag_top_bar_menu")
+                .performClick()
+
+            Log.d("TestDebug", "Position 37")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("tag_top_bar_menu_item_front")
+                .performClick()
+
+            Log.d("TestDebug", "Position 38")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("OK")
+                .performClick()
+
+            Log.d("TestDebug", "Position 39")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithText("RETORNAR")
+                .performClick()
+
+            Log.d("TestDebug", "Position 40")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("tag_top_bar_menu")
+                .performClick()
+
+            Log.d("TestDebug", "Position 41")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("tag_top_bar_menu_item_front")
+                .performClick()
+
+            Log.d("TestDebug", "Position 42")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("OK")
+                .performClick()
+
+            Log.d("TestDebug", "Position 43")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithText("AVANÇAR")
+                .performClick()
+
+            Log.d("TestDebug", "Position 44")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithText("RETORNAR")
+                .performClick()
+
+            Log.d("TestDebug", "Position 45")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithText("RETORNAR")
+                .performClick()
+
+            Log.d("TestDebug", "Position 46")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag(TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE)
+                .performClick()
+
+            Log.d("TestDebug", "Position 47")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithText("AVANÇAR")
+                .performClick()
+
+            Log.d("TestDebug", "Position 48")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("item_check_box_3")
+                .performClick()
+
+            Log.d("TestDebug", "Position 49")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithText("AVANÇAR")
+                .performClick()
+
+            Log.d("TestDebug", "Position 50")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("tag_top_bar_menu")
+                .performClick()
+
+            Log.d("TestDebug", "Position 51")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("tag_top_bar_menu_item_release")
+                .performClick()
+
+            Log.d("TestDebug", "Position 52")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithText("CANCELAR")
+                .performClick()
+
+            Log.d("TestDebug", "Position 53")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("tag_top_bar_menu")
+                .performClick()
+
+            Log.d("TestDebug", "Position 54")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("tag_top_bar_menu_item_release")
+                .performClick()
+
+            Log.d("TestDebug", "Position 55")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("OK")
+                .performClick()
+
+            Log.d("TestDebug", "Position 56")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithText("RETORNAR")
+                .performClick()
+
+            Log.d("TestDebug", "Position 57")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("tag_top_bar_menu")
+                .performClick()
+
+            Log.d("TestDebug", "Position 58")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("tag_top_bar_menu_item_release")
+                .performClick()
+
+            Log.d("TestDebug", "Position 59")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("OK")
+                .performClick()
+
+            Log.d("TestDebug", "Position 60")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("item_check_box_5")
+                .performClick()
+
+            Log.d("TestDebug", "Position 61")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithText("AVANÇAR")
+                .performClick()
+
+            Log.d("TestDebug", "Position 62")
 
             composeTestRule.waitUntilTimeout(10_000)
 

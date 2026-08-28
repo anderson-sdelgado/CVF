@@ -14,4 +14,5 @@ interface ManagerSharedPreferencesDatasource {
     suspend fun hasSend(): Result<Boolean>
     suspend fun get(): Result<ManagerSharedPreferencesModel>
     suspend fun setStatusSend(statusSend: StatusSend): EmptyResult
+    suspend fun getStatusSend(): Result<StatusSend>
 }

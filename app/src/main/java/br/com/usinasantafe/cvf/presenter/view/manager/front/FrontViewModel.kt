@@ -4,14 +4,17 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.usinasantafe.cvf.domain.usecases.manager.CheckStatusManager
 import br.com.usinasantafe.cvf.domain.usecases.manager.ListFront
 import br.com.usinasantafe.cvf.domain.usecases.manager.SetIdFront
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableFront
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.LevelUpdate
 import br.com.usinasantafe.cvf.lib.Option
+import br.com.usinasantafe.cvf.lib.OptionMenu
 import br.com.usinasantafe.cvf.presenter.model.ItemCheckBoxScreenModel
 import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_ARG
+import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_MENU_ARG
 import br.com.usinasantafe.cvf.utils.UiStateWithStatusUpdate
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
 import br.com.usinasantafe.cvf.utils.executeUpdateSteps
@@ -28,7 +31,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class FrontState(
+    val checkReturn: Boolean = false,
     val option: Option = Option.INSERT,
+    val optionMenu: OptionMenu = OptionMenu.CONFIG,
     override val status: UiStatusStateUpdate = UiStatusStateUpdate()
 ) : UiStateWithStatusUpdate<FrontState> {
 
@@ -42,10 +47,12 @@ class FrontViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val listFront: ListFront,
     private val setIdFront: SetIdFront,
-    private val updateTableFront: UpdateTableFront
+    private val updateTableFront: UpdateTableFront,
+    private val checkStatusManager: CheckStatusManager
 ) : ViewModel() {
 
     private val option: Int = savedStateHandle[OPTION_ARG]!!
+    private val optionMenu: Int = savedStateHandle[OPTION_MENU_ARG]!!
 
     val list = mutableStateListOf<ItemCheckBoxScreenModel>()
 
@@ -62,6 +69,7 @@ class FrontViewModel @Inject constructor(
         updateState {
             copy(
                 option = Option.entries[this@FrontViewModel.option],
+                optionMenu = OptionMenu.entries[this@FrontViewModel.optionMenu]
             )
         }
     }
@@ -98,6 +106,20 @@ class FrontViewModel @Inject constructor(
             setIdFront(id).getOrThrow()
         }
             .onSuccessUpdateAccess(::updateState)
+            .onFailureUpdate(::updateState)
+    }
+
+    fun check() = viewModelScope.launch {
+        runCatching {
+            val check = checkStatusManager().getOrThrow()
+            if (!check) {
+                updateState { withFailure(Errors.RETURN_INVALID_FRONT) }
+                return@launch
+            }
+        }
+            .onSuccess {
+                updateState { copy(checkReturn = true) }
+            }
             .onFailureUpdate(::updateState)
     }
 

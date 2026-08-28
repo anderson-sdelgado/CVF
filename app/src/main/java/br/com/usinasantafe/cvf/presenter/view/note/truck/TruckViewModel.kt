@@ -2,7 +2,7 @@ package br.com.usinasantafe.cvf.presenter.view.note.truck
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.usinasantafe.cvf.domain.usecases.manager.GetDescRelease
+import br.com.usinasantafe.cvf.domain.usecases.manager.GetTitleMenu
 import br.com.usinasantafe.cvf.domain.usecases.note.DeleteNote
 import br.com.usinasantafe.cvf.domain.usecases.note.GetNroTruck
 import br.com.usinasantafe.cvf.lib.OptionMenu
@@ -32,7 +32,7 @@ data class TruckState(
 
 @HiltViewModel
 class TruckViewModel @Inject constructor(
-    private val getDescRelease: GetDescRelease,
+    private val getTitleMenu: GetTitleMenu,
     private val getNroTruck: GetNroTruck,
     private val deleteNote: DeleteNote,
 ) : ViewModel() {
@@ -54,7 +54,7 @@ class TruckViewModel @Inject constructor(
             val text: String
         )
         runCatching {
-            val descRelease = getDescRelease().getOrThrow()
+            val descRelease = getTitleMenu().getOrThrow()
             val text = getNroTruck().getOrThrow() ?: ""
             RecoverDriver(
                 descRelease = descRelease,

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cvf.domain.usecases.config.CheckPassword
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.OptionMenu
+import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_ARG
 import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_MENU_ARG
 import br.com.usinasantafe.cvf.utils.UiStateWithStatus
 import br.com.usinasantafe.cvf.utils.UiStatusState
@@ -36,7 +37,7 @@ class PasswordViewModel @Inject constructor(
     private val checkPassword: CheckPassword,
 ) : ViewModel() {
 
-
+    private val optionMenu: Int = savedStateHandle[OPTION_MENU_ARG]!!
 
     private val _uiState = MutableStateFlow(PasswordState())
     val uiState = _uiState.asStateFlow()
@@ -50,6 +51,14 @@ class PasswordViewModel @Inject constructor(
     fun onCloseDialog() = updateState { copy(status = status.copy(flagDialog = false, flagFailure = false)) }
 
     fun onPasswordChanged(password: String) = updateState { copy(password = password) }
+
+    init {
+        updateState {
+            copy(
+                optionMenu = OptionMenu.entries[this@PasswordViewModel.optionMenu],
+            )
+        }
+    }
 
     fun onCheckAccess() = viewModelScope.launch {
         runCatching {

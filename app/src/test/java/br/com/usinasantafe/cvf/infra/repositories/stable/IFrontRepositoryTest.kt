@@ -269,4 +269,60 @@ class IFrontRepositoryTest {
             )
         }
 
+    @Test
+    fun `getById - Check return failure if have error in FrontRoomDatasource getById`() =
+        runTest {
+            whenever(
+                frontRoomDatasource.getById(1)
+            ).thenReturn(
+                resultFailure(
+                    "IFrontRoomDatasource.getById",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getById(1)
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IFrontRepository.getById -> IFrontRoomDatasource.getById",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `getById - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                frontRoomDatasource.getById(1)
+            ).thenReturn(
+                Result.success(
+                    FrontRoomModel(
+                        id = 1,
+                        cd = 1,
+                        description = "Test"
+                    )
+                )
+            )
+            val result = repository.getById(1)
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                Front(
+                    id = 1,
+                    cd = 1,
+                    description = "Test"
+                ),
+                result.getOrNull()!!
+            )
+        }
+
 }

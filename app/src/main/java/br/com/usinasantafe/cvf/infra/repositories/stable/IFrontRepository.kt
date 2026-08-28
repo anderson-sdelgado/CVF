@@ -41,4 +41,10 @@ class IFrontRepository @Inject constructor(
             roomModelList.map { it.roomModelToEntity() }
         }
 
+    override suspend fun getById(id: Int): Result<Front> =
+        call(getClassAndMethod()) {
+            val roomModel = frontRoomDatasource.getById(id).getOrThrow()
+            roomModel.roomModelToEntity()
+        }
+
 }

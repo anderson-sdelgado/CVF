@@ -543,7 +543,7 @@ fun topBar(
                     ) {
                         Icon(
                             imageVector = Icons.Default.MoreVert,
-                            contentDescription = stringResource(R.string.text_menu),
+                            contentDescription = stringResource(R.string.text_title_menu),
                             tint = Color.White
                         )
                     }

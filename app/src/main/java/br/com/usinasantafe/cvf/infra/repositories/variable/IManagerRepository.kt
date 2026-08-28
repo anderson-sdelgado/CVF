@@ -61,4 +61,9 @@ class IManagerRepository @Inject constructor(
             managerSharedPreferencesDatasource.setStatusSend(StatusSend.SENT).getOrThrow()
         }
 
+    override suspend fun getStatusSend(): Result<StatusSend> =
+        call(getClassAndMethod()) {
+            managerSharedPreferencesDatasource.getStatusSend().getOrThrow()
+        }
+
 }

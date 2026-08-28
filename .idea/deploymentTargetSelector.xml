@@ -18,23 +18,23 @@
         <option name="selectionMode" value="DROPDOWN" />
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="check_open_screen()">
+      <SelectionState runConfigName="check_open_screen_and_failure_if_manager_table_is_empty()">
         <option name="selectionMode" value="DROPDOWN" />
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="check_open_screen_and_return_failure_if_password_is_empty()">
+      <SelectionState runConfigName="check_open_screen_and_msg_failure_if_idFront_is_null()">
         <option name="selectionMode" value="DROPDOWN" />
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="check_open_screen_and_return_failure_if_password_is_empty_and_table_config_have_data()">
+      <SelectionState runConfigName="check_open_screen_and_failure_if_release_table_is_empty()">
         <option name="selectionMode" value="DROPDOWN" />
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="check_open_screen_and_return_failure_if_password_input_is_incorrect_and_table_config_have_data()">
+      <SelectionState runConfigName="check_open_screen_and_failure_if_front_table_is_empty()">
         <option name="selectionMode" value="DROPDOWN" />
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="flow()">
+      <SelectionState runConfigName="check_open_screen_correct()">
         <option name="selectionMode" value="DROPDOWN" />
         <DialogSelection />
       </SelectionState>

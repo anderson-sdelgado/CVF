@@ -523,4 +523,50 @@ class IManagerRepositoryTest {
             )
         }
 
+    @Test
+    fun `getStatusSend - Check return failure if have error in ManagerSharedPreferencesDatasource getStatusSend`() =
+        runTest {
+            whenever(
+                managerSharedPreferencesDatasource.getStatusSend()
+            ).thenReturn(
+                resultFailure(
+                    "IManagerSharedPreferencesDatasource.getStatusSend",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getStatusSend()
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IManagerRepository.getStatusSend -> IManagerSharedPreferencesDatasource.getStatusSend",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `getStatusSend - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                managerSharedPreferencesDatasource.getStatusSend()
+            ).thenReturn(
+                Result.success(StatusSend.STARTED)
+            )
+            val result = repository.getStatusSend()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                StatusSend.STARTED,
+                result.getOrNull()!!
+            )
+        }
+
 }

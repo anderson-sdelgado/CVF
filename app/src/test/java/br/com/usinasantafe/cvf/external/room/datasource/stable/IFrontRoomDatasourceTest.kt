@@ -228,4 +228,60 @@ class IFrontRoomDatasourceTest {
                 result.getOrNull()
             )
         }
+
+    @Test
+    fun `getById - Check return failure if not have row fielded`() =
+        runTest {
+            val result = datasource.getById(1)
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IFrontRoomDatasource.getById",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.IllegalStateException: The query result was empty, but expected a single row to return a NON-NULL object of type 'br.com.usinasantafe.cvf.infra.models.room.stable.FrontRoomModel'.",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `getById - Check return model if have row fielded`() =
+        runTest {
+            frontDao.insertAll(
+                listOf(
+                    FrontRoomModel(
+                        id = 1,
+                        cd = 1,
+                        description = "Test1"
+                    ),
+                    FrontRoomModel(
+                        id = 3,
+                        cd = 3,
+                        description = "Test3"
+                    ),
+                    FrontRoomModel(
+                        id = 2,
+                        cd = 2,
+                        description = "Test2"
+                    ),
+                )
+            )
+            val result = datasource.getById(2)
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                FrontRoomModel(
+                    id = 2,
+                    cd = 2,
+                    description = "Test2"
+                ),
+                result.getOrNull()
+            )
+        }
+
 }
