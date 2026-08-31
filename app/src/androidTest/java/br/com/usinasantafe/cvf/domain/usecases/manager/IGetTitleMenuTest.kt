@@ -188,7 +188,7 @@ class IGetTitleMenuTest {
                     ),
                 )
             )
-                        val result = usecase()
+            val result = usecase()
             assertEquals(
                 true,
                 result.isSuccess

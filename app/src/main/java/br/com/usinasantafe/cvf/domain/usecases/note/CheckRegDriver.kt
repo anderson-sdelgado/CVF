@@ -10,6 +10,7 @@ import br.com.usinasantafe.cvf.utils.getClassAndMethod
 import br.com.usinasantafe.cvf.utils.handleFailure
 import br.com.usinasantafe.cvf.utils.tryCatch
 import java.io.IOException
+import java.net.SocketTimeoutException
 import javax.inject.Inject
 
 interface CheckRegDriver {
@@ -30,7 +31,7 @@ class ICheckRegDriver @Inject constructor(
                 return@call colabRepository.check(token, reg).fold(
                     onSuccess = { it },
                     onFailure = {
-                        if(it.cause is IOException) {
+                        if(it.cause is SocketTimeoutException) {
                             handleFailure(it, getClassAndMethod())
                             return@fold colabRepository.check(reg).getOrThrow()
                         }

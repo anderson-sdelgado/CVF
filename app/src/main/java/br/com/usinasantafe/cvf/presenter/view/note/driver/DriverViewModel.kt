@@ -95,7 +95,7 @@ class DriverViewModel @Inject constructor(
             TypeButton.NUMERIC -> updateState { copy(text = addTextField(this.text, text)) }
             TypeButton.CLEAN -> updateState { copy(text = clearTextField(this.text)) }
             TypeButton.OK -> set()
-            TypeButton.UPDATE -> {}
+            else -> {}
         }
     }
 

@@ -276,7 +276,7 @@ fun ButtonsGenericNumeric(
                 {
                     onTextField(
                         ok,
-                        TypeButton.OK
+                        TypeButton.CANCEL
                     )
                 },
                 Modifier.weight(1f),

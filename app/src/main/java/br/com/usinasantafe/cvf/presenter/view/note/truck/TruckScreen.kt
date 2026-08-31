@@ -27,6 +27,7 @@ import br.com.usinasantafe.cvf.presenter.theme.TitleDesign
 import br.com.usinasantafe.cvf.presenter.theme.topBar
 import br.com.usinasantafe.cvf.presenter.view.ButtonsGenericNumeric
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
+import kotlin.Boolean
 
 @Composable
 fun TruckScreen(
@@ -49,6 +50,7 @@ fun TruckScreen(
             onOptionMenu = viewModel::onOptionMenu,
             descRelease = uiState.descRelease,
             text = uiState.text,
+            flagReturn = uiState.flagReturn,
             onTextField = viewModel::onTextField,
             onCloseDialog = viewModel::onCloseDialog,
             status = uiState.status,
@@ -68,6 +70,7 @@ fun TruckContent(
     onOptionMenu: (OptionMenu) -> Unit,
     descRelease: String,
     text: String,
+    flagReturn: Boolean,
     onTextField: (String, TypeButton) -> Unit,
     onCloseDialog: () -> Unit,
     status: UiStatusStateUpdate,
@@ -134,6 +137,11 @@ fun TruckContent(
         }
     }
 
+    LaunchedEffect(flagReturn) {
+        if (flagReturn) {
+            onNavDriver()
+        }
+    }
 }
 
 @Preview(showBackground = true)
@@ -147,6 +155,7 @@ fun TruckPagePreview() {
                 onOptionMenu = {},
                 descRelease = "LIBERAÇÃO: 3\nO.S.: 3\nPROPRIEDADE: Test3",
                 text = "",
+                flagReturn = false,
                 onTextField = { _, _ -> },
                 onCloseDialog = {},
                 status = UiStatusStateUpdate(),

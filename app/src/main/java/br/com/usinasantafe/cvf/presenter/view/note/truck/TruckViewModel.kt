@@ -7,6 +7,8 @@ import br.com.usinasantafe.cvf.domain.usecases.note.DeleteNote
 import br.com.usinasantafe.cvf.domain.usecases.note.GetNroTruck
 import br.com.usinasantafe.cvf.lib.OptionMenu
 import br.com.usinasantafe.cvf.lib.TypeButton
+import br.com.usinasantafe.cvf.presenter.view.addTextField
+import br.com.usinasantafe.cvf.presenter.view.clearTextField
 import br.com.usinasantafe.cvf.utils.UiStateWithStatusUpdate
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
 import br.com.usinasantafe.cvf.utils.onFailureUpdate
@@ -22,6 +24,7 @@ data class TruckState(
     val optionMenu: OptionMenu = OptionMenu.DELETE,
     val descRelease: String = "",
     val text: String = "",
+    val flagReturn: Boolean = false,
     override val status: UiStatusStateUpdate = UiStatusStateUpdate()
 ) : UiStateWithStatusUpdate<TruckState> {
 
@@ -82,7 +85,12 @@ class TruckViewModel @Inject constructor(
     }
 
     fun onTextField(text: String, typeButton: TypeButton) {
-
+        when (typeButton) {
+            TypeButton.NUMERIC -> updateState { copy(text = addTextField(this.text, text)) }
+            TypeButton.CLEAN -> updateState { copy(text = clearTextField(this.text)) }
+            TypeButton.OK -> TODO()
+            TypeButton.CANCEL -> TODO()
+        }
     }
 
     fun set() = viewModelScope.launch {

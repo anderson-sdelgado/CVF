@@ -108,7 +108,7 @@ fun DriverContent(
             if (status.flagProgress) {
                 AlertDialogProgressIndeterminateDesign(
                     stringResource(
-                        id = R.string.text_msg_check_data, R.string.text_driver
+                        id = R.string.text_msg_check_data, stringResource(R.string.text_driver)
                     )
                 )
             }
@@ -147,6 +147,31 @@ fun DriverPagePreview() {
                 onTextField = { _, _ -> },
                 onCloseDialog = {},
                 status = UiStatusStateUpdate(),
+                onNavPassword = {},
+                onNavTruck = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DriverPagePreviewProgress() {
+    CVFTheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            DriverContent(
+                recoverData = {},
+                flagMenu = false,
+                optionMenu = OptionMenu.DELETE,
+                onOptionMenu = {},
+                descRelease = "LIBERAÇÃO: 3\nO.S.: 3\nPROPRIEDADE: Test3",
+                text = "",
+                onTextField = { _, _ -> },
+                onCloseDialog = {},
+                status = UiStatusStateUpdate(
+                    flagProgress = true
+                ),
                 onNavPassword = {},
                 onNavTruck = {},
                 modifier = Modifier.padding(innerPadding)

@@ -18,23 +18,23 @@
         <option name="selectionMode" value="DROPDOWN" />
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="check_open_screen_and_failure_if_manager_table_is_empty()">
+      <SelectionState runConfigName="check_access_and_rem_data_if_data_web_service_is_correct_and_reg_existent_of_web_service()">
         <option name="selectionMode" value="DROPDOWN" />
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="check_open_screen_and_msg_failure_if_idFront_is_null()">
+      <SelectionState runConfigName="check_rem_data_if_data_web_service_is_correct_and_reg_existent_of_web_service()">
         <option name="selectionMode" value="DROPDOWN" />
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="check_open_screen_and_failure_if_release_table_is_empty()">
+      <SelectionState runConfigName="check_not_msg_if_web_service_return_timeout_and_existent_in_table_room()">
         <option name="selectionMode" value="DROPDOWN" />
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="check_open_screen_and_failure_if_front_table_is_empty()">
+      <SelectionState runConfigName="check_msg_if_web_service_return_timeout_and_non_existent_in_table_room()">
         <option name="selectionMode" value="DROPDOWN" />
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="check_open_screen_correct()">
+      <SelectionState runConfigName="check_msg_if_no_connection_and_no_existent_in_table_room()">
         <option name="selectionMode" value="DROPDOWN" />
         <DialogSelection />
       </SelectionState>
