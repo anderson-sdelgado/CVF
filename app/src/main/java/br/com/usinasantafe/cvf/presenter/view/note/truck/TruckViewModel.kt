@@ -3,8 +3,11 @@ package br.com.usinasantafe.cvf.presenter.view.note.truck
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cvf.domain.usecases.manager.GetTitleMenu
+import br.com.usinasantafe.cvf.domain.usecases.note.CheckNroTruck
 import br.com.usinasantafe.cvf.domain.usecases.note.DeleteNote
 import br.com.usinasantafe.cvf.domain.usecases.note.GetNroTruck
+import br.com.usinasantafe.cvf.domain.usecases.note.SetNroTruck
+import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.OptionMenu
 import br.com.usinasantafe.cvf.lib.TypeButton
 import br.com.usinasantafe.cvf.presenter.view.addTextField
@@ -12,6 +15,9 @@ import br.com.usinasantafe.cvf.presenter.view.clearTextField
 import br.com.usinasantafe.cvf.utils.UiStateWithStatusUpdate
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
 import br.com.usinasantafe.cvf.utils.onFailureUpdate
+import br.com.usinasantafe.cvf.utils.onSuccessUpdateAccess
+import br.com.usinasantafe.cvf.utils.required
+import br.com.usinasantafe.cvf.utils.withFailure
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,6 +26,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class TruckState(
+    val flagCheckDialog: Boolean = false,
     val flagMenu: Boolean = false,
     val optionMenu: OptionMenu = OptionMenu.DELETE,
     val descRelease: String = "",
@@ -36,8 +43,10 @@ data class TruckState(
 @HiltViewModel
 class TruckViewModel @Inject constructor(
     private val getTitleMenu: GetTitleMenu,
-    private val getNroTruck: GetNroTruck,
     private val deleteNote: DeleteNote,
+    private val getNroTruck: GetNroTruck,
+    private val checkNroTruck: CheckNroTruck,
+    private val setNroTruck: SetNroTruck
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(TruckState())
@@ -51,13 +60,15 @@ class TruckViewModel @Inject constructor(
 
     fun onCloseDialog() = updateState { copy(status = status.copy(flagDialog = false, flagFailure = false)) }
 
+    fun onCheckDialog(flag: Boolean) = updateState { copy(flagCheckDialog = flag) }
+
     fun recoverData() = viewModelScope.launch {
         data class RecoverDriver(
             val descRelease: String,
             val text: String
         )
         runCatching {
-            val descRelease = getTitleMenu().getOrThrow()
+            val descRelease = getTitleMenu().getOrThrow().required("descRelease")
             val text = getNroTruck().getOrThrow() ?: ""
             RecoverDriver(
                 descRelease = descRelease,
@@ -72,14 +83,22 @@ class TruckViewModel @Inject constructor(
 
     fun onOptionMenu(optionMenu: OptionMenu) = viewModelScope.launch {
         runCatching {
-            if (optionMenu == OptionMenu.DELETE) {
-                deleteNote().getOrThrow()
+            optionMenu == OptionMenu.DELETE
+        }
+            .onSuccess { check ->
+                updateState {
+                    copy(optionMenu = optionMenu, flagMenu = !check, flagCheckDialog = check)
+                }
             }
+            .onFailureUpdate(::updateState)
+    }
+
+    fun delete() = viewModelScope.launch {
+        runCatching {
+            deleteNote().getOrThrow()
         }
             .onSuccess {
-                updateState {
-                    copy(optionMenu = optionMenu, flagMenu = true)
-                }
+                updateState { copy(flagMenu = true) }
             }
             .onFailureUpdate(::updateState)
     }
@@ -88,13 +107,27 @@ class TruckViewModel @Inject constructor(
         when (typeButton) {
             TypeButton.NUMERIC -> updateState { copy(text = addTextField(this.text, text)) }
             TypeButton.CLEAN -> updateState { copy(text = clearTextField(this.text)) }
-            TypeButton.OK -> TODO()
-            TypeButton.CANCEL -> TODO()
+            TypeButton.OK -> set()
+            TypeButton.CANCEL -> updateState { copy(flagReturn = true) }
         }
     }
 
     fun set() = viewModelScope.launch {
-
+        runCatching {
+            if (state.text.isEmpty()) {
+                updateState { withFailure(Errors.FIELD_EMPTY) }
+                return@launch
+            }
+            updateState { copy(status = status.copy(flagProgress = true)) }
+            val check = checkNroTruck(state.text).getOrThrow()
+            if (!check) {
+                updateState { withFailure(Errors.INVALID) }
+                return@launch
+            }
+            setNroTruck(state.text).getOrThrow()
+        }
+            .onSuccessUpdateAccess(::updateState)
+            .onFailureUpdate(::updateState)
     }
 
 }

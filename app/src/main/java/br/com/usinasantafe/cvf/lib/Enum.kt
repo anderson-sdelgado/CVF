@@ -7,6 +7,7 @@ enum class TypeButton { NUMERIC, CLEAN, OK, CANCEL }
 enum class LevelUpdate { RECOVERY, CLEAN, SAVE, GET_TOKEN, SAVE_TOKEN, FINISH_UPDATE_INITIAL, FINISH_UPDATE_COMPLETED, CHECK_DATA }
 
 enum class OptionMenu { DELETE, CONFIG, FRONT, RELEASE, CLOSE }
-enum class OptionReturn { DRIVER, TRUCK, CART, MSG_CART, REVIEW }
+enum class OptionReturn { DRIVER, TRUCK, CART, REVIEW }
 
 enum class Option { INSERT, EDIT }
+enum class TypeTruck { TRUCK, HAULAGE_TRUCK }

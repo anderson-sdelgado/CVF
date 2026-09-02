@@ -57,4 +57,5 @@
     <string name="text_clean_travel">APAGAR VIAGEM</string>
     <string name="text_return_invalid_front">A FRENTE JÁ FOI ALTERADA NO APLICATIVO. POR FAVOR, PARA RETORNAR AO FLUXO PRINCIPAL DO APLICATIVO PRECISA SELECIONA ALGUMA LIBERAÇÃO.</string>
     <string name="text_menu">FRENTE: %1$s\nLIBERAÇÃO: %2$s\nO.S.: %3$s\nPROPRIEDADE: %4$s</string>
+    <string name="text_msg_delete">DESEJA REALMENTE EXCLUIR A VIAGEM QUE ESTÁ SENDO REALIZADA?</string>
 </resources>

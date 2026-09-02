@@ -39,5 +39,36 @@ interface NoteModule {
     @Singleton
     fun bindDeleteNote(usecase: IDeleteNote): DeleteNote
 
+    @Binds
+    @Singleton
+    fun bindCheckNroTruck(usecase: ICheckNroTruck): CheckNroTruck
+
+    @Binds
+    @Singleton
+    fun bindSetNroTruck(usecase: ISetNroTruck): SetNroTruck
+
+    @Binds
+    @Singleton
+    fun bindGetNroCart(usecase: IGetNroCart): GetNroCart
+
+    @Binds
+    @Singleton
+    fun bindCheckNroCart(usecase: ICheckNroCart): CheckNroCart
+
+    @Binds
+    @Singleton
+    fun bindSetNroCart(usecase: ISetNroCart): SetNroCart
+
+    @Binds
+    @Singleton
+    fun bindPosCart(usecase: IPosCart): PosCart
+
+    @Binds
+    @Singleton
+    fun bindGetTypeTruck(usecase: IGetTypeTruck): GetTypeTruck
+
+    @Binds
+    @Singleton
+    fun bindLimitQtdCart(usecase: ILimitQtdCart): LimitQtdCart
 
 }

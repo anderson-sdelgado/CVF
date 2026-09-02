@@ -19,6 +19,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cvf.R
 import br.com.usinasantafe.cvf.lib.OptionMenu
 import br.com.usinasantafe.cvf.lib.TypeButton
+import br.com.usinasantafe.cvf.presenter.theme.AlertDialogCheckDesign
 import br.com.usinasantafe.cvf.presenter.theme.AlertDialogProgressIndeterminateDesign
 import br.com.usinasantafe.cvf.presenter.theme.CVFTheme
 import br.com.usinasantafe.cvf.presenter.theme.MsgUpdate
@@ -35,7 +36,6 @@ fun TruckScreen(
     onNavPassword: (OptionMenu) -> Unit,
     onNavDriver: () -> Unit,
     onNavCart: () -> Unit,
-    onNavMsgCart: () -> Unit
 ) {
     CVFTheme {
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -45,6 +45,9 @@ fun TruckScreen(
         }
 
         TruckContent(
+            flagCheckDialog = uiState.flagCheckDialog,
+            onCheckDialog = viewModel::onCheckDialog,
+            delete = viewModel::delete,
             flagMenu = uiState.flagMenu,
             optionMenu = uiState.optionMenu,
             onOptionMenu = viewModel::onOptionMenu,
@@ -56,8 +59,7 @@ fun TruckScreen(
             status = uiState.status,
             onNavPassword = onNavPassword,
             onNavDriver = onNavDriver,
-            onNavCart = onNavCart,
-            onNavMsgCart = onNavMsgCart
+            onNavCart = onNavCart
         )
     }
 }
@@ -65,6 +67,9 @@ fun TruckScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TruckContent(
+    flagCheckDialog: Boolean,
+    onCheckDialog: (Boolean) -> Unit,
+    delete: () -> Unit,
     flagMenu: Boolean,
     optionMenu: OptionMenu,
     onOptionMenu: (OptionMenu) -> Unit,
@@ -77,7 +82,6 @@ fun TruckContent(
     onNavPassword: (OptionMenu) -> Unit,
     onNavDriver: () -> Unit,
     onNavCart: () -> Unit,
-    onNavMsgCart: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -115,16 +119,25 @@ fun TruckContent(
             if (status.flagProgress) {
                 AlertDialogProgressIndeterminateDesign(
                     stringResource(
-                        id = R.string.text_msg_check_data, R.string.text_truck
+                        id = R.string.text_msg_check_data, stringResource(R.string.text_truck)
                     )
                 )
             }
+
+            if(flagCheckDialog){
+                AlertDialogCheckDesign(
+                    text = stringResource(id = R.string.text_msg_delete),
+                    onClickDismiss = { onCheckDialog(false) },
+                    onClickYes = delete
+                )
+            }
+
         }
     }
 
     LaunchedEffect(status.flagAccess) {
         if(status.flagAccess) {
-            onNavMsgCart()
+            onNavCart()
         }
     }
 
@@ -142,6 +155,7 @@ fun TruckContent(
             onNavDriver()
         }
     }
+
 }
 
 @Preview(showBackground = true)
@@ -150,6 +164,9 @@ fun TruckPagePreview() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             TruckContent(
+                flagCheckDialog = false,
+                onCheckDialog = {},
+                delete = {},
                 flagMenu = false,
                 optionMenu = OptionMenu.DELETE,
                 onOptionMenu = {},
@@ -162,7 +179,6 @@ fun TruckPagePreview() {
                 onNavPassword = {},
                 onNavDriver = {},
                 onNavCart = {},
-                onNavMsgCart = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }

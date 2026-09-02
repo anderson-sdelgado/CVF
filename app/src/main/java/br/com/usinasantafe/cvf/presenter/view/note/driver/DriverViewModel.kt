@@ -16,6 +16,7 @@ import br.com.usinasantafe.cvf.utils.UiStateWithStatusUpdate
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
 import br.com.usinasantafe.cvf.utils.onFailureUpdate
 import br.com.usinasantafe.cvf.utils.onSuccessUpdateAccess
+import br.com.usinasantafe.cvf.utils.required
 import br.com.usinasantafe.cvf.utils.withFailure
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,6 +26,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class DriverState(
+    val flagCheckDialog: Boolean = false,
     val flagMenu: Boolean = false,
     val optionMenu: OptionMenu = OptionMenu.DELETE,
     val descRelease: String = "",
@@ -57,13 +59,15 @@ class DriverViewModel @Inject constructor(
 
     fun onCloseDialog() = updateState { copy(status = status.copy(flagDialog = false, flagFailure = false)) }
 
+    fun onCheckDialog(flag: Boolean) = updateState { copy(flagCheckDialog = flag) }
+
     fun recoverData() = viewModelScope.launch {
         data class RecoverDriver(
             val descRelease: String,
             val text: String
         )
         runCatching {
-            val descRelease = getTitleMenu().getOrThrow()
+            val descRelease = getTitleMenu().getOrThrow().required("descRelease")
             val text = getRegDriver().getOrThrow() ?: ""
             RecoverDriver(
                 descRelease = descRelease,
@@ -78,14 +82,22 @@ class DriverViewModel @Inject constructor(
 
     fun onOptionMenu(optionMenu: OptionMenu) = viewModelScope.launch {
         runCatching {
-            if (optionMenu == OptionMenu.DELETE) {
-                deleteNote().getOrThrow()
+            optionMenu == OptionMenu.DELETE
+        }
+            .onSuccess { check ->
+                updateState {
+                    copy(optionMenu = optionMenu, flagMenu = !check, flagCheckDialog = check)
+                }
             }
+            .onFailureUpdate(::updateState)
+    }
+
+    fun delete() = viewModelScope.launch {
+        runCatching {
+            deleteNote().getOrThrow()
         }
             .onSuccess {
-                updateState {
-                    copy(optionMenu = optionMenu, flagMenu = true)
-                }
+                updateState { copy(flagMenu = true) }
             }
             .onFailureUpdate(::updateState)
     }

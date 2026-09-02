@@ -18,6 +18,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cvf.R
 import br.com.usinasantafe.cvf.lib.OptionMenu
 import br.com.usinasantafe.cvf.lib.TypeButton
+import br.com.usinasantafe.cvf.presenter.theme.AlertDialogCheckDesign
 import br.com.usinasantafe.cvf.presenter.theme.AlertDialogProgressIndeterminateDesign
 import br.com.usinasantafe.cvf.presenter.theme.CVFTheme
 import br.com.usinasantafe.cvf.presenter.theme.MsgUpdate
@@ -30,6 +31,9 @@ import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
 @Composable
 fun CartScreen(
     viewModel: CartViewModel = hiltViewModel(),
+    onNavReview: () -> Unit,
+    onNavDriver: () -> Unit,
+    onNavPassword: (OptionMenu) -> Unit,
 ) {
     CVFTheme {
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -39,30 +43,44 @@ fun CartScreen(
         }
 
         CartContent(
-            nroCart = uiState.nroCart,
+            flagCheckDialog = uiState.flagCheckDialog,
+            onCheckDialog = viewModel::onCheckDialog,
+            delete = viewModel::delete,
+            posCart = uiState.posCart,
             flagMenu = uiState.flagMenu,
             optionMenu = uiState.optionMenu,
             onOptionMenu = viewModel::onOptionMenu,
             descRelease = uiState.descRelease,
             text = uiState.text,
+            flagReturn = uiState.flagReturn,
             onTextField = viewModel::onTextField,
             onCloseDialog = viewModel::onCloseDialog,
             status = uiState.status,
+            onNavReview = onNavReview,
+            onNavDriver = onNavDriver,
+            onNavPassword = onNavPassword
         )
     }
 }
 
 @Composable
 fun CartContent(
-    nroCart: Int,
+    flagCheckDialog: Boolean,
+    onCheckDialog: (Boolean) -> Unit,
+    delete: () -> Unit,
+    posCart: Int,
     flagMenu: Boolean,
     optionMenu: OptionMenu,
     onOptionMenu: (OptionMenu) -> Unit,
     descRelease: String,
     text: String,
+    flagReturn: Boolean,
     onTextField: (String, TypeButton) -> Unit,
     onCloseDialog: () -> Unit,
     status: UiStatusStateUpdate,
+    onNavReview: () -> Unit,
+    onNavDriver: () -> Unit,
+    onNavPassword: (OptionMenu) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -79,7 +97,7 @@ fun CartContent(
         ) {
             TitleDesign(
                 text = stringResource(
-                    id = R.string.text_cart, nroCart
+                    id = R.string.text_cart, posCart
                 )
             )
             TextFieldDesign(
@@ -97,7 +115,7 @@ fun CartContent(
                     status = status,
                     onClickOk = onCloseDialog,
                     value = stringResource(
-                        id = R.string.text_cart, nroCart
+                        id = R.string.text_cart, posCart
                     )
                 )
             }
@@ -109,8 +127,39 @@ fun CartContent(
                     )
                 )
             }
+
+            if(flagCheckDialog){
+                AlertDialogCheckDesign(
+                    text = stringResource(id = R.string.text_msg_delete),
+                    onClickDismiss = { onCheckDialog(false) },
+                    onClickYes = delete
+                )
+            }
+
         }
     }
+
+    LaunchedEffect(status.flagAccess) {
+        if(status.flagAccess) {
+            onNavReview()
+        }
+    }
+
+    LaunchedEffect(flagMenu) {
+        if(flagMenu) {
+            when(optionMenu){
+                OptionMenu.DELETE -> onNavDriver()
+                else -> onNavPassword(optionMenu)
+            }
+        }
+    }
+
+    LaunchedEffect(flagReturn) {
+        if (flagReturn) {
+            onNavDriver()
+        }
+    }
+
 }
 
 @Preview(showBackground = true)
@@ -119,15 +168,22 @@ fun CartPagePreview() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             CartContent(
-                nroCart = 2,
+                flagCheckDialog = false,
+                onCheckDialog = {},
+                delete = {},
+                posCart = 2,
                 flagMenu = false,
                 optionMenu = OptionMenu.DELETE,
                 onOptionMenu = {},
                 descRelease = "LIBERAÇÃO: 3\nO.S.: 3\nPROPRIEDADE: Test3",
                 text = "",
+                flagReturn = false,
                 onTextField = { _, _ -> },
                 onCloseDialog = {},
                 status = UiStatusStateUpdate(),
+                onNavReview = {},
+                onNavDriver = {},
+                onNavPassword = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }

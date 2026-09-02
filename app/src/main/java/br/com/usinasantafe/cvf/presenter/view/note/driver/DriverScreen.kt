@@ -17,8 +17,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cvf.R
+import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.OptionMenu
 import br.com.usinasantafe.cvf.lib.TypeButton
+import br.com.usinasantafe.cvf.presenter.theme.AlertDialogCheckDesign
 import br.com.usinasantafe.cvf.presenter.theme.AlertDialogProgressIndeterminateDesign
 import br.com.usinasantafe.cvf.presenter.theme.CVFTheme
 import br.com.usinasantafe.cvf.presenter.theme.MsgUpdate
@@ -42,6 +44,9 @@ fun DriverScreen(
         }
 
         DriverContent(
+            flagCheckDialog = uiState.flagCheckDialog,
+            onCheckDialog = viewModel::onCheckDialog,
+            delete = viewModel::delete,
             recoverData = viewModel::recoverData,
             flagMenu = uiState.flagMenu,
             optionMenu = uiState.optionMenu,
@@ -60,6 +65,9 @@ fun DriverScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DriverContent(
+    flagCheckDialog: Boolean,
+    onCheckDialog: (Boolean) -> Unit,
+    delete: () -> Unit,
     recoverData: () -> Unit,
     flagMenu: Boolean,
     optionMenu: OptionMenu,
@@ -113,7 +121,16 @@ fun DriverContent(
                 )
             }
 
+            if(flagCheckDialog){
+                AlertDialogCheckDesign(
+                    text = stringResource(id = R.string.text_msg_delete),
+                    onClickDismiss = { onCheckDialog(false) },
+                    onClickYes = delete
+                )
+            }
+
         }
+
     }
 
     LaunchedEffect(status.flagAccess) {
@@ -130,6 +147,7 @@ fun DriverContent(
             }
         }
     }
+
 }
 
 @Preview(showBackground = true)
@@ -138,6 +156,9 @@ fun DriverPagePreview() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             DriverContent(
+                flagCheckDialog = false,
+                onCheckDialog = {},
+                delete = {},
                 recoverData = {},
                 flagMenu = false,
                 optionMenu = OptionMenu.DELETE,
@@ -161,6 +182,9 @@ fun DriverPagePreviewProgress() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             DriverContent(
+                flagCheckDialog = false,
+                onCheckDialog = {},
+                delete = {},
                 recoverData = {},
                 flagMenu = false,
                 optionMenu = OptionMenu.DELETE,
@@ -172,6 +196,63 @@ fun DriverPagePreviewProgress() {
                 status = UiStatusStateUpdate(
                     flagProgress = true
                 ),
+                onNavPassword = {},
+                onNavTruck = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DriverPagePreviewFailure() {
+    CVFTheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            DriverContent(
+                flagCheckDialog = false,
+                onCheckDialog = {},
+                delete = {},
+                recoverData = {},
+                flagMenu = false,
+                optionMenu = OptionMenu.DELETE,
+                onOptionMenu = {},
+                descRelease = "LIBERAÇÃO: 3\nO.S.: 3\nPROPRIEDADE: Test3",
+                text = "",
+                onTextField = { _, _ -> },
+                onCloseDialog = {},
+                status = UiStatusStateUpdate(
+                    flagDialog = true,
+                    flagFailure = true,
+                    failure = "Failure",
+                    errors = Errors.EXCEPTION
+                ),
+                onNavPassword = {},
+                onNavTruck = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DriverPagePreviewCheck() {
+    CVFTheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            DriverContent(
+                flagCheckDialog = true,
+                onCheckDialog = {},
+                delete = {},
+                recoverData = {},
+                flagMenu = false,
+                optionMenu = OptionMenu.DELETE,
+                onOptionMenu = {},
+                descRelease = "LIBERAÇÃO: 3\nO.S.: 3\nPROPRIEDADE: Test3",
+                text = "",
+                onTextField = { _, _ -> },
+                onCloseDialog = {},
+                status = UiStatusStateUpdate(),
                 onNavPassword = {},
                 onNavTruck = {},
                 modifier = Modifier.padding(innerPadding)

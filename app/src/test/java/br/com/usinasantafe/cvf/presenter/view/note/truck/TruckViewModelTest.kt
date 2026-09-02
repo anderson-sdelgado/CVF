@@ -1,11 +1,11 @@
-package br.com.usinasantafe.cvf.presenter.view.note.driver
+package br.com.usinasantafe.cvf.presenter.view.note.truck
 
 import br.com.usinasantafe.cvf.MainCoroutineRule
 import br.com.usinasantafe.cvf.domain.usecases.manager.GetTitleMenu
-import br.com.usinasantafe.cvf.domain.usecases.note.CheckRegDriver
+import br.com.usinasantafe.cvf.domain.usecases.note.CheckNroTruck
 import br.com.usinasantafe.cvf.domain.usecases.note.DeleteNote
-import br.com.usinasantafe.cvf.domain.usecases.note.GetRegDriver
-import br.com.usinasantafe.cvf.domain.usecases.note.SetRegDriver
+import br.com.usinasantafe.cvf.domain.usecases.note.GetNroTruck
+import br.com.usinasantafe.cvf.domain.usecases.note.SetNroTruck
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.OptionMenu
 import br.com.usinasantafe.cvf.lib.TypeButton
@@ -14,30 +14,31 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito.mock
+import org.mockito.Mockito
 import org.mockito.kotlin.atLeastOnce
+import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import kotlin.test.assertEquals
 
 @ExperimentalCoroutinesApi
-class DriverViewModelTest {
+class TruckViewModelTest {
 
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
 
     private val getTitleMenu = mock<GetTitleMenu>()
-    private val getRegDriver = mock<GetRegDriver>()
-    private val deleteNote = mock<DeleteNote>()
-    private val checkRegDriver = mock<CheckRegDriver>()
-    private val setRegDriver = mock<SetRegDriver>()
-    private val viewModel = DriverViewModel(
+    private val deleteNote = Mockito.mock<DeleteNote>()
+    private val getNroTruck = mock<GetNroTruck>()
+    private val checkNroTruck = mock<CheckNroTruck>()
+    private val setNroTruck = mock<SetNroTruck>()
+    private val viewModel = TruckViewModel(
         getTitleMenu = getTitleMenu,
-        getRegDriver = getRegDriver,
         deleteNote = deleteNote,
-        checkRegDriver = checkRegDriver,
-        setRegDriver = setRegDriver
+        getNroTruck = getNroTruck,
+        checkNroTruck = checkNroTruck,
+        setNroTruck = setNroTruck
     )
 
     @Test
@@ -49,7 +50,7 @@ class DriverViewModelTest {
                 viewModel.uiState.value.status.flagDialog
             )
             assertEquals(
-                "DriverViewModel.recoverData -> DriverViewModel.updateState -> Parameter specified as non-null is null: method br.com.usinasantafe.cvf.presenter.view.note.driver.DriverViewModel\$recoverData\$1\$RecoverDriver.<init>, parameter descRelease -> null",
+                "TruckViewModel.recoverData -> TruckViewModel.updateState -> Parameter specified as non-null is null: method br.com.usinasantafe.cvf.presenter.view.note.truck.TruckViewModel\$recoverData\$1\$RecoverDriver.<init>, parameter descRelease -> null",
                 viewModel.uiState.value.status.failure
             )
             assertEquals(
@@ -80,7 +81,7 @@ class DriverViewModelTest {
                 viewModel.uiState.value.status.flagDialog
             )
             assertEquals(
-                "DriverViewModel.recoverData -> DriverViewModel.updateState -> GetDescRelease -> java.lang.Exception",
+                "TruckViewModel.recoverData -> TruckViewModel.updateState -> GetDescRelease -> java.lang.Exception",
                 viewModel.uiState.value.status.failure
             )
             assertEquals(
@@ -94,7 +95,7 @@ class DriverViewModelTest {
         }
 
     @Test
-    fun `recoverData - Check return failure if have error in GetRegDriver`() =
+    fun `recoverData - Check return failure if have error in GetNroTruck`() =
         runTest {
             whenever(
                 getTitleMenu()
@@ -102,10 +103,10 @@ class DriverViewModelTest {
                 Result.success("Test")
             )
             whenever(
-                getRegDriver()
+                getNroTruck()
             ).thenReturn(
                 resultFailure(
-                    context = "GetRegDriver",
+                    context = "GetNroTruck",
                     message = "-",
                     cause = Exception()
                 )
@@ -116,7 +117,7 @@ class DriverViewModelTest {
                 viewModel.uiState.value.status.flagDialog
             )
             assertEquals(
-                "DriverViewModel.recoverData -> DriverViewModel.updateState -> GetRegDriver -> java.lang.Exception",
+                "TruckViewModel.recoverData -> TruckViewModel.updateState -> GetNroTruck -> java.lang.Exception",
                 viewModel.uiState.value.status.failure
             )
             assertEquals(
@@ -138,7 +139,7 @@ class DriverViewModelTest {
                 Result.success("Test")
             )
             whenever(
-                getRegDriver()
+                getNroTruck()
             ).thenReturn(
                 Result.success("Test2")
             )
@@ -150,10 +151,6 @@ class DriverViewModelTest {
             assertEquals(
                 "Test2",
                 viewModel.uiState.value.text
-            )
-            assertEquals(
-                false,
-                viewModel.uiState.value.flagMenu
             )
         }
 
@@ -213,7 +210,7 @@ class DriverViewModelTest {
                 viewModel.uiState.value.status.flagDialog
             )
             assertEquals(
-                "DriverViewModel.delete -> DriverViewModel.updateState -> DeleteNote -> java.lang.Exception",
+                "TruckViewModel.delete -> TruckViewModel.updateState -> DeleteNote -> java.lang.Exception",
                 viewModel.uiState.value.status.failure
             )
             assertEquals(
@@ -302,13 +299,13 @@ class DriverViewModelTest {
     }
 
     @Test
-    fun `set - Check return failure if have error in CheckRegDriver`() =
+    fun `set - Check return failure if have error in CheckNroTruck`() =
         runTest {
             whenever(
-                checkRegDriver("19759")
+                checkNroTruck("19759")
             ).thenReturn(
                 resultFailure(
-                    context = "CheckRegDriver",
+                    context = "CheckNroTruck",
                     message = "-",
                     cause = Exception()
                 )
@@ -326,7 +323,7 @@ class DriverViewModelTest {
                 viewModel.uiState.value.status.flagDialog
             )
             assertEquals(
-                "DriverViewModel.onTextField -> DriverViewModel.set -> DriverViewModel.updateState -> CheckRegDriver -> java.lang.Exception",
+                "TruckViewModel.onTextField -> TruckViewModel.set -> TruckViewModel.updateState -> CheckNroTruck -> java.lang.Exception",
                 viewModel.uiState.value.status.failure
             )
             assertEquals(
@@ -344,10 +341,10 @@ class DriverViewModelTest {
         }
 
     @Test
-    fun `set - Check msg if reg driver is invalid`() =
+    fun `set - Check msg if nro truck is invalid`() =
         runTest {
             whenever(
-                checkRegDriver("19759")
+                checkNroTruck("19759")
             ).thenReturn(
                 Result.success(false)
             )
@@ -364,7 +361,7 @@ class DriverViewModelTest {
                 viewModel.uiState.value.status.flagDialog
             )
             assertEquals(
-                "DriverViewModel.onTextField -> DriverViewModel.updateState -> DriverViewModel.set -> INVALID",
+                "TruckViewModel.onTextField -> TruckViewModel.updateState -> TruckViewModel.set -> INVALID",
                 viewModel.uiState.value.status.failure
             )
             assertEquals(
@@ -382,18 +379,18 @@ class DriverViewModelTest {
         }
 
     @Test
-    fun `set - Check return failure if have error in SetRegDriver`() =
+    fun `set - Check return failure if have error in SetNroTruck`() =
         runTest {
             whenever(
-                checkRegDriver("19759")
+                checkNroTruck("19759")
             ).thenReturn(
                 Result.success(true)
             )
             whenever(
-                setRegDriver("19759")
+                setNroTruck("19759")
             ).thenReturn(
                 resultFailure(
-                    context = "SetRegDriver",
+                    context = "SetNroTruck",
                     message = "-",
                     cause = Exception()
                 )
@@ -411,7 +408,7 @@ class DriverViewModelTest {
                 viewModel.uiState.value.status.flagDialog
             )
             assertEquals(
-                "DriverViewModel.onTextField -> DriverViewModel.set -> DriverViewModel.updateState -> SetRegDriver -> java.lang.Exception",
+                "TruckViewModel.onTextField -> TruckViewModel.set -> TruckViewModel.updateState -> SetNroTruck -> java.lang.Exception",
                 viewModel.uiState.value.status.failure
             )
             assertEquals(
@@ -432,7 +429,7 @@ class DriverViewModelTest {
     fun `set - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                checkRegDriver("19759")
+                checkNroTruck("19759")
             ).thenReturn(
                 Result.success(true)
             )
@@ -445,7 +442,7 @@ class DriverViewModelTest {
                 TypeButton.OK
             )
             viewModel.set()
-            verify(setRegDriver, atLeastOnce()).invoke("19759")
+            verify(setNroTruck, atLeastOnce()).invoke("19759")
             assertEquals(
                 true,
                 viewModel.uiState.value.status.flagAccess
@@ -455,5 +452,4 @@ class DriverViewModelTest {
                 viewModel.uiState.value.status.flagProgress
             )
         }
-
 }

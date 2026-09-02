@@ -104,10 +104,6 @@ class NavigationActions(private val navController: NavHostController) {
         navController.navigate(CART_SCREEN)
     }
 
-    fun navigateToMsgCart() {
-        navController.navigate(MSG_CART_SCREEN)
-    }
-
     fun navigateToReview() {
         navController.navigate(REVIEW_SCREEN)
     }

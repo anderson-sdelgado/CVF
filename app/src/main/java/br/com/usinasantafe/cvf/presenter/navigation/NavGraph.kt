@@ -66,7 +66,6 @@ fun NavigationGraph(
                         OptionReturn.DRIVER -> navActions.navigateToDriver()
                         OptionReturn.TRUCK -> navActions.navigateToTruck()
                         OptionReturn.CART -> navActions.navigateToCart()
-                        OptionReturn.MSG_CART -> navActions.navigateToMsgCart()
                         OptionReturn.REVIEW -> navActions.navigateToReview()
                     }
                 }
@@ -97,7 +96,6 @@ fun NavigationGraph(
                         OptionReturn.DRIVER -> navActions.navigateToDriver()
                         OptionReturn.TRUCK -> navActions.navigateToTruck()
                         OptionReturn.CART -> navActions.navigateToCart()
-                        OptionReturn.MSG_CART -> navActions.navigateToMsgCart()
                         OptionReturn.REVIEW -> navActions.navigateToReview()
                     }
                 }
@@ -124,7 +122,6 @@ fun NavigationGraph(
                         OptionReturn.DRIVER -> navActions.navigateToDriver()
                         OptionReturn.TRUCK -> navActions.navigateToTruck()
                         OptionReturn.CART -> navActions.navigateToCart()
-                        OptionReturn.MSG_CART -> navActions.navigateToMsgCart()
                         OptionReturn.REVIEW -> navActions.navigateToReview()
                     }
                 }
@@ -151,7 +148,6 @@ fun NavigationGraph(
                         OptionReturn.DRIVER -> navActions.navigateToDriver()
                         OptionReturn.TRUCK -> navActions.navigateToTruck()
                         OptionReturn.CART -> navActions.navigateToCart()
-                        OptionReturn.MSG_CART -> navActions.navigateToMsgCart()
                         OptionReturn.REVIEW -> navActions.navigateToReview()
                     }
                 }
@@ -174,7 +170,6 @@ fun NavigationGraph(
                 },
                 onNavDriver = navActions::navigateToDriver,
                 onNavCart = navActions::navigateToCart,
-                onNavMsgCart = navActions::navigateToMsgCart
             )
         }
 
