@@ -8,4 +8,5 @@ interface NoteRepository {
     suspend fun getRegDriver(): Result<Long?>
     suspend fun setRegDriver(reg: Long): EmptyResult
     suspend fun deleteNote(): EmptyResult
+    suspend fun posCart(): Result<Int>
 }

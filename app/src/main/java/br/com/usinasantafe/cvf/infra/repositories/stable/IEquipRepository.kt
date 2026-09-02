@@ -6,6 +6,7 @@ import br.com.usinasantafe.cvf.infra.datasource.retrofit.stable.EquipRetrofitDat
 import br.com.usinasantafe.cvf.infra.datasource.room.stable.EquipRoomDatasource
 import br.com.usinasantafe.cvf.infra.models.retrofit.stable.retrofitModelToEntity
 import br.com.usinasantafe.cvf.infra.models.room.stable.entityToRoomModel
+import br.com.usinasantafe.cvf.lib.TypeEquip
 import br.com.usinasantafe.cvf.utils.EmptyResult
 import br.com.usinasantafe.cvf.utils.call
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
@@ -32,5 +33,13 @@ class IEquipRepository @Inject constructor(
             val modelList = equipRetrofitDatasource.listAll(token).getOrThrow()
             modelList.map { it.retrofitModelToEntity() }
         }
+
+    override suspend fun check(token: String, nro: Int, type: TypeEquip): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun check(nro: Int, type: TypeEquip, pos: Int): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
 
 }

@@ -6,6 +6,7 @@ import timber.log.Timber
 const val ERROR_STRING_TO_LONG = "stringToLong"
 const val UNKNOWN_ERROR = "Unknown Error"
 const val NO_CONNECTION = "No Connection"
+const val ERROR_STRING_TO_INT = "stringToInt"
 
 fun resultFailure(
     context: String,

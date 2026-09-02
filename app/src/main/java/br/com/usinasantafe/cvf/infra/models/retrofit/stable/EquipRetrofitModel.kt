@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cvf.infra.models.retrofit.stable
 
 import br.com.usinasantafe.cvf.domain.entities.stable.Equip
+import br.com.usinasantafe.cvf.lib.TypeEquip
 
 data class EquipRetrofitInput(
     val status: String,
@@ -13,6 +14,7 @@ data class EquipRetrofitModel(
     val nro: Int,
     val cdOperClass: Int,
     val description: String,
+    val type: Int
 )
 
 fun EquipRetrofitModel.retrofitModelToEntity(): Equip {
@@ -21,7 +23,8 @@ fun EquipRetrofitModel.retrofitModelToEntity(): Equip {
             id = id,
             nro = nro,
             cdOperClass = cdOperClass,
-            description = description
+            description = description,
+            type = if(type == 1) TypeEquip.TRUCK else TypeEquip.CART
         )
     }
 }

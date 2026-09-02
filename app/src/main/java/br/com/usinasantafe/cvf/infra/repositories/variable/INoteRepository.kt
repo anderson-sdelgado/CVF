@@ -40,4 +40,8 @@ class INoteRepository @Inject constructor(
             headerSharedPreferencesDatasource.clean().getOrThrow()
         }
 
+    override suspend fun posCart(): Result<Int> {
+        TODO("Not yet implemented")
+    }
+
 }

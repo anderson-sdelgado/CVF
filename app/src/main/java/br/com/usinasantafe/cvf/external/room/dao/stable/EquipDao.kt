@@ -18,4 +18,7 @@ interface EquipDao {
     @Query("SELECT * FROM $TB_EQUIP")
     suspend fun all(): List<EquipRoomModel>
 
+    @Query("SELECT EXISTS(SELECT 1 FROM $TB_EQUIP WHERE nro = :nro AND type = :type)")
+    suspend fun checkNroAndType(nro: Int, type: Int): Boolean
+
 }

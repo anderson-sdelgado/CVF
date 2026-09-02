@@ -71,4 +71,14 @@ interface NoteModule {
     @Singleton
     fun bindLimitQtdCart(usecase: ILimitQtdCart): LimitQtdCart
 
+    @Binds
+    @Singleton
+    fun bindGetDescReview(usecase: IGetDescReview): GetDescReview
+
+    @Binds
+    @Singleton
+    fun bindFinishNote(usecase: IFinishNote): FinishNote
+
+
+
 }

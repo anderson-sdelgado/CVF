@@ -14,12 +14,12 @@ import kotlin.test.assertEquals
 class ICheckRegDriverTest {
 
     private val token = mock<Token>()
-    private val colabRepository = mock<ColabRepository>()
     private val checkNetwork = mock<CheckNetwork>()
+    private val colabRepository = mock<ColabRepository>()
     private val usecase = ICheckRegDriver(
         token = token,
+        checkNetwork = checkNetwork,
         colabRepository = colabRepository,
-        checkNetwork = checkNetwork
     )
 
     @Test

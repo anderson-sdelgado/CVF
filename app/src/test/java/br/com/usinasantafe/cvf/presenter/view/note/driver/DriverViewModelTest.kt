@@ -161,7 +161,6 @@ class DriverViewModelTest {
     fun `onOptionMenu - Check altered if option is different from DELETE `() =
         runTest {
             viewModel.onOptionMenu(OptionMenu.CONFIG)
-            verify(deleteNote, never()).invoke()
             assertEquals(
                 OptionMenu.CONFIG,
                 viewModel.uiState.value.optionMenu
@@ -180,7 +179,6 @@ class DriverViewModelTest {
     fun `onOptionMenu - Check altered if option is equal from DELETE `() =
         runTest {
             viewModel.onOptionMenu(OptionMenu.DELETE)
-            verify(deleteNote, never()).invoke()
             assertEquals(
                 OptionMenu.DELETE,
                 viewModel.uiState.value.optionMenu

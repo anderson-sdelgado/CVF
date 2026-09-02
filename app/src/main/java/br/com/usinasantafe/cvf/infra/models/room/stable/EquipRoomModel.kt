@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import br.com.usinasantafe.cvf.domain.entities.stable.Equip
 import br.com.usinasantafe.cvf.lib.TB_EQUIP
+import br.com.usinasantafe.cvf.lib.TypeEquip
 
 @Entity(tableName = TB_EQUIP)
 data class EquipRoomModel(
@@ -12,6 +13,7 @@ data class EquipRoomModel(
     val nro: Int,
     val cdOperClass: Int,
     val description: String,
+    val type: TypeEquip
 )
 
 fun EquipRoomModel.roomModelToEntity(): Equip {
@@ -20,7 +22,8 @@ fun EquipRoomModel.roomModelToEntity(): Equip {
             id = id,
             nro = nro,
             cdOperClass = cdOperClass,
-            description = description
+            description = description,
+            type = type
         )
     }
 }
@@ -31,7 +34,8 @@ fun Equip.entityToRoomModel(): EquipRoomModel {
             id = id,
             nro = nro,
             cdOperClass = cdOperClass,
-            description = description
+            description = description,
+            type = type
         )
     }
 }

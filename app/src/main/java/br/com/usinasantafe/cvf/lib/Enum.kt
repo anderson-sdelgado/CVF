@@ -11,3 +11,4 @@ enum class OptionReturn { DRIVER, TRUCK, CART, REVIEW }
 
 enum class Option { INSERT, EDIT }
 enum class TypeTruck { TRUCK, HAULAGE_TRUCK }
+enum class TypeEquip { TRUCK, CART }
