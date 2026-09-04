@@ -51,4 +51,9 @@ class IColabRepository @Inject constructor(
             colabRoomDatasource.checkByReg(reg).getOrThrow()
         }
 
+    override suspend fun getNameByReg(reg: Long): Result<String> =
+        call(getClassAndMethod()) {
+            colabRoomDatasource.getNameByReg(reg).getOrThrow()
+        }
+
 }

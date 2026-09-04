@@ -56,7 +56,10 @@
     <string name="text_finish_travel">FINALIZAR VIAGEM</string>
     <string name="text_clean_travel">APAGAR VIAGEM</string>
     <string name="text_return_invalid_front">A FRENTE JÁ FOI ALTERADA NO APLICATIVO. POR FAVOR, PARA RETORNAR AO FLUXO PRINCIPAL DO APLICATIVO PRECISA SELECIONA ALGUMA LIBERAÇÃO.</string>
-    <string name="text_menu">FRENTE: %1$s\nLIBERAÇÃO: %2$s\nO.S.: %3$s\nPROPRIEDADE: %4$s</string>
+    <string name="text_data_menu">FRENTE: %1$s\nLIBERAÇÃO: %2$s\nO.S.: %3$s\nPROPRIEDADE: %4$s</string>
     <string name="text_msg_delete">DESEJA REALMENTE EXCLUIR A VIAGEM QUE ESTÁ SENDO REALIZADA?</string>
     <string name="text_msg_finish_note">A VIAGEM FOI FINALIZADA COM SUCESSO!!!</string>
+    <string name="text_header_note">MOTORISTA: %1$s - %2$s\nCAMINHÃO: %3$s - %4$s</string>
+    <string name="text_cart_note">CARRETA %1$s: %2$s - %3$s</string>
+    <string name="text_msg_cart_repeated">CARRETA %1$s JÁ FOI INSERIDA ANTERIORMENTE. POR FAVOR VERIFIQUE A NUMERAÇÃO E A ORDEM DA CARRETA.</string>
 </resources>

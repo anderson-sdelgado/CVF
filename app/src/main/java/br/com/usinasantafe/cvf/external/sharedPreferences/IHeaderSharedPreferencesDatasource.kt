@@ -45,6 +45,14 @@ class IHeaderSharedPreferencesDatasource @Inject constructor(
             }
         }
 
+    override suspend fun getIdTruck(): Result<Int> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun setIdTruck(id: Int): EmptyResult {
+        TODO("Not yet implemented")
+    }
+
     suspend fun get(): Result<HeaderSharedPreferencesModel> =
         result(getClassAndMethod()) {
             val data = sharedPreferences.getString(

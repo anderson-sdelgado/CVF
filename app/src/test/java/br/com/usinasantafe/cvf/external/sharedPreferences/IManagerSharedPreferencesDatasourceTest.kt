@@ -279,4 +279,37 @@ class IManagerSharedPreferencesDatasourceTest {
                 result.getOrNull()!!
             )
         }
+
+    @Test
+    fun `getQtdLimitCart - Check return failure if have db is empty`() =
+        runTest {
+            val result = datasource.getQtdLimitCart()
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IManagerSharedPreferencesDatasource.getQtdLimitCart",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.NullPointerException: qtdLimitCart is required",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `getQtdLimitCart - Check return correct if have db is not empty`() =
+        runTest {
+            datasource.setIdRelease(1)
+            val result = datasource.getQtdLimitCart()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                3,
+                result.getOrNull()!!
+            )
+        }
 }

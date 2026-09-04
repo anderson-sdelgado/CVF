@@ -3,7 +3,7 @@ package br.com.usinasantafe.cvf.external.sharedPreferences
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.test.core.app.ApplicationProvider
-import br.com.usinasantafe.cvf.infra.models.sharedpreferences.TrailerSharedPreferencesModel
+import br.com.usinasantafe.cvf.infra.models.sharedpreferences.CartSharedPreferencesModel
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -15,25 +15,25 @@ import kotlin.test.assertEquals
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
-class ITrailerSharedPreferencesDatasourceTest {
+class ICartSharedPreferencesDatasourceTest {
 
     private lateinit var context : Context
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var datasource: ITrailerSharedPreferencesDatasource
+    private lateinit var datasource: ICartSharedPreferencesDatasource
 
     @Before
     fun setup() {
         context = ApplicationProvider.getApplicationContext()
         sharedPreferences = context.getSharedPreferences("test", Context.MODE_PRIVATE)
-        datasource = ITrailerSharedPreferencesDatasource(sharedPreferences)
+        datasource = ICartSharedPreferencesDatasource(sharedPreferences)
     }
 
     @Test
     fun `clean - Check clean data in table`() =
         runTest {
-            val data = TrailerSharedPreferencesModel(
+            val data = CartSharedPreferencesModel(
                 position = 1,
-                idTrailer = 1
+                idCart = 1
             )
             datasource.add(data)
             val resultBefore = datasource.list()

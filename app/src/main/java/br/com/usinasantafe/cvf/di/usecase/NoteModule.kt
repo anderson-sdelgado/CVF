@@ -69,16 +69,18 @@ interface NoteModule {
 
     @Binds
     @Singleton
-    fun bindLimitQtdCart(usecase: ILimitQtdCart): LimitQtdCart
-
-    @Binds
-    @Singleton
     fun bindGetDescReview(usecase: IGetDescReview): GetDescReview
 
     @Binds
     @Singleton
     fun bindFinishNote(usecase: IFinishNote): FinishNote
 
+    @Binds
+    @Singleton
+    fun bindCheckRepeatedCart(usecase: ICheckRepeatedCart): CheckRepeatedCart
 
+    @Binds
+    @Singleton
+    fun bindCheckInvertedCart(usecase: ICheckInvertedCart): CheckInvertedCart
 
 }

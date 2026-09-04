@@ -66,4 +66,9 @@ class IManagerRepository @Inject constructor(
             managerSharedPreferencesDatasource.getStatusSend().getOrThrow()
         }
 
+    override suspend fun getQtdLimitCart(): Result<Int> =
+        call(getClassAndMethod()) {
+            managerSharedPreferencesDatasource.getQtdLimitCart().getOrThrow()
+        }
+
 }

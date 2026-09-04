@@ -59,6 +59,12 @@ fun errors(errors: Errors, failure: String, value: String = ""): String {
                 id = R.string.text_return_invalid_front
             )
         }
+        Errors.CART_REPEATED -> {
+            stringResource(
+                id = R.string.text_msg_cart_repeated,
+                value
+            )
+        }
         else -> stringResource(
             id = R.string.text_failure,
             failure

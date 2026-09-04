@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cvf.domain.usecases.note
 
+import br.com.usinasantafe.cvf.domain.repositories.variable.NoteRepository
 import br.com.usinasantafe.cvf.utils.call
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
 import javax.inject.Inject
@@ -9,11 +10,12 @@ interface PosCart {
 }
 
 class IPosCart @Inject constructor(
+    private val noteRepository: NoteRepository
 ): PosCart {
 
     override suspend fun invoke(): Result<Int> =
         call(getClassAndMethod()) {
-            TODO("Not yet implemented")
+            noteRepository.cartList().getOrThrow().maxOf { it.pos } + 1
         }
 
 }

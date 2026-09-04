@@ -6,6 +6,6 @@ data class Equip (
     val id: Int,
     val nro: Int,
     val cdOperClass: Int,
-    val description: String,
+    val descOperClass: String,
     val type: TypeEquip,
 )

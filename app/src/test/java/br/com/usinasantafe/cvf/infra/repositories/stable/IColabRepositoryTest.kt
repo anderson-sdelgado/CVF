@@ -398,5 +398,51 @@ class IColabRepositoryTest {
             )
         }
 
+    @Test
+    fun `getNameByReg - Check return failure if have error in ColabRoomDatasource getNameByReg`() =
+        runTest {
+            whenever(
+                colabRoomDatasource.getNameByReg(19759)
+            ).thenReturn(
+                resultFailure(
+                    "IColabRoomDatasource.getNameByReg",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getNameByReg(19759)
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IColabRepository.getNameByReg -> IColabRoomDatasource.getNameByReg",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `getNameByReg - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                colabRoomDatasource.getNameByReg(100)
+            ).thenReturn(
+                Result.success("Test1")
+            )
+            val result = repository.getNameByReg(100)
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                "Test1",
+                result.getOrNull()!!
+            )
+        }
+
 
 }

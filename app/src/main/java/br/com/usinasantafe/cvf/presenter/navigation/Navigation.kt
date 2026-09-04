@@ -1,9 +1,11 @@
 package br.com.usinasantafe.cvf.presenter.navigation
 
 import androidx.navigation.NavHostController
+import br.com.usinasantafe.cvf.lib.FlowCart
 import br.com.usinasantafe.cvf.lib.Option
 import br.com.usinasantafe.cvf.lib.OptionMenu
 import br.com.usinasantafe.cvf.lib.OptionReturn
+import br.com.usinasantafe.cvf.presenter.navigation.Args.FLOW_CART_ARG
 import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_MENU_ARG
 import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_ARG
 import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_RETURN_ARG
@@ -35,6 +37,7 @@ object Args {
     const val OPTION_ARG = "option"
     const val OPTION_MENU_ARG = "optionMenu"
     const val OPTION_RETURN_ARG = "optionReturn"
+    const val FLOW_CART_ARG = "flowCart"
 }
 
 object Routes {
@@ -45,8 +48,7 @@ object Routes {
     const val RELEASE_ROUTE = "$RELEASE_SCREEN/{$OPTION_ARG}/{$OPTION_RETURN_ARG}/{$OPTION_MENU_ARG}"
     const val DRIVER_ROUTE = DRIVER_SCREEN
     const val TRUCK_ROUTE = TRUCK_SCREEN
-    const val CART_ROUTE = CART_SCREEN
-    const val MSG_CART_ROUTE = MSG_CART_SCREEN
+    const val CART_ROUTE = "$CART_SCREEN/{$FLOW_CART_ARG}"
     const val REVIEW_ROUTE = REVIEW_SCREEN
 }
 
@@ -100,8 +102,10 @@ class NavigationActions(private val navController: NavHostController) {
         navController.navigate(TRUCK_SCREEN)
     }
 
-    fun navigateToCart() {
-        navController.navigate(CART_SCREEN)
+    fun navigateToCart(
+        flowCart: Int = FlowCart.NORMAL.ordinal
+    ) {
+        navController.navigate("$CART_SCREEN/$flowCart")
     }
 
     fun navigateToReview() {

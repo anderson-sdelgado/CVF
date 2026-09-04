@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cvf.R
+import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.OptionMenu
 import br.com.usinasantafe.cvf.lib.TypeButton
 import br.com.usinasantafe.cvf.presenter.theme.AlertDialogCheckDesign
@@ -46,7 +47,7 @@ fun CartScreen(
             flagCheckDialog = uiState.flagCheckDialog,
             onCheckDialog = viewModel::onCheckDialog,
             delete = viewModel::delete,
-            posCart = uiState.posCart,
+            posCart = uiState.pos,
             flagMenu = uiState.flagMenu,
             optionMenu = uiState.optionMenu,
             onOptionMenu = viewModel::onOptionMenu,
@@ -114,9 +115,14 @@ fun CartContent(
                 MsgUpdate(
                     status = status,
                     onClickOk = onCloseDialog,
-                    value = stringResource(
-                        id = R.string.text_cart, posCart
-                    )
+                    value =
+                        if (status.errors != Errors.CART_REPEATED) {
+                            stringResource(
+                                id = R.string.text_cart, posCart
+                            )
+                        } else {
+                            text
+                        }
                 )
             }
 

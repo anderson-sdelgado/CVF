@@ -37,4 +37,9 @@ class IColabRoomDatasource @Inject constructor(
             colabDao.checkByReg(reg)
         }
 
+    override suspend fun getNameByReg(reg: Long): Result<String> =
+        result(getClassAndMethod()) {
+            colabDao.getNameByReg(reg)
+        }
+
 }

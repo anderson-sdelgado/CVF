@@ -2,10 +2,9 @@ package br.com.usinasantafe.cvf.external.sharedPreferences
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.TrailerSharedPreferencesDatasource
-import br.com.usinasantafe.cvf.infra.models.sharedpreferences.TrailerSharedPreferencesModel
-import br.com.usinasantafe.cvf.lib.BASE_SHARED_PREFERENCES_TABLE_HEADER
-import br.com.usinasantafe.cvf.lib.BASE_SHARED_PREFERENCES_TABLE_TRAILER_LIST
+import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.CartSharedPreferencesDatasource
+import br.com.usinasantafe.cvf.infra.models.sharedpreferences.CartSharedPreferencesModel
+import br.com.usinasantafe.cvf.lib.BASE_SHARED_PREFERENCES_TABLE_CART_LIST
 import br.com.usinasantafe.cvf.utils.EmptyResult
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
 import br.com.usinasantafe.cvf.utils.result
@@ -15,13 +14,13 @@ import javax.inject.Inject
 import kotlin.collections.isNotEmpty
 import kotlin.collections.toMutableList
 
-class ITrailerSharedPreferencesDatasource @Inject constructor(
+class ICartSharedPreferencesDatasource @Inject constructor(
     private val sharedPreferences: SharedPreferences
-): TrailerSharedPreferencesDatasource {
+): CartSharedPreferencesDatasource {
 
-    private val typeToken = object : TypeToken<List<TrailerSharedPreferencesModel>>() {}.type
+    private val typeToken = object : TypeToken<List<CartSharedPreferencesModel>>() {}.type
 
-    suspend fun add(model: TrailerSharedPreferencesModel): EmptyResult =
+    suspend fun add(model: CartSharedPreferencesModel): EmptyResult =
         result(getClassAndMethod()) {
             val list = list().getOrThrow()
             var mutableList = list.toMutableList()
@@ -29,7 +28,7 @@ class ITrailerSharedPreferencesDatasource @Inject constructor(
             mutableList.add(model)
             sharedPreferences.edit {
                 putString(
-                    BASE_SHARED_PREFERENCES_TABLE_TRAILER_LIST,
+                    BASE_SHARED_PREFERENCES_TABLE_CART_LIST,
                     Gson().toJson(mutableList, typeToken)
                 )
             }
@@ -39,14 +38,14 @@ class ITrailerSharedPreferencesDatasource @Inject constructor(
     override suspend fun clean(): EmptyResult =
         result(getClassAndMethod()) {
             sharedPreferences.edit {
-                remove(BASE_SHARED_PREFERENCES_TABLE_TRAILER_LIST)
+                remove(BASE_SHARED_PREFERENCES_TABLE_CART_LIST)
             }
         }
 
-    suspend fun list(): Result<List<TrailerSharedPreferencesModel>> =
+    suspend fun list(): Result<List<CartSharedPreferencesModel>> =
         result(getClassAndMethod()) {
             val result = sharedPreferences.getString(
-                BASE_SHARED_PREFERENCES_TABLE_TRAILER_LIST,
+                BASE_SHARED_PREFERENCES_TABLE_CART_LIST,
                 null
             )
             if(result.isNullOrEmpty()) return@result emptyList()

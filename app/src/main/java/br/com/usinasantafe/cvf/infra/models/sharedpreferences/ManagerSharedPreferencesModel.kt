@@ -8,6 +8,7 @@ import java.util.Date
 data class ManagerSharedPreferencesModel(
     var idRelease: Int? = null,
     var idFront: Int? = null,
+    var qtdLimitCart: Int? = null,
     val dateHourCreate: Date = Date(),
     val dateHourUpdate: Date = Date(),
     var statusSend: StatusSend? = null
@@ -18,6 +19,7 @@ fun ManagerSharedPreferencesModel.sharedPreferencesModelToEntity(): Manager {
         Manager(
             idRelease = idRelease,
             idFront = idFront,
+            qtdLimitCart = qtdLimitCart
         )
     }
 }
@@ -27,6 +29,7 @@ fun Manager.entityToSharedPreferencesModel(): ManagerSharedPreferencesModel {
         ManagerSharedPreferencesModel(
             idRelease = ::idRelease.required(),
             idFront = ::idFront.required(),
+            qtdLimitCart = ::qtdLimitCart.required()
         )
     }
 }

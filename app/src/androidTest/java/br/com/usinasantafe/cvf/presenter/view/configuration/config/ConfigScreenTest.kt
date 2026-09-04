@@ -33,6 +33,7 @@ import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ConfigSharedPrefer
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ManagerSharedPreferencesModel
 import br.com.usinasantafe.cvf.lib.Option
 import br.com.usinasantafe.cvf.lib.StatusSend
+import br.com.usinasantafe.cvf.lib.TypeEquip
 import br.com.usinasantafe.cvf.lib.WEB_ALL_COLAB
 import br.com.usinasantafe.cvf.lib.WEB_ALL_EQUIP
 import br.com.usinasantafe.cvf.lib.WEB_ALL_FRONT
@@ -138,8 +139,8 @@ class ConfigScreenTest {
         {
             "status": "success",
             "data": [
-                {"id":"1a","nro":1,"cdOperClass":1,"description":"Equip1"},
-                {"id":2,"nro":2,"cdOperClass":2,"description":"Equip2"}
+                {"id":"1a","nro":1,"cdOperClass":1,"descOperClass":"Equip1","type":1},
+                {"id":2,"nro":2,"cdOperClass":2,"descOperClass":"Equip2","type":1}
             ]
         }
     """.trimIndent()
@@ -148,8 +149,8 @@ class ConfigScreenTest {
         {
             "status": "success",
             "data": [
-                {"id":1,"nro":1,"cdOperClass":1,"description":"Equip1"},
-                {"id":1,"nro":1,"cdOperClass":1,"description":"Equip1"}
+                {"id":1,"nro":1,"cdOperClass":1,"descOperClass":"Equip1"},
+                {"id":1,"nro":1,"cdOperClass":1,"descOperClass":"Equip1"}
             ]
         }
     """.trimIndent()
@@ -158,8 +159,8 @@ class ConfigScreenTest {
         {
             "status": "success",
             "data": [
-                {"id":1,"nro":1,"cdOperClass":1,"description":"Equip1"},
-                {"id":2,"nro":2,"cdOperClass":2,"description":"Equip2"}
+                {"id":1,"nro":1,"cdOperClass":1,"descOperClass":"Equip1"},
+                {"id":2,"nro":2,"cdOperClass":2,"descOperClass":"Equip2"}
             ]
         }
     """.trimIndent()
@@ -1387,7 +1388,8 @@ class ConfigScreenTest {
                 id = 1,
                 nro = 1,
                 cdOperClass = 1,
-                description = "Equip1"
+                descOperClass = "Equip1",
+                type = TypeEquip.TRUCK
             ),
             equipRoomModel1
         )
@@ -1397,7 +1399,8 @@ class ConfigScreenTest {
                 id = 2,
                 nro = 2,
                 cdOperClass = 2,
-                description = "Equip2"
+                descOperClass = "Equip2",
+                type = TypeEquip.TRUCK
             ),
             equipRoomModel2
         )

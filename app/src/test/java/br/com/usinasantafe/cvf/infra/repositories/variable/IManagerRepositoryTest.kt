@@ -569,4 +569,50 @@ class IManagerRepositoryTest {
             )
         }
 
+    @Test
+    fun `getQtdLimitCart - Check return failure if have error in ManagerSharedPreferencesDatasource getQtdLimitCart`() =
+        runTest {
+            whenever(
+                managerSharedPreferencesDatasource.getQtdLimitCart()
+            ).thenReturn(
+                resultFailure(
+                    "IManagerSharedPreferencesDatasource.getQtdLimitCart",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getQtdLimitCart()
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IManagerRepository.getQtdLimitCart -> IManagerSharedPreferencesDatasource.getQtdLimitCart",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `getQtdLimitCart - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                managerSharedPreferencesDatasource.getQtdLimitCart()
+            ).thenReturn(
+                Result.success(3)
+            )
+            val result = repository.getQtdLimitCart()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                3,
+                result.getOrNull()!!
+            )
+        }
+
 }

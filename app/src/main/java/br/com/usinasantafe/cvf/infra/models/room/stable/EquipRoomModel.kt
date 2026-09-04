@@ -12,7 +12,7 @@ data class EquipRoomModel(
     val id: Int,
     val nro: Int,
     val cdOperClass: Int,
-    val description: String,
+    val descOperClass: String,
     val type: TypeEquip
 )
 
@@ -22,7 +22,7 @@ fun EquipRoomModel.roomModelToEntity(): Equip {
             id = id,
             nro = nro,
             cdOperClass = cdOperClass,
-            description = description,
+            descOperClass = descOperClass,
             type = type
         )
     }
@@ -34,7 +34,7 @@ fun Equip.entityToRoomModel(): EquipRoomModel {
             id = id,
             nro = nro,
             cdOperClass = cdOperClass,
-            description = description,
+            descOperClass = descOperClass,
             type = type
         )
     }

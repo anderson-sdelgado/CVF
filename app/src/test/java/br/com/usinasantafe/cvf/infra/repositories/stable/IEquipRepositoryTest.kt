@@ -5,6 +5,7 @@ import br.com.usinasantafe.cvf.infra.datasource.retrofit.stable.EquipRetrofitDat
 import br.com.usinasantafe.cvf.infra.datasource.room.stable.EquipRoomDatasource
 import br.com.usinasantafe.cvf.infra.models.retrofit.stable.EquipRetrofitModel
 import br.com.usinasantafe.cvf.infra.models.room.stable.EquipRoomModel
+import br.com.usinasantafe.cvf.lib.TypeEquip
 import br.com.usinasantafe.cvf.utils.resultFailure
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -31,7 +32,8 @@ class IEquipRepositoryTest {
                     id = 1,
                     nro = 1,
                     cdOperClass = 1,
-                    description = "Test"
+                    descOperClass = "Test",
+                    type = TypeEquip.CART
                 )
             )
             val entityList = listOf(
@@ -39,7 +41,8 @@ class IEquipRepositoryTest {
                     id = 1,
                     nro = 1,
                     cdOperClass = 1,
-                    description = "Test"
+                    descOperClass = "Test",
+                    type = TypeEquip.CART
                 )
             )
             whenever(
@@ -74,7 +77,8 @@ class IEquipRepositoryTest {
                     id = 1,
                     nro = 1,
                     cdOperClass = 1,
-                    description = "Test"
+                    descOperClass = "Test",
+                    type = TypeEquip.CART
                 )
             )
             val entityList = listOf(
@@ -82,7 +86,8 @@ class IEquipRepositoryTest {
                     id = 1,
                     nro = 1,
                     cdOperClass = 1,
-                    description = "Test"
+                    descOperClass = "Test",
+                    type = TypeEquip.CART
                 )
             )
             val result = repository.addAll(entityList)
@@ -166,13 +171,15 @@ class IEquipRepositoryTest {
                     id = 1,
                     nro = 1,
                     cdOperClass = 1,
-                    description = "Test"
+                    descOperClass = "Test",
+                    type = 1
                 ),
                 EquipRetrofitModel(
                     id = 2,
                     nro = 2,
                     cdOperClass = 2,
-                    description = "Test2"
+                    descOperClass = "Test2",
+                    type = 1
                 )
             )
             val entityList = listOf(
@@ -180,13 +187,15 @@ class IEquipRepositoryTest {
                     id = 1,
                     nro = 1,
                     cdOperClass = 1,
-                    description = "Test"
+                    descOperClass = "Test",
+                    type = TypeEquip.TRUCK
                 ),
                 Equip(
                     id = 2,
                     nro = 2,
                     cdOperClass = 2,
-                    description = "Test2"
+                    descOperClass = "Test2",
+                    type = TypeEquip.TRUCK
                 )
             )
             whenever(

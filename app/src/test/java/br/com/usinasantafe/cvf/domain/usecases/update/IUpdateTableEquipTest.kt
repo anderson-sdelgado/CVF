@@ -5,6 +5,7 @@ import br.com.usinasantafe.cvf.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cvf.domain.usecases.common.Token
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.LevelUpdate
+import br.com.usinasantafe.cvf.lib.TypeEquip
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
 import br.com.usinasantafe.cvf.utils.resultFailure
 import br.com.usinasantafe.cvf.utils.updatePercentage
@@ -124,7 +125,8 @@ class IUpdateTableEquipTest {
                     id = 1,
                     nro = 1,
                     cdOperClass = 1,
-                    description = "Test"
+                    descOperClass = "Test",
+                    type = TypeEquip.CART
                 )
             )
             whenever(
@@ -195,7 +197,8 @@ class IUpdateTableEquipTest {
                     id = 1,
                     nro = 1,
                     cdOperClass = 1,
-                    description = "Test"
+                    descOperClass = "Test",
+                    type = TypeEquip.CART
                 )
             )
             whenever(
@@ -277,7 +280,8 @@ class IUpdateTableEquipTest {
                     id = 1,
                     nro = 1,
                     cdOperClass = 1,
-                    description = "Test"
+                    descOperClass = "Test",
+                    type = TypeEquip.CART
                 )
             )
             whenever(

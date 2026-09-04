@@ -6,6 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import br.com.usinasantafe.cvf.external.room.dao.DatabaseRoom
 import br.com.usinasantafe.cvf.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cvf.infra.models.room.stable.EquipRoomModel
+import br.com.usinasantafe.cvf.lib.TypeEquip
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -54,13 +55,15 @@ class IEquipRoomDatasourceTest {
                         id = 1,
                         nro = 1,
                         cdOperClass = 1,
-                        description = "Test"
+                        descOperClass = "Test",
+                        type = TypeEquip.CART
                     ),
                     EquipRoomModel(
                         id = 1,
                         nro = 1,
                         cdOperClass = 1,
-                        description = "Test"
+                        descOperClass = "Test",
+                        type = TypeEquip.CART
                     ),
                 )
             )
@@ -97,13 +100,15 @@ class IEquipRoomDatasourceTest {
                         id = 1,
                         nro = 1,
                         cdOperClass = 1,
-                        description = "Test"
+                        descOperClass = "Test",
+                        type = TypeEquip.CART
                     ),
                     EquipRoomModel(
                         id = 2,
                         nro = 2,
                         cdOperClass = 2,
-                        description = "Test2"
+                        descOperClass = "Test2",
+                        type = TypeEquip.CART
                     ),
                 )
             )
@@ -127,7 +132,8 @@ class IEquipRoomDatasourceTest {
                     id = 1,
                     nro = 1,
                     cdOperClass = 1,
-                    description = "Test"
+                    descOperClass = "Test",
+                    type = TypeEquip.CART
                 ),
                 model1
             )
@@ -137,7 +143,8 @@ class IEquipRoomDatasourceTest {
                     id = 2,
                     nro = 2,
                     cdOperClass = 2,
-                    description = "Test2"
+                    descOperClass = "Test2",
+                    type = TypeEquip.CART
                 ),
                 model2
             )
@@ -152,7 +159,8 @@ class IEquipRoomDatasourceTest {
                         id = 1,
                         nro = 1,
                         cdOperClass = 1,
-                        description = "Test"
+                        descOperClass = "Test",
+                        type = TypeEquip.CART
                     )
                 )
             )

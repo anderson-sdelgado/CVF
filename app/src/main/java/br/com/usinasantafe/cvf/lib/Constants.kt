@@ -7,7 +7,7 @@ const val VERSION_DB = 999
 const val BASE_SHARED_PREFERENCES_TABLE_CONFIG = "config"
 const val BASE_SHARED_PREFERENCES_TABLE_MANAGER = "manager"
 const val BASE_SHARED_PREFERENCES_TABLE_HEADER = "header"
-const val BASE_SHARED_PREFERENCES_TABLE_TRAILER_LIST = "trailerList"
+const val BASE_SHARED_PREFERENCES_TABLE_CART_LIST = "cartList"
 
 const val TB_COLAB = "tb_colab"
 const val TB_EQUIP = "tb_equip"
@@ -24,3 +24,4 @@ const val WEB_SAVE_MANAGER = "save-manager.php"
 const val WEB_CHECK_REG = "check-reg.php"
 
 const val SUCCESS = "success"
+const val QTD_LIMIT_CART = 3

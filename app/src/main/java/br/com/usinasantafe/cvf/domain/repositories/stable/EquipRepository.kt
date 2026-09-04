@@ -8,6 +8,8 @@ interface EquipRepository {
     suspend fun addAll(list: List<Equip>): EmptyResult
     suspend fun deleteAll(): EmptyResult
     suspend fun listAll(token: String): Result<List<Equip>>
-    suspend fun check(token: String, nro: Int, type: TypeEquip, pos: Int): Result<Boolean>
-    suspend fun check(nro: Int, type: TypeEquip, pos: Int): Result<Boolean>
+    suspend fun check(token: String, nro: Int, pos: Int = 0): Result<Boolean>
+    suspend fun check(nro: Int, pos: Int = 0): Result<Boolean>
+    suspend fun getById(id: Int): Result<Equip>
+    suspend fun getIdByNro(nro: Int): Result<Int>
 }

@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cvf.infra.repositories.variable
 
 import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.HeaderSharedPreferencesDatasource
-import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.TrailerSharedPreferencesDatasource
+import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.CartSharedPreferencesDatasource
 import br.com.usinasantafe.cvf.utils.resultFailure
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -14,10 +14,10 @@ import kotlin.test.assertEquals
 class INoteRepositoryTest {
 
     private val headerSharedPreferencesDatasource = mock<HeaderSharedPreferencesDatasource>()
-    private val trailerSharedPreferencesDatasource = mock<TrailerSharedPreferencesDatasource>()
+    private val cartSharedPreferencesDatasource = mock<CartSharedPreferencesDatasource>()
     private val repository = INoteRepository(
         headerSharedPreferencesDatasource = headerSharedPreferencesDatasource,
-        trailerSharedPreferencesDatasource = trailerSharedPreferencesDatasource
+        cartSharedPreferencesDatasource = cartSharedPreferencesDatasource
     )
 
     @Test
@@ -127,7 +127,7 @@ class INoteRepositoryTest {
     fun `deleteNote - Check return failure if have error in TrailerSharedPreferencesDatasource clean`() =
         runTest {
             whenever(
-                trailerSharedPreferencesDatasource.clean()
+                cartSharedPreferencesDatasource.clean()
             ).thenReturn(
                 resultFailure(
                     "ITrailerSharedPreferencesDatasource.clean",
@@ -163,7 +163,7 @@ class INoteRepositoryTest {
                 )
             )
             val result = repository.deleteNote()
-            verify(trailerSharedPreferencesDatasource, atLeastOnce()).clean()
+            verify(cartSharedPreferencesDatasource, atLeastOnce()).clean()
             assertEquals(
                 true,
                 result.isFailure
@@ -182,11 +182,38 @@ class INoteRepositoryTest {
     fun `deleteNote - Check return correct if function execute successfully`() =
         runTest {
             val result = repository.deleteNote()
-            verify(trailerSharedPreferencesDatasource, atLeastOnce()).clean()
+            verify(cartSharedPreferencesDatasource, atLeastOnce()).clean()
             verify(headerSharedPreferencesDatasource, atLeastOnce()).clean()
             assertEquals(
                 true,
                 result.isSuccess
+            )
+        }
+
+    @Test
+    fun `getIdTruck - Check return failure if have error in HeaderSharedPreferencesDatasource getIdTruck`() =
+        runTest {
+            whenever(
+                headerSharedPreferencesDatasource.getIdTruck()
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderSharedPreferencesDatasource.getIdTruck",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getIdTruck()
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "INoteRepository.getIdTruck -> IHeaderSharedPreferencesDatasource.getIdTruck",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
             )
         }
 }

@@ -13,7 +13,7 @@ data class EquipRetrofitModel(
     val id: Int,
     val nro: Int,
     val cdOperClass: Int,
-    val description: String,
+    val descOperClass: String,
     val type: Int
 )
 
@@ -23,7 +23,7 @@ fun EquipRetrofitModel.retrofitModelToEntity(): Equip {
             id = id,
             nro = nro,
             cdOperClass = cdOperClass,
-            description = description,
+            descOperClass = descOperClass,
             type = if(type == 1) TypeEquip.TRUCK else TypeEquip.CART
         )
     }

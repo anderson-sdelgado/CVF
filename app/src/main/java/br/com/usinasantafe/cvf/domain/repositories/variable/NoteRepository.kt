@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cvf.domain.repositories.variable
 
+import br.com.usinasantafe.cvf.domain.entities.variable.Cart
 import br.com.usinasantafe.cvf.utils.EmptyResult
 
 interface NoteRepository {
@@ -8,5 +9,9 @@ interface NoteRepository {
     suspend fun getRegDriver(): Result<Long?>
     suspend fun setRegDriver(reg: Long): EmptyResult
     suspend fun deleteNote(): EmptyResult
-    suspend fun posCart(): Result<Int>
+    suspend fun finish(): EmptyResult
+    suspend fun getIdTruck(): Result<Int?>
+    suspend fun cartList(): Result<List<Cart>>
+    suspend fun setCart(entity: Cart): EmptyResult
+    suspend fun setIdTruck(id: Int): EmptyResult
 }

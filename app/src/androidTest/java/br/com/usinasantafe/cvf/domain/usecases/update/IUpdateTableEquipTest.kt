@@ -7,6 +7,7 @@ import br.com.usinasantafe.cvf.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.LevelUpdate
+import br.com.usinasantafe.cvf.lib.TypeEquip
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
 import br.com.usinasantafe.cvf.utils.updatePercentage
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -64,7 +65,7 @@ class IUpdateTableEquipTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableEquip -> IEquipRepository.listAll -> IEquipRetrofitDatasource.listAll -> IGetToken -> IConfigRepository.get -> number is required -> java.lang.NullPointerException: number is required",
+                    failure = "IUpdateTableEquip -> IToken -> IConfigRepository.get -> number is required -> java.lang.NullPointerException: number is required",
                     currentProgress = 1f,
                     levelUpdate = null,
                 ),
@@ -116,10 +117,17 @@ class IUpdateTableEquipTest {
     fun check_return_failure_if_token_is_invalid() =
         runTest {
 
+            val resultFailure = """
+                {
+                    "status": "error",
+                    "failure": "Authorization header is missing"
+                }
+            """.trimIndent()
+
             val server = MockWebServer()
             server.start()
             server.enqueue(
-                MockResponse().setBody("{ \"status\": \"error\", \"failure\": \"Authorization header is missing\" }")
+                MockResponse().setBody(resultFailure)
             )
             BaseUrlModuleTest.url = server.url("/").toString()
 
@@ -213,8 +221,8 @@ class IUpdateTableEquipTest {
                 {
                     "status": "success",
                     "data": [
-                      {"id":1,"nro":1,"cdOperClass":1,"description":"Equip1"},
-                      {"id":1,"nro":1,"cdOperClass":1,"description":"Equip1"}
+                      {"id":1,"nro":1,"cdOperClass":1,"descOperClass":"Equip1","type":1},
+                      {"id":1,"nro":1,"cdOperClass":1,"descOperClass":"Equip1","type":1}
                     ]
                 }
             """
@@ -287,8 +295,8 @@ class IUpdateTableEquipTest {
                 {
                     "status": "success",
                     "data": [
-                      {"id":1,"nro":1,"cdOperClass":1,"description":"Equip1"},
-                      {"id":2,"nro":2,"cdOperClass":2,"description":"Equip2"}
+                      {"id":1,"nro":1,"cdOperClass":1,"descOperClass":"Equip1","type":1},
+                      {"id":2,"nro":2,"cdOperClass":2,"descOperClass":"Equip2","type":1}
                     ]
                 }
             """
@@ -352,7 +360,8 @@ class IUpdateTableEquipTest {
                     id = 1,
                     nro = 1,
                     cdOperClass = 1,
-                    description = "Equip1"
+                    descOperClass = "Equip1",
+                    type = TypeEquip.TRUCK
                 ),
                 model1
             )
@@ -362,7 +371,8 @@ class IUpdateTableEquipTest {
                     id = 2,
                     nro = 2,
                     cdOperClass = 2,
-                    description = "Equip2"
+                    descOperClass = "Equip2",
+                    type = TypeEquip.TRUCK
                 ),
                 model2
             )

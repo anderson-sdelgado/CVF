@@ -116,10 +116,17 @@ class IUpdateTableFrontTest {
     fun check_return_failure_if_error_url() =
         runTest {
 
+            val resultFailure = """
+                {
+                    "status": "error",
+                    "failure": "Authorization header is missing"
+                }
+            """.trimIndent()
+
             val server = MockWebServer()
             server.start()
             server.enqueue(
-                MockResponse().setBody("{ \"status\": \"error\", \"failure\": \"Authorization header is missing\" }")
+                MockResponse().setBody(resultFailure)
             )
             BaseUrlModuleTest.url = server.url("/").toString()
 

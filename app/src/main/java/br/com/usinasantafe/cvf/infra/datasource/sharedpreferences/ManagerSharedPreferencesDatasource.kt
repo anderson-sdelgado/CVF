@@ -15,4 +15,5 @@ interface ManagerSharedPreferencesDatasource {
     suspend fun get(): Result<ManagerSharedPreferencesModel>
     suspend fun setStatusSend(statusSend: StatusSend): EmptyResult
     suspend fun getStatusSend(): Result<StatusSend>
+    suspend fun getQtdLimitCart(): Result<Int>
 }

@@ -5,6 +5,7 @@ import androidx.core.content.edit
 import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.ManagerSharedPreferencesDatasource
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ManagerSharedPreferencesModel
 import br.com.usinasantafe.cvf.lib.BASE_SHARED_PREFERENCES_TABLE_MANAGER
+import br.com.usinasantafe.cvf.lib.QTD_LIMIT_CART
 import br.com.usinasantafe.cvf.lib.StatusSend
 import br.com.usinasantafe.cvf.utils.EmptyResult
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
@@ -74,6 +75,7 @@ class IManagerSharedPreferencesDatasource @Inject constructor(
         result(getClassAndMethod()) {
             val model = get().getOrThrow()
             model.idRelease = id
+            model.qtdLimitCart = QTD_LIMIT_CART
             model.statusSend = StatusSend.SEND
             save(model).getOrThrow()
         }
@@ -103,6 +105,12 @@ class IManagerSharedPreferencesDatasource @Inject constructor(
         result(getClassAndMethod()) {
             val model = get().getOrThrow()
             model::statusSend.required()
+        }
+
+    override suspend fun getQtdLimitCart(): Result<Int> =
+        result(getClassAndMethod()) {
+            val model = get().getOrThrow()
+            model::qtdLimitCart.required()
         }
 
 }

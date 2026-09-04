@@ -9,4 +9,5 @@ interface ColabRoomDatasource {
     suspend fun deleteByReg(reg: Long): EmptyResult
     suspend fun add(model: ColabRoomModel): EmptyResult
     suspend fun checkByReg(reg: Long): Result<Boolean>
+    suspend fun getNameByReg(reg: Long): Result<String>
 }

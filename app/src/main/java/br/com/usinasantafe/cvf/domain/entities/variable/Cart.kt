@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cvf.domain.entities.variable
 
-data class Trailer(
+data class Cart(
     var id: Int? = null,
-    var position: Int? = null,
-    var idTrailer: Int? = null,
+    var pos: Int,
+    var idCart: Int,
 )

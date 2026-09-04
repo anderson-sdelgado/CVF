@@ -34,11 +34,19 @@ class IEquipRepository @Inject constructor(
             modelList.map { it.retrofitModelToEntity() }
         }
 
-    override suspend fun check(token: String, nro: Int, type: TypeEquip): Result<Boolean> {
+    override suspend fun check(token: String, nro: Int, pos: Int): Result<Boolean> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun check(nro: Int, type: TypeEquip, pos: Int): Result<Boolean> {
+    override suspend fun check(nro: Int, pos: Int): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getById(id: Int): Result<Equip> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getIdByNro(nro: Int): Result<Int> {
         TODO("Not yet implemented")
     }
 

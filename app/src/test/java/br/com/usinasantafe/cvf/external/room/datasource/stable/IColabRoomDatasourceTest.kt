@@ -398,6 +398,82 @@ class IColabRoomDatasourceTest {
             )
         }
 
+    @Test
+    fun `checkByReg - Check return false if have not reg fielded`() =
+        runTest {
+            val result = datasource.checkByReg(1)
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                false,
+                result.getOrNull()!!
+            )
+        }
+
+    @Test
+    fun `checkByReg - Check return true if have reg fielded`() =
+        runTest {
+            datasource.addAll(
+                listOf(
+                    ColabRoomModel(
+                        reg = 1,
+                        name = "TEST",
+                    )
+                )
+            )
+            val result = datasource.checkByReg(1)
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                true,
+                result.getOrNull()!!
+            )
+        }
+
+    @Test
+    fun `getNameByReg - Check return failure if have not reg fielded`() =
+        runTest {
+            val result = datasource.getNameByReg(1)
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IColabRoomDatasource.getNameByReg",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.IllegalStateException: The query result was empty, but expected a single row to return a NON-NULL object of type 'kotlin.String'.",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `getNameByReg - Check return correct if have reg fielded`() =
+        runTest {
+            datasource.addAll(
+                listOf(
+                    ColabRoomModel(
+                        reg = 1,
+                        name = "TEST",
+                    )
+                )
+            )
+            val result = datasource.getNameByReg(1)
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                "TEST",
+                result.getOrNull()!!
+            )
+        }
+
 
 
 }

@@ -1,6 +1,5 @@
 package br.com.usinasantafe.cvf.external.retrofit.datasource.stable
 
-import android.content.Context
 import br.com.usinasantafe.cvf.di.external.ApiModuleTest.provideRetrofitTest
 import br.com.usinasantafe.cvf.external.retrofit.api.stable.EquipApi
 import br.com.usinasantafe.cvf.infra.models.retrofit.stable.EquipRetrofitModel
@@ -8,11 +7,6 @@ import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mockito.mock
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
-import kotlin.intArrayOf
 import kotlin.test.assertEquals
 
 class IEquipRetrofitDatasourceTest {
@@ -102,13 +96,15 @@ class IEquipRetrofitDatasourceTest {
                             id = 1,
                             nro = 1,
                             cdOperClass = 1,
-                            description = "Equip1"
+                            descOperClass = "Equip1",
+                            type = 1
                         ),
                         EquipRetrofitModel(
                             id = 2,
                             nro = 2,
                             cdOperClass = 2,
-                            description = "Equip2"
+                            descOperClass = "Equip2",
+                            type = 1
                         )
                     )
                 ),
@@ -129,8 +125,8 @@ class IEquipRetrofitDatasourceTest {
             "status": "success",
             "data": 
                 [
-                  {"id":1,"nro":1,"cdOperClass":1,"description":"Equip1"},
-                  {"id":2,"nro":2,"cdOperClass":2,"description":"Equip2"}
+                  {"id":1,"nro":1,"cdOperClass":1,"description":"Equip1","type":1},
+                  {"id":2,"nro":2,"cdOperClass":2,"description":"Equip2","type":1}
                 ]
         }
     """.trimIndent()

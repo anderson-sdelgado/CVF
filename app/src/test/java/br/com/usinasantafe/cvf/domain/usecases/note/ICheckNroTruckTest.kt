@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cvf.domain.usecases.note
 
 import br.com.usinasantafe.cvf.domain.repositories.stable.EquipRepository
-import br.com.usinasantafe.cvf.domain.repositories.variable.NoteRepository
 import br.com.usinasantafe.cvf.domain.usecases.common.Token
 import br.com.usinasantafe.cvf.utils.CheckNetwork
 import br.com.usinasantafe.cvf.utils.resultFailure
@@ -12,12 +11,12 @@ import org.mockito.kotlin.whenever
 import java.net.SocketTimeoutException
 import kotlin.test.assertEquals
 
-class ICheckNroCartTest {
+class ICheckNroTruckTest {
 
     private val token = mock<Token>()
     private val checkNetwork = mock<CheckNetwork>()
     private val equipRepository = mock<EquipRepository>()
-    private val usecase = ICheckNroCart(
+    private val usecase = ICheckNroTruck(
         token = token,
         checkNetwork = checkNetwork,
         equipRepository = equipRepository
@@ -26,13 +25,13 @@ class ICheckNroCartTest {
     @Test
     fun `Check return failure if value of field is incorrect`() =
         runTest {
-            val result = usecase("de25", 1)
+            val result = usecase("de25")
             assertEquals(
                 true,
                 result.isFailure
             )
             assertEquals(
-                "ICheckNroCart -> stringToInt",
+                "ICheckNroTruck -> stringToInt",
                 result.exceptionOrNull()!!.message,
             )
             assertEquals(
@@ -50,7 +49,7 @@ class ICheckNroCartTest {
                 false
             )
             whenever(
-                equipRepository.check(100,2)
+                equipRepository.check(100)
             ).thenReturn(
                 resultFailure(
                     "IEquipRepository.check",
@@ -58,13 +57,13 @@ class ICheckNroCartTest {
                     Exception()
                 )
             )
-            val result = usecase("100", 2)
+            val result = usecase("100")
             assertEquals(
                 true,
                 result.isFailure
             )
             assertEquals(
-                "ICheckNroCart -> IEquipRepository.check",
+                "ICheckNroTruck -> IEquipRepository.check",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -82,11 +81,11 @@ class ICheckNroCartTest {
                 false
             )
             whenever(
-                equipRepository.check(100, 2)
+                equipRepository.check(100)
             ).thenReturn(
                 Result.success(false)
             )
-            val result = usecase("100", 2)
+            val result = usecase("100")
             assertEquals(
                 true,
                 result.isSuccess
@@ -114,13 +113,13 @@ class ICheckNroCartTest {
                     Exception()
                 )
             )
-            val result = usecase("100", 2)
+            val result = usecase("100")
             assertEquals(
                 true,
                 result.isFailure
             )
             assertEquals(
-                "ICheckNroCart -> IToken",
+                "ICheckNroTruck -> IToken",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -143,11 +142,11 @@ class ICheckNroCartTest {
                 Result.success("token")
             )
             whenever(
-                equipRepository.check("token", 100, 2)
+                equipRepository.check("token", 100)
             ).thenReturn(
                 Result.success(true)
             )
-            val result = usecase("100", 2)
+            val result = usecase("100")
             assertEquals(
                 true,
                 result.isSuccess
@@ -172,7 +171,7 @@ class ICheckNroCartTest {
                 Result.success("token")
             )
             whenever(
-                equipRepository.check("token", 100, 2)
+                equipRepository.check("token", 100)
             ).thenReturn(
                 resultFailure(
                     "IEquipRepository.check(Retrofit)",
@@ -180,13 +179,13 @@ class ICheckNroCartTest {
                     Exception()
                 )
             )
-            val result = usecase("100", 2)
+            val result = usecase("100")
             assertEquals(
                 true,
                 result.isFailure
             )
             assertEquals(
-                "ICheckNroCart -> IEquipRepository.check(Retrofit)",
+                "ICheckNroTruck -> IEquipRepository.check(Retrofit)",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -209,7 +208,7 @@ class ICheckNroCartTest {
                 Result.success("token")
             )
             whenever(
-                equipRepository.check("token", 100, 2)
+                equipRepository.check("token", 100)
             ).thenReturn(
                 resultFailure(
                     "IEquipRepository.check(Retrofit)",
@@ -218,7 +217,7 @@ class ICheckNroCartTest {
                 )
             )
             whenever(
-                equipRepository.check(100, 2)
+                equipRepository.check(100)
             ).thenReturn(
                 resultFailure(
                     "IEquipRepository.check(Room)",
@@ -226,13 +225,13 @@ class ICheckNroCartTest {
                     Exception()
                 )
             )
-            val result = usecase("100", 2)
+            val result = usecase("100")
             assertEquals(
                 true,
                 result.isFailure
             )
             assertEquals(
-                "ICheckNroCart -> IEquipRepository.check(Room)",
+                "ICheckNroTruck -> IEquipRepository.check(Room)",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -255,7 +254,7 @@ class ICheckNroCartTest {
                 Result.success("token")
             )
             whenever(
-                equipRepository.check("token", 100, 2)
+                equipRepository.check("token", 100)
             ).thenReturn(
                 resultFailure(
                     "IEquipRepository.check(Retrofit)",
@@ -264,11 +263,11 @@ class ICheckNroCartTest {
                 )
             )
             whenever(
-                equipRepository.check(100, 2)
+                equipRepository.check(100)
             ).thenReturn(
                 Result.success(false)
             )
-            val result = usecase("100", 2)
+            val result = usecase("100")
             assertEquals(
                 true,
                 result.isSuccess
@@ -278,5 +277,4 @@ class ICheckNroCartTest {
                 result.getOrNull()!!
             )
         }
-
 }

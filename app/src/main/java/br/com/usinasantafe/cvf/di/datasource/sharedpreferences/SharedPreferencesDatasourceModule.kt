@@ -26,6 +26,6 @@ interface SharedPreferencesDatasourceModule {
 
     @Binds
     @Singleton
-    fun bindTrailerSharedPreferencesDatasource(dataSource: ITrailerSharedPreferencesDatasource): TrailerSharedPreferencesDatasource
+    fun bindCartSharedPreferencesDatasource(dataSource: ICartSharedPreferencesDatasource): CartSharedPreferencesDatasource
 
 }

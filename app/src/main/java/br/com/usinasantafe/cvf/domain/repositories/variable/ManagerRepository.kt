@@ -13,4 +13,5 @@ interface ManagerRepository {
     suspend fun hasSend(): Result<Boolean>
     suspend fun send(token: String, idServ: Int): EmptyResult
     suspend fun getStatusSend(): Result<StatusSend>
+    suspend fun getQtdLimitCart(): Result<Int>
 }

@@ -6,4 +6,6 @@ interface HeaderSharedPreferencesDatasource {
     suspend fun getRegDriver(): Result<Long?>
     suspend fun setRegDriver(reg: Long): EmptyResult
     suspend fun clean(): EmptyResult
+    suspend fun getIdTruck(): Result<Int>
+    suspend fun setIdTruck(id: Int): EmptyResult
 }

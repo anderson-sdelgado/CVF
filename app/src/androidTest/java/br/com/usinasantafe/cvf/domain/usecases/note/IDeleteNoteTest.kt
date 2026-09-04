@@ -1,9 +1,9 @@
 package br.com.usinasantafe.cvf.domain.usecases.note
 
 import br.com.usinasantafe.cvf.external.sharedPreferences.IHeaderSharedPreferencesDatasource
-import br.com.usinasantafe.cvf.external.sharedPreferences.ITrailerSharedPreferencesDatasource
+import br.com.usinasantafe.cvf.external.sharedPreferences.ICartSharedPreferencesDatasource
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.HeaderSharedPreferencesModel
-import br.com.usinasantafe.cvf.infra.models.sharedpreferences.TrailerSharedPreferencesModel
+import br.com.usinasantafe.cvf.infra.models.sharedpreferences.CartSharedPreferencesModel
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -26,7 +26,7 @@ class IDeleteNoteTest {
     lateinit var headerSharedPreferencesDatasource: IHeaderSharedPreferencesDatasource
 
     @Inject
-    lateinit var trailerSharedPreferencesDatasource: ITrailerSharedPreferencesDatasource
+    lateinit var trailerSharedPreferencesDatasource: ICartSharedPreferencesDatasource
 
     @Before
     fun setUp() {
@@ -37,9 +37,9 @@ class IDeleteNoteTest {
     fun check_return_failure_if_not_have_data() =
         runTest {
             trailerSharedPreferencesDatasource.add(
-                TrailerSharedPreferencesModel(
+                CartSharedPreferencesModel(
                     position = 1,
-                    idTrailer = 1
+                    idCart = 1
                 )
             )
             val resultTrailerBefore = trailerSharedPreferencesDatasource.list()

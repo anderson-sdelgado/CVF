@@ -28,7 +28,7 @@ class IGetTitleMenu @Inject constructor(
             val idFront = managerRepository.getIdFront().getOrThrow().required("idFront")
             val releaseEntity = releaseRepository.getById(idRelease).getOrThrow()
             val frontEntity = frontRepository.getById(idFront).getOrThrow()
-            context.getString(R.string.text_menu, frontEntity.description, "${releaseEntity.id}", "${releaseEntity.nroOS}", releaseEntity.descPropAgr)
+            context.getString(R.string.text_data_menu, frontEntity.description, "${releaseEntity.id}", "${releaseEntity.nroOS}", releaseEntity.descPropAgr)
         }
 
 }
