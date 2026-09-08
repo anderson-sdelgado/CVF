@@ -1,13 +1,9 @@
 package br.com.usinasantafe.cvf.domain.usecases.note
 
 import br.com.usinasantafe.cvf.domain.repositories.stable.EquipRepository
-import br.com.usinasantafe.cvf.domain.repositories.variable.NoteRepository
 import br.com.usinasantafe.cvf.domain.usecases.common.Token
-import br.com.usinasantafe.cvf.lib.TypeEquip
-import br.com.usinasantafe.cvf.lib.TypeTruck
 import br.com.usinasantafe.cvf.utils.CheckNetwork
 import br.com.usinasantafe.cvf.utils.ERROR_STRING_TO_INT
-import br.com.usinasantafe.cvf.utils.ERROR_STRING_TO_LONG
 import br.com.usinasantafe.cvf.utils.NO_CONNECTION
 import br.com.usinasantafe.cvf.utils.call
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
@@ -16,17 +12,17 @@ import br.com.usinasantafe.cvf.utils.tryCatch
 import java.net.SocketTimeoutException
 import javax.inject.Inject
 
-interface CheckNroCart {
-    suspend operator fun invoke(text: String, pos: Int, typeTruck: TypeTruck): Result<Boolean>
+interface HasNroCart {
+    suspend operator fun invoke(text: String, pos: Int): Result<Boolean>
 }
 
-class ICheckNroCart @Inject constructor(
+class IHasNroCart @Inject constructor(
     private val token: Token,
     private val checkNetwork: CheckNetwork,
     private val equipRepository: EquipRepository
-): CheckNroCart {
+): HasNroCart {
 
-    override suspend fun invoke(text: String, pos: Int, typeTruck: TypeTruck): Result<Boolean> =
+    override suspend fun invoke(text: String, pos: Int): Result<Boolean> =
         call(getClassAndMethod()) {
             val nro = tryCatch(ERROR_STRING_TO_INT) { text.toInt() }
             if(checkNetwork.isConnected()) {

@@ -11,12 +11,12 @@ import org.mockito.kotlin.whenever
 import java.net.SocketTimeoutException
 import kotlin.test.assertEquals
 
-class ICheckNroTruckTest {
+class IHasNroTruckTest {
 
     private val token = mock<Token>()
     private val checkNetwork = mock<CheckNetwork>()
     private val equipRepository = mock<EquipRepository>()
-    private val usecase = ICheckNroTruck(
+    private val usecase = IHasNroTruck(
         token = token,
         checkNetwork = checkNetwork,
         equipRepository = equipRepository

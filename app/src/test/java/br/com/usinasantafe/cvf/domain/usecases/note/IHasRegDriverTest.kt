@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cvf.domain.usecases.note
 
-import br.com.usinasantafe.cvf.domain.repositories.stable.EquipRepository
-import br.com.usinasantafe.cvf.domain.repositories.variable.NoteRepository
+import br.com.usinasantafe.cvf.domain.repositories.stable.ColabRepository
 import br.com.usinasantafe.cvf.domain.usecases.common.Token
 import br.com.usinasantafe.cvf.utils.CheckNetwork
 import br.com.usinasantafe.cvf.utils.resultFailure
@@ -12,27 +11,27 @@ import org.mockito.kotlin.whenever
 import java.net.SocketTimeoutException
 import kotlin.test.assertEquals
 
-class ICheckNroCartTest {
+class IHasRegDriverTest {
 
     private val token = mock<Token>()
     private val checkNetwork = mock<CheckNetwork>()
-    private val equipRepository = mock<EquipRepository>()
-    private val usecase = ICheckNroCart(
+    private val colabRepository = mock<ColabRepository>()
+    private val usecase = IHasRegDriver(
         token = token,
         checkNetwork = checkNetwork,
-        equipRepository = equipRepository
+        colabRepository = colabRepository,
     )
 
     @Test
     fun `Check return failure if value of field is incorrect`() =
         runTest {
-            val result = usecase("de25", 1)
+            val result = usecase("de25")
             assertEquals(
                 true,
                 result.isFailure
             )
             assertEquals(
-                "ICheckNroCart -> stringToInt",
+                "ICheckRegDriver -> stringToLong",
                 result.exceptionOrNull()!!.message,
             )
             assertEquals(
@@ -42,7 +41,7 @@ class ICheckNroCartTest {
         }
 
     @Test
-    fun `Check return failure if have error in EquipRepository check`() =
+    fun `Check return failure if no connection and have error in ColabRepository check`() =
         runTest {
             whenever(
                 checkNetwork.isConnected()
@@ -50,21 +49,21 @@ class ICheckNroCartTest {
                 false
             )
             whenever(
-                equipRepository.check(100,2)
+                colabRepository.check(19759)
             ).thenReturn(
                 resultFailure(
-                    "IEquipRepository.check",
+                    "IColabRepository.check",
                     "-",
                     Exception()
                 )
             )
-            val result = usecase("100", 2)
+            val result = usecase("19759")
             assertEquals(
                 true,
                 result.isFailure
             )
             assertEquals(
-                "ICheckNroCart -> IEquipRepository.check",
+                "ICheckRegDriver -> IColabRepository.check",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -82,11 +81,11 @@ class ICheckNroCartTest {
                 false
             )
             whenever(
-                equipRepository.check(100, 2)
+                colabRepository.check(19759)
             ).thenReturn(
                 Result.success(false)
             )
-            val result = usecase("100", 2)
+            val result = usecase("19759")
             assertEquals(
                 true,
                 result.isSuccess
@@ -114,13 +113,13 @@ class ICheckNroCartTest {
                     Exception()
                 )
             )
-            val result = usecase("100", 2)
+            val result = usecase("19759")
             assertEquals(
                 true,
                 result.isFailure
             )
             assertEquals(
-                "ICheckNroCart -> IToken",
+                "ICheckRegDriver -> IToken",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -130,7 +129,7 @@ class ICheckNroCartTest {
         }
 
     @Test
-    fun `Check return correct if connection and EquipRepository check(Retrofit) execute successfully`() =
+    fun `Check return correct if connection and ColabRepository check(Retrofit) execute successfully`() =
         runTest {
             whenever(
                 checkNetwork.isConnected()
@@ -143,11 +142,11 @@ class ICheckNroCartTest {
                 Result.success("token")
             )
             whenever(
-                equipRepository.check("token", 100, 2)
+                colabRepository.check("token", 19759)
             ).thenReturn(
                 Result.success(true)
             )
-            val result = usecase("100", 2)
+            val result = usecase("19759")
             assertEquals(
                 true,
                 result.isSuccess
@@ -159,7 +158,7 @@ class ICheckNroCartTest {
         }
 
     @Test
-    fun `Check return failure if connection and have error in EquipRepository check(Retrofit)`() =
+    fun `Check return failure if connection and have error in ColabRepository check(Retrofit)`() =
         runTest {
             whenever(
                 checkNetwork.isConnected()
@@ -172,21 +171,21 @@ class ICheckNroCartTest {
                 Result.success("token")
             )
             whenever(
-                equipRepository.check("token", 100, 2)
+                colabRepository.check("token", 19759)
             ).thenReturn(
                 resultFailure(
-                    "IEquipRepository.check(Retrofit)",
+                    "IColabRepository.check(Retrofit)",
                     "-",
                     Exception()
                 )
             )
-            val result = usecase("100", 2)
+            val result = usecase("19759")
             assertEquals(
                 true,
                 result.isFailure
             )
             assertEquals(
-                "ICheckNroCart -> IEquipRepository.check(Retrofit)",
+                "ICheckRegDriver -> IColabRepository.check(Retrofit)",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -196,7 +195,7 @@ class ICheckNroCartTest {
         }
 
     @Test
-    fun `Check return failure if connection and have connection error in EquipRepository check(Retrofit) and have error in EquipRepository check(Room)`() =
+    fun `Check return failure if connection and have connection error in ColabRepository check(Retrofit) and have error in ColabRepository check(Room)`() =
         runTest {
             whenever(
                 checkNetwork.isConnected()
@@ -209,30 +208,30 @@ class ICheckNroCartTest {
                 Result.success("token")
             )
             whenever(
-                equipRepository.check("token", 100, 2)
+                colabRepository.check("token", 19759)
             ).thenReturn(
                 resultFailure(
-                    "IEquipRepository.check(Retrofit)",
+                    "IColabRepository.check(Retrofit)",
                     "-",
                     SocketTimeoutException()
                 )
             )
             whenever(
-                equipRepository.check(100, 2)
+                colabRepository.check(19759)
             ).thenReturn(
                 resultFailure(
-                    "IEquipRepository.check(Room)",
+                    "IColabRepository.check(Room)",
                     "-",
                     Exception()
                 )
             )
-            val result = usecase("100", 2)
+            val result = usecase("19759")
             assertEquals(
                 true,
                 result.isFailure
             )
             assertEquals(
-                "ICheckNroCart -> IEquipRepository.check(Room)",
+                "ICheckRegDriver -> IColabRepository.check(Room)",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -255,20 +254,20 @@ class ICheckNroCartTest {
                 Result.success("token")
             )
             whenever(
-                equipRepository.check("token", 100, 2)
+                colabRepository.check("token", 19759)
             ).thenReturn(
                 resultFailure(
-                    "IEquipRepository.check(Retrofit)",
+                    "IColabRepository.check(Retrofit)",
                     "-",
                     SocketTimeoutException()
                 )
             )
             whenever(
-                equipRepository.check(100, 2)
+                colabRepository.check(19759)
             ).thenReturn(
                 Result.success(false)
             )
-            val result = usecase("100", 2)
+            val result = usecase("19759")
             assertEquals(
                 true,
                 result.isSuccess
@@ -278,5 +277,6 @@ class ICheckNroCartTest {
                 result.getOrNull()!!
             )
         }
+
 
 }

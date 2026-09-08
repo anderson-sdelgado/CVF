@@ -62,4 +62,5 @@
     <string name="text_header_note">MOTORISTA: %1$s - %2$s\nCAMINHÃO: %3$s - %4$s</string>
     <string name="text_cart_note">CARRETA %1$s: %2$s - %3$s</string>
     <string name="text_msg_cart_repeated">CARRETA %1$s JÁ FOI INSERIDA ANTERIORMENTE. POR FAVOR VERIFIQUE A NUMERAÇÃO E A ORDEM DA CARRETA.</string>
+    <string name="text_msg_cart_inverted">O EQUIPAMENTO DIGITADO NÃO CORRESPONDE A POSIÇÃO DO CONJUNTO. VERIFIQUE SE A NUMERAÇÃO ESTÁ CORRETA E TENTE NOVAMENTE!</string>
 </resources>

@@ -50,4 +50,8 @@ class IEquipRepository @Inject constructor(
         TODO("Not yet implemented")
     }
 
+    override suspend fun getCdClassOperByNro(nro: Int): Result<Int> {
+        TODO("Not yet implemented")
+    }
+
 }

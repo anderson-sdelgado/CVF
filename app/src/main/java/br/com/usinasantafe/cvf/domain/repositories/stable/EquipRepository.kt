@@ -12,4 +12,5 @@ interface EquipRepository {
     suspend fun check(nro: Int, pos: Int = 0): Result<Boolean>
     suspend fun getById(id: Int): Result<Equip>
     suspend fun getIdByNro(nro: Int): Result<Int>
+    suspend fun getCdClassOperByNro(nro: Int): Result<Int>
 }

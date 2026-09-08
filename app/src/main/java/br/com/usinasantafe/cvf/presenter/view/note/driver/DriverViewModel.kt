@@ -3,7 +3,7 @@ package br.com.usinasantafe.cvf.presenter.view.note.driver
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cvf.domain.usecases.manager.GetTitleMenu
-import br.com.usinasantafe.cvf.domain.usecases.note.CheckRegDriver
+import br.com.usinasantafe.cvf.domain.usecases.note.HasRegDriver
 import br.com.usinasantafe.cvf.domain.usecases.note.DeleteNote
 import br.com.usinasantafe.cvf.domain.usecases.note.GetRegDriver
 import br.com.usinasantafe.cvf.domain.usecases.note.SetRegDriver
@@ -44,7 +44,7 @@ class DriverViewModel @Inject constructor(
     private val getTitleMenu: GetTitleMenu,
     private val getRegDriver: GetRegDriver,
     private val deleteNote: DeleteNote,
-    private val checkRegDriver: CheckRegDriver,
+    private val hasRegDriver: HasRegDriver,
     private val setRegDriver: SetRegDriver
 ) : ViewModel() {
 
@@ -118,7 +118,7 @@ class DriverViewModel @Inject constructor(
                 return@launch
             }
             updateState { copy(status = status.copy(flagProgress = true)) }
-            val check = checkRegDriver(state.text).getOrThrow()
+            val check = hasRegDriver(state.text).getOrThrow()
             if(!check) {
                 updateState { withFailure(Errors.INVALID) }
                 return@launch

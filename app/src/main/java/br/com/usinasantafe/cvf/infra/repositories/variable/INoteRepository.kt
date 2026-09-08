@@ -43,7 +43,7 @@ class INoteRepository @Inject constructor(
             TODO("Not yet implemented")
         }
 
-    override suspend fun getIdTruck(): Result<Int> =
+    override suspend fun getIdTruck(): Result<Int?> =
         call(getClassAndMethod()) {
             headerSharedPreferencesDatasource.getIdTruck().getOrThrow()
         }

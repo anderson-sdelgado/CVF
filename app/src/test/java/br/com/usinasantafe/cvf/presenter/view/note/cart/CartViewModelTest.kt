@@ -3,7 +3,7 @@ package br.com.usinasantafe.cvf.presenter.view.note.cart
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cvf.MainCoroutineRule
 import br.com.usinasantafe.cvf.domain.usecases.manager.GetTitleMenu
-import br.com.usinasantafe.cvf.domain.usecases.note.CheckNroCart
+import br.com.usinasantafe.cvf.domain.usecases.note.HasNroCart
 import br.com.usinasantafe.cvf.domain.usecases.note.DeleteNote
 import br.com.usinasantafe.cvf.domain.usecases.note.GetNroCart
 import br.com.usinasantafe.cvf.domain.usecases.note.GetTypeTruck
@@ -41,7 +41,7 @@ class CartViewModelTest {
     private val deleteNote = mock<DeleteNote>()
     private val posCart = mock<PosCart>()
     private val getNroCart = mock<GetNroCart>()
-    private val checkNroCart = mock<CheckNroCart>()
+    private val hasNroCart = mock<HasNroCart>()
     private val setNroCart = mock<SetNroCart>()
     private val getTypeTruck = mock<GetTypeTruck>()
     private val qtdLimitCart = mock<QtdLimitCart>()
@@ -60,7 +60,7 @@ class CartViewModelTest {
         deleteNote = deleteNote,
         posCart = posCart,
         getNroCart = getNroCart,
-        checkNroCart = checkNroCart,
+        hasNroCart = hasNroCart,
         setNroCart = setNroCart,
         getTypeTruck = getTypeTruck,
         qtdLimitCart = qtdLimitCart,
@@ -581,7 +581,7 @@ class CartViewModelTest {
         }
 
     @Test
-    fun `set - Check return failure if text is not empty and have error in CheckNroCart`() =
+    fun `set - Check return failure if text is not empty and have error in HasNroCart`() =
         runTest {
             wheneverRecoverData(2, "100")
             val viewModel = createdViewModel(FlowCart.RETURN)
@@ -597,10 +597,10 @@ class CartViewModelTest {
                 Result.success(false)
             )
             whenever(
-                checkNroCart("100", 2, TypeTruck.HAULAGE_TRUCK)
+                hasNroCart("100", 2)
             ).thenReturn(
                 resultFailure(
-                    context = "CheckNroCart",
+                    context = "HasNroCart",
                     message = "-",
                     cause = Exception()
                 )
@@ -611,7 +611,7 @@ class CartViewModelTest {
                 viewModel.uiState.value.status.flagDialog
             )
             assertEquals(
-                "CartViewModel.set -> CartViewModel.updateState -> CheckNroCart -> java.lang.Exception",
+                "CartViewModel.set -> CartViewModel.updateState -> HasNroCart -> java.lang.Exception",
                 viewModel.uiState.value.status.failure
             )
             assertEquals(
@@ -625,7 +625,7 @@ class CartViewModelTest {
         }
 
     @Test
-    fun `set - Check return failure invalid if text is not empty and CheckNroCart return false`() =
+    fun `set - Check return failure invalid if text is not empty and HasNroCart return false`() =
         runTest {
             wheneverRecoverData(1, "100")
             val viewModel = createdViewModel()
@@ -641,7 +641,7 @@ class CartViewModelTest {
                 Result.success(false)
             )
             whenever(
-                checkNroCart("100", 1, TypeTruck.HAULAGE_TRUCK)
+                hasNroCart("100", 1)
             ).thenReturn(
                 Result.success(false)
             )
@@ -656,6 +656,100 @@ class CartViewModelTest {
             )
             assertEquals(
                 Errors.INVALID,
+                viewModel.uiState.value.status.errors
+            )
+            assertEquals(
+                true,
+                viewModel.uiState.value.status.flagFailure
+            )
+        }
+
+    @Test
+    fun `set - Check return failure if have error in CheckInvertedCart`() =
+        runTest {
+            wheneverRecoverData(1, "100")
+            val viewModel = createdViewModel()
+            viewModel.recoverData()
+            whenever(
+                getTypeTruck()
+            ).thenReturn(
+                Result.success(TypeTruck.HAULAGE_TRUCK)
+            )
+            whenever(
+                checkRepeatedCart("100")
+            ).thenReturn(
+                Result.success(false)
+            )
+            whenever(
+                hasNroCart("100", 1)
+            ).thenReturn(
+                Result.success(true)
+            )
+            whenever(
+                checkInvertedCart("100", 1, TypeTruck.HAULAGE_TRUCK)
+            ).thenReturn(
+                resultFailure(
+                    context = "CheckInvertedCart",
+                    message = "-",
+                    cause = Exception()
+                )
+            )
+            viewModel.set()
+            assertEquals(
+                true,
+                viewModel.uiState.value.status.flagDialog
+            )
+            assertEquals(
+                "CartViewModel.set -> CartViewModel.updateState -> CheckInvertedCart -> java.lang.Exception",
+                viewModel.uiState.value.status.failure
+            )
+            assertEquals(
+                Errors.EXCEPTION,
+                viewModel.uiState.value.status.errors
+            )
+            assertEquals(
+                true,
+                viewModel.uiState.value.status.flagFailure
+            )
+        }
+
+    @Test
+    fun `set - Check return failure if CheckInvertedCart return true`() =
+        runTest {
+            wheneverRecoverData(1, "100")
+            val viewModel = createdViewModel()
+            viewModel.recoverData()
+            whenever(
+                getTypeTruck()
+            ).thenReturn(
+                Result.success(TypeTruck.HAULAGE_TRUCK)
+            )
+            whenever(
+                checkRepeatedCart("100")
+            ).thenReturn(
+                Result.success(false)
+            )
+            whenever(
+                hasNroCart("100", 1)
+            ).thenReturn(
+                Result.success(true)
+            )
+            whenever(
+                checkInvertedCart("100", 1, TypeTruck.HAULAGE_TRUCK)
+            ).thenReturn(
+                Result.success(true)
+            )
+            viewModel.set()
+            assertEquals(
+                true,
+                viewModel.uiState.value.status.flagDialog
+            )
+            assertEquals(
+                "CartViewModel.updateState -> CartViewModel.set -> INVERTED_CART",
+                viewModel.uiState.value.status.failure
+            )
+            assertEquals(
+                Errors.INVERTED_CART,
                 viewModel.uiState.value.status.errors
             )
             assertEquals(
@@ -681,9 +775,14 @@ class CartViewModelTest {
                 Result.success(false)
             )
             whenever(
-                checkNroCart("100", 2, TypeTruck.HAULAGE_TRUCK)
+                hasNroCart("100", 2)
             ).thenReturn(
                 Result.success(true)
+            )
+            whenever(
+                checkInvertedCart("100", 2, TypeTruck.HAULAGE_TRUCK)
+            ).thenReturn(
+                Result.success(false)
             )
             whenever(
                 setNroCart("100", 2)
@@ -730,9 +829,14 @@ class CartViewModelTest {
                 Result.success(false)
             )
             whenever(
-                checkNroCart("100", 2, TypeTruck.HAULAGE_TRUCK)
+                hasNroCart("100", 2)
             ).thenReturn(
                 Result.success(true)
+            )
+            whenever(
+                checkInvertedCart("100", 2, TypeTruck.HAULAGE_TRUCK)
+            ).thenReturn(
+                Result.success(false)
             )
             whenever(
                 qtdLimitCart()
@@ -780,9 +884,14 @@ class CartViewModelTest {
                 Result.success(false)
             )
             whenever(
-                checkNroCart("100", 3, TypeTruck.HAULAGE_TRUCK)
+                hasNroCart("100", 3)
             ).thenReturn(
                 Result.success(true)
+            )
+            whenever(
+                checkInvertedCart("100", 3, TypeTruck.HAULAGE_TRUCK)
+            ).thenReturn(
+                Result.success(false)
             )
             whenever(
                 qtdLimitCart()
@@ -817,9 +926,14 @@ class CartViewModelTest {
                 Result.success(false)
             )
             whenever(
-                checkNroCart("100", 2, TypeTruck.HAULAGE_TRUCK)
+                hasNroCart("100", 2)
             ).thenReturn(
                 Result.success(true)
+            )
+            whenever(
+                checkInvertedCart("100", 2, TypeTruck.HAULAGE_TRUCK)
+            ).thenReturn(
+                Result.success(false)
             )
             whenever(
                 qtdLimitCart()

@@ -45,9 +45,10 @@ class IHeaderSharedPreferencesDatasource @Inject constructor(
             }
         }
 
-    override suspend fun getIdTruck(): Result<Int> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getIdTruck(): Result<Int?> =
+        result(getClassAndMethod()) {
+            get().getOrThrow().idTruck
+        }
 
     override suspend fun setIdTruck(id: Int): EmptyResult {
         TODO("Not yet implemented")

@@ -2,7 +2,7 @@ package br.com.usinasantafe.cvf.presenter.view.note.truck
 
 import br.com.usinasantafe.cvf.MainCoroutineRule
 import br.com.usinasantafe.cvf.domain.usecases.manager.GetTitleMenu
-import br.com.usinasantafe.cvf.domain.usecases.note.CheckNroTruck
+import br.com.usinasantafe.cvf.domain.usecases.note.HasNroTruck
 import br.com.usinasantafe.cvf.domain.usecases.note.DeleteNote
 import br.com.usinasantafe.cvf.domain.usecases.note.GetNroTruck
 import br.com.usinasantafe.cvf.domain.usecases.note.SetNroTruck
@@ -31,13 +31,13 @@ class TruckViewModelTest {
     private val getTitleMenu = mock<GetTitleMenu>()
     private val deleteNote = Mockito.mock<DeleteNote>()
     private val getNroTruck = mock<GetNroTruck>()
-    private val checkNroTruck = mock<CheckNroTruck>()
+    private val hasNroTruck = mock<HasNroTruck>()
     private val setNroTruck = mock<SetNroTruck>()
     private val viewModel = TruckViewModel(
         getTitleMenu = getTitleMenu,
         deleteNote = deleteNote,
         getNroTruck = getNroTruck,
-        checkNroTruck = checkNroTruck,
+        hasNroTruck = hasNroTruck,
         setNroTruck = setNroTruck
     )
 
@@ -302,7 +302,7 @@ class TruckViewModelTest {
     fun `set - Check return failure if have error in CheckNroTruck`() =
         runTest {
             whenever(
-                checkNroTruck("19759")
+                hasNroTruck("19759")
             ).thenReturn(
                 resultFailure(
                     context = "CheckNroTruck",
@@ -344,7 +344,7 @@ class TruckViewModelTest {
     fun `set - Check msg if nro truck is invalid`() =
         runTest {
             whenever(
-                checkNroTruck("19759")
+                hasNroTruck("19759")
             ).thenReturn(
                 Result.success(false)
             )
@@ -382,7 +382,7 @@ class TruckViewModelTest {
     fun `set - Check return failure if have error in SetNroTruck`() =
         runTest {
             whenever(
-                checkNroTruck("19759")
+                hasNroTruck("19759")
             ).thenReturn(
                 Result.success(true)
             )
@@ -429,7 +429,7 @@ class TruckViewModelTest {
     fun `set - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                checkNroTruck("19759")
+                hasNroTruck("19759")
             ).thenReturn(
                 Result.success(true)
             )

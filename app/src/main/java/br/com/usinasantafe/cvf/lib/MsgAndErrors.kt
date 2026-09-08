@@ -65,6 +65,11 @@ fun errors(errors: Errors, failure: String, value: String = ""): String {
                 value
             )
         }
+        Errors.INVERTED_CART -> {
+            stringResource(
+                id = R.string.text_msg_cart_inverted
+            )
+        }
         else -> stringResource(
             id = R.string.text_failure,
             failure

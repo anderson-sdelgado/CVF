@@ -216,4 +216,42 @@ class INoteRepositoryTest {
                 result.exceptionOrNull()!!.cause.toString()
             )
         }
+
+    @Test
+    fun `getIdTruck - Check return correct if idTruck is null`() =
+        runTest {
+            whenever(
+                headerSharedPreferencesDatasource.getIdTruck()
+            ).thenReturn(
+                Result.success(null)
+            )
+            val result = repository.getIdTruck()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                null,
+                result.getOrNull()
+            )
+        }
+
+    @Test
+    fun `getIdTruck - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                headerSharedPreferencesDatasource.getIdTruck()
+            ).thenReturn(
+                Result.success(100)
+            )
+            val result = repository.getIdTruck()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                100,
+                result.getOrNull()!!
+            )
+        }
 }

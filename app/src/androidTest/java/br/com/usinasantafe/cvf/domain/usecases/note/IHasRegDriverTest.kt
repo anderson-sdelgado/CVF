@@ -23,13 +23,13 @@ import kotlin.test.assertEquals
 import kotlin.time.Duration.Companion.seconds
 
 @HiltAndroidTest
-class ICheckRegDriverTest {
+class IHasRegDriverTest {
 
     @get:Rule
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: CheckRegDriver
+    lateinit var usecase: HasRegDriver
 
     @BindValue
     @JvmField
