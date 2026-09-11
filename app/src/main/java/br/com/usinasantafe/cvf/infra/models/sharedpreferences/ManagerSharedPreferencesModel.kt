@@ -11,7 +11,7 @@ data class ManagerSharedPreferencesModel(
     var qtdLimitCart: Int? = null,
     val dateHourCreate: Date = Date(),
     val dateHourUpdate: Date = Date(),
-    var statusSend: StatusSend? = null
+    var statusSend: StatusSend = StatusSend.STARTED
 )
 
 fun ManagerSharedPreferencesModel.sharedPreferencesModelToEntity(): Manager {

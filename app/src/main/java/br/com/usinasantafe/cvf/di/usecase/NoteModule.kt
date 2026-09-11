@@ -29,7 +29,7 @@ interface NoteModule {
 
     @Binds
     @Singleton
-    fun bindCheckRegDriver(usecase: IHasRegDriver): HasRegDriver
+    fun bindHasRegColab(usecase: IHasRegColab): HasRegColab
 
     @Binds
     @Singleton
@@ -41,10 +41,6 @@ interface NoteModule {
 
     @Binds
     @Singleton
-    fun bindCheckNroTruck(usecase: IHasNroTruck): HasNroTruck
-
-    @Binds
-    @Singleton
     fun bindSetNroTruck(usecase: ISetNroTruck): SetNroTruck
 
     @Binds
@@ -53,7 +49,7 @@ interface NoteModule {
 
     @Binds
     @Singleton
-    fun bindCheckNroCart(usecase: IHasNroCart): HasNroCart
+    fun bindHasNroEquip(usecase: IHasNroEquip): HasNroEquip
 
     @Binds
     @Singleton

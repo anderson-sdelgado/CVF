@@ -12,7 +12,7 @@ import kotlin.test.assertEquals
 class IEquipRetrofitDatasourceTest {
 
     @Test
-    fun `Check return failure if token is invalid`() =
+    fun `listAll - Check return failure if token is invalid`() =
         runTest {
             val server = MockWebServer()
             server.start()
@@ -23,7 +23,7 @@ class IEquipRetrofitDatasourceTest {
                 server.url("/").toString()
             )
             val service = retrofit.create(EquipApi::class.java)
-            val datasource = IEquipRetrofitDatasource(service)
+            val datasource = IEquipRetrofitDatasource(service, service)
             val result = datasource.listAll("TOKEN")
             assertEquals(
                 true,
@@ -41,7 +41,7 @@ class IEquipRetrofitDatasourceTest {
         }
 
     @Test
-    fun `Check return failure if have Error 404`() =
+    fun `listAll - Check return failure if have Error 404`() =
         runTest {
             val server = MockWebServer()
             server.start()
@@ -52,7 +52,7 @@ class IEquipRetrofitDatasourceTest {
                 server.url("/").toString()
             )
             val service = retrofit.create(EquipApi::class.java)
-            val datasource = IEquipRetrofitDatasource(service)
+            val datasource = IEquipRetrofitDatasource(service, service)
             val result = datasource.listAll("TOKEN")
 
             assertEquals(
@@ -71,18 +71,18 @@ class IEquipRetrofitDatasourceTest {
         }
 
     @Test
-    fun `Check return correct`() =
+    fun `listAll - Check return correct`() =
         runTest {
             val server = MockWebServer()
             server.start()
             server.enqueue(
-                MockResponse().setBody(result)
+                MockResponse().setBody(resultSuccessList)
             )
             val retrofit = provideRetrofitTest(
                 server.url("").toString()
             )
             val service = retrofit.create(EquipApi::class.java)
-            val datasource = IEquipRetrofitDatasource( service)
+            val datasource = IEquipRetrofitDatasource( service, service)
             val result = datasource.listAll("TOKEN")
 
             assertEquals(
@@ -113,6 +113,95 @@ class IEquipRetrofitDatasourceTest {
             server.shutdown()
         }
 
+    @Test
+    fun `check - Check return failure if token is invalid`() =
+        runTest {
+            val server = MockWebServer()
+            server.start()
+            server.enqueue(
+                MockResponse().setBody(resultFailureAuthorization)
+            )
+            val retrofit = provideRetrofitTest(
+                server.url("/").toString()
+            )
+            val service = retrofit.create(EquipApi::class.java)
+            val datasource = IEquipRetrofitDatasource(service, service)
+            val result = datasource.checkByNro("TOKEN", 1)
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IEquipRetrofitDatasource.checkByNro",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.Exception: Authorization header is missing",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+            server.shutdown()
+        }
+
+    @Test
+    fun `check - Check return failure if have Error 404`() =
+        runTest {
+            val server = MockWebServer()
+            server.start()
+            server.enqueue(
+                MockResponse().setResponseCode(404)
+            )
+            val retrofit = provideRetrofitTest(
+                server.url("/").toString()
+            )
+            val service = retrofit.create(EquipApi::class.java)
+            val datasource = IEquipRetrofitDatasource(service, service)
+            val result = datasource.checkByNro("TOKEN", 1)
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IEquipRetrofitDatasource.checkByNro",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.NullPointerException",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+            server.shutdown()
+        }
+
+    @Test
+    fun `check - Check return correct`() =
+        runTest {
+            val server = MockWebServer()
+            server.start()
+            server.enqueue(
+                MockResponse().setBody(resultSuccess)
+            )
+            val retrofit = provideRetrofitTest(
+                server.url("/").toString()
+            )
+            val service = retrofit.create(EquipApi::class.java)
+            val datasource = IEquipRetrofitDatasource(service, service)
+            val result = datasource.checkByNro("TOKEN", 1)
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                EquipRetrofitModel(
+                    id = 1,
+                    nro = 1,
+                    cdOperClass = 1,
+                    descOperClass = "Equip1",
+                    type = 1
+                ),
+                result.getOrNull()!!
+            )
+            server.shutdown()
+        }
+
     private val resultFailureAuthorization = """
         {
             "status": "error",
@@ -120,14 +209,21 @@ class IEquipRetrofitDatasourceTest {
         }
     """.trimIndent()
 
-    private val result = """
+    private val resultSuccessList = """
         {
             "status": "success",
             "data": 
                 [
-                  {"id":1,"nro":1,"cdOperClass":1,"description":"Equip1","type":1},
-                  {"id":2,"nro":2,"cdOperClass":2,"description":"Equip2","type":1}
+                  {"id":1,"nro":1,"cdOperClass":1,"descOperClass":"Equip1","type":1},
+                  {"id":2,"nro":2,"cdOperClass":2,"descOperClass":"Equip2","type":1}
                 ]
+        }
+    """.trimIndent()
+
+    private val resultSuccess = """
+        {
+            "status": "success",
+            "data": {"id":1,"nro":1,"cdOperClass":1,"descOperClass":"Equip1","type":1}
         }
     """.trimIndent()
 

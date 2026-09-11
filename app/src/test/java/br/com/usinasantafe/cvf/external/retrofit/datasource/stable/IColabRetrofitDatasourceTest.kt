@@ -120,13 +120,13 @@ class IColabRetrofitDatasourceTest {
             )
             val service = retrofit.create(ColabApi::class.java)
             val datasource = IColabRetrofitDatasource( service, service)
-            val result = datasource.check("TOKEN", 12345L)
+            val result = datasource.checkByReg("TOKEN", 12345L)
             assertEquals(
                 true,
                 result.isFailure
             )
             assertEquals(
-                "IColabRetrofitDatasource.check",
+                "IColabRetrofitDatasource.checkByReg",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -149,14 +149,14 @@ class IColabRetrofitDatasourceTest {
             )
             val service = retrofit.create(ColabApi::class.java)
             val datasource = IColabRetrofitDatasource( service, service)
-            val result = datasource.check("TOKEN", 12345L)
+            val result = datasource.checkByReg("TOKEN", 12345L)
 
             assertEquals(
                 true,
                 result.isFailure
             )
             assertEquals(
-                "IColabRetrofitDatasource.check",
+                "IColabRetrofitDatasource.checkByReg",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -179,7 +179,7 @@ class IColabRetrofitDatasourceTest {
             )
             val service = retrofit.create(ColabApi::class.java)
             val datasource = IColabRetrofitDatasource( service, service)
-            val result = datasource.check("TOKEN", 12345)
+            val result = datasource.checkByReg("TOKEN", 12345)
 
             assertEquals(
                 true,

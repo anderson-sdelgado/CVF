@@ -57,7 +57,7 @@ class IGetNroCartTest {
                 Result.success(
                     listOf(
                         Cart(
-                            pos = 1,
+                            position = 1,
                             idCart = 1
                         )
                     )
@@ -83,7 +83,7 @@ class IGetNroCartTest {
                 Result.success(
                     listOf(
                         Cart(
-                            pos = 2,
+                            position = 2,
                             idCart = 10
                         )
                     )
@@ -122,7 +122,7 @@ class IGetNroCartTest {
                 Result.success(
                     listOf(
                         Cart(
-                            pos = 2,
+                            position = 2,
                             idCart = 10
                         )
                     )

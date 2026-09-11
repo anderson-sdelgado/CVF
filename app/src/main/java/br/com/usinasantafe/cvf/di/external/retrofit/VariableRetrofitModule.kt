@@ -4,6 +4,7 @@ import br.com.usinasantafe.cvf.di.provider.DefaultApi
 import br.com.usinasantafe.cvf.di.provider.DefaultRetrofit
 import br.com.usinasantafe.cvf.external.retrofit.api.variable.ConfigApi
 import br.com.usinasantafe.cvf.external.retrofit.api.variable.ManagerApi
+import br.com.usinasantafe.cvf.external.retrofit.api.variable.NoteApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,5 +29,12 @@ object VariableRetrofitModule {
     fun managerApiRetrofit(
         @DefaultRetrofit retrofit: Retrofit
     ): ManagerApi = retrofit.create(ManagerApi::class.java)
+
+    @Provides
+    @Singleton
+    @DefaultApi
+    fun noteApiRetrofit(
+        @DefaultRetrofit retrofit: Retrofit
+    ): NoteApi = retrofit.create(NoteApi::class.java)
 
 }

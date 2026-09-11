@@ -14,9 +14,9 @@ interface VariableRoomDatasourceModule {
 
     @Binds
     @Singleton
-    fun bindPreCECRoomDatasource(datasource: IHeaderRoomDatasource): HeaderRoomDatasource
+    fun bindHeaderRoomDatasource(datasource: IHeaderRoomDatasource): HeaderRoomDatasource
 
     @Binds
     @Singleton
-    fun bindTrailerRoomDatasource(datasource: ITrailerRoomDatasource): TrailerRoomDatasource
+    fun bindCartRoomDatasource(datasource: ICartRoomDatasource): CartRoomDatasource
 }

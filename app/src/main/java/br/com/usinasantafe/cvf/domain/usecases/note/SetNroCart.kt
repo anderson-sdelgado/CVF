@@ -4,7 +4,6 @@ import br.com.usinasantafe.cvf.domain.entities.variable.Cart
 import br.com.usinasantafe.cvf.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cvf.domain.repositories.variable.NoteRepository
 import br.com.usinasantafe.cvf.utils.ERROR_STRING_TO_INT
-import br.com.usinasantafe.cvf.utils.ERROR_STRING_TO_LONG
 import br.com.usinasantafe.cvf.utils.call
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
 import br.com.usinasantafe.cvf.utils.tryCatch
@@ -23,7 +22,7 @@ class ISetNroCart @Inject constructor(
         call(getClassAndMethod()) {
             val nro = tryCatch(ERROR_STRING_TO_INT) { text.toInt() }
             val idCart = equipRepository.getIdByNro(nro).getOrThrow()
-            val entity = Cart(pos = pos, idCart = idCart)
+            val entity = Cart(position = pos, idCart = idCart)
             noteRepository.setCart(entity).getOrThrow()
         }
 

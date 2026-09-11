@@ -9,3 +9,10 @@ fun dateOneWeekAgo(): Date {
     c.add(Calendar.DATE, -7)
     return c.time
 }
+
+fun dateOneMonthAgo(): Date {
+    val c: Calendar = Calendar.getInstance()
+    c.time = Date()
+    c.add(Calendar.MONTH, -1)
+    return c.time
+}

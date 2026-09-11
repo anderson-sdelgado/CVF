@@ -15,7 +15,9 @@ class IPosCart @Inject constructor(
 
     override suspend fun invoke(): Result<Int> =
         call(getClassAndMethod()) {
-            noteRepository.cartList().getOrThrow().maxOf { it.pos } + 1
+            val list = noteRepository.cartList().getOrThrow()
+            if(list.isEmpty()) return@call 1
+            list.maxOf { it.position } + 1
         }
 
 }

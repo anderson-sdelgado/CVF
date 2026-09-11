@@ -2,6 +2,8 @@ package br.com.usinasantafe.cvf.presenter.view.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.usinasantafe.cvf.domain.usecases.common.StartApp
+import br.com.usinasantafe.cvf.lib.FlowApp
 import br.com.usinasantafe.cvf.utils.UiStateWithStatus
 import br.com.usinasantafe.cvf.utils.UiStatusState
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
@@ -12,9 +14,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.collections.copy
 
 data class SplashState(
+    val flowApp: FlowApp = FlowApp.CONFIG,
     override val status: UiStatusState = UiStatusState()
 ) : UiStateWithStatus<SplashState> {
 
@@ -25,6 +27,7 @@ data class SplashState(
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
+    private val startApp: StartApp
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SplashState())
@@ -38,11 +41,11 @@ class SplashViewModel @Inject constructor(
 
     fun onCloseDialog() = updateState { copy(status = status.copy(flagDialog = false, flagFailure = false)) }
 
-    fun startApp() = viewModelScope.launch {
+    fun start() = viewModelScope.launch {
         runCatching {
-            true
+            startApp().getOrThrow()
         }
-            .onSuccess { updateState { copy(status = status.copy(flagAccess = it)) } }
+            .onSuccess { updateState { copy(status = status.copy(flagAccess = true), flowApp = it) } }
             .onFailureState(getClassAndMethod(), ::updateState)
     }
 

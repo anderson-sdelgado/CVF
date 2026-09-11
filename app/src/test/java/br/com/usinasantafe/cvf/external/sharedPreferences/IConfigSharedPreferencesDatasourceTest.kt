@@ -252,4 +252,62 @@ class IConfigSharedPreferencesDatasourceTest {
             )
         }
 
+    @Test
+    fun `getFlagUpdate - Check return false if not have data`() =
+        runTest {
+            val result = datasource.getFlagUpdate()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                false,
+                result.getOrNull()!!
+            )
+        }
+
+    @Test
+    fun `getFlagUpdate - Check return false if flagUpdate is false`() =
+        runTest {
+            val data = ConfigSharedPreferencesModel(
+                number = 16997417840,
+                password = "123456",
+                idServ = 1,
+                version = "1.00",
+                flagUpdate = false
+            )
+            datasource.save(data)
+            val result = datasource.getFlagUpdate()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                false,
+                result.getOrNull()!!
+            )
+        }
+
+    @Test
+    fun `getFlagUpdate - Check return true if flagUpdate is true`() =
+        runTest {
+            val data = ConfigSharedPreferencesModel(
+                number = 16997417840,
+                password = "123456",
+                idServ = 1,
+                version = "1.00",
+                flagUpdate = true
+            )
+            datasource.save(data)
+            val result = datasource.getFlagUpdate()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                true,
+                result.getOrNull()!!
+            )
+        }
+
 }

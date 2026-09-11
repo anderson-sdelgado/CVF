@@ -29,7 +29,7 @@ class ICartSharedPreferencesDatasourceTest {
     }
 
     @Test
-    fun `clean - Check clean data in table`() =
+    fun `clean, add and list - Check clean data in table`() =
         runTest {
             val data = CartSharedPreferencesModel(
                 position = 1,

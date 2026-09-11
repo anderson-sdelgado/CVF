@@ -6,6 +6,6 @@ import br.com.usinasantafe.cvf.infra.models.retrofit.variable.ManagerRetrofitMod
 interface ManagerRetrofitDatasource {
     suspend fun send(
         token: String,
-        model: ManagerRetrofitModelOutput
+        data: ManagerRetrofitModelOutput
     ): Result<ManagerRetrofitModelInput>
 }

@@ -110,11 +110,11 @@ class ICheckRepeatedCartTest {
                 Result.success(
                     listOf(
                         Cart(
-                            pos = 1,
+                            position = 1,
                             idCart = 12
                         ),
                         Cart(
-                            pos = 2,
+                            position = 2,
                             idCart = 26
                         )
                     )
@@ -145,11 +145,11 @@ class ICheckRepeatedCartTest {
                 Result.success(
                     listOf(
                         Cart(
-                            pos = 1,
+                            position = 1,
                             idCart = 12
                         ),
                         Cart(
-                            pos = 2,
+                            position = 2,
                             idCart = 26
                         )
                     )

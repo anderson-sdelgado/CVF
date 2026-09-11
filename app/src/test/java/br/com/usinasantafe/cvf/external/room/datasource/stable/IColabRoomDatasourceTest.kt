@@ -235,7 +235,7 @@ class IColabRoomDatasourceTest {
                     ),
                 )
             )
-            val result = datasource.checkByReg(4)
+            val result = datasource.hasByReg(4)
             assertEquals(
                 true,
                 result.isSuccess
@@ -265,7 +265,7 @@ class IColabRoomDatasourceTest {
                     ),
                 )
             )
-            val result = datasource.checkByReg(3)
+            val result = datasource.hasByReg(3)
             assertEquals(
                 true,
                 result.isSuccess
@@ -399,9 +399,9 @@ class IColabRoomDatasourceTest {
         }
 
     @Test
-    fun `checkByReg - Check return false if have not reg fielded`() =
+    fun `hasByReg - Check return false if have not reg fielded`() =
         runTest {
-            val result = datasource.checkByReg(1)
+            val result = datasource.hasByReg(1)
             assertEquals(
                 true,
                 result.isSuccess
@@ -413,7 +413,7 @@ class IColabRoomDatasourceTest {
         }
 
     @Test
-    fun `checkByReg - Check return true if have reg fielded`() =
+    fun `hasByReg - Check return true if have reg fielded`() =
         runTest {
             datasource.addAll(
                 listOf(
@@ -423,7 +423,7 @@ class IColabRoomDatasourceTest {
                     )
                 )
             )
-            val result = datasource.checkByReg(1)
+            val result = datasource.hasByReg(1)
             assertEquals(
                 true,
                 result.isSuccess

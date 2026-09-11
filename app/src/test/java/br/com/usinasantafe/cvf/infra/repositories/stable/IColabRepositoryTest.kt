@@ -195,7 +195,7 @@ class IColabRepositoryTest {
     fun `check(Retrofit) - Check return failure if have error in ColabRetrofitDatasource check`() =
         runTest {
             whenever(
-                colabRetrofitDatasource.check("token", 12345L)
+                colabRetrofitDatasource.checkByReg("token", 12345L)
             ).thenReturn(
                 resultFailure(
                     "IColabRetrofitDatasource.check",
@@ -222,7 +222,7 @@ class IColabRepositoryTest {
     fun `check(Retrofit) - Check return failure if have error in ColabRoomDatasource deleteByReg`() =
         runTest {
             whenever(
-                colabRetrofitDatasource.check("token", 12345L)
+                colabRetrofitDatasource.checkByReg("token", 12345L)
             ).thenReturn(
                 Result.success(
                     ColabRetrofitModel(
@@ -259,7 +259,7 @@ class IColabRepositoryTest {
     fun `check(Retrofit) - Check return false if function execute successfully and non-existent reg in web service`() =
         runTest {
             whenever(
-                colabRetrofitDatasource.check("token", 12345L)
+                colabRetrofitDatasource.checkByReg("token", 12345L)
             ).thenReturn(
                 Result.success(
                     ColabRetrofitModel(
@@ -284,7 +284,7 @@ class IColabRepositoryTest {
     fun `check(Retrofit) - Check return failure if have error in ColabRoomDatasource add`() =
         runTest {
             whenever(
-                colabRetrofitDatasource.check("token", 12345L)
+                colabRetrofitDatasource.checkByReg("token", 12345L)
             ).thenReturn(
                 Result.success(
                     ColabRetrofitModel(
@@ -323,10 +323,10 @@ class IColabRepositoryTest {
         }
 
     @Test
-    fun `check(Retrofit) - Check return false if function execute successfully and existent reg in web service`() =
+    fun `check(Retrofit) - Check return true if function execute successfully and existent reg in web service`() =
         runTest {
             whenever(
-                colabRetrofitDatasource.check("token", 12345L)
+                colabRetrofitDatasource.checkByReg("token", 12345L)
             ).thenReturn(
                 Result.success(
                     ColabRetrofitModel(
@@ -336,7 +336,10 @@ class IColabRepositoryTest {
                 )
             )
             val result = repository.check("token", 12345L)
-            verify(colabRoomDatasource, atLeastOnce()).add(
+            verify(
+                colabRoomDatasource,
+                atLeastOnce()
+            ).add(
                 ColabRoomModel(
                     reg = 12345L,
                     name = "ANDERSON DA SILVA"
@@ -356,7 +359,7 @@ class IColabRepositoryTest {
     fun `check(Room) - Check return failure if have error in ColabRoomDatasource checkByReg`() =
         runTest {
             whenever(
-                colabRoomDatasource.checkByReg(12345L)
+                colabRoomDatasource.hasByReg(12345L)
             ).thenReturn(
                 resultFailure(
                     "IColabRoomDatasource.checkByReg",
@@ -380,10 +383,10 @@ class IColabRepositoryTest {
         }
 
     @Test
-    fun `check - Check return correct if function execute successfully`() =
+    fun `check(Room) - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                colabRoomDatasource.checkByReg(12345L)
+                colabRoomDatasource.hasByReg(12345L)
             ).thenReturn(
                 Result.success(false)
             )

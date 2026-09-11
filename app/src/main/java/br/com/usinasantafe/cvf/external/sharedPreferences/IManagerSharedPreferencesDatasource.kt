@@ -67,7 +67,6 @@ class IManagerSharedPreferencesDatasource @Inject constructor(
         result(getClassAndMethod()) {
             val model = get().getOrThrow()
             model.idFront = id
-            model.statusSend = StatusSend.STARTED
             save(model).getOrThrow()
         }
 

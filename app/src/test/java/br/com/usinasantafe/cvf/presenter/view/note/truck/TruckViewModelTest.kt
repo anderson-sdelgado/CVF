@@ -2,9 +2,9 @@ package br.com.usinasantafe.cvf.presenter.view.note.truck
 
 import br.com.usinasantafe.cvf.MainCoroutineRule
 import br.com.usinasantafe.cvf.domain.usecases.manager.GetTitleMenu
-import br.com.usinasantafe.cvf.domain.usecases.note.HasNroTruck
 import br.com.usinasantafe.cvf.domain.usecases.note.DeleteNote
 import br.com.usinasantafe.cvf.domain.usecases.note.GetNroTruck
+import br.com.usinasantafe.cvf.domain.usecases.note.HasNroEquip
 import br.com.usinasantafe.cvf.domain.usecases.note.SetNroTruck
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.OptionMenu
@@ -31,13 +31,13 @@ class TruckViewModelTest {
     private val getTitleMenu = mock<GetTitleMenu>()
     private val deleteNote = Mockito.mock<DeleteNote>()
     private val getNroTruck = mock<GetNroTruck>()
-    private val hasNroTruck = mock<HasNroTruck>()
+    private val hasNroEquip = mock<HasNroEquip>()
     private val setNroTruck = mock<SetNroTruck>()
     private val viewModel = TruckViewModel(
         getTitleMenu = getTitleMenu,
         deleteNote = deleteNote,
         getNroTruck = getNroTruck,
-        hasNroTruck = hasNroTruck,
+        hasNroEquip = hasNroEquip,
         setNroTruck = setNroTruck
     )
 
@@ -302,7 +302,7 @@ class TruckViewModelTest {
     fun `set - Check return failure if have error in CheckNroTruck`() =
         runTest {
             whenever(
-                hasNroTruck("19759")
+                hasNroEquip("19759")
             ).thenReturn(
                 resultFailure(
                     context = "CheckNroTruck",
@@ -344,7 +344,7 @@ class TruckViewModelTest {
     fun `set - Check msg if nro truck is invalid`() =
         runTest {
             whenever(
-                hasNroTruck("19759")
+                hasNroEquip("19759")
             ).thenReturn(
                 Result.success(false)
             )
@@ -382,7 +382,7 @@ class TruckViewModelTest {
     fun `set - Check return failure if have error in SetNroTruck`() =
         runTest {
             whenever(
-                hasNroTruck("19759")
+                hasNroEquip("19759")
             ).thenReturn(
                 Result.success(true)
             )
@@ -429,7 +429,7 @@ class TruckViewModelTest {
     fun `set - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                hasNroTruck("19759")
+                hasNroEquip("19759")
             ).thenReturn(
                 Result.success(true)
             )

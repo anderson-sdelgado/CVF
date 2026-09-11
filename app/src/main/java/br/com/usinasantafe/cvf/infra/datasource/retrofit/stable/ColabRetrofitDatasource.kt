@@ -4,5 +4,5 @@ import br.com.usinasantafe.cvf.infra.models.retrofit.stable.ColabRetrofitModel
 
 interface ColabRetrofitDatasource {
     suspend fun listAll(token: String): Result<List<ColabRetrofitModel>>
-    suspend fun check(token: String, reg: Long): Result<ColabRetrofitModel>
+    suspend fun checkByReg(token: String, reg: Long): Result<ColabRetrofitModel>
 }

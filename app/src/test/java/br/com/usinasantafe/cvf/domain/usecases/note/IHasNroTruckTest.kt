@@ -31,7 +31,7 @@ class IHasNroTruckTest {
                 result.isFailure
             )
             assertEquals(
-                "ICheckNroTruck -> stringToInt",
+                "IHasNroTruck -> stringToInt",
                 result.exceptionOrNull()!!.message,
             )
             assertEquals(
@@ -63,7 +63,7 @@ class IHasNroTruckTest {
                 result.isFailure
             )
             assertEquals(
-                "ICheckNroTruck -> IEquipRepository.check",
+                "IHasNroTruck -> IEquipRepository.check",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -119,7 +119,7 @@ class IHasNroTruckTest {
                 result.isFailure
             )
             assertEquals(
-                "ICheckNroTruck -> IToken",
+                "IHasNroTruck -> IToken",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -185,7 +185,7 @@ class IHasNroTruckTest {
                 result.isFailure
             )
             assertEquals(
-                "ICheckNroTruck -> IEquipRepository.check(Retrofit)",
+                "IHasNroTruck -> IEquipRepository.check(Retrofit)",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -231,7 +231,7 @@ class IHasNroTruckTest {
                 result.isFailure
             )
             assertEquals(
-                "ICheckNroTruck -> IEquipRepository.check(Room)",
+                "IHasNroTruck -> IEquipRepository.check(Room)",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(

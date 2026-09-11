@@ -3,9 +3,9 @@ package br.com.usinasantafe.cvf.presenter.view.note.truck
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cvf.domain.usecases.manager.GetTitleMenu
-import br.com.usinasantafe.cvf.domain.usecases.note.HasNroTruck
 import br.com.usinasantafe.cvf.domain.usecases.note.DeleteNote
 import br.com.usinasantafe.cvf.domain.usecases.note.GetNroTruck
+import br.com.usinasantafe.cvf.domain.usecases.note.HasNroEquip
 import br.com.usinasantafe.cvf.domain.usecases.note.SetNroTruck
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.OptionMenu
@@ -45,7 +45,7 @@ class TruckViewModel @Inject constructor(
     private val getTitleMenu: GetTitleMenu,
     private val deleteNote: DeleteNote,
     private val getNroTruck: GetNroTruck,
-    private val hasNroTruck: HasNroTruck,
+    private val hasNroEquip: HasNroEquip,
     private val setNroTruck: SetNroTruck
 ) : ViewModel() {
 
@@ -119,7 +119,7 @@ class TruckViewModel @Inject constructor(
                 return@launch
             }
             updateState { copy(status = status.copy(flagProgress = true)) }
-            val check = hasNroTruck(state.text).getOrThrow()
+            val check = hasNroEquip(state.text).getOrThrow()
             if (!check) {
                 updateState { withFailure(Errors.INVALID) }
                 return@launch

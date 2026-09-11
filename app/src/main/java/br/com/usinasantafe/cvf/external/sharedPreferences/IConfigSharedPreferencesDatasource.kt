@@ -73,4 +73,10 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
             model::password.required()
         }
 
+    override suspend fun getFlagUpdate(): Result<Boolean> =
+        result(getClassAndMethod()) {
+            val model = get().getOrThrow()
+            model.flagUpdate
+        }
+
 }

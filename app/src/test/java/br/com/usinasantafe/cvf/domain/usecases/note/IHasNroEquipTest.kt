@@ -11,12 +11,12 @@ import org.mockito.kotlin.whenever
 import java.net.SocketTimeoutException
 import kotlin.test.assertEquals
 
-class IHasNroCartTest {
+class IHasNroEquipTest {
 
     private val token = mock<Token>()
     private val checkNetwork = mock<CheckNetwork>()
     private val equipRepository = mock<EquipRepository>()
-    private val usecase = IHasNroCart(
+    private val usecase = IHasNroEquip(
         token = token,
         checkNetwork = checkNetwork,
         equipRepository = equipRepository
@@ -31,7 +31,7 @@ class IHasNroCartTest {
                 result.isFailure
             )
             assertEquals(
-                "ICheckNroCart -> stringToInt",
+                "IHasNroCart -> stringToInt",
                 result.exceptionOrNull()!!.message,
             )
             assertEquals(
@@ -63,7 +63,7 @@ class IHasNroCartTest {
                 result.isFailure
             )
             assertEquals(
-                "ICheckNroCart -> IEquipRepository.check",
+                "IHasNroCart -> IEquipRepository.check",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -119,7 +119,7 @@ class IHasNroCartTest {
                 result.isFailure
             )
             assertEquals(
-                "ICheckNroCart -> IToken",
+                "IHasNroCart -> IToken",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -185,7 +185,7 @@ class IHasNroCartTest {
                 result.isFailure
             )
             assertEquals(
-                "ICheckNroCart -> IEquipRepository.check(Retrofit)",
+                "IHasNroCart -> IEquipRepository.check(Retrofit)",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -231,7 +231,7 @@ class IHasNroCartTest {
                 result.isFailure
             )
             assertEquals(
-                "ICheckNroCart -> IEquipRepository.check(Room)",
+                "IHasNroCart -> IEquipRepository.check(Room)",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(

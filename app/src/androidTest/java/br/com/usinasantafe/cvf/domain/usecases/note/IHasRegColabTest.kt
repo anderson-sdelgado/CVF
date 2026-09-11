@@ -23,18 +23,17 @@ import kotlin.test.assertEquals
 import kotlin.time.Duration.Companion.seconds
 
 @HiltAndroidTest
-class IHasRegDriverTest {
+class IHasRegColabTest {
 
     @get:Rule
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: HasRegDriver
+    lateinit var usecase: HasRegColab
 
     @BindValue
     @JvmField
     val checkNetwork: CheckNetwork = mock()
-
 
     @Inject
     lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource
@@ -57,7 +56,7 @@ class IHasRegDriverTest {
                 result.isFailure
             )
             assertEquals(
-                "ICheckRegDriver -> stringToLong",
+                "IHasRegDriver -> stringToLong",
                 result.exceptionOrNull()!!.message,
             )
             assertEquals(
@@ -76,7 +75,7 @@ class IHasRegDriverTest {
                 result.isFailure
             )
             assertEquals(
-                "ICheckRegDriver -> IToken -> IConfigRepository.get -> number is required",
+                "IHasRegDriver -> IToken -> IConfigRepository.get -> number is required",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -96,7 +95,7 @@ class IHasRegDriverTest {
                 result.isFailure
             )
             assertEquals(
-                "ICheckRegDriver -> IColabRepository.check -> IColabRetrofitDatasource.check",
+                "IHasRegDriver -> IColabRepository.check -> IColabRetrofitDatasource.check",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -125,7 +124,7 @@ class IHasRegDriverTest {
                 result.isFailure
             )
             assertEquals(
-                "ICheckRegDriver -> IColabRepository.check -> IColabRetrofitDatasource.check",
+                "IHasRegDriver -> IColabRepository.check -> IColabRetrofitDatasource.check",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -156,7 +155,7 @@ class IHasRegDriverTest {
                 result.isFailure
             )
             assertEquals(
-                "ICheckRegDriver -> IColabRepository.check -> IColabRetrofitDatasource.check",
+                "IHasRegDriver -> IColabRepository.check -> IColabRetrofitDatasource.check",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(

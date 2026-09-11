@@ -10,6 +10,6 @@ import retrofit2.http.POST
 interface ConfigApi {
 
     @POST(WEB_SAVE_TOKEN)
-    suspend fun send(@Body config: ConfigRetrofitModelOutput): Response<ConfigRetrofitModelInput>
+    suspend fun send(@Body data: ConfigRetrofitModelOutput): Response<ConfigRetrofitModelInput>
 
 }

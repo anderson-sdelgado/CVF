@@ -77,7 +77,7 @@ class ISetNroCartTest {
             whenever(
                 noteRepository.setCart(
                     Cart(
-                        pos = 2,
+                        position = 2,
                         idCart = 20
                     )
                 )
@@ -114,7 +114,7 @@ class ISetNroCartTest {
             val result = usecase("100", 2)
             verify(noteRepository, atLeastOnce()).setCart(
                 Cart(
-                    pos = 2,
+                    position = 2,
                     idCart = 20
                 )
             )

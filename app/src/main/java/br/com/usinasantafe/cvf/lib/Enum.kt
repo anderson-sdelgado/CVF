@@ -13,3 +13,4 @@ enum class Option { INSERT, EDIT }
 enum class TypeTruck { TRUCK, HAULAGE_TRUCK }
 enum class TypeEquip { TRUCK, CART }
 enum class FlowCart { NORMAL, RETURN }
+enum class FlowApp { CONFIG, FRONT, RELEASE, NOTE }

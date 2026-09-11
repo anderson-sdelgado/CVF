@@ -2,7 +2,7 @@ package br.com.usinasantafe.cvf.presenter.view.note.driver
 
 import br.com.usinasantafe.cvf.MainCoroutineRule
 import br.com.usinasantafe.cvf.domain.usecases.manager.GetTitleMenu
-import br.com.usinasantafe.cvf.domain.usecases.note.HasRegDriver
+import br.com.usinasantafe.cvf.domain.usecases.note.HasRegColab
 import br.com.usinasantafe.cvf.domain.usecases.note.DeleteNote
 import br.com.usinasantafe.cvf.domain.usecases.note.GetRegDriver
 import br.com.usinasantafe.cvf.domain.usecases.note.SetRegDriver
@@ -29,13 +29,13 @@ class DriverViewModelTest {
     private val getTitleMenu = mock<GetTitleMenu>()
     private val getRegDriver = mock<GetRegDriver>()
     private val deleteNote = mock<DeleteNote>()
-    private val hasRegDriver = mock<HasRegDriver>()
+    private val hasRegColab = mock<HasRegColab>()
     private val setRegDriver = mock<SetRegDriver>()
     private val viewModel = DriverViewModel(
         getTitleMenu = getTitleMenu,
         getRegDriver = getRegDriver,
         deleteNote = deleteNote,
-        hasRegDriver = hasRegDriver,
+        hasRegColab = hasRegColab,
         setRegDriver = setRegDriver
     )
 
@@ -302,7 +302,7 @@ class DriverViewModelTest {
     fun `set - Check return failure if have error in CheckRegDriver`() =
         runTest {
             whenever(
-                hasRegDriver("19759")
+                hasRegColab("19759")
             ).thenReturn(
                 resultFailure(
                     context = "CheckRegDriver",
@@ -344,7 +344,7 @@ class DriverViewModelTest {
     fun `set - Check msg if reg driver is invalid`() =
         runTest {
             whenever(
-                hasRegDriver("19759")
+                hasRegColab("19759")
             ).thenReturn(
                 Result.success(false)
             )
@@ -382,7 +382,7 @@ class DriverViewModelTest {
     fun `set - Check return failure if have error in SetRegDriver`() =
         runTest {
             whenever(
-                hasRegDriver("19759")
+                hasRegColab("19759")
             ).thenReturn(
                 Result.success(true)
             )
@@ -429,7 +429,7 @@ class DriverViewModelTest {
     fun `set - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                hasRegDriver("19759")
+                hasRegColab("19759")
             ).thenReturn(
                 Result.success(true)
             )

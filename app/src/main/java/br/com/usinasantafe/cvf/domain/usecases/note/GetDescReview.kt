@@ -43,7 +43,7 @@ class IGetDescReview @Inject constructor(
                 val equip = equipRepository.getById(it.idCart).getOrThrow()
                 context.getString(
                     R.string.text_cart_note,
-                    "${it.pos}",
+                    "${it.position}",
                     "${equip.nro}",
                     equip.descOperClass
                 )

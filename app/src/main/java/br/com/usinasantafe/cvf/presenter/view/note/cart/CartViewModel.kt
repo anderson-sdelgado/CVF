@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cvf.domain.usecases.manager.GetTitleMenu
-import br.com.usinasantafe.cvf.domain.usecases.note.HasNroCart
+import br.com.usinasantafe.cvf.domain.usecases.note.HasNroEquip
 import br.com.usinasantafe.cvf.domain.usecases.note.DeleteNote
 import br.com.usinasantafe.cvf.domain.usecases.note.GetNroCart
 import br.com.usinasantafe.cvf.domain.usecases.note.GetTypeTruck
@@ -58,7 +58,7 @@ class CartViewModel @Inject constructor(
     private val deleteNote: DeleteNote,
     private val posCart: PosCart,
     private val getNroCart: GetNroCart,
-    private val hasNroCart: HasNroCart,
+    private val hasNroEquip: HasNroEquip,
     private val setNroCart: SetNroCart,
     private val getTypeTruck: GetTypeTruck,
     private val qtdLimitCart: QtdLimitCart,
@@ -168,13 +168,13 @@ class CartViewModel @Inject constructor(
                 return@launch
             }
             if(state.text.isEmpty()) return@runCatching true
-            if(checkRepeatedCart(state.text).getOrThrow()) {
-                updateState { withFailure(Errors.CART_REPEATED) }
+            updateState { copy(status = status.copy(flagProgress = true)) }
+            if (!hasNroEquip(state.text, state.pos).getOrThrow()) {
+                updateState { withFailure(Errors.INVALID) }
                 return@launch
             }
-            updateState { copy(status = status.copy(flagProgress = true)) }
-            if (!hasNroCart(state.text, state.pos).getOrThrow()) {
-                updateState { withFailure(Errors.INVALID) }
+            if(checkRepeatedCart(state.text).getOrThrow()) {
+                updateState { withFailure(Errors.CART_REPEATED) }
                 return@launch
             }
             if(checkInvertedCart(state.text, state.pos, typeTruck).getOrThrow()){

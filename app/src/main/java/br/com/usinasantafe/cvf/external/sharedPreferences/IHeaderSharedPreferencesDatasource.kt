@@ -5,7 +5,6 @@ import androidx.core.content.edit
 import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.HeaderSharedPreferencesDatasource
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.HeaderSharedPreferencesModel
 import br.com.usinasantafe.cvf.lib.BASE_SHARED_PREFERENCES_TABLE_HEADER
-import br.com.usinasantafe.cvf.lib.BASE_SHARED_PREFERENCES_TABLE_MANAGER
 import br.com.usinasantafe.cvf.utils.EmptyResult
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
 import br.com.usinasantafe.cvf.utils.result
@@ -16,7 +15,7 @@ class IHeaderSharedPreferencesDatasource @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ): HeaderSharedPreferencesDatasource {
 
-    suspend fun save(model: HeaderSharedPreferencesModel): EmptyResult =
+    override suspend fun save(model: HeaderSharedPreferencesModel): EmptyResult =
         result(getClassAndMethod()) {
             sharedPreferences.edit {
                 putString(
@@ -50,11 +49,14 @@ class IHeaderSharedPreferencesDatasource @Inject constructor(
             get().getOrThrow().idTruck
         }
 
-    override suspend fun setIdTruck(id: Int): EmptyResult {
-        TODO("Not yet implemented")
-    }
+    override suspend fun setIdTruck(id: Int): EmptyResult =
+        result(getClassAndMethod()) {
+            val model = get().getOrThrow()
+            model.idTruck = id
+            save(model).getOrThrow()
+        }
 
-    suspend fun get(): Result<HeaderSharedPreferencesModel> =
+    override suspend fun get(): Result<HeaderSharedPreferencesModel> =
         result(getClassAndMethod()) {
             val data = sharedPreferences.getString(
                 BASE_SHARED_PREFERENCES_TABLE_HEADER,
@@ -68,10 +70,10 @@ class IHeaderSharedPreferencesDatasource @Inject constructor(
             model
         }
 
-    suspend fun has(): Result<Boolean> =
+    override suspend fun has(): Result<Boolean> =
         result(getClassAndMethod()) {
             val data = sharedPreferences.getString(
-                BASE_SHARED_PREFERENCES_TABLE_MANAGER,
+                BASE_SHARED_PREFERENCES_TABLE_HEADER,
                 null
             )
             !data.isNullOrEmpty()

@@ -13,7 +13,7 @@ interface ManagerApi {
     @POST(WEB_SAVE_MANAGER)
     suspend fun send(
         @Header("Authorization") auth: String,
-        @Body model: ManagerRetrofitModelOutput
+        @Body data: ManagerRetrofitModelOutput
     ): Response<ManagerRetrofitModelInput>
 
 }

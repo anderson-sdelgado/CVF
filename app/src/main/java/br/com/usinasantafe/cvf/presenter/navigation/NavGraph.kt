@@ -45,7 +45,10 @@ fun NavigationGraph(
 
         composable(SPLASH_ROUTE) {
             SplashScreen(
-                onNavConfig = navActions::navigateToConfig
+                onNavConfig = navActions::navigateToConfig,
+                onNavFront = navActions::navigateToFront,
+                onNavRelease = navActions::navigateToRelease,
+                onNavNote = navActions::navigateToDriver
             )
         }
 

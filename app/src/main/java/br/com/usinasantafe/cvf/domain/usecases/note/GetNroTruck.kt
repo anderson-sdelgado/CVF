@@ -19,7 +19,7 @@ class IGetNroTruck @Inject constructor(
         call(getClassAndMethod()) {
             val idTruck = noteRepository.getIdTruck().getOrThrow() ?: return@call null
             val equip = equipRepository.getById(idTruck).getOrThrow()
-            return@call equip.nro.toString()
+            equip.nro.toString()
         }
 
 }

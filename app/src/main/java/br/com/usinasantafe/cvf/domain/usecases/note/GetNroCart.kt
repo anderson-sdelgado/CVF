@@ -18,9 +18,9 @@ class IGetNroCart @Inject constructor(
     override suspend fun invoke(pos: Int): Result<String?> =
         call(getClassAndMethod()) {
             val list = noteRepository.cartList().getOrThrow()
-            val cart = list.find { it.pos == pos } ?: return@call null
+            val cart = list.find { it.position == pos } ?: return@call null
             val equip = equipRepository.getById(cart.idCart).getOrThrow()
-            return@call equip.nro.toString()
+            equip.nro.toString()
         }
 
 }

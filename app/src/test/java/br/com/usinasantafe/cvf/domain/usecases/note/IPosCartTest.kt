@@ -75,19 +75,19 @@ class IPosCartTest {
                 Result.success(
                     listOf(
                         Cart(
-                            pos = 1,
+                            position = 1,
                             idCart = 20
                         ),
                         Cart(
-                            pos = 56,
+                            position = 56,
                             idCart = 21
                         ),
                         Cart(
-                            pos = 41,
+                            position = 41,
                             idCart = 22
                         ),
                         Cart(
-                            pos = 4,
+                            position = 4,
                             idCart = 23
                         )
                     )

@@ -21,7 +21,7 @@ class IGetTypeTruck @Inject constructor(
         call(getClassAndMethod()) {
             val idTruck = noteRepository.getIdTruck().getOrThrow()
             val equip = equipRepository.getById(idTruck.required("idTruck")).getOrThrow()
-            return@call if(equip.cdOperClass == 1) TypeTruck.TRUCK else TypeTruck.HAULAGE_TRUCK
+            if(equip.cdOperClass == 1) TypeTruck.TRUCK else TypeTruck.HAULAGE_TRUCK
         }
 
 }

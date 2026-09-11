@@ -57,4 +57,9 @@ class IConfigRepository @Inject constructor(
             configSharedPreferencesDatasource.getPassword().getOrThrow()
         }
 
+    override suspend fun getFlagUpdate(): Result<Boolean> =
+        call(getClassAndMethod()) {
+            configSharedPreferencesDatasource.getFlagUpdate().getOrThrow()
+        }
+
 }

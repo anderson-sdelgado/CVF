@@ -16,7 +16,7 @@ class IHasRegDriverTest {
     private val token = mock<Token>()
     private val checkNetwork = mock<CheckNetwork>()
     private val colabRepository = mock<ColabRepository>()
-    private val usecase = IHasRegDriver(
+    private val usecase = IHasRegColab(
         token = token,
         checkNetwork = checkNetwork,
         colabRepository = colabRepository,
@@ -31,7 +31,7 @@ class IHasRegDriverTest {
                 result.isFailure
             )
             assertEquals(
-                "ICheckRegDriver -> stringToLong",
+                "IHasRegDriver -> stringToLong",
                 result.exceptionOrNull()!!.message,
             )
             assertEquals(
@@ -63,7 +63,7 @@ class IHasRegDriverTest {
                 result.isFailure
             )
             assertEquals(
-                "ICheckRegDriver -> IColabRepository.check",
+                "IHasRegDriver -> IColabRepository.check",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -119,7 +119,7 @@ class IHasRegDriverTest {
                 result.isFailure
             )
             assertEquals(
-                "ICheckRegDriver -> IToken",
+                "IHasRegDriver -> IToken",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -185,7 +185,7 @@ class IHasRegDriverTest {
                 result.isFailure
             )
             assertEquals(
-                "ICheckRegDriver -> IColabRepository.check(Retrofit)",
+                "IHasRegDriver -> IColabRepository.check(Retrofit)",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -231,7 +231,7 @@ class IHasRegDriverTest {
                 result.isFailure
             )
             assertEquals(
-                "ICheckRegDriver -> IColabRepository.check(Room)",
+                "IHasRegDriver -> IColabRepository.check(Room)",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(

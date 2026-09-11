@@ -29,12 +29,12 @@ class IColabRoomDatasource @Inject constructor(
 
     override suspend fun add(model: ColabRoomModel): EmptyResult =
         result(getClassAndMethod()) {
-            if (!colabDao.checkByReg(model.reg)) colabDao.insert(model)
+            if (!colabDao.hasByReg(model.reg)) colabDao.insert(model)
         }
 
-    override suspend fun checkByReg(reg: Long): Result<Boolean> =
+    override suspend fun hasByReg(reg: Long): Result<Boolean> =
         result(getClassAndMethod()) {
-            colabDao.checkByReg(reg)
+            colabDao.hasByReg(reg)
         }
 
     override suspend fun getNameByReg(reg: Long): Result<String> =

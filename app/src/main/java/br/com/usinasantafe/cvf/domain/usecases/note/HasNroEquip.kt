@@ -12,15 +12,15 @@ import br.com.usinasantafe.cvf.utils.tryCatch
 import java.net.SocketTimeoutException
 import javax.inject.Inject
 
-interface HasNroCart {
-    suspend operator fun invoke(text: String, pos: Int): Result<Boolean>
+interface HasNroEquip {
+    suspend operator fun invoke(text: String, pos: Int = 0): Result<Boolean>
 }
 
-class IHasNroCart @Inject constructor(
+class IHasNroEquip @Inject constructor(
     private val token: Token,
     private val checkNetwork: CheckNetwork,
     private val equipRepository: EquipRepository
-): HasNroCart {
+): HasNroEquip {
 
     override suspend fun invoke(text: String, pos: Int): Result<Boolean> =
         call(getClassAndMethod()) {

@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cvf.di.usecase
 
-import br.com.usinasantafe.cvf.domain.usecases.common.Token
-import br.com.usinasantafe.cvf.domain.usecases.common.IToken
+import br.com.usinasantafe.cvf.domain.usecases.common.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -15,5 +14,9 @@ interface CommonModule {
     @Binds
     @Singleton
     fun bindGetToken(usecase: IToken): Token
+
+    @Binds
+    @Singleton
+    fun bindStartApp(usecase: IStartApp): StartApp
 
 }

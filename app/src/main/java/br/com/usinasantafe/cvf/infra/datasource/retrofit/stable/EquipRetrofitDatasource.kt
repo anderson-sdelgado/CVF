@@ -4,4 +4,5 @@ import br.com.usinasantafe.cvf.infra.models.retrofit.stable.EquipRetrofitModel
 
 interface EquipRetrofitDatasource {
     suspend fun listAll(token: String): Result<List<EquipRetrofitModel>>
+    suspend fun checkByNro(token: String, nro: Int): Result<EquipRetrofitModel>
 }

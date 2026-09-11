@@ -397,11 +397,11 @@ class IGetDescReviewTest {
                     listOf(
                         Cart(
                             idCart = 20,
-                            pos = 1
+                            position = 1
                         ),
                         Cart(
                             idCart = 30,
-                            pos = 2
+                            position = 2
                         )
                     )
                 )
@@ -473,11 +473,11 @@ class IGetDescReviewTest {
                     listOf(
                         Cart(
                             idCart = 20,
-                            pos = 1
+                            position = 1
                         ),
                         Cart(
                             idCart = 30,
-                            pos = 2
+                            position = 2
                         )
                     )
                 )

@@ -3,7 +3,7 @@ package br.com.usinasantafe.cvf.presenter.view.note.cart
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cvf.MainCoroutineRule
 import br.com.usinasantafe.cvf.domain.usecases.manager.GetTitleMenu
-import br.com.usinasantafe.cvf.domain.usecases.note.HasNroCart
+import br.com.usinasantafe.cvf.domain.usecases.note.HasNroEquip
 import br.com.usinasantafe.cvf.domain.usecases.note.DeleteNote
 import br.com.usinasantafe.cvf.domain.usecases.note.GetNroCart
 import br.com.usinasantafe.cvf.domain.usecases.note.GetTypeTruck
@@ -41,7 +41,7 @@ class CartViewModelTest {
     private val deleteNote = mock<DeleteNote>()
     private val posCart = mock<PosCart>()
     private val getNroCart = mock<GetNroCart>()
-    private val hasNroCart = mock<HasNroCart>()
+    private val hasNroEquip = mock<HasNroEquip>()
     private val setNroCart = mock<SetNroCart>()
     private val getTypeTruck = mock<GetTypeTruck>()
     private val qtdLimitCart = mock<QtdLimitCart>()
@@ -60,7 +60,7 @@ class CartViewModelTest {
         deleteNote = deleteNote,
         posCart = posCart,
         getNroCart = getNroCart,
-        hasNroCart = hasNroCart,
+        hasNroEquip = hasNroEquip,
         setNroCart = setNroCart,
         getTypeTruck = getTypeTruck,
         qtdLimitCart = qtdLimitCart,
@@ -597,7 +597,7 @@ class CartViewModelTest {
                 Result.success(false)
             )
             whenever(
-                hasNroCart("100", 2)
+                hasNroEquip("100", 2)
             ).thenReturn(
                 resultFailure(
                     context = "HasNroCart",
@@ -641,7 +641,7 @@ class CartViewModelTest {
                 Result.success(false)
             )
             whenever(
-                hasNroCart("100", 1)
+                hasNroEquip("100", 1)
             ).thenReturn(
                 Result.success(false)
             )
@@ -681,7 +681,7 @@ class CartViewModelTest {
                 Result.success(false)
             )
             whenever(
-                hasNroCart("100", 1)
+                hasNroEquip("100", 1)
             ).thenReturn(
                 Result.success(true)
             )
@@ -730,7 +730,7 @@ class CartViewModelTest {
                 Result.success(false)
             )
             whenever(
-                hasNroCart("100", 1)
+                hasNroEquip("100", 1)
             ).thenReturn(
                 Result.success(true)
             )
@@ -775,7 +775,7 @@ class CartViewModelTest {
                 Result.success(false)
             )
             whenever(
-                hasNroCart("100", 2)
+                hasNroEquip("100", 2)
             ).thenReturn(
                 Result.success(true)
             )
@@ -829,7 +829,7 @@ class CartViewModelTest {
                 Result.success(false)
             )
             whenever(
-                hasNroCart("100", 2)
+                hasNroEquip("100", 2)
             ).thenReturn(
                 Result.success(true)
             )
@@ -884,7 +884,7 @@ class CartViewModelTest {
                 Result.success(false)
             )
             whenever(
-                hasNroCart("100", 3)
+                hasNroEquip("100", 3)
             ).thenReturn(
                 Result.success(true)
             )
@@ -926,7 +926,7 @@ class CartViewModelTest {
                 Result.success(false)
             )
             whenever(
-                hasNroCart("100", 2)
+                hasNroEquip("100", 2)
             ).thenReturn(
                 Result.success(true)
             )

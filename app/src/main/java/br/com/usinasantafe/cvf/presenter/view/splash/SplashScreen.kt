@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cvf.R
+import br.com.usinasantafe.cvf.lib.FlowApp
 import br.com.usinasantafe.cvf.presenter.theme.AlertDialogSimpleDesign
 import br.com.usinasantafe.cvf.presenter.theme.CVFTheme
 import br.com.usinasantafe.cvf.presenter.theme.MsgErrors
@@ -34,19 +35,26 @@ import br.com.usinasantafe.cvf.utils.UiStatusState
 fun SplashScreen(
     viewModel: SplashViewModel = hiltViewModel(),
     onNavConfig: () -> Unit,
+    onNavFront: () -> Unit,
+    onNavRelease: () -> Unit,
+    onNavNote: () -> Unit
 ) {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
             LaunchedEffect(Unit) {
-                viewModel.startApp()
+                viewModel.start()
             }
 
             SplashContent(
+                flowApp = uiState.flowApp,
                 onCloseDialog = viewModel::onCloseDialog,
                 status = uiState.status,
                 onNavConfig = onNavConfig,
+                onNavFront = onNavFront,
+                onNavRelease = onNavRelease,
+                onNavNote = onNavNote,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding)
@@ -57,9 +65,13 @@ fun SplashScreen(
 
 @Composable
 fun SplashContent(
+    flowApp: FlowApp,
     onCloseDialog: () -> Unit,
     status: UiStatusState,
     onNavConfig: () -> Unit,
+    onNavFront: () -> Unit,
+    onNavRelease: () -> Unit,
+    onNavNote: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val infiniteTransition = rememberInfiniteTransition(
@@ -99,7 +111,12 @@ fun SplashContent(
 
     LaunchedEffect(status.flagAccess) {
         if(status.flagAccess) {
-            onNavConfig()
+            when(flowApp) {
+                FlowApp.CONFIG -> onNavConfig()
+                FlowApp.FRONT -> onNavFront()
+                FlowApp.RELEASE -> onNavRelease()
+                FlowApp.NOTE -> onNavNote()
+            }
         }
     }
 
@@ -111,9 +128,13 @@ fun SplashPagePreview() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             SplashContent(
+                flowApp = FlowApp.FRONT,
                 onCloseDialog = {},
                 status = UiStatusState(),
                 onNavConfig = {},
+                onNavFront = {},
+                onNavRelease = {},
+                onNavNote = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }

@@ -124,5 +124,135 @@ class IHeaderSharedPreferencesDatasourceTest {
             )
         }
 
+    @Test
+    fun `getIdTruck - Check return null if not have data`() =
+        runTest {
+            val result = datasource.getIdTruck()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                null,
+                result.getOrNull()
+            )
+        }
+
+    @Test
+    fun `getIdTruck - Check return correct if have data`() =
+        runTest {
+            val data = HeaderSharedPreferencesModel(
+                idTruck = 100
+            )
+            datasource.save(data)
+            val result = datasource.getIdTruck()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                100,
+                result.getOrNull()
+            )
+        }
+
+    @Test
+    fun `setIdTruck - Check altered data`() =
+        runTest {
+            val data = HeaderSharedPreferencesModel(
+                idTruck = 100
+            )
+            datasource.save(data)
+            val resultBefore = datasource.getIdTruck()
+            assertEquals(
+                true,
+                resultBefore.isSuccess
+            )
+            assertEquals(
+                100,
+                resultBefore.getOrNull()
+            )
+            val result = datasource.setIdTruck(200)
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            val resultAfter = datasource.getIdTruck()
+            assertEquals(
+                true,
+                resultAfter.isSuccess
+            )
+            assertEquals(
+                200,
+                resultAfter.getOrNull()
+            )
+        }
+
+    @Test
+    fun `get - Check return empty if not have data`() =
+        runTest {
+            val result = datasource.get()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                HeaderSharedPreferencesModel(),
+                result.getOrNull()
+            )
+        }
+
+    @Test
+    fun `get - Check return model if have data`() =
+        runTest {
+            val data = HeaderSharedPreferencesModel(
+                regDriver = 19759,
+                idTruck = 100
+            )
+            datasource.save(data)
+            val result = datasource.get()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                data,
+                result.getOrNull()
+            )
+        }
+
+    @Test
+    fun `has - Check return false if not have data`() =
+        runTest {
+            val result = datasource.has()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                false,
+                result.getOrNull()
+            )
+        }
+
+    @Test
+    fun `has - Check return true if have data`() =
+        runTest {
+            val data = HeaderSharedPreferencesModel(
+                regDriver = 19759,
+                idTruck = 100
+            )
+            datasource.save(data)
+            val result = datasource.has()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                true,
+                result.getOrNull()
+            )
+        }
+
 
 }

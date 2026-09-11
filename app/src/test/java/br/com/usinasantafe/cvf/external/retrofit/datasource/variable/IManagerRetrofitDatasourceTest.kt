@@ -11,7 +11,7 @@ import kotlin.test.assertEquals
 
 class IManagerRetrofitDatasourceTest {
 
-    private val model = ManagerRetrofitModelOutput(
+    private val data = ManagerRetrofitModelOutput(
         idFront = 1,
         idRelease = 2,
         idServ = 3
@@ -20,7 +20,6 @@ class IManagerRetrofitDatasourceTest {
     @Test
     fun `send - Check return failure if token is invalid`() =
         runTest {
-
             val server = MockWebServer()
             server.start()
             server.enqueue(
@@ -31,7 +30,7 @@ class IManagerRetrofitDatasourceTest {
             )
             val service = retrofit.create(ManagerApi::class.java)
             val datasource = IManagerRetrofitDatasource(service)
-            val result = datasource.send("TOKEN", model)
+            val result = datasource.send("TOKEN", data)
             assertEquals(
                 true,
                 result.isFailure
@@ -56,7 +55,7 @@ class IManagerRetrofitDatasourceTest {
             val retrofit = provideRetrofitTest(server.url("/").toString())
             val service = retrofit.create(ManagerApi::class.java)
             val datasource = IManagerRetrofitDatasource(service)
-            val result = datasource.send("TOKEN", model)
+            val result = datasource.send("TOKEN", data)
             assertEquals(
                 true,
                 result.isFailure
@@ -86,7 +85,7 @@ class IManagerRetrofitDatasourceTest {
             )
             val service = retrofit.create(ManagerApi::class.java)
             val datasource = IManagerRetrofitDatasource(service)
-            val result = datasource.send("TOKEN", model)
+            val result = datasource.send("TOKEN", data)
             assertEquals(
                 true,
                 result.isFailure
@@ -107,11 +106,11 @@ class IManagerRetrofitDatasourceTest {
         runTest {
             val server = MockWebServer()
             server.start()
-            server.enqueue(MockResponse().setBody(result))
+            server.enqueue(MockResponse().setBody(resultSuccess))
             val retrofit = provideRetrofitTest(server.url("/").toString())
             val service = retrofit.create(ManagerApi::class.java)
             val datasource = IManagerRetrofitDatasource(service)
-            val result = datasource.send("TOKEN", model)
+            val result = datasource.send("TOKEN", data)
             assertEquals(
                 true,
                 result.isSuccess
@@ -138,7 +137,7 @@ class IManagerRetrofitDatasourceTest {
         }
     """.trimIndent()
 
-    private val result = """
+    private val resultSuccess = """
         {
             "status": "success",
             "idServ": 16

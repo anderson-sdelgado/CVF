@@ -11,7 +11,6 @@ import br.com.usinasantafe.cvf.utils.EmptyResult
 import br.com.usinasantafe.cvf.utils.call
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
 import javax.inject.Inject
-import kotlin.collections.addAll
 
 class IColabRepository @Inject constructor(
     private val colabRetrofitDatasource: ColabRetrofitDatasource,
@@ -37,7 +36,7 @@ class IColabRepository @Inject constructor(
 
     override suspend fun check(token: String, reg: Long): Result<Boolean> =
         call(getClassAndMethod()) {
-            val model = colabRetrofitDatasource.check(token, reg).getOrThrow()
+            val model = colabRetrofitDatasource.checkByReg(token, reg).getOrThrow()
             if(model.reg == 0L) {
                 colabRoomDatasource.deleteByReg(reg).getOrThrow()
                 return@call false
@@ -48,7 +47,7 @@ class IColabRepository @Inject constructor(
 
     override suspend fun check(reg: Long): Result<Boolean> =
         call(getClassAndMethod()) {
-            colabRoomDatasource.checkByReg(reg).getOrThrow()
+            colabRoomDatasource.hasByReg(reg).getOrThrow()
         }
 
     override suspend fun getNameByReg(reg: Long): Result<String> =

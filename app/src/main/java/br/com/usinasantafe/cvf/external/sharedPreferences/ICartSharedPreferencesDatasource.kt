@@ -20,7 +20,7 @@ class ICartSharedPreferencesDatasource @Inject constructor(
 
     private val typeToken = object : TypeToken<List<CartSharedPreferencesModel>>() {}.type
 
-    suspend fun add(model: CartSharedPreferencesModel): EmptyResult =
+    override suspend fun add(model: CartSharedPreferencesModel): EmptyResult =
         result(getClassAndMethod()) {
             val list = list().getOrThrow()
             var mutableList = list.toMutableList()
@@ -42,7 +42,7 @@ class ICartSharedPreferencesDatasource @Inject constructor(
             }
         }
 
-    suspend fun list(): Result<List<CartSharedPreferencesModel>> =
+    override suspend fun list(): Result<List<CartSharedPreferencesModel>> =
         result(getClassAndMethod()) {
             val result = sharedPreferences.getString(
                 BASE_SHARED_PREFERENCES_TABLE_CART_LIST,
