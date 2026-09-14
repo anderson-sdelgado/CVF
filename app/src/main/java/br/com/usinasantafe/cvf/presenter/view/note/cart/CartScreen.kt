@@ -129,7 +129,7 @@ fun CartContent(
             if (status.flagProgress) {
                 AlertDialogProgressIndeterminateDesign(
                     stringResource(
-                        id = R.string.text_msg_check_data, R.string.text_truck
+                        id = R.string.text_msg_check_data, stringResource(id = R.string.text_truck)
                     )
                 )
             }

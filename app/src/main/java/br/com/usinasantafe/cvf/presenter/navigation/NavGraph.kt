@@ -11,21 +11,26 @@ import androidx.navigation.navArgument
 import br.com.usinasantafe.cvf.lib.Option
 import br.com.usinasantafe.cvf.lib.OptionMenu
 import br.com.usinasantafe.cvf.lib.OptionReturn
+import br.com.usinasantafe.cvf.presenter.navigation.Args.FLOW_CART_ARG
 import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_ARG
 import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_MENU_ARG
 import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_RETURN_ARG
+import br.com.usinasantafe.cvf.presenter.navigation.Routes.CART_ROUTE
 import br.com.usinasantafe.cvf.presenter.navigation.Routes.CONFIG_ROUTE
 import br.com.usinasantafe.cvf.presenter.navigation.Routes.DRIVER_ROUTE
 import br.com.usinasantafe.cvf.presenter.navigation.Routes.FRONT_ROUTE
 import br.com.usinasantafe.cvf.presenter.navigation.Routes.PASSWORD_ROUTE
 import br.com.usinasantafe.cvf.presenter.navigation.Routes.RELEASE_ROUTE
+import br.com.usinasantafe.cvf.presenter.navigation.Routes.REVIEW_ROUTE
 import br.com.usinasantafe.cvf.presenter.navigation.Routes.SPLASH_ROUTE
 import br.com.usinasantafe.cvf.presenter.navigation.Routes.TRUCK_ROUTE
 import br.com.usinasantafe.cvf.presenter.view.configuration.config.ConfigScreen
 import br.com.usinasantafe.cvf.presenter.view.configuration.password.PasswordScreen
 import br.com.usinasantafe.cvf.presenter.view.manager.front.FrontScreen
 import br.com.usinasantafe.cvf.presenter.view.manager.release.ReleaseScreen
+import br.com.usinasantafe.cvf.presenter.view.note.cart.CartScreen
 import br.com.usinasantafe.cvf.presenter.view.note.driver.DriverScreen
+import br.com.usinasantafe.cvf.presenter.view.note.review.ReviewScreen
 import br.com.usinasantafe.cvf.presenter.view.note.truck.TruckScreen
 import br.com.usinasantafe.cvf.presenter.view.splash.SplashScreen
 
@@ -162,7 +167,7 @@ fun NavigationGraph(
                 onNavPassword = {
                     navActions.navigateToPassword(it.ordinal, OptionReturn.DRIVER.ordinal)
                 },
-                onNavTruck = {}
+                onNavTruck = navActions::navigateToTruck
             )
         }
 
@@ -173,6 +178,27 @@ fun NavigationGraph(
                 },
                 onNavDriver = navActions::navigateToDriver,
                 onNavCart = navActions::navigateToCart,
+            )
+        }
+
+        composable(
+            CART_ROUTE,
+            arguments = listOf(
+                navArgument(FLOW_CART_ARG) { type = NavType.IntType },
+            )
+        ) {
+            CartScreen(
+                onNavReview = navActions::navigateToReview,
+                onNavDriver = navActions::navigateToDriver,
+                onNavPassword = {
+                    navActions.navigateToPassword(it.ordinal, OptionReturn.CART.ordinal)
+                }
+            )
+        }
+
+        composable(REVIEW_ROUTE) {
+            ReviewScreen(
+                onNavDriver = navActions::navigateToDriver
             )
         }
 

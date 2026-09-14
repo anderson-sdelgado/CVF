@@ -18,10 +18,6 @@
         <option name="selectionMode" value="DROPDOWN" />
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="check_return_failure_if__not_have_data()">
-        <option name="selectionMode" value="DROPDOWN" />
-        <DialogSelection />
-      </SelectionState>
       <SelectionState runConfigName="check_return_failure_if_not_return_web_service()">
         <option name="selectionMode" value="DROPDOWN" />
         <DialogSelection />
@@ -35,6 +31,10 @@
         <DialogSelection />
       </SelectionState>
       <SelectionState runConfigName="check_altered_data_if_process_executed_success()">
+        <option name="selectionMode" value="DROPDOWN" />
+        <DialogSelection />
+      </SelectionState>
+      <SelectionState runConfigName="flow()">
         <option name="selectionMode" value="DROPDOWN" />
         <DialogSelection />
       </SelectionState>

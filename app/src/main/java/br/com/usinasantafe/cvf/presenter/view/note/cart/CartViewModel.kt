@@ -187,7 +187,7 @@ class CartViewModel @Inject constructor(
             false
         }
             .onSuccess {
-                updateState { copy(status = status.copy(flagAccess = it)) }
+                updateState { copy(status = status.copy(flagAccess = it, flagProgress = false)) }
                 if(!it) get(pos = state.pos + 1)
             }
             .onFailureUpdate(::updateState)

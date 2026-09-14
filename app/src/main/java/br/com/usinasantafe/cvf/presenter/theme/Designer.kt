@@ -512,6 +512,7 @@ fun topBar(
         title = {
             Text(
                 text = title,
+                modifier = Modifier.padding(vertical = 12.dp),
                 style = TextStyle(
                     color = Color.White
                 )
