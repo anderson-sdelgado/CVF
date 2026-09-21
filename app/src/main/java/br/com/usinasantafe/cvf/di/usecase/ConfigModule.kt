@@ -31,4 +31,8 @@ interface ConfigModule {
     @Singleton
     fun bindCheckPassword(usecase: ICheckPassword): CheckPassword
 
+    @Binds
+    @Singleton
+    fun bindSetTokenFCM(usecase: ISetTokenFCM): SetTokenFCM
+
 }

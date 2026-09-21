@@ -3,6 +3,7 @@ package br.com.usinasantafe.cvf.external.room.datasource.stable
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import br.com.usinasantafe.cvf.TestApp
 import br.com.usinasantafe.cvf.external.room.dao.DatabaseRoom
 import br.com.usinasantafe.cvf.external.room.dao.stable.ReleaseDao
 import br.com.usinasantafe.cvf.infra.models.room.stable.ReleaseRoomModel
@@ -17,7 +18,7 @@ import kotlin.intArrayOf
 import kotlin.test.assertEquals
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [34])
+@Config(sdk = [34], application = TestApp::class)
 class IReleaseRoomDatasourceTest {
 
     private lateinit var releaseDao: ReleaseDao
@@ -323,14 +324,182 @@ class IReleaseRoomDatasourceTest {
                         idPropAgr = 1,
                         descPropAgr = "Test1",
                         idFront = 1
+                    ),
+                    ReleaseRoomModel(
+                        id = 2,
+                        nroOS = 2,
+                        idPropAgr = 2,
+                        descPropAgr = "Test2",
+                        idFront = 2
+                    ),
+                    ReleaseRoomModel(
+                        id = 3,
+                        nroOS = 3,
+                        idPropAgr = 3,
+                        descPropAgr = "Test3",
+                        idFront = 3
                     )
                 )
             )
-            val result = datasource.getById(1)
+            val result = datasource.getById(2)
             assertEquals(
                 true,
                 result.isSuccess
             )
+            assertEquals(
+                ReleaseRoomModel(
+                    id = 2,
+                    nroOS = 2,
+                    idPropAgr = 2,
+                    descPropAgr = "Test2",
+                    idFront = 2
+                ),
+                result.getOrNull()!!
+            )
+        }
+
+    @Test
+    fun `hasById - Check return failure if table is empty`() =
+        runTest {
+            val result = datasource.hasById(1)
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                false,
+                result.getOrNull()!!
+            )
+        }
+
+    @Test
+    fun `hasById - Check return true if have row fielded`() =
+        runTest {
+            releaseDao.insertAll(
+                listOf(
+                    ReleaseRoomModel(
+                        id = 1,
+                        nroOS = 1,
+                        idPropAgr = 1,
+                        descPropAgr = "Test1",
+                        idFront = 1
+                    ),
+                    ReleaseRoomModel(
+                        id = 2,
+                        nroOS = 2,
+                        idPropAgr = 2,
+                        descPropAgr = "Test2",
+                        idFront = 2
+                    ),
+                    ReleaseRoomModel(
+                        id = 3,
+                        nroOS = 3,
+                        idPropAgr = 3,
+                        descPropAgr = "Test3",
+                        idFront = 3
+                    )
+                )
+            )
+            val result = datasource.hasById(2)
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                true,
+                result.getOrNull()!!
+            )
+        }
+
+    @Test
+    fun `add - Check failure if have row repeated`() =
+        runTest {
+            releaseDao.insertAll(
+                listOf(
+                    ReleaseRoomModel(
+                        id = 1,
+                        nroOS = 1,
+                        idPropAgr = 1,
+                        descPropAgr = "Test1",
+                        idFront = 1
+                    ),
+                    ReleaseRoomModel(
+                        id = 3,
+                        nroOS = 3,
+                        idPropAgr = 3,
+                        descPropAgr = "Test3",
+                        idFront = 3
+                    )
+                )
+            )
+            val result = datasource.add(
+                ReleaseRoomModel(
+                    id = 1,
+                    nroOS = 1,
+                    idPropAgr = 1,
+                    descPropAgr = "Test1",
+                    idFront = 1
+                )
+            )
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IReleaseRoomDatasource.add",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: tb_release.id (code 1555 SQLITE_CONSTRAINT_PRIMARYKEY)",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `add - Check success if have row is correct`() =
+        runTest {
+            releaseDao.insertAll(
+                listOf(
+                    ReleaseRoomModel(
+                        id = 1,
+                        nroOS = 1,
+                        idPropAgr = 1,
+                        descPropAgr = "Test1",
+                        idFront = 1
+                    ),
+                    ReleaseRoomModel(
+                        id = 3,
+                        nroOS = 3,
+                        idPropAgr = 3,
+                        descPropAgr = "Test3",
+                        idFront = 3
+                    )
+                )
+            )
+            val listBefore = releaseDao.all()
+            assertEquals(
+                2,
+                listBefore.size
+            )
+            val result = datasource.add(
+                ReleaseRoomModel(
+                    id = 2,
+                    nroOS = 2,
+                    idPropAgr = 2,
+                    descPropAgr = "Test2",
+                    idFront = 2
+                )
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val listAfter = releaseDao.all()
+            assertEquals(
+                3,
+                listAfter.size
+            )
+            val model1 = listAfter[0]
             assertEquals(
                 ReleaseRoomModel(
                     id = 1,
@@ -339,9 +508,30 @@ class IReleaseRoomDatasourceTest {
                     descPropAgr = "Test1",
                     idFront = 1
                 ),
-                result.getOrNull()!!
+                model1
+            )
+            val model2 = listAfter[1]
+            assertEquals(
+                ReleaseRoomModel(
+                    id = 2,
+                    nroOS = 2,
+                    idPropAgr = 2,
+                    descPropAgr = "Test2",
+                    idFront = 2
+                ),
+                model2
+            )
+            val model3 = listAfter[2]
+            assertEquals(
+                ReleaseRoomModel(
+                    id = 3,
+                    nroOS = 3,
+                    idPropAgr = 3,
+                    descPropAgr = "Test3",
+                    idFront = 3
+                ),
+                model3
             )
         }
-
 
 }

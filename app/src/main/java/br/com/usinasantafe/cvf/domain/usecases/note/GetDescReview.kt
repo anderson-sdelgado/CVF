@@ -10,6 +10,7 @@ import br.com.usinasantafe.cvf.utils.call
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
 import br.com.usinasantafe.cvf.utils.required
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 interface GetDescReview {
@@ -26,7 +27,7 @@ class IGetDescReview @Inject constructor(
 
     override suspend fun invoke(): Result<String> =
         call(getClassAndMethod()) {
-            val title = getTitleMenu().getOrThrow()
+            val title = getTitleMenu().first()
             val regDriver = noteRepository.getRegDriver().getOrThrow().required("regDriver")
             val nameDriver = colabRepository.getNameByReg(regDriver).getOrThrow()
             val idTruck = noteRepository.getIdTruck().getOrThrow().required("idTruck")

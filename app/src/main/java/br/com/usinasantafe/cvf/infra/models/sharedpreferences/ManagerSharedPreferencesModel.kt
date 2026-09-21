@@ -10,7 +10,7 @@ data class ManagerSharedPreferencesModel(
     var idFront: Int? = null,
     var qtdLimitCart: Int? = null,
     val dateHourCreate: Date = Date(),
-    val dateHourUpdate: Date = Date(),
+    var dateHourUpdate: Date = Date(),
     var statusSend: StatusSend = StatusSend.STARTED
 )
 

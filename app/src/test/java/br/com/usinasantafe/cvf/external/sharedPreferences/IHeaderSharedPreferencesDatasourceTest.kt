@@ -3,6 +3,7 @@ package br.com.usinasantafe.cvf.external.sharedPreferences
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.test.core.app.ApplicationProvider
+import br.com.usinasantafe.cvf.TestApp
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.HeaderSharedPreferencesModel
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -14,7 +15,7 @@ import kotlin.intArrayOf
 import kotlin.test.assertEquals
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [34])
+@Config(sdk = [34], application = TestApp::class)
 class IHeaderSharedPreferencesDatasourceTest {
 
     private lateinit var context : Context

@@ -5,7 +5,6 @@ import br.com.usinasantafe.cvf.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cvf.infra.datasource.retrofit.variable.ConfigRetrofitDatasource
 import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cvf.infra.models.retrofit.variable.entityToRetrofitModel
-import br.com.usinasantafe.cvf.infra.models.retrofit.variable.retrofitModelToEntity
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.entityToSharedPreferencesModel
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.sharedPreferencesModelToEntity
 import br.com.usinasantafe.cvf.lib.StatusSend
@@ -26,9 +25,11 @@ class IConfigRepository @Inject constructor(
 
     override suspend fun send(entity: Config): Result<Config> =
         call(getClassAndMethod()) {
-            val model = entity.entityToRetrofitModel()
+            val tokenFCM = configSharedPreferencesDatasource.getTokenFCM().getOrThrow()
+            val model = entity.entityToRetrofitModel(tokenFCM)
             val configRetrofitModel = configRetrofitDatasource.recoverToken(model).getOrThrow()
-            configRetrofitModel.retrofitModelToEntity()
+            entity.idServ = configRetrofitModel.idServ
+            entity
         }
 
     override suspend fun save(entity: Config): EmptyResult =
@@ -60,6 +61,11 @@ class IConfigRepository @Inject constructor(
     override suspend fun getFlagUpdate(): Result<Boolean> =
         call(getClassAndMethod()) {
             configSharedPreferencesDatasource.getFlagUpdate().getOrThrow()
+        }
+
+    override suspend fun setTokenFCM(token: String): Result<Boolean> =
+        call(getClassAndMethod()) {
+            configSharedPreferencesDatasource.setTokenFCM(token).getOrThrow()
         }
 
 }

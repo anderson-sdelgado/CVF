@@ -11,6 +11,7 @@ data class ConfigSharedPreferencesModel(
     var version: String? = null,
     var statusSend: StatusSend = StatusSend.STARTED,
     var flagUpdate: Boolean = false,
+    var tokenFCM: String? = null,
 )
 
 fun ConfigSharedPreferencesModel.sharedPreferencesModelToEntity(): Config {
@@ -22,6 +23,7 @@ fun ConfigSharedPreferencesModel.sharedPreferencesModelToEntity(): Config {
             version = version,
             statusSend = statusSend,
             flagUpdate = flagUpdate,
+            tokenFCM = tokenFCM
         )
     }
 }
@@ -35,6 +37,7 @@ fun Config.entityToSharedPreferencesModel(): ConfigSharedPreferencesModel {
             version = ::version.required(),
             statusSend = statusSend,
             flagUpdate = flagUpdate,
+            tokenFCM = tokenFCM
         )
     }
 }

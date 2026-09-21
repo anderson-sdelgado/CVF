@@ -3,6 +3,7 @@ package br.com.usinasantafe.cvf.external.sharedPreferences
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.test.core.app.ApplicationProvider
+import br.com.usinasantafe.cvf.TestApp
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ManagerSharedPreferencesModel
 import br.com.usinasantafe.cvf.lib.StatusSend
 import kotlinx.coroutines.test.runTest
@@ -11,12 +12,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import java.util.Date
 import kotlin.intArrayOf
 import kotlin.test.assertEquals
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [34])
+@Config(sdk = [34], application = TestApp::class)
 class IManagerSharedPreferencesDatasourceTest {
 
     private lateinit var context : Context
@@ -101,7 +101,7 @@ class IManagerSharedPreferencesDatasourceTest {
     @Test
     fun `getIdFront - Check return correct if have data`() =
         runTest {
-            datasource.setIdRelease(1)
+            datasource.setIdFront(20)
             val result = datasource.getIdFront()
             assertEquals(
                 true,
@@ -207,7 +207,7 @@ class IManagerSharedPreferencesDatasourceTest {
     @Test
     fun `hasSend - Check return false if have data and stateSend is not SEND`() =
         runTest {
-            datasource.setIdRelease(1)
+            datasource.setIdFront(1)
             val result = datasource.hasSend()
             assertEquals(
                 true,
@@ -312,4 +312,48 @@ class IManagerSharedPreferencesDatasourceTest {
                 result.getOrNull()!!
             )
         }
+
+    @Test
+    fun `update - Check altered data`() =
+        runTest {
+            datasource.save(
+                ManagerSharedPreferencesModel(
+                    idFront = 10,
+                    idRelease = 20,
+                    qtdLimitCart = 30
+                )
+            )
+            val modelBefore = datasource.get().getOrThrow()
+            assertEquals(
+                10,
+                modelBefore.idFront
+            )
+            assertEquals(
+                20,
+                modelBefore.idRelease
+            )
+            assertEquals(
+                30,
+                modelBefore.qtdLimitCart
+            )
+            val result = datasource.update(101, 2, 2)
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            val modelAfter = datasource.get().getOrThrow()
+            assertEquals(
+                101,
+                modelAfter.idFront
+            )
+            assertEquals(
+                2,
+                modelAfter.idRelease
+            )
+            assertEquals(
+                2,
+                modelAfter.qtdLimitCart
+            )
+        }
+
 }

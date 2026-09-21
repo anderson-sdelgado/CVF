@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cvf.domain.usecases.note
 
 import br.com.usinasantafe.cvf.domain.repositories.variable.ConfigRepository
+import br.com.usinasantafe.cvf.domain.repositories.variable.ManagerRepository
 import br.com.usinasantafe.cvf.domain.repositories.variable.NoteRepository
 import br.com.usinasantafe.cvf.domain.usecases.common.Token
 import br.com.usinasantafe.cvf.utils.call
@@ -15,6 +16,7 @@ interface SendNote {
 class ISendNote @Inject constructor(
     private val token: Token,
     private val configRepository: ConfigRepository,
+    private val managerRepository: ManagerRepository,
     private val noteRepository: NoteRepository
 ): SendNote {
 
@@ -22,7 +24,9 @@ class ISendNote @Inject constructor(
         call(getClassAndMethod()) {
             val token = token().getOrThrow()
             val entity = configRepository.get().getOrThrow()
-            noteRepository.send(token, entity::idServ.required()).getOrThrow()
+            val idFront = managerRepository.getIdFront().getOrThrow()
+            val idRelease = managerRepository.getIdRelease().getOrThrow()
+            noteRepository.send(token, entity::idServ.required(), idFront.required("idFront"), idRelease.required("idRelease")).getOrThrow()
         }
 
 }

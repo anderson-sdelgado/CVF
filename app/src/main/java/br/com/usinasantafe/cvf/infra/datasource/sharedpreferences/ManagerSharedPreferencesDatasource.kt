@@ -3,6 +3,7 @@ package br.com.usinasantafe.cvf.infra.datasource.sharedpreferences
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ManagerSharedPreferencesModel
 import br.com.usinasantafe.cvf.lib.StatusSend
 import br.com.usinasantafe.cvf.utils.EmptyResult
+import kotlinx.coroutines.flow.Flow
 
 interface ManagerSharedPreferencesDatasource {
     suspend fun clean(): EmptyResult
@@ -16,4 +17,7 @@ interface ManagerSharedPreferencesDatasource {
     suspend fun setStatusSend(statusSend: StatusSend): EmptyResult
     suspend fun getStatusSend(): Result<StatusSend>
     suspend fun getQtdLimitCart(): Result<Int>
+    suspend fun save(model: ManagerSharedPreferencesModel): EmptyResult
+    suspend fun update(idFront: Int, idRelease: Int, qtdLimitCart: Int): EmptyResult
+    fun observe(): Flow<ManagerSharedPreferencesModel>
 }

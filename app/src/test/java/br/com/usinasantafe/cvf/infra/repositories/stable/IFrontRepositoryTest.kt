@@ -10,6 +10,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.atLeastOnce
+import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import kotlin.test.assertEquals
@@ -322,6 +323,145 @@ class IFrontRepositoryTest {
                     description = "Test"
                 ),
                 result.getOrNull()!!
+            )
+        }
+
+    @Test
+    fun `add - Check return failure if have error in FrontRoomDatasource hasById`() =
+        runTest {
+            whenever(
+                frontRoomDatasource.hasById(1)
+            ).thenReturn(
+                resultFailure(
+                    "IFrontRoomDatasource.hasById",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.add(
+                Front(
+                    id = 1,
+                    cd = 1,
+                    description = "Test"
+                )
+            )
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IFrontRepository.add -> IFrontRoomDatasource.hasById",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `add - Check return correct if function execute successfully and FrontRoomDatasource hasById return true`() =
+        runTest {
+            whenever(
+                frontRoomDatasource.hasById(1)
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.add(
+                Front(
+                    id = 1,
+                    cd = 1,
+                    description = "Test"
+                )
+            )
+            verify(
+                frontRoomDatasource,
+                never()
+            ).add(
+                FrontRoomModel(
+                    id = 1,
+                    cd = 1,
+                    description = "Test"
+                )
+            )
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+        }
+
+    @Test
+    fun `add - Check return failure if have error in FrontRoomDatasource add`() =
+        runTest {
+            whenever(
+                frontRoomDatasource.hasById(1)
+            ).thenReturn(
+                Result.success(false)
+            )
+            whenever(
+                frontRoomDatasource.add(
+                    FrontRoomModel(
+                        id = 1,
+                        cd = 1,
+                        description = "Test"
+                    )
+                )
+            ).thenReturn(
+                resultFailure(
+                    "IFrontRoomDatasource.add",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.add(
+                Front(
+                    id = 1,
+                    cd = 1,
+                    description = "Test"
+                )
+            )
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IFrontRepository.add -> IFrontRoomDatasource.add",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `add - Check return correct if function execute successfully and FrontRoomDatasource hasById return false`() =
+        runTest {
+            whenever(
+                frontRoomDatasource.hasById(1)
+            ).thenReturn(
+                Result.success(false)
+            )
+            val result = repository.add(
+                Front(
+                    id = 1,
+                    cd = 1,
+                    description = "Test"
+                )
+            )
+            verify(
+                frontRoomDatasource,
+                atLeastOnce()
+            ).add(
+                FrontRoomModel(
+                    id = 1,
+                    cd = 1,
+                    description = "Test"
+                )
+            )
+            assertEquals(
+                true,
+                result.isSuccess
             )
         }
 

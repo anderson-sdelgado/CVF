@@ -23,6 +23,7 @@ class IConfigRetrofitDatasourceTest {
             val retrofitModelOutput = ConfigRetrofitModelOutput(
                 number = 16997417840,
                 version = "1.00",
+                tokenFCM = "token"
             )
             val server = MockWebServer()
             server.start()
@@ -52,6 +53,7 @@ class IConfigRetrofitDatasourceTest {
             val retrofitModelOutput = ConfigRetrofitModelOutput(
                 number = 16997417840,
                 version = "1.00",
+                tokenFCM = "token"
             )
             val server = MockWebServer()
             server.start()
@@ -82,6 +84,7 @@ class IConfigRetrofitDatasourceTest {
             val retrofitModelOutput = ConfigRetrofitModelOutput(
                 number = 16997417840,
                 version = "1.00",
+                tokenFCM = "token"
             )
             val server = MockWebServer()
             server.start()
@@ -110,7 +113,8 @@ class IConfigRetrofitDatasourceTest {
         runTest {
             val retrofitModelOutput = ConfigRetrofitModelOutput(
                 number = 16997417840,
-                version = "1.00"
+                version = "1.00",
+                tokenFCM = "token"
             )
             val server = MockWebServer()
             server.start()

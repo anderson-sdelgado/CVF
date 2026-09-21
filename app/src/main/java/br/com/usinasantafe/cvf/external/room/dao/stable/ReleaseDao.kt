@@ -10,6 +10,9 @@ import br.com.usinasantafe.cvf.lib.TB_RELEASE
 interface ReleaseDao {
 
     @Insert
+    suspend fun insert(model: ReleaseRoomModel)
+
+    @Insert
     suspend fun insertAll(list: List<ReleaseRoomModel>)
 
     @Query("DELETE FROM $TB_RELEASE")
@@ -23,5 +26,8 @@ interface ReleaseDao {
 
     @Query("SELECT * FROM $TB_RELEASE WHERE id = :id")
     suspend fun getById(id: Int): ReleaseRoomModel
+
+    @Query("SELECT EXISTS(SELECT * FROM $TB_RELEASE WHERE id = :id)")
+    suspend fun hasById(id: Int): Boolean
 
 }

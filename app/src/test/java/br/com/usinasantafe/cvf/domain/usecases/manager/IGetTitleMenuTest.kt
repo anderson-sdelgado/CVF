@@ -2,12 +2,17 @@ package br.com.usinasantafe.cvf.domain.usecases.manager
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
+import br.com.usinasantafe.cvf.R
+import br.com.usinasantafe.cvf.TestApp
 import br.com.usinasantafe.cvf.domain.entities.stable.Front
 import br.com.usinasantafe.cvf.domain.entities.stable.Release
+import br.com.usinasantafe.cvf.domain.entities.variable.Manager
 import br.com.usinasantafe.cvf.domain.repositories.stable.FrontRepository
 import br.com.usinasantafe.cvf.domain.repositories.stable.ReleaseRepository
 import br.com.usinasantafe.cvf.domain.repositories.variable.ManagerRepository
-import br.com.usinasantafe.cvf.utils.resultFailure
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -16,21 +21,21 @@ import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import kotlin.intArrayOf
 import kotlin.test.assertEquals
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [34])
+@Config(sdk = [34], application = TestApp::class)
 class IGetTitleMenuTest {
 
     private val releaseRepository = mock<ReleaseRepository>()
     private val managerRepository = mock<ManagerRepository>()
     private val frontRepository = mock<FrontRepository>()
     private lateinit var usecase: IGetTitleMenu
+    private lateinit var context: Context
 
     @Before
     fun setup() {
-        val context: Context = ApplicationProvider.getApplicationContext()
+        context = ApplicationProvider.getApplicationContext()
         usecase = IGetTitleMenu(
             context = context,
             releaseRepository = releaseRepository,
@@ -40,248 +45,101 @@ class IGetTitleMenuTest {
     }
 
     @Test
-    fun `Check return failure if have error in ManagerRepository getIdRelease`() =
+    fun `Check return empty string if observe error`() =
         runTest {
             whenever(
-                managerRepository.getIdRelease()
+                managerRepository.observe()
             ).thenReturn(
-                resultFailure(
-                    "IManagerRepository.getIdRelease",
-                    "-",
-                    Exception()
-                )
+                flow { throw Exception("Observe Error") }
             )
-            val result = usecase()
-            assertEquals(
-                true,
-                result.isFailure
-            )
-            assertEquals(
-                "IGetDescRelease -> IManagerRepository.getIdRelease",
-                result.exceptionOrNull()!!.message
-            )
-            assertEquals(
-                "java.lang.Exception",
-                result.exceptionOrNull()!!.cause.toString()
-            )
+            val result = runCatching { usecase().first() }
+            assertEquals(true, result.isFailure)
         }
 
     @Test
-    fun `Check return failure if getIdRelease is null`() =
+    fun `Check return empty string if idRelease is null`() =
         runTest {
             whenever(
-                managerRepository.getIdRelease()
+                managerRepository.observe()
             ).thenReturn(
-                Result.success(null)
+                flowOf(Manager(idRelease = null, idFront = 1))
             )
-            val result = usecase()
-            assertEquals(
-                true,
-                result.isFailure
-            )
-            assertEquals(
-                "IGetDescRelease -> idRelease is required",
-                result.exceptionOrNull()!!.message
-            )
-            assertEquals(
-                "java.lang.NullPointerException: idRelease is required",
-                result.exceptionOrNull()!!.cause.toString()
-            )
+            val result = usecase().first()
+            assertEquals("", result)
         }
 
     @Test
-    fun `Check return failure if have error in ManagerRepository getIdFront`() =
+    fun `Check return empty string if idFront is null`() =
         runTest {
             whenever(
-                managerRepository.getIdRelease()
+                managerRepository.observe()
             ).thenReturn(
-                Result.success(1)
+                flowOf(Manager(idRelease = 1, idFront = null))
             )
-            whenever(
-                managerRepository.getIdFront()
-            ).thenReturn(
-                resultFailure(
-                    "IManagerRepository.getIdFront",
-                    "-",
-                    Exception()
-                )
-            )
-            val result = usecase()
-            assertEquals(
-                true,
-                result.isFailure
-            )
-            assertEquals(
-                "IGetDescRelease -> IManagerRepository.getIdFront",
-                result.exceptionOrNull()!!.message
-            )
-            assertEquals(
-                "java.lang.Exception",
-                result.exceptionOrNull()!!.cause.toString()
-            )
+            val result = usecase().first()
+            assertEquals("", result)
         }
 
     @Test
-    fun `Check return failure if getIdFront is null`() =
+    fun `Check return empty string if release not found`() =
         runTest {
             whenever(
-                managerRepository.getIdRelease()
+                managerRepository.observe()
             ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                managerRepository.getIdFront()
-            ).thenReturn(
-                Result.success(null)
-            )
-            val result = usecase()
-            assertEquals(
-                true,
-                result.isFailure
-            )
-            assertEquals(
-                "IGetDescRelease -> idFront is required",
-                result.exceptionOrNull()!!.message
-            )
-            assertEquals(
-                "java.lang.NullPointerException: idFront is required",
-                result.exceptionOrNull()!!.cause.toString()
-            )
-        }
-
-    @Test
-    fun `Check return failure if have error in ReleaseRepository getById`() =
-        runTest {
-            whenever(
-                managerRepository.getIdRelease()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                managerRepository.getIdFront()
-            ).thenReturn(
-                Result.success(2)
+                flowOf(Manager(idRelease = 1, idFront = 2))
             )
             whenever(
                 releaseRepository.getById(1)
             ).thenReturn(
-                resultFailure(
-                    "IReleaseRepository.getById",
-                    "-",
-                    Exception()
-                )
+                Result.failure(Exception("Not found"))
             )
-            val result = usecase()
-            assertEquals(
-                true,
-                result.isFailure
-            )
-            assertEquals(
-                "IGetDescRelease -> IReleaseRepository.getById",
-                result.exceptionOrNull()!!.message
-            )
-            assertEquals(
-                "java.lang.Exception",
-                result.exceptionOrNull()!!.cause.toString()
-            )
+            val result = usecase().first()
+            assertEquals("", result)
         }
 
     @Test
-    fun `Check return failure if have error in FrontRepository getById`() =
+    fun `Check return empty string if front not found`() =
         runTest {
             whenever(
-                managerRepository.getIdRelease()
+                managerRepository.observe()
             ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                managerRepository.getIdFront()
-            ).thenReturn(
-                Result.success(2)
+                flowOf(Manager(idRelease = 1, idFront = 2))
             )
             whenever(
                 releaseRepository.getById(1)
             ).thenReturn(
-                Result.success(
-                    Release(
-                        id = 123456,
-                        nroOS = 456789,
-                        idPropAgr = 1,
-                        descPropAgr = "TestDescProgAgr",
-                        idFront = 1
-                    )
-                )
+                Result.success(Release(1, 123, 1, "Prop", 2))
             )
             whenever(
                 frontRepository.getById(2)
             ).thenReturn(
-                resultFailure(
-                    "IFrontRepository.getById",
-                    "-",
-                    Exception()
-                )
+                Result.failure(Exception("Not found"))
             )
-            val result = usecase()
-            assertEquals(
-                true,
-                result.isFailure
-            )
-            assertEquals(
-                "IGetDescRelease -> IFrontRepository.getById",
-                result.exceptionOrNull()!!.message
-            )
-            assertEquals(
-                "java.lang.Exception",
-                result.exceptionOrNull()!!.cause.toString()
-            )
+            val result = usecase().first()
+            assertEquals("", result)
         }
 
     @Test
-    fun `Check return correct if function execute successfully`() =
+    fun `Check return correct string if everything is ok`() =
         runTest {
             whenever(
-                managerRepository.getIdRelease()
+                managerRepository.observe()
             ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                managerRepository.getIdFront()
-            ).thenReturn(
-                Result.success(2)
+                flowOf(Manager(idRelease = 1, idFront = 2))
             )
             whenever(
                 releaseRepository.getById(1)
             ).thenReturn(
-                Result.success(
-                    Release(
-                        id = 123456,
-                        nroOS = 456789,
-                        idPropAgr = 1,
-                        descPropAgr = "ProgAgr",
-                        idFront = 1
-                    )
-                )
+                Result.success(Release(1, 123, 1, "Prop", 2))
             )
             whenever(
                 frontRepository.getById(2)
             ).thenReturn(
-                Result.success(
-                    Front(
-                        id = 2,
-                        cd = 20,
-                        description = "Front 20"
-                    )
-                )
+                Result.success(Front(2, 22, "Front22"))
             )
-            val result = usecase()
-            assertEquals(
-                true,
-                result.isSuccess
-            )
-            assertEquals(
-                "FRENTE: Front 20\nLIBERAÇÃO: 123456\nO.S.: 456789\nPROPRIEDADE: ProgAgr",
-                result.getOrNull()!!
-            )
+            val result = usecase().first()
+            val expected = context.getString(R.string.text_data_menu, "Front22", "1", "123", "Prop")
+            assertEquals(expected, result)
         }
 
 }

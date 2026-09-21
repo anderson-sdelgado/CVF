@@ -47,4 +47,10 @@ class IFrontRepository @Inject constructor(
             roomModel.roomModelToEntity()
         }
 
+    override suspend fun add(entity: Front): EmptyResult =
+        call(getClassAndMethod()) {
+            val exist = frontRoomDatasource.hasById(entity.id).getOrThrow()
+            if (!exist) { frontRoomDatasource.add(entity.entityToRoomModel()).getOrThrow() }
+        }
+
 }

@@ -12,13 +12,18 @@ import br.com.usinasantafe.cvf.utils.getClassAndMethod
 import br.com.usinasantafe.cvf.utils.required
 import br.com.usinasantafe.cvf.utils.result
 import com.google.gson.Gson
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.launch
+import java.util.Date
 import javax.inject.Inject
 
 class IManagerSharedPreferencesDatasource @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ): ManagerSharedPreferencesDatasource {
 
-    suspend fun save(model: ManagerSharedPreferencesModel): EmptyResult =
+    override suspend fun save(model: ManagerSharedPreferencesModel): EmptyResult =
         result(getClassAndMethod()) {
             sharedPreferences.edit {
                 putString(
@@ -26,6 +31,16 @@ class IManagerSharedPreferencesDatasource @Inject constructor(
                     Gson().toJson(model)
                 )
             }
+        }
+
+    override suspend fun update(idFront: Int, idRelease: Int, qtdLimitCart: Int): EmptyResult =
+        result(getClassAndMethod()) {
+            val model = get().getOrThrow()
+            model.idFront = idFront
+            model.idRelease = idRelease
+            model.qtdLimitCart = qtdLimitCart
+            model.dateHourUpdate = Date()
+            save(model).getOrThrow()
         }
 
     override suspend fun hasSend(): Result<Boolean> =
@@ -111,5 +126,30 @@ class IManagerSharedPreferencesDatasource @Inject constructor(
             val model = get().getOrThrow()
             model::qtdLimitCart.required()
         }
+
+    override fun observe(): Flow<ManagerSharedPreferencesModel> = callbackFlow {
+        val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+            if (key == BASE_SHARED_PREFERENCES_TABLE_MANAGER) {
+                val data = sharedPreferences.getString(BASE_SHARED_PREFERENCES_TABLE_MANAGER, null)
+                val model = if (data.isNullOrEmpty()) {
+                    ManagerSharedPreferencesModel()
+                } else {
+                    Gson().fromJson(data, ManagerSharedPreferencesModel::class.java)
+                }
+                trySend(model)
+            }
+        }
+        sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
+
+        val initialData = sharedPreferences.getString(BASE_SHARED_PREFERENCES_TABLE_MANAGER, null)
+        val initialModel = if (initialData.isNullOrEmpty()) {
+            ManagerSharedPreferencesModel()
+        } else {
+            Gson().fromJson(initialData, ManagerSharedPreferencesModel::class.java)
+        }
+        trySend(initialModel)
+
+        awaitClose { sharedPreferences.unregisterOnSharedPreferenceChangeListener(listener) }
+    }
 
 }

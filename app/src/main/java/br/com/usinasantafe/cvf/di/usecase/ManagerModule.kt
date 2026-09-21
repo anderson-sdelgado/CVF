@@ -51,4 +51,8 @@ interface ManagerModule {
     @Singleton
     fun bindQtdLimitCart(usecase: IQtdLimitCart): QtdLimitCart
 
+    @Binds
+    @Singleton
+    fun bindUpdateManager(usecase: IUpdateManager): UpdateManager
+
 }

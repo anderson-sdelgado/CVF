@@ -32,7 +32,7 @@ class INoteRepository @Inject constructor(
             headerRoomDatasource.hasByStatusSend(StatusSend.SEND).getOrThrow()
         }
 
-    override suspend fun send(token: String, idConfigServ: Int): EmptyResult =
+    override suspend fun send(token: String, idConfigServ: Int, idFront: Int, idRelease: Int): EmptyResult =
         call(getClassAndMethod()) {
             val headerRoomModelList = headerRoomDatasource.listByStatusSend(StatusSend.SEND).getOrThrow()
             val headerRetrofitModelOutputList = headerRoomModelList.map {
@@ -40,7 +40,7 @@ class INoteRepository @Inject constructor(
                 val cartRetrofitModelList = cartRoomModelList.map { cartRoomModel ->
                     cartRoomModel.roomModelToRetrofitModel()
                 }
-                it.roomModelToRetrofitModel(idConfigServ, cartRetrofitModelList)
+                it.roomModelToRetrofitModel(idConfigServ, idFront, idRelease, cartRetrofitModelList)
             }
             val headerRetrofitModelInputList = noteRetrofitDatasource.send(token, headerRetrofitModelOutputList).getOrThrow()
             headerRoomModelList.forEach { roomModel ->

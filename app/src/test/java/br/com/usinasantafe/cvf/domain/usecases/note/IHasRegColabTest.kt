@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cvf.domain.usecases.note
 
-import br.com.usinasantafe.cvf.domain.repositories.stable.EquipRepository
+import br.com.usinasantafe.cvf.domain.repositories.stable.ColabRepository
 import br.com.usinasantafe.cvf.domain.usecases.common.Token
 import br.com.usinasantafe.cvf.utils.CheckNetwork
 import br.com.usinasantafe.cvf.utils.resultFailure
@@ -11,15 +11,15 @@ import org.mockito.kotlin.whenever
 import java.net.SocketTimeoutException
 import kotlin.test.assertEquals
 
-class IHasNroTruckTest {
+class IHasRegColabTest {
 
     private val token = mock<Token>()
     private val checkNetwork = mock<CheckNetwork>()
-    private val equipRepository = mock<EquipRepository>()
-    private val usecase = IHasNroTruck(
+    private val colabRepository = mock<ColabRepository>()
+    private val usecase = IHasRegColab(
         token = token,
         checkNetwork = checkNetwork,
-        equipRepository = equipRepository
+        colabRepository = colabRepository,
     )
 
     @Test
@@ -31,7 +31,7 @@ class IHasNroTruckTest {
                 result.isFailure
             )
             assertEquals(
-                "IHasNroTruck -> stringToInt",
+                "IHasRegDriver -> stringToLong",
                 result.exceptionOrNull()!!.message,
             )
             assertEquals(
@@ -41,7 +41,7 @@ class IHasNroTruckTest {
         }
 
     @Test
-    fun `Check return failure if have error in EquipRepository check`() =
+    fun `Check return failure if no connection and have error in ColabRepository check`() =
         runTest {
             whenever(
                 checkNetwork.isConnected()
@@ -49,21 +49,21 @@ class IHasNroTruckTest {
                 false
             )
             whenever(
-                equipRepository.check(100)
+                colabRepository.check(19759)
             ).thenReturn(
                 resultFailure(
-                    "IEquipRepository.check",
+                    "IColabRepository.check",
                     "-",
                     Exception()
                 )
             )
-            val result = usecase("100")
+            val result = usecase("19759")
             assertEquals(
                 true,
                 result.isFailure
             )
             assertEquals(
-                "IHasNroTruck -> IEquipRepository.check",
+                "IHasRegDriver -> IColabRepository.check",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -81,11 +81,11 @@ class IHasNroTruckTest {
                 false
             )
             whenever(
-                equipRepository.check(100)
+                colabRepository.check(19759)
             ).thenReturn(
                 Result.success(false)
             )
-            val result = usecase("100")
+            val result = usecase("19759")
             assertEquals(
                 true,
                 result.isSuccess
@@ -113,13 +113,13 @@ class IHasNroTruckTest {
                     Exception()
                 )
             )
-            val result = usecase("100")
+            val result = usecase("19759")
             assertEquals(
                 true,
                 result.isFailure
             )
             assertEquals(
-                "IHasNroTruck -> IToken",
+                "IHasRegDriver -> IToken",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -129,7 +129,7 @@ class IHasNroTruckTest {
         }
 
     @Test
-    fun `Check return correct if connection and EquipRepository check(Retrofit) execute successfully`() =
+    fun `Check return correct if connection and ColabRepository check(Retrofit) execute successfully`() =
         runTest {
             whenever(
                 checkNetwork.isConnected()
@@ -142,11 +142,11 @@ class IHasNroTruckTest {
                 Result.success("token")
             )
             whenever(
-                equipRepository.check("token", 100)
+                colabRepository.check("token", 19759)
             ).thenReturn(
                 Result.success(true)
             )
-            val result = usecase("100")
+            val result = usecase("19759")
             assertEquals(
                 true,
                 result.isSuccess
@@ -158,7 +158,7 @@ class IHasNroTruckTest {
         }
 
     @Test
-    fun `Check return failure if connection and have error in EquipRepository check(Retrofit)`() =
+    fun `Check return failure if connection and have error in ColabRepository check(Retrofit)`() =
         runTest {
             whenever(
                 checkNetwork.isConnected()
@@ -171,21 +171,21 @@ class IHasNroTruckTest {
                 Result.success("token")
             )
             whenever(
-                equipRepository.check("token", 100)
+                colabRepository.check("token", 19759)
             ).thenReturn(
                 resultFailure(
-                    "IEquipRepository.check(Retrofit)",
+                    "IColabRepository.check(Retrofit)",
                     "-",
                     Exception()
                 )
             )
-            val result = usecase("100")
+            val result = usecase("19759")
             assertEquals(
                 true,
                 result.isFailure
             )
             assertEquals(
-                "IHasNroTruck -> IEquipRepository.check(Retrofit)",
+                "IHasRegDriver -> IColabRepository.check(Retrofit)",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -195,7 +195,7 @@ class IHasNroTruckTest {
         }
 
     @Test
-    fun `Check return failure if connection and have connection error in EquipRepository check(Retrofit) and have error in EquipRepository check(Room)`() =
+    fun `Check return failure if connection and have connection error in ColabRepository check(Retrofit) and have error in ColabRepository check(Room)`() =
         runTest {
             whenever(
                 checkNetwork.isConnected()
@@ -208,30 +208,30 @@ class IHasNroTruckTest {
                 Result.success("token")
             )
             whenever(
-                equipRepository.check("token", 100)
+                colabRepository.check("token", 19759)
             ).thenReturn(
                 resultFailure(
-                    "IEquipRepository.check(Retrofit)",
+                    "IColabRepository.check(Retrofit)",
                     "-",
                     SocketTimeoutException()
                 )
             )
             whenever(
-                equipRepository.check(100)
+                colabRepository.check(19759)
             ).thenReturn(
                 resultFailure(
-                    "IEquipRepository.check(Room)",
+                    "IColabRepository.check(Room)",
                     "-",
                     Exception()
                 )
             )
-            val result = usecase("100")
+            val result = usecase("19759")
             assertEquals(
                 true,
                 result.isFailure
             )
             assertEquals(
-                "IHasNroTruck -> IEquipRepository.check(Room)",
+                "IHasRegDriver -> IColabRepository.check(Room)",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -254,20 +254,20 @@ class IHasNroTruckTest {
                 Result.success("token")
             )
             whenever(
-                equipRepository.check("token", 100)
+                colabRepository.check("token", 19759)
             ).thenReturn(
                 resultFailure(
-                    "IEquipRepository.check(Retrofit)",
+                    "IColabRepository.check(Retrofit)",
                     "-",
                     SocketTimeoutException()
                 )
             )
             whenever(
-                equipRepository.check(100)
+                colabRepository.check(19759)
             ).thenReturn(
                 Result.success(false)
             )
-            val result = usecase("100")
+            val result = usecase("19759")
             assertEquals(
                 true,
                 result.isSuccess
@@ -277,4 +277,6 @@ class IHasNroTruckTest {
                 result.getOrNull()!!
             )
         }
+
+
 }

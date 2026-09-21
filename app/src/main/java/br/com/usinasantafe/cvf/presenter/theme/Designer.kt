@@ -333,6 +333,27 @@ fun TextFieldDesign(
             .testTag(tag)
     )
 }
+//
+//@Composable
+//fun ButtonNumericDesign(
+//    text: @Composable () -> Unit,
+//    setActionButton: () -> Unit,
+//    modifier: Modifier,
+//    tag: String = "",
+//) {
+//    return ElevatedButton(
+//        onClick = {
+//            setActionButton()
+//        },
+//        modifier = modifier
+//            .fillMaxHeight()
+//            .testTag("button_$tag")
+//        ,
+//        shape = RoundedCornerShape(10.dp)
+//    ) {
+//        text()
+//    }
+//}
 
 @Composable
 fun ButtonNumericDesign(
@@ -340,16 +361,23 @@ fun ButtonNumericDesign(
     setActionButton: () -> Unit,
     modifier: Modifier,
     tag: String = "",
+    containerColor: Color = MaterialTheme.colorScheme.surfaceVariant,
+    contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
 ) {
-    return ElevatedButton(
-        onClick = {
-            setActionButton()
-        },
+    ElevatedButton(
+        onClick = setActionButton,
         modifier = modifier
             .fillMaxHeight()
-            .testTag("button_$tag")
-        ,
-        shape = RoundedCornerShape(10.dp)
+            .testTag("button_$tag"),
+        shape = RoundedCornerShape(14.dp),
+        colors = ButtonDefaults.elevatedButtonColors(
+            containerColor = containerColor,
+            contentColor = contentColor
+        ),
+        elevation = ButtonDefaults.elevatedButtonElevation(
+            defaultElevation = 2.dp,
+            pressedElevation = 6.dp
+        )
     ) {
         text()
     }

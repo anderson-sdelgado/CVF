@@ -20,6 +20,8 @@ import br.com.usinasantafe.cvf.lib.TypeTruck
 import br.com.usinasantafe.cvf.presenter.navigation.Args
 import br.com.usinasantafe.cvf.utils.resultFailure
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
@@ -188,11 +190,7 @@ class CartViewModelTest {
             whenever(
                 getTitleMenu()
             ).thenReturn(
-                resultFailure(
-                    context = "GetTitleMenu",
-                    message = "-",
-                    cause = Exception()
-                )
+                flow { throw Exception("GetTitleMenu") }
             )
             val viewModel = createdViewModel()
             viewModel.get(3)
@@ -220,7 +218,7 @@ class CartViewModelTest {
             whenever(
                 getTitleMenu()
             ).thenReturn(
-                Result.success("Test")
+                flowOf("Test")
             )
             whenever(
                 getNroCart(1)
@@ -961,7 +959,7 @@ class CartViewModelTest {
         whenever(
             getTitleMenu()
         ).thenReturn(
-            Result.success("Test")
+            flowOf("Test")
         )
         whenever(
             getNroCart(pos)

@@ -156,7 +156,8 @@ class IConfigRepositoryTest {
                 configRetrofitDatasource.recoverToken(
                     ConfigRetrofitModelOutput(
                         number = 16997417840,
-                        version = "1.00"
+                        version = "1.00",
+                        tokenFCM = "token"
                     )
                 )
             ).thenReturn(
@@ -193,7 +194,8 @@ class IConfigRepositoryTest {
                 configRetrofitDatasource.recoverToken(
                     ConfigRetrofitModelOutput(
                         number = 16997417840,
-                        version = "1.00"
+                        version = "1.00",
+                        tokenFCM = "token"
                     )
                 )
             ).thenReturn(
@@ -509,6 +511,52 @@ class IConfigRepositoryTest {
                 Result.success(false)
             )
             val result = repository.getFlagUpdate()
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                false,
+                result.getOrNull()!!
+            )
+        }
+    
+    @Test
+    fun `setTokenFCM - Check return failure if have error in ConfigSharedPreferencesDatasource setTokenFCM`() =
+        runTest {
+            whenever(
+                configSharedPreferencesDatasource.setTokenFCM("token")
+            ).thenReturn(
+                resultFailure(
+                    "IConfigSharedPreferencesDatasource.setTokenFCM",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.setTokenFCM("token")
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IConfigRepository.setTokenFCM -> IConfigSharedPreferencesDatasource.setTokenFCM",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `setTokenFCM - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                configSharedPreferencesDatasource.setTokenFCM("token")
+            ).thenReturn(
+                Result.success(false)
+            )
+            val result = repository.setTokenFCM("token")
             assertEquals(
                 true,
                 result.isSuccess

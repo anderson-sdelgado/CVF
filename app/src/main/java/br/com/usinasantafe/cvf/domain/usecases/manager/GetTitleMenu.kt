@@ -5,14 +5,13 @@ import br.com.usinasantafe.cvf.R
 import br.com.usinasantafe.cvf.domain.repositories.stable.FrontRepository
 import br.com.usinasantafe.cvf.domain.repositories.stable.ReleaseRepository
 import br.com.usinasantafe.cvf.domain.repositories.variable.ManagerRepository
-import br.com.usinasantafe.cvf.utils.call
-import br.com.usinasantafe.cvf.utils.getClassAndMethod
-import br.com.usinasantafe.cvf.utils.required
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 interface GetTitleMenu {
-    suspend operator fun invoke(): Result<String>
+    operator fun invoke(): Flow<String>
 }
 
 class IGetTitleMenu @Inject constructor(
@@ -22,13 +21,25 @@ class IGetTitleMenu @Inject constructor(
     private val frontRepository: FrontRepository
 ): GetTitleMenu {
 
-    override suspend fun invoke(): Result<String> =
-        call(getClassAndMethod()) {
-            val idRelease = managerRepository.getIdRelease().getOrThrow().required("idRelease")
-            val idFront = managerRepository.getIdFront().getOrThrow().required("idFront")
-            val releaseEntity = releaseRepository.getById(idRelease).getOrThrow()
-            val frontEntity = frontRepository.getById(idFront).getOrThrow()
-            context.getString(R.string.text_data_menu, frontEntity.description, "${releaseEntity.id}", "${releaseEntity.nroOS}", releaseEntity.descPropAgr)
+    override fun invoke(): Flow<String> =
+        managerRepository.observe().map { manager ->
+            if (manager.idRelease == null || manager.idFront == null) {
+                ""
+            } else {
+                val releaseEntity = releaseRepository.getById(manager.idRelease).getOrNull()
+                val frontEntity = frontRepository.getById(manager.idFront).getOrNull()
+                if (releaseEntity == null || frontEntity == null) {
+                    ""
+                } else {
+                    context.getString(
+                        R.string.text_data_menu,
+                        frontEntity.description,
+                        "${releaseEntity.id}",
+                        "${releaseEntity.nroOS}",
+                        releaseEntity.descPropAgr
+                    )
+                }
+            }
         }
 
 }

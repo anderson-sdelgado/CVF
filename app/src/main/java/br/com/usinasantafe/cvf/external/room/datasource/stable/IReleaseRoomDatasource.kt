@@ -12,6 +12,11 @@ class IReleaseRoomDatasource @Inject constructor(
     private val releaseDao: ReleaseDao
 ): ReleaseRoomDatasource {
 
+    override suspend fun add(model: ReleaseRoomModel): EmptyResult =
+        result(getClassAndMethod()) {
+            releaseDao.insert(model)
+        }
+
     override suspend fun addAll(list: List<ReleaseRoomModel>): EmptyResult =
         result(getClassAndMethod()) {
             releaseDao.insertAll(list)
@@ -30,6 +35,11 @@ class IReleaseRoomDatasource @Inject constructor(
     override suspend fun getById(id: Int): Result<ReleaseRoomModel> =
         result(getClassAndMethod()) {
             releaseDao.getById(id)
+        }
+
+    override suspend fun hasById(id: Int): Result<Boolean> =
+        result(getClassAndMethod()) {
+            releaseDao.hasById(id)
         }
 
 }

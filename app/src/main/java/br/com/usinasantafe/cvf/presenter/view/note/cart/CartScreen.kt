@@ -1,9 +1,11 @@
 package br.com.usinasantafe.cvf.presenter.view.note.cart
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -26,7 +28,7 @@ import br.com.usinasantafe.cvf.presenter.theme.MsgUpdate
 import br.com.usinasantafe.cvf.presenter.theme.TextFieldDesign
 import br.com.usinasantafe.cvf.presenter.theme.TitleDesign
 import br.com.usinasantafe.cvf.presenter.theme.topBar
-import br.com.usinasantafe.cvf.presenter.view.ButtonsGenericNumeric
+import br.com.usinasantafe.cvf.presenter.theme.ButtonsGenericNumeric
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
 
 @Composable
@@ -105,10 +107,16 @@ fun CartContent(
                 value = text
             )
             Spacer(modifier = Modifier.padding(vertical = 8.dp))
-            ButtonsGenericNumeric(
-                onTextField = onTextField,
-                flagReturn = true
-            )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            ) {
+                ButtonsGenericNumeric(
+                    onTextField = onTextField,
+                    flagReturn = true
+                )
+            }
             BackHandler {}
 
             if (status.flagDialog) {

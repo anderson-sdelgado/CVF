@@ -10,6 +10,8 @@ import br.com.usinasantafe.cvf.domain.repositories.variable.NoteRepository
 import br.com.usinasantafe.cvf.domain.usecases.manager.GetTitleMenu
 import br.com.usinasantafe.cvf.lib.TypeEquip
 import br.com.usinasantafe.cvf.utils.resultFailure
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -49,11 +51,7 @@ class IGetDescReviewTest {
             whenever(
                 getTitleMenu()
             ).thenReturn(
-                resultFailure(
-                    "IGetTitleMenu",
-                    "-",
-                    Exception()
-                )
+                flow { throw Exception("IGetTitleMenu") }
             )
             val result = usecase()
             assertEquals(
@@ -76,7 +74,7 @@ class IGetDescReviewTest {
             whenever(
                 getTitleMenu()
             ).thenReturn(
-                Result.success("FRENTE: 2\nLIBERAÇÃO: 123456\nO.S.: 456789\nPROPRIEDADE: RANCHO AZUL")
+                flowOf("FRENTE: 2\nLIBERAÇÃO: 123456\nO.S.: 456789\nPROPRIEDADE: RANCHO AZUL")
             )
             whenever(
                 noteRepository.getRegDriver()
@@ -108,7 +106,7 @@ class IGetDescReviewTest {
             whenever(
                 getTitleMenu()
             ).thenReturn(
-                Result.success("FRENTE: 2\nLIBERAÇÃO: 123456\nO.S.: 456789\nPROPRIEDADE: RANCHO AZUL")
+                flowOf("FRENTE: 2\nLIBERAÇÃO: 123456\nO.S.: 456789\nPROPRIEDADE: RANCHO AZUL")
             )
             whenever(
                 noteRepository.getRegDriver()
@@ -136,7 +134,7 @@ class IGetDescReviewTest {
             whenever(
                 getTitleMenu()
             ).thenReturn(
-                Result.success("FRENTE: 2\nLIBERAÇÃO: 123456\nO.S.: 456789\nPROPRIEDADE: RANCHO AZUL")
+                flowOf("FRENTE: 2\nLIBERAÇÃO: 123456\nO.S.: 456789\nPROPRIEDADE: RANCHO AZUL")
             )
             whenever(
                 noteRepository.getRegDriver()
@@ -173,7 +171,7 @@ class IGetDescReviewTest {
             whenever(
                 getTitleMenu()
             ).thenReturn(
-                Result.success("FRENTE: 2\nLIBERAÇÃO: 123456\nO.S.: 456789\nPROPRIEDADE: RANCHO AZUL")
+                flowOf("FRENTE: 2\nLIBERAÇÃO: 123456\nO.S.: 456789\nPROPRIEDADE: RANCHO AZUL")
             )
             whenever(
                 noteRepository.getRegDriver()
@@ -215,7 +213,7 @@ class IGetDescReviewTest {
             whenever(
                 getTitleMenu()
             ).thenReturn(
-                Result.success("FRENTE: 2\nLIBERAÇÃO: 123456\nO.S.: 456789\nPROPRIEDADE: RANCHO AZUL")
+                flowOf("FRENTE: 2\nLIBERAÇÃO: 123456\nO.S.: 456789\nPROPRIEDADE: RANCHO AZUL")
             )
             whenever(
                 noteRepository.getRegDriver()
@@ -253,7 +251,7 @@ class IGetDescReviewTest {
             whenever(
                 getTitleMenu()
             ).thenReturn(
-                Result.success("FRENTE: 2\nLIBERAÇÃO: 123456\nO.S.: 456789\nPROPRIEDADE: RANCHO AZUL")
+                flowOf("FRENTE: 2\nLIBERAÇÃO: 123456\nO.S.: 456789\nPROPRIEDADE: RANCHO AZUL")
             )
             whenever(
                 noteRepository.getRegDriver()
@@ -300,7 +298,7 @@ class IGetDescReviewTest {
             whenever(
                 getTitleMenu()
             ).thenReturn(
-                Result.success("FRENTE: 2\nLIBERAÇÃO: 123456\nO.S.: 456789\nPROPRIEDADE: RANCHO AZUL")
+                flowOf("FRENTE: 2\nLIBERAÇÃO: 123456\nO.S.: 456789\nPROPRIEDADE: RANCHO AZUL")
             )
             whenever(
                 noteRepository.getRegDriver()
@@ -360,7 +358,7 @@ class IGetDescReviewTest {
             whenever(
                 getTitleMenu()
             ).thenReturn(
-                Result.success("FRENTE: 2\nLIBERAÇÃO: 123456\nO.S.: 456789\nPROPRIEDADE: RANCHO AZUL")
+                flowOf("FRENTE: 2\nLIBERAÇÃO: 123456\nO.S.: 456789\nPROPRIEDADE: RANCHO AZUL")
             )
             whenever(
                 noteRepository.getRegDriver()
@@ -436,7 +434,7 @@ class IGetDescReviewTest {
             whenever(
                 getTitleMenu()
             ).thenReturn(
-                Result.success("FRENTE: 2\nLIBERAÇÃO: 123456\nO.S.: 456789\nPROPRIEDADE: RANCHO AZUL")
+                flowOf("FRENTE: 2\nLIBERAÇÃO: 123456\nO.S.: 456789\nPROPRIEDADE: RANCHO AZUL")
             )
             whenever(
                 noteRepository.getRegDriver()

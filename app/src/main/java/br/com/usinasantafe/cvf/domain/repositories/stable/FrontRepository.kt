@@ -9,4 +9,5 @@ interface FrontRepository {
     suspend fun listAll(token: String): Result<List<Front>>
     suspend fun listAll(): Result<List<Front>>
     suspend fun getById(id: Int): Result<Front>
+    suspend fun add(entity: Front): EmptyResult
 }

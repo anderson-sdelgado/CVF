@@ -46,4 +46,10 @@ class IReleaseRepository @Inject constructor(
             releaseRoomDatasource.getById(id).getOrThrow().roomModelToEntity()
         }
 
+    override suspend fun add(entity: Release): EmptyResult =
+        call(getClassAndMethod()) {
+            val exist = releaseRoomDatasource.hasById(entity.id).getOrThrow()
+            if (!exist) { releaseRoomDatasource.add(entity.entityToRoomModel()).getOrThrow() }
+        }
+
 }

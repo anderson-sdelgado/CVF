@@ -10,6 +10,9 @@ import br.com.usinasantafe.cvf.lib.TB_FRONT
 interface FrontDao {
 
     @Insert
+    suspend fun insert(model: FrontRoomModel)
+
+    @Insert
     suspend fun insertAll(list: List<FrontRoomModel>)
 
     @Query("DELETE FROM $TB_FRONT")
@@ -20,5 +23,8 @@ interface FrontDao {
 
     @Query("SELECT * FROM $TB_FRONT WHERE id = :id")
     suspend fun getById(id: Int): FrontRoomModel
+
+    @Query("SELECT EXISTS(SELECT * FROM $TB_FRONT WHERE id = :id)")
+    suspend fun hasById(id: Int): Boolean
 
 }

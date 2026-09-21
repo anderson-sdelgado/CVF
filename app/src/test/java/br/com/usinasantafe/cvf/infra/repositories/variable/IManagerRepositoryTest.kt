@@ -419,7 +419,8 @@ class IManagerRepositoryTest {
                     ManagerRetrofitModelOutput(
                         idRelease = 1,
                         idFront = 2,
-                        idServ = 3
+                        idServ = 3,
+                        qtdLimitCart = 3
                     )
                 )
             ).thenReturn(
@@ -473,7 +474,8 @@ class IManagerRepositoryTest {
                 ManagerRetrofitModelOutput(
                     idRelease = 1,
                     idFront = 2,
-                    idServ = 3
+                    idServ = 3,
+                    qtdLimitCart = 3
                 )
             )
             assertEquals(
@@ -513,7 +515,8 @@ class IManagerRepositoryTest {
                 ManagerRetrofitModelOutput(
                     idRelease = 1,
                     idFront = 2,
-                    idServ = 3
+                    idServ = 3,
+                    qtdLimitCart = 3
                 )
             )
             verify(managerSharedPreferencesDatasource, atLeastOnce()).setStatusSend(StatusSend.SENT)
@@ -612,6 +615,33 @@ class IManagerRepositoryTest {
             assertEquals(
                 3,
                 result.getOrNull()!!
+            )
+        }
+
+    @Test
+    fun `update - Check return failure if have error in ManagerSharedPreferencesDatasource update`() =
+        runTest {
+            whenever(
+                managerSharedPreferencesDatasource.update(1, 2, 3)
+            ).thenReturn(
+                resultFailure(
+                    "IManagerSharedPreferencesDatasource.update",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.update(1, 2, 3)
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IManagerRepository.update -> IManagerSharedPreferencesDatasource.update",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
             )
         }
 

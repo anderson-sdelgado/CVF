@@ -12,6 +12,11 @@ class IFrontRoomDatasource @Inject constructor(
     private val frontDao: FrontDao
 ): FrontRoomDatasource {
 
+    override suspend fun add(model: FrontRoomModel): EmptyResult =
+        result(getClassAndMethod()) {
+            frontDao.insert(model)
+        }
+
     override suspend fun addAll(list: List<FrontRoomModel>): EmptyResult =
         result(getClassAndMethod()) {
             frontDao.insertAll(list)
@@ -30,6 +35,11 @@ class IFrontRoomDatasource @Inject constructor(
     override suspend fun getById(id: Int): Result<FrontRoomModel> =
         result(getClassAndMethod()) {
             frontDao.getById(id)
+        }
+
+    override suspend fun hasById(id: Int): Result<Boolean> =
+        result(getClassAndMethod()) {
+            frontDao.hasById(id)
         }
 
 }

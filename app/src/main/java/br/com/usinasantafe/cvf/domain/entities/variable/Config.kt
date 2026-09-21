@@ -9,4 +9,5 @@ data class Config(
     var idServ: Int? = null,
     var statusSend: StatusSend = StatusSend.STARTED,
     var flagUpdate: Boolean = false,
+    var tokenFCM: String? = null,
 )

@@ -11,6 +11,8 @@ import br.com.usinasantafe.cvf.lib.OptionMenu
 import br.com.usinasantafe.cvf.lib.TypeButton
 import br.com.usinasantafe.cvf.utils.resultFailure
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
@@ -69,11 +71,7 @@ class TruckViewModelTest {
             whenever(
                 getTitleMenu()
             ).thenReturn(
-                resultFailure(
-                    context = "GetDescRelease",
-                    message = "-",
-                    cause = Exception()
-                )
+                flow { throw Exception("GetDescRelease") }
             )
             viewModel.recoverData()
             assertEquals(
@@ -100,7 +98,7 @@ class TruckViewModelTest {
             whenever(
                 getTitleMenu()
             ).thenReturn(
-                Result.success("Test")
+                flowOf("Test")
             )
             whenever(
                 getNroTruck()
@@ -136,7 +134,7 @@ class TruckViewModelTest {
             whenever(
                 getTitleMenu()
             ).thenReturn(
-                Result.success("Test")
+                flowOf("Test")
             )
             whenever(
                 getNroTruck()

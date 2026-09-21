@@ -3,6 +3,7 @@ package br.com.usinasantafe.cvf.external.room.datasource.stable
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import br.com.usinasantafe.cvf.TestApp
 import br.com.usinasantafe.cvf.external.room.dao.DatabaseRoom
 import br.com.usinasantafe.cvf.external.room.dao.stable.ColabDao
 import br.com.usinasantafe.cvf.infra.models.room.stable.ColabRoomModel
@@ -17,7 +18,7 @@ import kotlin.intArrayOf
 import kotlin.test.assertEquals
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [34])
+@Config(sdk = [34], application = TestApp::class)
 class IColabRoomDatasourceTest {
 
     private lateinit var colabDao: ColabDao

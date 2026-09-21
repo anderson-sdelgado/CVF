@@ -3,6 +3,7 @@ package br.com.usinasantafe.cvf.external.sharedPreferences
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.test.core.app.ApplicationProvider
+import br.com.usinasantafe.cvf.TestApp
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cvf.lib.StatusSend
 import kotlinx.coroutines.test.runTest
@@ -16,7 +17,7 @@ import kotlin.test.assertEquals
 import kotlin.text.get
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [34])
+@Config(sdk = [34], application = TestApp::class)
 class IConfigSharedPreferencesDatasourceTest {
 
     private lateinit var context : Context
@@ -307,6 +308,125 @@ class IConfigSharedPreferencesDatasourceTest {
             assertEquals(
                 true,
                 result.getOrNull()!!
+            )
+        }
+
+    @Test
+    fun `setTokenFCM - Check altered data if Config SharedPreferences internal is empty`() =
+        runTest {
+            val result = datasource.setTokenFCM("token")
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                false,
+                result.getOrNull()!!
+            )
+            val model = datasource.get().getOrThrow()
+            assertEquals(
+                ConfigSharedPreferencesModel(
+                    tokenFCM = "token",
+                    statusSend = StatusSend.STARTED
+                ),
+                model
+            )
+        }
+
+    @Test
+    fun `setTokenFCM - Check not altered data if token to Config SharedPreferences internal equal token input`() =
+        runTest {
+            val data = ConfigSharedPreferencesModel(
+                number = 16997417840,
+                password = "123456",
+                idServ = 1,
+                version = "1.00",
+                tokenFCM = "token",
+                statusSend = StatusSend.SENT
+            )
+            datasource.save(data)
+            val result = datasource.setTokenFCM("token")
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                false,
+                result.getOrNull()!!
+            )
+            val model = datasource.get().getOrThrow()
+            assertEquals(
+                ConfigSharedPreferencesModel(
+                    number = 16997417840,
+                    password = "123456",
+                    idServ = 1,
+                    version = "1.00",
+                    tokenFCM = "token",
+                    statusSend = StatusSend.SENT
+                ),
+                model
+            )
+        }
+
+    @Test
+    fun `setTokenFCM - Check altered data if token to Config SharedPreferences internal different token input and statusSend is START`() =
+        runTest {
+            val data = ConfigSharedPreferencesModel(
+                tokenFCM = "token",
+                statusSend = StatusSend.STARTED
+            )
+            datasource.save(data)
+            val result = datasource.setTokenFCM("token2")
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                false,
+                result.getOrNull()!!
+            )
+            val model = datasource.get().getOrThrow()
+            assertEquals(
+                ConfigSharedPreferencesModel(
+                    tokenFCM = "token2",
+                    statusSend = StatusSend.STARTED
+                ),
+                model
+            )
+        }
+
+    @Test
+    fun `setTokenFCM - Check altered data if token to Config SharedPreferences internal different token input and statusSend is SENT`() =
+        runTest {
+            val data = ConfigSharedPreferencesModel(
+                number = 16997417840,
+                password = "123456",
+                idServ = 1,
+                version = "1.00",
+                tokenFCM = "token",
+                statusSend = StatusSend.SENT
+            )
+            datasource.save(data)
+            val result = datasource.setTokenFCM("token2")
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                true,
+                result.getOrNull()!!
+            )
+            val model = datasource.get().getOrThrow()
+            assertEquals(
+                ConfigSharedPreferencesModel(
+                    number = 16997417840,
+                    password = "123456",
+                    idServ = 1,
+                    version = "1.00",
+                    tokenFCM = "token2",
+                    statusSend = StatusSend.SEND
+                ),
+                model
             )
         }
 

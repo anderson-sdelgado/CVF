@@ -3,6 +3,7 @@ package br.com.usinasantafe.cvf.external.room.datasource.stable
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import br.com.usinasantafe.cvf.TestApp
 import br.com.usinasantafe.cvf.external.room.dao.DatabaseRoom
 import br.com.usinasantafe.cvf.external.room.dao.stable.FrontDao
 import br.com.usinasantafe.cvf.infra.models.room.stable.FrontRoomModel
@@ -17,7 +18,7 @@ import kotlin.intArrayOf
 import kotlin.test.assertEquals
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [34])
+@Config(sdk = [34], application = TestApp::class)
 class IFrontRoomDatasourceTest {
 
     private lateinit var frontDao: FrontDao
@@ -284,4 +285,155 @@ class IFrontRoomDatasourceTest {
             )
         }
 
+    @Test
+    fun `hasById - Check return false if not have row fielded`() =
+        runTest {
+            val result = datasource.hasById(1)
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                false,
+                result.getOrNull()!!
+            )
+        }
+
+    @Test
+    fun `hasById - Check return true if have row fielded`() =
+        runTest {
+            frontDao.insertAll(
+                listOf(
+                    FrontRoomModel(
+                        id = 1,
+                        cd = 1,
+                        description = "Test1"
+                    ),
+                    FrontRoomModel(
+                        id = 3,
+                        cd = 3,
+                        description = "Test3"
+                    ),
+                    FrontRoomModel(
+                        id = 2,
+                        cd = 2,
+                        description = "Test2"
+                    ),
+                )
+            )
+            val result = datasource.hasById(2)
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                true,
+                result.getOrNull()!!
+            )
+        }
+
+    @Test
+    fun `add - Check failure if have row repeated`() =
+        runTest {
+            frontDao.insertAll(
+                listOf(
+                    FrontRoomModel(
+                        id = 1,
+                        cd = 1,
+                        description = "Test1"
+                    ),
+                    FrontRoomModel(
+                        id = 3,
+                        cd = 3,
+                        description = "Test3"
+                    ),
+                )
+            )
+            val result = datasource.add(
+                FrontRoomModel(
+                    id = 1,
+                    cd = 1,
+                    description = "Test1"
+                )
+            )
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IFrontRoomDatasource.add",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: tb_front.id (code 1555 SQLITE_CONSTRAINT_PRIMARYKEY)",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `add - Check success if have row is correct`() =
+        runTest {
+            frontDao.insertAll(
+                listOf(
+                    FrontRoomModel(
+                        id = 1,
+                        cd = 1,
+                        description = "Test1"
+                    ),
+                    FrontRoomModel(
+                        id = 3,
+                        cd = 3,
+                        description = "Test3"
+                    ),
+                )
+            )
+            val listBefore = frontDao.all()
+            assertEquals(
+                2,
+                listBefore.size
+            )
+            val result = datasource.add(
+                FrontRoomModel(
+                    id = 2,
+                    cd = 2,
+                    description = "Test2"
+                )
+            )
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            val listAfter = frontDao.all()
+            assertEquals(
+                3,
+                listAfter.size
+            )
+            val model1 = listAfter[0]
+            assertEquals(
+                FrontRoomModel(
+                    id = 1,
+                    cd = 1,
+                    description = "Test1"
+                ),
+                model1
+            )
+            val model2 = listAfter[1]
+            assertEquals(
+                FrontRoomModel(
+                    id = 2,
+                    cd = 2,
+                    description = "Test2"
+                ),
+                model2
+            )
+            val model3 = listAfter[2]
+            assertEquals(
+                FrontRoomModel(
+                    id = 3,
+                    cd = 3,
+                    description = "Test3"
+                ),
+                model3
+            )
+        }
 }

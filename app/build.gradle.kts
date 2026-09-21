@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.google.services)
 }
 
 val mockitoAgent = configurations.create("mockitoAgent")
@@ -46,7 +47,7 @@ android {
         flavorDimensions += "version"
         create("dev") {
             dimension = "version"
-            applicationIdSuffix = ".dev"
+//            applicationIdSuffix = ".dev"
             manifestPlaceholders["appName"] = "CVF-DEV"
             resValue("string", "base_url", "https://app.usinasantafe.com.br/cvfdev/view/")
         }
@@ -168,6 +169,10 @@ dependencies {
     androidTestImplementation(libs.mockito.kotlin)
     androidTestImplementation(libs.mockito.android)
     androidTestImplementation(kotlin("test"))
+
+    // --- Firebase ---
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.messaging)
 }
 
 tasks.withType<Test>().configureEach {

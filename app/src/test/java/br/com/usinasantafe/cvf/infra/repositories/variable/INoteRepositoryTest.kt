@@ -101,6 +101,9 @@ class INoteRepositoryTest {
                 regDriver = 19759,
                 idTruck = 10,
                 idConfigServ = 10,
+                idFront = 1,
+                idRelease = 2,
+                dateHour = "",
                 cartList = listOf(
                     CartRetrofitModelOutput(
                         id = 1,
@@ -119,6 +122,9 @@ class INoteRepositoryTest {
                 regDriver = 18017,
                 idTruck = 100,
                 idConfigServ = 10,
+                idFront = 1,
+                idRelease = 2,
+                dateHour = "",
                 cartList = listOf(
                     CartRetrofitModelOutput(
                         id = 3,
@@ -478,7 +484,7 @@ class INoteRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.send("token", 1)
+            val result = repository.send("token", 1, 1, 2)
             assertEquals(
                 true,
                 result.isFailure
@@ -510,7 +516,7 @@ class INoteRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.send("token", 1)
+            val result = repository.send("token", 1, 1, 2)
             assertEquals(
                 true,
                 result.isFailure
@@ -552,7 +558,7 @@ class INoteRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.send("token", 10)
+            val result = repository.send("token", 10, 1, 2)
             assertEquals(
                 true,
                 result.isFailure
@@ -599,7 +605,7 @@ class INoteRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.send("token", 10)
+            val result = repository.send("token", 10, 1, 2)
             assertEquals(
                 true,
                 result.isFailure
@@ -637,7 +643,7 @@ class INoteRepositoryTest {
             ).thenReturn(
                 Result.success(headerRetrofitModelInputList)
             )
-            val result = repository.send("token", 10)
+            val result = repository.send("token", 10, 1, 2)
             verify(headerRoomDatasource, atLeastOnce()).updateStatusSend(StatusSend.SENT, headerRoomModelWithIdList)
             assertEquals(
                 true,

@@ -14,7 +14,8 @@ class IManagerRetrofitDatasourceTest {
     private val data = ManagerRetrofitModelOutput(
         idFront = 1,
         idRelease = 2,
-        idServ = 3
+        idServ = 3,
+        qtdLimitCart = 3
     )
 
     @Test

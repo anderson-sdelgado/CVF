@@ -9,4 +9,5 @@ interface ReleaseRepository {
     suspend fun listAll(token: String): Result<List<Release>>
     suspend fun listByIdFront(idFront: Int): Result<List<Release>>
     suspend fun getById(id: Int): Result<Release>
+    suspend fun add(entity: Release): EmptyResult
 }

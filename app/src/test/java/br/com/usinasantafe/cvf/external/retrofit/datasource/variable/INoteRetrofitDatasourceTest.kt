@@ -8,6 +8,7 @@ import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.Test
+import java.util.Date
 import kotlin.test.assertEquals
 
 class INoteRetrofitDatasourceTest {
@@ -18,6 +19,9 @@ class INoteRetrofitDatasourceTest {
             regDriver = 19759,
             idTruck = 100,
             idConfigServ = 4,
+            idFront = 1,
+            idRelease = 2,
+            dateHour = "",
             cartList = listOf(
                 CartRetrofitModelOutput(
                     id = 1,

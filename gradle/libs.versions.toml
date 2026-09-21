@@ -31,6 +31,8 @@ androidxHiltNavigationCompose = "1.4.0"
 timber = "5.0.1"
 material3 = "1.4.0"
 
+googleServices = "4.4.4"
+firebaseBom = "34.5.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -82,9 +84,13 @@ hilt-ext-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "hi
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "room" }

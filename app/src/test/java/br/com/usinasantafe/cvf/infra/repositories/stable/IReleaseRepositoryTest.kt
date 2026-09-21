@@ -1,15 +1,18 @@
 package br.com.usinasantafe.cvf.infra.repositories.stable
 
+import br.com.usinasantafe.cvf.domain.entities.stable.Front
 import br.com.usinasantafe.cvf.domain.entities.stable.Release
 import br.com.usinasantafe.cvf.infra.datasource.retrofit.stable.ReleaseRetrofitDatasource
 import br.com.usinasantafe.cvf.infra.datasource.room.stable.ReleaseRoomDatasource
 import br.com.usinasantafe.cvf.infra.models.retrofit.stable.ReleaseRetrofitModel
+import br.com.usinasantafe.cvf.infra.models.room.stable.FrontRoomModel
 import br.com.usinasantafe.cvf.infra.models.room.stable.ReleaseRoomModel
 import br.com.usinasantafe.cvf.utils.resultFailure
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.atLeastOnce
+import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import kotlin.test.assertEquals
@@ -339,4 +342,157 @@ class IReleaseRepositoryTest {
             )
         }
 
+    @Test
+    fun `add - Check return failure if have error in ReleaseRoomDatasource hasById`() =
+        runTest {
+            whenever(
+                releaseRoomDatasource.hasById(1)
+            ).thenReturn(
+                resultFailure(
+                    "IReleaseRoomDatasource.hasById",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.add(
+                Release(
+                    id = 1,
+                    nroOS = 1,
+                    idPropAgr = 1,
+                    descPropAgr = "Test",
+                    idFront = 1
+                )
+            )
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IReleaseRepository.add -> IReleaseRoomDatasource.hasById",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `add - Check return correct if function execute successfully and FrontRoomDatasource hasById return true`() =
+        runTest {
+            whenever(
+                releaseRoomDatasource.hasById(1)
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.add(
+                Release(
+                    id = 1,
+                    nroOS = 1,
+                    idPropAgr = 1,
+                    descPropAgr = "Test",
+                    idFront = 1
+                )
+            )
+            verify(
+                releaseRoomDatasource,
+                never()
+            ).add(
+                ReleaseRoomModel(
+                    id = 1,
+                    nroOS = 1,
+                    idPropAgr = 1,
+                    descPropAgr = "Test",
+                    idFront = 1
+                )
+            )
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+        }
+
+    @Test
+    fun `add - Check return failure if have error in ReleaseRoomDatasource add`() =
+        runTest {
+            whenever(
+                releaseRoomDatasource.hasById(1)
+            ).thenReturn(
+                Result.success(false)
+            )
+            whenever(
+                releaseRoomDatasource.add(
+                    ReleaseRoomModel(
+                        id = 1,
+                        nroOS = 1,
+                        idPropAgr = 1,
+                        descPropAgr = "Test",
+                        idFront = 1
+                    )
+                )
+            ).thenReturn(
+                resultFailure(
+                    "IReleaseRoomDatasource.add",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.add(
+                Release(
+                    id = 1,
+                    nroOS = 1,
+                    idPropAgr = 1,
+                    descPropAgr = "Test",
+                    idFront = 1
+                )
+            )
+            assertEquals(
+                true,
+                result.isFailure
+            )
+            assertEquals(
+                "IReleaseRepository.add -> IReleaseRoomDatasource.add",
+                result.exceptionOrNull()!!.message
+            )
+            assertEquals(
+                "java.lang.Exception",
+                result.exceptionOrNull()!!.cause.toString()
+            )
+        }
+
+    @Test
+    fun `add - Check return correct if function execute successfully and FrontRoomDatasource hasById return false`() =
+        runTest {
+
+            whenever(
+                releaseRoomDatasource.hasById(1)
+            ).thenReturn(
+                Result.success(false)
+            )
+            val result = repository.add(
+                Release(
+                    id = 1,
+                    nroOS = 1,
+                    idPropAgr = 1,
+                    descPropAgr = "Test",
+                    idFront = 1
+                )
+            )
+            verify(
+                releaseRoomDatasource,
+                atLeastOnce()
+            ).add(
+                ReleaseRoomModel(
+                    id = 1,
+                    nroOS = 1,
+                    idPropAgr = 1,
+                    descPropAgr = "Test",
+                    idFront = 1
+                )
+            )
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+        }
 }

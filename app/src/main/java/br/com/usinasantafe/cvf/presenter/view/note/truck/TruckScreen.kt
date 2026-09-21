@@ -26,7 +26,7 @@ import br.com.usinasantafe.cvf.presenter.theme.MsgUpdate
 import br.com.usinasantafe.cvf.presenter.theme.TextFieldDesign
 import br.com.usinasantafe.cvf.presenter.theme.TitleDesign
 import br.com.usinasantafe.cvf.presenter.theme.topBar
-import br.com.usinasantafe.cvf.presenter.view.ButtonsGenericNumeric
+import br.com.usinasantafe.cvf.presenter.theme.ButtonsGenericNumeric
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
 import kotlin.Boolean
 

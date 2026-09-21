@@ -62,3 +62,11 @@ suspend fun <T> tryCatch (
         throw AppError(context, null, e)
     }
 }
+
+fun <T> callFlow(
+    context: String,
+    block: () -> Flow<T>
+): Flow<T> =
+    block().catch { e ->
+        throw resultFailure(context, e).exceptionOrNull() ?: e
+    }

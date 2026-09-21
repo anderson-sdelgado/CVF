@@ -10,8 +10,8 @@ import br.com.usinasantafe.cvf.domain.usecases.note.SetNroTruck
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.OptionMenu
 import br.com.usinasantafe.cvf.lib.TypeButton
-import br.com.usinasantafe.cvf.presenter.view.addTextField
-import br.com.usinasantafe.cvf.presenter.view.clearTextField
+import br.com.usinasantafe.cvf.presenter.theme.addTextField
+import br.com.usinasantafe.cvf.presenter.theme.clearTextField
 import br.com.usinasantafe.cvf.utils.UiStateWithStatusUpdate
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
 import br.com.usinasantafe.cvf.utils.onFailureUpdate
@@ -21,6 +21,8 @@ import br.com.usinasantafe.cvf.utils.withFailure
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -62,21 +64,27 @@ class TruckViewModel @Inject constructor(
 
     fun onCheckDialog(flag: Boolean) = updateState { copy(flagCheckDialog = flag) }
 
+    init {
+        observeTitle()
+    }
+
+    private fun observeTitle() =
+        viewModelScope.launch {
+            getTitleMenu()
+                .catch {
+                    updateState { withFailure(Errors.EXCEPTION) }
+                }
+                .collect {
+                    updateState { copy(descRelease = it) }
+                }
+        }
+
     fun recoverData() = viewModelScope.launch {
-        data class RecoverDriver(
-            val descRelease: String,
-            val text: String
-        )
         runCatching {
-            val descRelease = getTitleMenu().getOrThrow().required("descRelease")
-            val text = getNroTruck().getOrThrow() ?: ""
-            RecoverDriver(
-                descRelease = descRelease,
-                text = text
-            )
+            getNroTruck().getOrThrow() ?: ""
         }
             .onSuccess {
-                updateState { copy(descRelease = it.descRelease, text = it.text, flagMenu = false) }
+                updateState { copy(text = it, flagMenu = false) }
             }
             .onFailureUpdate(::updateState)
     }

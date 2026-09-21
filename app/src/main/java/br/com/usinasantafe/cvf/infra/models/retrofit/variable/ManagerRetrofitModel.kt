@@ -1,11 +1,13 @@
 package br.com.usinasantafe.cvf.infra.models.retrofit.variable
 
+import br.com.usinasantafe.cvf.domain.usecases.manager.QtdLimitCart
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ManagerSharedPreferencesModel
 import br.com.usinasantafe.cvf.utils.required
 
 data class ManagerRetrofitModelOutput(
     val idRelease: Int,
     val idFront: Int,
+    val qtdLimitCart: Int,
     val idServ: Int
 )
 
@@ -21,6 +23,7 @@ fun ManagerSharedPreferencesModel.sharedPreferencesModelToRetrofitModel(
     return ManagerRetrofitModelOutput(
         idRelease = ::idRelease.required(),
         idFront = ::idFront.required(),
+        qtdLimitCart = ::qtdLimitCart.required(),
         idServ = idServ,
     )
 }

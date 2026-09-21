@@ -6,6 +6,7 @@ import br.com.usinasantafe.cvf.utils.required
 data class ConfigRetrofitModelOutput(
     val number: Long,
     val version: String,
+    val tokenFCM: String
 )
 
 data class ConfigRetrofitModelInput(
@@ -14,15 +15,10 @@ data class ConfigRetrofitModelInput(
     val failure: String?
 )
 
-fun Config.entityToRetrofitModel(): ConfigRetrofitModelOutput {
+fun Config.entityToRetrofitModel(tokenFCM: String): ConfigRetrofitModelOutput {
     return ConfigRetrofitModelOutput(
         number = ::number.required(),
         version = ::version.required(),
-    )
-}
-
-fun ConfigRetrofitModelInput.retrofitModelToEntity(): Config {
-    return Config(
-        idServ = ::idServ.required(),
+        tokenFCM = tokenFCM,
     )
 }

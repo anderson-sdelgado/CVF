@@ -2,6 +2,7 @@ package br.com.usinasantafe.cvf.domain.usecases.note
 
 import br.com.usinasantafe.cvf.domain.entities.variable.Config
 import br.com.usinasantafe.cvf.domain.repositories.variable.ConfigRepository
+import br.com.usinasantafe.cvf.domain.repositories.variable.ManagerRepository
 import br.com.usinasantafe.cvf.domain.repositories.variable.NoteRepository
 import br.com.usinasantafe.cvf.domain.usecases.common.Token
 import br.com.usinasantafe.cvf.utils.resultFailure
@@ -18,10 +19,12 @@ class ISendNoteTest {
     private val token = mock<Token>()
     private val configRepository = mock<ConfigRepository>()
     private val noteRepository = mock<NoteRepository>()
+    private val managerRepository = mock<ManagerRepository>()
     private val usecase = ISendNote(
         token = token,
         configRepository = configRepository,
-        noteRepository = noteRepository
+        noteRepository = noteRepository,
+        managerRepository = managerRepository
     )
 
     @Test
@@ -101,7 +104,7 @@ class ISendNoteTest {
                 )
             )
             whenever(
-                noteRepository.send("token", 1)
+                noteRepository.send("token", 1, 1 , 2)
             ).thenReturn(
                 resultFailure(
                     "INoteRepository.send",
@@ -140,7 +143,7 @@ class ISendNoteTest {
                 )
             )
             whenever(
-                noteRepository.send("token", 1)
+                noteRepository.send("token", 1, 1 , 2)
             ).thenReturn(
                 resultFailure(
                     "INoteRepository.send",
@@ -181,7 +184,7 @@ class ISendNoteTest {
                 )
             )
             val result = usecase()
-            verify(noteRepository, atLeastOnce()).send("token", 1)
+            verify(noteRepository, atLeastOnce()).send("token", 1, 1 , 2)
             assertEquals(
                 true,
                 result.isSuccess

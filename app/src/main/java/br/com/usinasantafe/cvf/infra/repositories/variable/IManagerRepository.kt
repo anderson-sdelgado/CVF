@@ -1,14 +1,20 @@
 package br.com.usinasantafe.cvf.infra.repositories.variable
 
+import br.com.usinasantafe.cvf.domain.entities.variable.Manager
 import br.com.usinasantafe.cvf.domain.repositories.variable.ManagerRepository
 import br.com.usinasantafe.cvf.infra.datasource.retrofit.variable.ManagerRetrofitDatasource
 import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.ManagerSharedPreferencesDatasource
 import br.com.usinasantafe.cvf.infra.models.retrofit.variable.sharedPreferencesModelToRetrofitModel
+import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ManagerSharedPreferencesModel
+import br.com.usinasantafe.cvf.infra.models.sharedpreferences.sharedPreferencesModelToEntity
 import br.com.usinasantafe.cvf.lib.StatusSend
 import br.com.usinasantafe.cvf.utils.EmptyResult
 import br.com.usinasantafe.cvf.utils.call
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
+import kotlin.collections.get
 
 class IManagerRepository @Inject constructor(
     private val managerSharedPreferencesDatasource: ManagerSharedPreferencesDatasource,
@@ -70,5 +76,13 @@ class IManagerRepository @Inject constructor(
         call(getClassAndMethod()) {
             managerSharedPreferencesDatasource.getQtdLimitCart().getOrThrow()
         }
+
+    override suspend fun update(idFront: Int, idRelease: Int, qtdLimitCart: Int): EmptyResult =
+        call(getClassAndMethod()) {
+            managerSharedPreferencesDatasource.update(idFront, idRelease, qtdLimitCart).getOrThrow()
+        }
+
+    override fun observe(): Flow<Manager> =
+        managerSharedPreferencesDatasource.observe().map { it.sharedPreferencesModelToEntity() }
 
 }

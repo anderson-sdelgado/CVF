@@ -39,7 +39,6 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
                 data,
                 ConfigSharedPreferencesModel::class.java
             )
-            model.sharedPreferencesModelToEntity()
             model
         }
 
@@ -77,6 +76,23 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
         result(getClassAndMethod()) {
             val model = get().getOrThrow()
             model.flagUpdate
+        }
+
+    override suspend fun setTokenFCM(token: String): Result<Boolean> =
+        result(getClassAndMethod()) {
+            val has = has().getOrThrow()
+            val model = get().getOrThrow()
+            val check = (has && (model.tokenFCM != token) && (model.statusSend == StatusSend.SENT))
+            model.tokenFCM = token
+            if(check) model.statusSend = StatusSend.SEND
+            save(model).getOrThrow()
+            check
+        }
+
+    override suspend fun getTokenFCM(): Result<String> =
+        result(getClassAndMethod()) {
+            val model = get().getOrThrow()
+            model::tokenFCM.required()
         }
 
 }
