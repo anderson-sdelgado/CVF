@@ -3,6 +3,7 @@ package br.com.usinasantafe.cvf.infra.datasource.sharedpreferences
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cvf.lib.StatusSend
 import br.com.usinasantafe.cvf.utils.EmptyResult
+import kotlinx.coroutines.flow.Flow
 
 interface ConfigSharedPreferencesDatasource {
     suspend fun save(model: ConfigSharedPreferencesModel): EmptyResult
@@ -14,4 +15,5 @@ interface ConfigSharedPreferencesDatasource {
     suspend fun getFlagUpdate(): Result<Boolean>
     suspend fun setTokenFCM(token: String): Result<Boolean>
     suspend fun getTokenFCM(): Result<String>
+    fun observe(): Flow<ConfigSharedPreferencesModel>
 }

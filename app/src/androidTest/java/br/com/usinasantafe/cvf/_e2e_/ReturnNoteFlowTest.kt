@@ -25,11 +25,14 @@ import br.com.usinasantafe.cvf.lib.WEB_ALL_COLAB
 import br.com.usinasantafe.cvf.lib.WEB_ALL_EQUIP
 import br.com.usinasantafe.cvf.lib.WEB_ALL_FRONT
 import br.com.usinasantafe.cvf.lib.WEB_ALL_RELEASE
+import br.com.usinasantafe.cvf.lib.WEB_CHECK_NRO_EQUIP
+import br.com.usinasantafe.cvf.lib.WEB_CHECK_REG_COLAB
 import br.com.usinasantafe.cvf.lib.WEB_SAVE_MANAGER
 import br.com.usinasantafe.cvf.lib.WEB_SAVE_TOKEN
 import br.com.usinasantafe.cvf.presenter.MainActivity
 import br.com.usinasantafe.cvf.presenter.theme.TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE
-import br.com.usinasantafe.cvf.presenter.view.configuration.password.TAG_PASSWORD_TEXT_FIELD_SCREEN
+import br.com.usinasantafe.cvf.presenter.view.configuration.config.TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN
+import br.com.usinasantafe.cvf.presenter.view.configuration.config.TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN
 import br.com.usinasantafe.cvf.utils.TestConfig
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -49,7 +52,7 @@ import kotlin.test.assertEquals
 import kotlin.time.Duration.Companion.minutes
 
 @HiltAndroidTest
-class ConfigFlowTest {
+class ReturnNoteFlowTest {
 
     @get:Rule(order = 0)
     val hiltRule = HiltAndroidRule(this)
@@ -137,6 +140,36 @@ class ConfigFlowTest {
             }
         """.trimIndent()
 
+
+        private val resultColabSingle = """
+            {
+                "status": "success",
+                "data": {"reg":123456,"name":"João da Silva"}
+            }
+        """.trimIndent()
+
+        private val resultTruckSingle = """
+            {
+                "status": "success",
+                "data": {"id":10,"nro":200,"cdOperClass":1,"descOperClass":"TRUCK","type":1}
+            }
+        """.trimIndent()
+
+        private val resultCart1Single = """
+            {
+                "status": "success",
+                "data": {"id":13,"nro":1500,"cdOperClass":5,"descOperClass":"CART1","type":2}
+            }
+        """.trimIndent()
+
+        private val resultCart2Single = """
+            {
+                "status": "success",
+                "data": {"id":104,"nro":250,"cdOperClass":5,"descOperClass":"CART2","type":2}
+            }
+        """.trimIndent()
+
+
         @BeforeClass
         @JvmStatic
         fun setupClass() {
@@ -151,6 +184,16 @@ class ConfigFlowTest {
                         "/$WEB_ALL_FRONT" -> MockResponse().setBody(resultFront)
                         "/$WEB_ALL_RELEASE" -> MockResponse().setBody(resultRelease)
                         "/$WEB_SAVE_MANAGER" -> MockResponse().setBody(resultManager)
+                        "/$WEB_CHECK_REG_COLAB" -> MockResponse().setBody(resultColabSingle)
+                        "/$WEB_CHECK_NRO_EQUIP" -> {
+                            val body = request.body.readUtf8()
+                            when {
+                                body.contains("200") -> MockResponse().setBody(resultTruckSingle)
+                                body.contains("1500") -> MockResponse().setBody(resultCart1Single)
+                                body.contains("250") -> MockResponse().setBody(resultCart2Single)
+                                else -> MockResponse().setResponseCode(404)
+                            }
+                        }
                         else -> MockResponse().setResponseCode(404)
                     }
                 }
@@ -176,17 +219,7 @@ class ConfigFlowTest {
         hiltRule.inject()
         TestConfig.skipPermissionRequest = true
         runBlocking {
-            configSharedPreferencesDatasource.save(
-                ConfigSharedPreferencesModel(
-                    number = 16997417840,
-                    password = "12345",
-                    idServ = 1,
-                    version = "1.0",
-                    statusSend = StatusSend.STARTED,
-                    flagUpdate = false,
-                    tokenFCM = "TOKEN_FCM"
-                )
-            )
+            configSharedPreferencesDatasource.setTokenFCM("TOKEN_TEST")
         }
     }
 
@@ -200,10 +233,10 @@ class ConfigFlowTest {
 
             composeTestRule.waitUntilTimeout()
 
-//            composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
-//                .performTextInput("16997417840")
-//            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN)
-//                .performTextInput("12345")
+            composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("16997417840")
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("12345")
             composeTestRule.onNodeWithText("SALVAR")
                 .performClick()
 
@@ -211,7 +244,7 @@ class ConfigFlowTest {
 
             composeTestRule.waitUntilTimeout()
 
-//            asserts()
+            asserts()
 
             Log.d("TestDebug", "Position 03")
 
@@ -222,116 +255,167 @@ class ConfigFlowTest {
 
             Log.d("TestDebug", "Position 04")
 
-
             composeTestRule.waitUntilTimeout()
 
-            composeTestRule.onNodeWithText("RETORNAR")
+            composeTestRule.onNodeWithTag("item_check_box_3")
                 .performClick()
 
             Log.d("TestDebug", "Position 05")
 
             composeTestRule.waitUntilTimeout()
 
-            composeTestRule.onNodeWithText("SALVAR")
+            composeTestRule.onNodeWithText("AVANÇAR")
                 .performClick()
 
             Log.d("TestDebug", "Position 06")
 
             composeTestRule.waitUntilTimeout()
 
-            composeTestRule.onNodeWithTag(TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE)
+            composeTestRule.onNodeWithTag("item_check_box_5")
                 .performClick()
 
             Log.d("TestDebug", "Position 07")
 
             composeTestRule.waitUntilTimeout()
 
-            composeTestRule.onNodeWithTag("item_check_box_3")
+            composeTestRule.onNodeWithText("AVANÇAR")
                 .performClick()
 
             Log.d("TestDebug", "Position 08")
 
             composeTestRule.waitUntilTimeout()
 
-            composeTestRule.onNodeWithTag("item_check_box_1")
+            composeTestRule.onNodeWithTag("button_1")
+                .performClick()
+            composeTestRule.onNodeWithTag("button_2")
+                .performClick()
+            composeTestRule.onNodeWithTag("button_3")
+                .performClick()
+            composeTestRule.onNodeWithTag("button_4")
+                .performClick()
+            composeTestRule.onNodeWithTag("button_5")
+                .performClick()
+            composeTestRule.onNodeWithTag("button_6")
+                .performClick()
+            composeTestRule.onNodeWithTag("button_OK")
                 .performClick()
 
             Log.d("TestDebug", "Position 09")
 
             composeTestRule.waitUntilTimeout()
 
-            composeTestRule.onNodeWithTag("item_check_box_3")
+            composeTestRule.onNodeWithTag("button_CANCEL")
                 .performClick()
 
             Log.d("TestDebug", "Position 10")
 
             composeTestRule.waitUntilTimeout()
 
-            composeTestRule.onNodeWithText("AVANÇAR")
+            composeTestRule.onNodeWithTag("button_OK")
                 .performClick()
 
             Log.d("TestDebug", "Position 11")
 
             composeTestRule.waitUntilTimeout()
 
-            composeTestRule.onNodeWithText("RETORNAR")
+            composeTestRule.onNodeWithTag("button_2")
+                .performClick()
+            composeTestRule.onNodeWithTag("button_0")
+                .performClick()
+            composeTestRule.onNodeWithTag("button_0")
+                .performClick()
+            composeTestRule.onNodeWithTag("button_OK")
                 .performClick()
 
             Log.d("TestDebug", "Position 12")
 
             composeTestRule.waitUntilTimeout()
 
-            composeTestRule.onNodeWithText("AVANÇAR")
+            composeTestRule.onNodeWithTag("button_CANCEL")
                 .performClick()
 
             Log.d("TestDebug", "Position 13")
 
             composeTestRule.waitUntilTimeout()
 
-            composeTestRule.onNodeWithTag("item_check_box_5")
+            composeTestRule.onNodeWithTag("button_OK")
                 .performClick()
 
             Log.d("TestDebug", "Position 14")
 
             composeTestRule.waitUntilTimeout()
 
-            composeTestRule.onNodeWithTag("item_check_box_3")
+            composeTestRule.onNodeWithTag("button_1")
+                .performClick()
+            composeTestRule.onNodeWithTag("button_5")
+                .performClick()
+            composeTestRule.onNodeWithTag("button_0")
+                .performClick()
+            composeTestRule.onNodeWithTag("button_0")
+                .performClick()
+            composeTestRule.onNodeWithTag("button_OK")
                 .performClick()
 
             Log.d("TestDebug", "Position 15")
 
             composeTestRule.waitUntilTimeout()
 
-            composeTestRule.onNodeWithText("AVANÇAR")
+            composeTestRule.onNodeWithTag("button_CANCEL")
                 .performClick()
 
             Log.d("TestDebug", "Position 16")
 
             composeTestRule.waitUntilTimeout()
 
-            checkData()
+            composeTestRule.onNodeWithTag("button_OK")
+                .performClick()
 
             Log.d("TestDebug", "Position 17")
 
+            composeTestRule.waitUntilTimeout()
 
-            composeTestRule.waitUntilTimeout(10_000)
+            composeTestRule.onNodeWithTag("button_2")
+                .performClick()
+            composeTestRule.onNodeWithTag("button_5")
+                .performClick()
+            composeTestRule.onNodeWithTag("button_0")
+                .performClick()
+            composeTestRule.onNodeWithTag("button_OK")
+                .performClick()
+
+            Log.d("TestDebug", "Position 18")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("button_CANCEL")
+                .performClick()
+
+            Log.d("TestDebug", "Position 19")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("button_OK")
+                .performClick()
+
+            Log.d("TestDebug", "Position 20")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("button_OK")
+                .performClick()
+
+            Log.d("TestDebug", "Position 21")
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithText("FINALIZAR VIAGEM")
+                .performClick()
+
+            Log.d("TestDebug", "Position 22")
+
+            composeTestRule.waitUntilTimeout(20_000)
 
         }
-
-    private suspend fun checkData() {
-
-        val resultGet = managerSharedPreferencesDatasource.get()
-        assertEquals(
-            resultGet.isSuccess,
-            true
-        )
-        val model = resultGet.getOrNull()!!
-        assertEquals(
-            StatusSend.SENT,
-            model.statusSend
-        )
-
-    }
 
     private suspend fun asserts() {
 

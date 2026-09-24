@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cvf.lib
 
-enum class StatusSend { STARTED, SEND, SENT }
+enum class StatusSend { STARTED, SEND, SENDING, SENT }
 enum class Errors { FIELD_EMPTY, TOKEN, UPDATE, EXCEPTION, INVALID, NOT_SELECTION, PASSWORD_INVALID, RETURN_INVALID_FRONT, CART_REPEATED, INVERTED_CART }
 enum class TypeButton { NUMERIC, CLEAN, OK, CANCEL }
 

@@ -59,6 +59,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.OptionMenu
+import br.com.usinasantafe.cvf.lib.StatusSend
 import br.com.usinasantafe.cvf.lib.errors
 import br.com.usinasantafe.cvf.lib.msg
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
@@ -69,6 +70,7 @@ const val TAG_BUTTON_YES_ALERT_DIALOG_CHECK = "tag_button_yes_alert_dialog_check
 const val TAG_BUTTON_NO_ALERT_DIALOG_CHECK = "tag_button_no_alert_dialog_check"
 const val TAG_TOP_BAR_MENU = "tag_top_bar_menu"
 const val TAG_TOP_BAR_DELETE = "tag_top_bar_delete"
+const val TAG_TOP_BAR_TITLE = "tag_top_bar_title"
 const val TAG_TOP_BAR_MENU_ITEM_CONFIG = "tag_top_bar_menu_item_config"
 const val TAG_TOP_BAR_MENU_ITEM_FRONT = "tag_top_bar_menu_item_front"
 const val TAG_TOP_BAR_MENU_ITEM_RELEASE = "tag_top_bar_menu_item_release"
@@ -333,27 +335,6 @@ fun TextFieldDesign(
             .testTag(tag)
     )
 }
-//
-//@Composable
-//fun ButtonNumericDesign(
-//    text: @Composable () -> Unit,
-//    setActionButton: () -> Unit,
-//    modifier: Modifier,
-//    tag: String = "",
-//) {
-//    return ElevatedButton(
-//        onClick = {
-//            setActionButton()
-//        },
-//        modifier = modifier
-//            .fillMaxHeight()
-//            .testTag("button_$tag")
-//        ,
-//        shape = RoundedCornerShape(10.dp)
-//    ) {
-//        text()
-//    }
-//}
 
 @Composable
 fun ButtonNumericDesign(
@@ -533,6 +514,7 @@ fun MsgErrors(errors: Errors, onClickOk: () -> Unit, failure: String, value: Str
 @Composable
 fun topBar(
     title: String,
+    statusSend: StatusSend,
     onOptionMenu: (OptionMenu) -> Unit
 ): @Composable () -> Unit = {
     var menuExpanded by remember { mutableStateOf(false) }
@@ -540,14 +522,16 @@ fun topBar(
         title = {
             Text(
                 text = title,
-                modifier = Modifier.padding(vertical = 12.dp),
+                modifier = Modifier
+                    .padding(vertical = 12.dp)
+                    .testTag(TAG_TOP_BAR_TITLE),
                 style = TextStyle(
                     color = Color.White
                 )
             )
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color.Blue,
+            containerColor = colorStatus(statusSend),
         ),
         actions = {
             Row(
@@ -698,4 +682,13 @@ fun AlertDialogProgressIndeterminateDesign(
     }
 }
 
+@Composable
+private fun colorStatus(statusSend: StatusSend): Color {
+    return when (statusSend) {
+        StatusSend.STARTED -> Color.Red
+        StatusSend.SEND -> Color.Red
+        StatusSend.SENT -> Color.Blue
+        StatusSend.SENDING -> Color.Yellow
+    }
 
+}

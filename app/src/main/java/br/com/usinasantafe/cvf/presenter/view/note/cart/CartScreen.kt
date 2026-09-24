@@ -20,6 +20,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cvf.R
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.OptionMenu
+import br.com.usinasantafe.cvf.lib.StatusSend
 import br.com.usinasantafe.cvf.lib.TypeButton
 import br.com.usinasantafe.cvf.presenter.theme.AlertDialogCheckDesign
 import br.com.usinasantafe.cvf.presenter.theme.AlertDialogProgressIndeterminateDesign
@@ -36,7 +37,8 @@ fun CartScreen(
     viewModel: CartViewModel = hiltViewModel(),
     onNavReview: () -> Unit,
     onNavDriver: () -> Unit,
-    onNavPassword: (OptionMenu) -> Unit,
+    onNavTruck: () -> Unit,
+    onNavPassword: (OptionMenu, Int) -> Unit,
 ) {
     CVFTheme {
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -46,6 +48,7 @@ fun CartScreen(
         }
 
         CartContent(
+            statusSend = uiState.statusSend,
             flagCheckDialog = uiState.flagCheckDialog,
             onCheckDialog = viewModel::onCheckDialog,
             delete = viewModel::delete,
@@ -61,6 +64,7 @@ fun CartScreen(
             status = uiState.status,
             onNavReview = onNavReview,
             onNavDriver = onNavDriver,
+            onNavTruck = onNavTruck,
             onNavPassword = onNavPassword
         )
     }
@@ -68,6 +72,7 @@ fun CartScreen(
 
 @Composable
 fun CartContent(
+    statusSend: StatusSend,
     flagCheckDialog: Boolean,
     onCheckDialog: (Boolean) -> Unit,
     delete: () -> Unit,
@@ -83,13 +88,15 @@ fun CartContent(
     status: UiStatusStateUpdate,
     onNavReview: () -> Unit,
     onNavDriver: () -> Unit,
-    onNavPassword: (OptionMenu) -> Unit,
+    onNavTruck: () -> Unit,
+    onNavPassword: (OptionMenu, Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
         topBar = topBar(
             title = descRelease,
-            onOptionMenu = onOptionMenu
+            onOptionMenu = onOptionMenu,
+            statusSend = statusSend
         ),
         modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
@@ -163,14 +170,14 @@ fun CartContent(
         if(flagMenu) {
             when(optionMenu){
                 OptionMenu.DELETE -> onNavDriver()
-                else -> onNavPassword(optionMenu)
+                else -> onNavPassword(optionMenu, posCart)
             }
         }
     }
 
     LaunchedEffect(flagReturn) {
         if (flagReturn) {
-            onNavDriver()
+            onNavTruck()
         }
     }
 
@@ -182,6 +189,7 @@ fun CartPagePreview() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             CartContent(
+                statusSend = StatusSend.STARTED,
                 flagCheckDialog = false,
                 onCheckDialog = {},
                 delete = {},
@@ -197,7 +205,8 @@ fun CartPagePreview() {
                 status = UiStatusStateUpdate(),
                 onNavReview = {},
                 onNavDriver = {},
-                onNavPassword = {},
+                onNavTruck = {},
+                onNavPassword = { _, _ -> },
                 modifier = Modifier.padding(innerPadding)
             )
         }

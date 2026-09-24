@@ -11,7 +11,7 @@ import androidx.navigation.navArgument
 import br.com.usinasantafe.cvf.lib.Option
 import br.com.usinasantafe.cvf.lib.OptionMenu
 import br.com.usinasantafe.cvf.lib.OptionReturn
-import br.com.usinasantafe.cvf.presenter.navigation.Args.FLOW_CART_ARG
+import br.com.usinasantafe.cvf.presenter.navigation.Args.POS_CART_ARG
 import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_ARG
 import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_MENU_ARG
 import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_RETURN_ARG
@@ -58,22 +58,31 @@ fun NavigationGraph(
         }
 
         composable(
-            CONFIG_ROUTE,
+            PASSWORD_ROUTE,
             arguments = listOf(
-                navArgument(OPTION_ARG) { type = NavType.IntType },
+                navArgument(OPTION_MENU_ARG) { type = NavType.IntType },
                 navArgument(OPTION_RETURN_ARG) { type = NavType.IntType },
+                navArgument(POS_CART_ARG) { type = NavType.IntType }
             )
-        ) { entry ->
+        ){ entry ->
             val optionReturn = OptionReturn.entries[entry.arguments?.getInt(OPTION_RETURN_ARG)!!]
-            ConfigScreen(
+            val optionMenu = OptionMenu.entries[entry.arguments?.getInt(OPTION_MENU_ARG)!!]
+            val posCart = entry.arguments?.getInt(POS_CART_ARG)!!
+            PasswordScreen(
+                onNavConfig = {
+                    navActions.navigateToConfig(Option.EDIT.ordinal, optionReturn.ordinal, optionMenu.ordinal, posCart)
+                },
                 onNavFront = {
-                    navActions.navigateToFront(optionReturn = optionReturn.ordinal)
+                    navActions.navigateToFront(Option.EDIT.ordinal, optionReturn.ordinal, optionMenu.ordinal, posCart)
+                },
+                onNavRelease = {
+                    navActions.navigateToRelease(Option.EDIT.ordinal, optionReturn.ordinal, optionMenu.ordinal, posCart)
                 },
                 onNavNote = {
                     when(optionReturn) {
                         OptionReturn.DRIVER -> navActions.navigateToDriver()
                         OptionReturn.TRUCK -> navActions.navigateToTruck()
-                        OptionReturn.CART -> navActions.navigateToCart()
+                        OptionReturn.CART -> navActions.navigateToCart(posCart)
                         OptionReturn.REVIEW -> navActions.navigateToReview()
                     }
                 }
@@ -81,29 +90,27 @@ fun NavigationGraph(
         }
 
         composable(
-            PASSWORD_ROUTE,
+            CONFIG_ROUTE,
             arguments = listOf(
-                navArgument(OPTION_MENU_ARG) { type = NavType.IntType },
+                navArgument(OPTION_ARG) { type = NavType.IntType },
                 navArgument(OPTION_RETURN_ARG) { type = NavType.IntType },
+                navArgument(OPTION_MENU_ARG) { type = NavType.IntType },
+                navArgument(POS_CART_ARG) { type = NavType.IntType }
             )
-        ){ entry ->
+        ) { entry ->
             val optionReturn = OptionReturn.entries[entry.arguments?.getInt(OPTION_RETURN_ARG)!!]
             val optionMenu = OptionMenu.entries[entry.arguments?.getInt(OPTION_MENU_ARG)!!]
-            PasswordScreen(
-                onNavConfig = {
-                    navActions.navigateToConfig(option = Option.EDIT.ordinal, optionReturn.ordinal)
-                },
+            val option = Option.entries[entry.arguments?.getInt(OPTION_ARG)!!]
+            val posCart = entry.arguments?.getInt(POS_CART_ARG)!!
+            ConfigScreen(
                 onNavFront = {
-                    navActions.navigateToFront(option = Option.EDIT.ordinal, optionReturn.ordinal, optionMenu.ordinal)
-                },
-                onNavRelease = {
-                    navActions.navigateToRelease(option = Option.EDIT.ordinal, optionReturn.ordinal, optionMenu.ordinal)
+                    navActions.navigateToFront(option = option.ordinal, optionReturn.ordinal, optionMenu.ordinal, posCart)
                 },
                 onNavNote = {
                     when(optionReturn) {
                         OptionReturn.DRIVER -> navActions.navigateToDriver()
                         OptionReturn.TRUCK -> navActions.navigateToTruck()
-                        OptionReturn.CART -> navActions.navigateToCart()
+                        OptionReturn.CART -> navActions.navigateToCart(posCart)
                         OptionReturn.REVIEW -> navActions.navigateToReview()
                     }
                 }
@@ -116,20 +123,25 @@ fun NavigationGraph(
                 navArgument(OPTION_ARG) { type = NavType.IntType },
                 navArgument(OPTION_RETURN_ARG) { type = NavType.IntType },
                 navArgument(OPTION_MENU_ARG) { type = NavType.IntType },
+                navArgument(POS_CART_ARG) { type = NavType.IntType }
             )
         ){ entry ->
             val optionReturn = OptionReturn.entries[entry.arguments?.getInt(OPTION_RETURN_ARG)!!]
             val optionMenu = OptionMenu.entries[entry.arguments?.getInt(OPTION_MENU_ARG)!!]
+            val option = Option.entries[entry.arguments?.getInt(OPTION_ARG)!!]
+            val posCart = entry.arguments?.getInt(POS_CART_ARG)!!
             FrontScreen(
                 onNavRelease = {
-                    navActions.navigateToRelease(optionMenu = optionMenu.ordinal)
+                    navActions.navigateToRelease(option = option.ordinal, optionReturn.ordinal, optionMenu.ordinal, posCart)
                 },
-                onNavConfig = navActions::navigateToConfig,
+                onNavConfig = {
+                    navActions.navigateToConfig(option = option.ordinal, optionReturn.ordinal, optionMenu.ordinal, posCart)
+                },
                 onNavNote = {
                     when(optionReturn) {
                         OptionReturn.DRIVER -> navActions.navigateToDriver()
                         OptionReturn.TRUCK -> navActions.navigateToTruck()
-                        OptionReturn.CART -> navActions.navigateToCart()
+                        OptionReturn.CART -> navActions.navigateToCart(posCart)
                         OptionReturn.REVIEW -> navActions.navigateToReview()
                     }
                 }
@@ -142,20 +154,23 @@ fun NavigationGraph(
                 navArgument(OPTION_ARG) { type = NavType.IntType },
                 navArgument(OPTION_RETURN_ARG) { type = NavType.IntType },
                 navArgument(OPTION_MENU_ARG) { type = NavType.IntType },
+                navArgument(POS_CART_ARG) { type = NavType.IntType },
             )
         ){ entry ->
             val optionReturn = OptionReturn.entries[entry.arguments?.getInt(OPTION_RETURN_ARG)!!]
             val optionMenu = OptionMenu.entries[entry.arguments?.getInt(OPTION_MENU_ARG)!!]
+            val option = Option.entries[entry.arguments?.getInt(OPTION_ARG)!!]
+            val posCart = entry.arguments?.getInt(POS_CART_ARG)!!
             ReleaseScreen(
                 onNavFront = {
-                    navActions.navigateToFront(optionMenu = optionMenu.ordinal)
+                    navActions.navigateToFront(option = option.ordinal, optionReturn.ordinal, optionMenu.ordinal, posCart)
                 },
                 onNavDriver = navActions::navigateToDriver,
                 onNavNote = {
                     when(optionReturn) {
                         OptionReturn.DRIVER -> navActions.navigateToDriver()
                         OptionReturn.TRUCK -> navActions.navigateToTruck()
-                        OptionReturn.CART -> navActions.navigateToCart()
+                        OptionReturn.CART -> navActions.navigateToCart(posCart)
                         OptionReturn.REVIEW -> navActions.navigateToReview()
                     }
                 }
@@ -164,8 +179,8 @@ fun NavigationGraph(
 
         composable(DRIVER_ROUTE) {
             DriverScreen(
-                onNavPassword = {
-                    navActions.navigateToPassword(it.ordinal, OptionReturn.DRIVER.ordinal)
+                onNavPassword = { optionMenu ->
+                    navActions.navigateToPassword(optionMenu.ordinal, OptionReturn.DRIVER.ordinal, 0)
                 },
                 onNavTruck = navActions::navigateToTruck
             )
@@ -173,8 +188,8 @@ fun NavigationGraph(
 
         composable(TRUCK_ROUTE) {
             TruckScreen(
-                onNavPassword = {
-                    navActions.navigateToPassword(it.ordinal, OptionReturn.TRUCK.ordinal)
+                onNavPassword = { optionMenu ->
+                    navActions.navigateToPassword(optionMenu.ordinal, OptionReturn.TRUCK.ordinal, 0)
                 },
                 onNavDriver = navActions::navigateToDriver,
                 onNavCart = navActions::navigateToCart,
@@ -184,14 +199,15 @@ fun NavigationGraph(
         composable(
             CART_ROUTE,
             arguments = listOf(
-                navArgument(FLOW_CART_ARG) { type = NavType.IntType },
+                navArgument(POS_CART_ARG) { type = NavType.IntType },
             )
         ) {
             CartScreen(
                 onNavReview = navActions::navigateToReview,
                 onNavDriver = navActions::navigateToDriver,
-                onNavPassword = {
-                    navActions.navigateToPassword(it.ordinal, OptionReturn.CART.ordinal)
+                onNavTruck = navActions::navigateToTruck,
+                onNavPassword = { optionMenu, posCart ->
+                    navActions.navigateToPassword(optionMenu.ordinal, OptionReturn.CART.ordinal, posCart)
                 }
             )
         }

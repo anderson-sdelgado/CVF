@@ -10,8 +10,10 @@ import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableRelease
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.LevelUpdate
 import br.com.usinasantafe.cvf.lib.Option
+import br.com.usinasantafe.cvf.lib.OptionMenu
 import br.com.usinasantafe.cvf.presenter.model.ItemCheckBoxScreenModel
 import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_ARG
+import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_MENU_ARG
 import br.com.usinasantafe.cvf.utils.CheckNetwork
 import br.com.usinasantafe.cvf.utils.UiStateWithStatusUpdate
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
@@ -31,6 +33,7 @@ import javax.inject.Inject
 
 data class ReleaseState(
     val option: Option = Option.INSERT,
+    val optionMenu: OptionMenu = OptionMenu.CONFIG,
     override val status: UiStatusStateUpdate = UiStatusStateUpdate()
 ) : UiStateWithStatusUpdate<ReleaseState> {
 
@@ -49,6 +52,7 @@ class ReleaseViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val option: Int = savedStateHandle[OPTION_ARG]!!
+    private val optionMenu: Int = savedStateHandle[OPTION_MENU_ARG]!!
 
     val list = mutableStateListOf<ItemCheckBoxScreenModel>()
 
@@ -67,12 +71,13 @@ class ReleaseViewModel @Inject constructor(
         updateState {
             copy(
                 option = Option.entries[this@ReleaseViewModel.option],
+                optionMenu = OptionMenu.entries[this@ReleaseViewModel.optionMenu],
             )
         }
     }
 
     fun start() {
-        if(checkNetwork.isConnected() && state.option == Option.EDIT) update(false) else list()
+        if(checkNetwork.isConnected() && state.optionMenu == OptionMenu.RELEASE) update(false) else list()
     }
 
     fun list() = viewModelScope.launch {

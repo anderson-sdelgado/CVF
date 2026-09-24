@@ -18,6 +18,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cvf.R
 import br.com.usinasantafe.cvf.lib.OptionMenu
+import br.com.usinasantafe.cvf.lib.StatusSend
 import br.com.usinasantafe.cvf.lib.TypeButton
 import br.com.usinasantafe.cvf.presenter.theme.AlertDialogCheckDesign
 import br.com.usinasantafe.cvf.presenter.theme.AlertDialogProgressIndeterminateDesign
@@ -45,6 +46,7 @@ fun TruckScreen(
         }
 
         TruckContent(
+            statusSend = uiState.statusSend,
             flagCheckDialog = uiState.flagCheckDialog,
             onCheckDialog = viewModel::onCheckDialog,
             delete = viewModel::delete,
@@ -67,6 +69,7 @@ fun TruckScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TruckContent(
+    statusSend: StatusSend,
     flagCheckDialog: Boolean,
     onCheckDialog: (Boolean) -> Unit,
     delete: () -> Unit,
@@ -87,7 +90,8 @@ fun TruckContent(
     Scaffold(
         topBar = topBar(
             title = descRelease,
-            onOptionMenu = onOptionMenu
+            onOptionMenu = onOptionMenu,
+            statusSend = statusSend
         ),
         modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
@@ -164,6 +168,7 @@ fun TruckPagePreview() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             TruckContent(
+                statusSend = StatusSend.STARTED,
                 flagCheckDialog = false,
                 onCheckDialog = {},
                 delete = {},

@@ -23,8 +23,7 @@ class ICartSharedPreferencesDatasource @Inject constructor(
     override suspend fun add(model: CartSharedPreferencesModel): EmptyResult =
         result(getClassAndMethod()) {
             val list = list().getOrThrow()
-            var mutableList = list.toMutableList()
-            if(list.isNotEmpty()) mutableList = list.toMutableList()
+            val mutableList = list.filter { it.position != model.position }.toMutableList()
             mutableList.add(model)
             sharedPreferences.edit {
                 putString(

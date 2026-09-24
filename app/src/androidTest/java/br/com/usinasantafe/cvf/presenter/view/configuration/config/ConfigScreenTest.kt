@@ -15,6 +15,7 @@ import br.com.usinasantafe.cvf.di.provider.BaseUrlModuleTest
 import br.com.usinasantafe.cvf.domain.usecases.config.GetConfig
 import br.com.usinasantafe.cvf.domain.usecases.config.SetFinishUpdateAllTable
 import br.com.usinasantafe.cvf.domain.usecases.config.UpdateConfig
+import br.com.usinasantafe.cvf.domain.usecases.manager.CheckStatusManager
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableColab
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableEquip
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableFront
@@ -40,13 +41,16 @@ import br.com.usinasantafe.cvf.lib.WEB_ALL_FRONT
 import br.com.usinasantafe.cvf.lib.WEB_ALL_RELEASE
 import br.com.usinasantafe.cvf.lib.WEB_SAVE_TOKEN
 import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_ARG
+import br.com.usinasantafe.cvf.utils.TestConfig
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import javax.inject.Inject
@@ -90,6 +94,9 @@ class ConfigScreenTest {
     lateinit var updateTableRelease: UpdateTableRelease
 
     @Inject
+    lateinit var checkStatusManager: CheckStatusManager
+
+    @Inject
     lateinit var colabDao: ColabDao
 
     @Inject
@@ -100,6 +107,14 @@ class ConfigScreenTest {
 
     @Inject
     lateinit var releaseDao: ReleaseDao
+
+    @Before
+    fun setup() {
+        TestConfig.skipPermissionRequest = true
+        runBlocking {
+            configSharedPreferencesDatasource.setTokenFCM("TOKEN_TEST")
+        }
+    }
 
     private val resultTokenFailure = """{"status": "success", "idServ": "1a"}""".trimIndent()
 
@@ -1325,7 +1340,8 @@ class ConfigScreenTest {
                     updateTableColab = updateTableColab,
                     updateTableEquip = updateTableEquip,
                     updateTableFront = updateTableFront,
-                    updateTableRelease = updateTableRelease
+                    updateTableRelease = updateTableRelease,
+                    checkStatusManager = checkStatusManager
                 ),
                 onNavFront = {},
                 onNavNote = {}

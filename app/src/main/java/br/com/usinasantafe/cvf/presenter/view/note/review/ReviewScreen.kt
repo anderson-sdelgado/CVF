@@ -107,7 +107,7 @@ fun ReviewContent(
         }
         ButtonMaxWidth(R.string.text_finish_travel, onClick = finish)
         Spacer(modifier = Modifier.padding(vertical = 2.dp))
-        ButtonMaxWidth(R.string.text_clean_travel, flagDelete = true, onClick = delete)
+        ButtonMaxWidth(R.string.text_clean_travel, flagDelete = true, onClick = { onCheckDialog(true) })
         BackHandler {}
 
         if(status.flagDialog) {

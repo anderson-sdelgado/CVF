@@ -23,13 +23,3 @@ fun ManagerSharedPreferencesModel.sharedPreferencesModelToEntity(): Manager {
         )
     }
 }
-
-fun Manager.entityToSharedPreferencesModel(): ManagerSharedPreferencesModel {
-    return with(this) {
-        ManagerSharedPreferencesModel(
-            idRelease = ::idRelease.required(),
-            idFront = ::idFront.required(),
-            qtdLimitCart = ::qtdLimitCart.required()
-        )
-    }
-}

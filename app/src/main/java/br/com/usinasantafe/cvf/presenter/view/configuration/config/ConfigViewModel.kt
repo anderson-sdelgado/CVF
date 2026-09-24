@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cvf.domain.usecases.config.GetConfig
 import br.com.usinasantafe.cvf.domain.usecases.config.SetFinishUpdateAllTable
 import br.com.usinasantafe.cvf.domain.usecases.config.UpdateConfig
+import br.com.usinasantafe.cvf.domain.usecases.manager.CheckStatusManager
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableColab
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableEquip
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableFront
@@ -32,7 +33,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class ConfigState(
-    val option: Option = Option.INSERT,
+    val flagReturn: Boolean = false,
     val number: String = "",
     val password: String = "",
     val version: String = "",
@@ -53,7 +54,8 @@ class ConfigViewModel @Inject constructor(
     private val updateTableColab: UpdateTableColab,
     private val updateTableEquip: UpdateTableEquip,
     private val updateTableFront: UpdateTableFront,
-    private val updateTableRelease: UpdateTableRelease
+    private val updateTableRelease: UpdateTableRelease,
+    private val checkStatusManager: CheckStatusManager
 ) : ViewModel() {
 
     private val option: Int = savedStateHandle[OPTION_ARG]!!
@@ -81,30 +83,25 @@ class ConfigViewModel @Inject constructor(
 
     private fun ConfigState.isValid() = number.isNotBlank() && password.isNotBlank()
 
-    init {
-        updateState {
-            copy(
-                option = Option.entries[this@ConfigViewModel.option],
-            )
-        }
-    }
-
     fun recoverData() = viewModelScope.launch {
 
         data class RecoverConfig(
             val number: String,
             val password: String,
+            val flagReturn: Boolean
         )
 
         runCatching {
             val config = getConfig().getOrThrow()
+            val flagReturn = checkStatusManager().getOrThrow()
             RecoverConfig(
                 number = config?.number ?: "",
-                password = config?.password ?: ""
+                password = config?.password ?: "",
+                flagReturn = flagReturn
             )
         }
             .onSuccess {
-                updateState { copy(number = it.number, password = it.password) }
+                updateState { copy(number = it.number, password = it.password, flagReturn = it.flagReturn) }
             }
             .onFailureUpdate(::updateState)
     }

@@ -26,6 +26,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cvf.R
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.OptionMenu
+import br.com.usinasantafe.cvf.lib.StatusSend
 import br.com.usinasantafe.cvf.lib.TypeButton
 import br.com.usinasantafe.cvf.presenter.theme.AlertDialogCheckDesign
 import br.com.usinasantafe.cvf.presenter.theme.AlertDialogProgressIndeterminateDesign
@@ -35,6 +36,7 @@ import br.com.usinasantafe.cvf.presenter.theme.TextFieldDesign
 import br.com.usinasantafe.cvf.presenter.theme.TitleDesign
 import br.com.usinasantafe.cvf.presenter.theme.topBar
 import br.com.usinasantafe.cvf.presenter.theme.ButtonsGenericNumeric
+import br.com.usinasantafe.cvf.utils.TestConfig
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
 
 @Composable
@@ -45,7 +47,7 @@ fun DriverScreen(
 ) {
     CVFTheme {
 
-        RequestNotificationPermission()
+        if(!TestConfig.skipPermissionRequest) RequestNotificationPermission()
 
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -54,6 +56,7 @@ fun DriverScreen(
         }
 
         DriverContent(
+            statusSend = uiState.statusSend,
             flagCheckDialog = uiState.flagCheckDialog,
             onCheckDialog = viewModel::onCheckDialog,
             delete = viewModel::delete,
@@ -75,6 +78,7 @@ fun DriverScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DriverContent(
+    statusSend: StatusSend,
     flagCheckDialog: Boolean,
     onCheckDialog: (Boolean) -> Unit,
     delete: () -> Unit,
@@ -94,7 +98,8 @@ fun DriverContent(
     Scaffold(
         topBar = topBar(
             title = descRelease,
-            onOptionMenu = onOptionMenu
+            onOptionMenu = onOptionMenu,
+            statusSend = statusSend
         ),
         modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
@@ -189,6 +194,7 @@ fun DriverPagePreview() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             DriverContent(
+                statusSend = StatusSend.SEND,
                 flagCheckDialog = false,
                 onCheckDialog = {},
                 delete = {},
@@ -215,6 +221,7 @@ fun DriverPagePreviewProgress() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             DriverContent(
+                statusSend = StatusSend.SENDING,
                 flagCheckDialog = false,
                 onCheckDialog = {},
                 delete = {},
@@ -243,6 +250,7 @@ fun DriverPagePreviewFailure() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             DriverContent(
+                statusSend = StatusSend.SENT,
                 flagCheckDialog = false,
                 onCheckDialog = {},
                 delete = {},
@@ -274,6 +282,7 @@ fun DriverPagePreviewCheck() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             DriverContent(
+                statusSend = StatusSend.STARTED,
                 flagCheckDialog = true,
                 onCheckDialog = {},
                 delete = {},

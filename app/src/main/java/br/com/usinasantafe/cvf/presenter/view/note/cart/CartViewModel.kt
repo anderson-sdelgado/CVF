@@ -3,6 +3,7 @@ package br.com.usinasantafe.cvf.presenter.view.note.cart
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.usinasantafe.cvf.domain.usecases.config.GetStatusSend
 import br.com.usinasantafe.cvf.domain.usecases.manager.GetTitleMenu
 import br.com.usinasantafe.cvf.domain.usecases.note.HasNroEquip
 import br.com.usinasantafe.cvf.domain.usecases.note.DeleteNote
@@ -11,31 +12,30 @@ import br.com.usinasantafe.cvf.domain.usecases.note.GetTypeTruck
 import br.com.usinasantafe.cvf.domain.usecases.manager.QtdLimitCart
 import br.com.usinasantafe.cvf.domain.usecases.note.CheckInvertedCart
 import br.com.usinasantafe.cvf.domain.usecases.note.CheckRepeatedCart
-import br.com.usinasantafe.cvf.domain.usecases.note.PosCart
 import br.com.usinasantafe.cvf.domain.usecases.note.SetNroCart
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.FlowCart
 import br.com.usinasantafe.cvf.lib.OptionMenu
+import br.com.usinasantafe.cvf.lib.StatusSend
 import br.com.usinasantafe.cvf.lib.TypeButton
 import br.com.usinasantafe.cvf.lib.TypeTruck
-import br.com.usinasantafe.cvf.presenter.navigation.Args.FLOW_CART_ARG
+import br.com.usinasantafe.cvf.presenter.navigation.Args.POS_CART_ARG
 import br.com.usinasantafe.cvf.presenter.theme.addTextField
 import br.com.usinasantafe.cvf.presenter.theme.clearTextField
 import br.com.usinasantafe.cvf.utils.UiStateWithStatusUpdate
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
 import br.com.usinasantafe.cvf.utils.onFailureUpdate
-import br.com.usinasantafe.cvf.utils.required
 import br.com.usinasantafe.cvf.utils.withFailure
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class CartState(
+    val statusSend: StatusSend = StatusSend.SEND,
     val flowCart: FlowCart = FlowCart.NORMAL,
     val flagCheckDialog: Boolean = false,
     val pos: Int = 0,
@@ -56,9 +56,9 @@ data class CartState(
 @HiltViewModel
 class CartViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
+    private val getStatusSend: GetStatusSend,
     private val getTitleMenu: GetTitleMenu,
     private val deleteNote: DeleteNote,
-    private val posCart: PosCart,
     private val getNroCart: GetNroCart,
     private val hasNroEquip: HasNroEquip,
     private val setNroCart: SetNroCart,
@@ -68,7 +68,7 @@ class CartViewModel @Inject constructor(
     private val checkInvertedCart: CheckInvertedCart
 ) : ViewModel() {
 
-    private val flowCart: Int = savedStateHandle[FLOW_CART_ARG]!!
+    private val posCart: Int = savedStateHandle[POS_CART_ARG]!!
 
     private val _uiState = MutableStateFlow(CartState())
     val uiState = _uiState.asStateFlow()
@@ -84,15 +84,10 @@ class CartViewModel @Inject constructor(
     fun onCheckDialog(flag: Boolean) = updateState { copy(flagCheckDialog = flag) }
 
     init {
-        updateState {
-            copy(
-                flowCart = FlowCart.entries[this@CartViewModel.flowCart]
-            )
-        }
         observeTitle()
     }
 
-    private fun observeTitle() =
+    private fun observeTitle() {
         viewModelScope.launch {
             getTitleMenu()
                 .catch {
@@ -102,10 +97,20 @@ class CartViewModel @Inject constructor(
                     updateState { copy(descRelease = it) }
                 }
         }
+        viewModelScope.launch {
+            getStatusSend()
+                .catch {
+                    updateState { withFailure(Errors.EXCEPTION) }
+                }
+                .collect {
+                    updateState { copy(statusSend = it) }
+                }
+        }
+    }
 
     fun recoverData() = viewModelScope.launch {
         runCatching {
-            if (state.flowCart == FlowCart.RETURN) posCart().getOrThrow() else 1
+            if (posCart > 0) posCart else 1
         }
             .onSuccess { get(it) }
             .onFailureUpdate(::updateState)
@@ -157,7 +162,7 @@ class CartViewModel @Inject constructor(
             deleteNote().getOrThrow()
         }
             .onSuccess {
-                updateState { copy(flagMenu = true) }
+                updateState { copy(flagMenu = true, flagCheckDialog = false) }
             }
             .onFailureUpdate(::updateState)
     }
@@ -184,7 +189,7 @@ class CartViewModel @Inject constructor(
                 updateState { withFailure(Errors.INVALID) }
                 return@launch
             }
-            if(checkRepeatedCart(state.text).getOrThrow()) {
+            if(checkRepeatedCart(state.text, state.pos).getOrThrow()) {
                 updateState { withFailure(Errors.CART_REPEATED) }
                 return@launch
             }

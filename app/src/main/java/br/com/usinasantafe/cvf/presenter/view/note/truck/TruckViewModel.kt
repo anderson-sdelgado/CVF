@@ -2,6 +2,7 @@ package br.com.usinasantafe.cvf.presenter.view.note.truck
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.usinasantafe.cvf.domain.usecases.config.GetStatusSend
 import br.com.usinasantafe.cvf.domain.usecases.manager.GetTitleMenu
 import br.com.usinasantafe.cvf.domain.usecases.note.DeleteNote
 import br.com.usinasantafe.cvf.domain.usecases.note.GetNroTruck
@@ -9,6 +10,7 @@ import br.com.usinasantafe.cvf.domain.usecases.note.HasNroEquip
 import br.com.usinasantafe.cvf.domain.usecases.note.SetNroTruck
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.OptionMenu
+import br.com.usinasantafe.cvf.lib.StatusSend
 import br.com.usinasantafe.cvf.lib.TypeButton
 import br.com.usinasantafe.cvf.presenter.theme.addTextField
 import br.com.usinasantafe.cvf.presenter.theme.clearTextField
@@ -28,6 +30,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class TruckState(
+    val statusSend: StatusSend = StatusSend.SEND,
     val flagCheckDialog: Boolean = false,
     val flagMenu: Boolean = false,
     val optionMenu: OptionMenu = OptionMenu.DELETE,
@@ -44,6 +47,7 @@ data class TruckState(
 
 @HiltViewModel
 class TruckViewModel @Inject constructor(
+    private val getStatusSend: GetStatusSend,
     private val getTitleMenu: GetTitleMenu,
     private val deleteNote: DeleteNote,
     private val getNroTruck: GetNroTruck,
@@ -68,7 +72,7 @@ class TruckViewModel @Inject constructor(
         observeTitle()
     }
 
-    private fun observeTitle() =
+    private fun observeTitle() {
         viewModelScope.launch {
             getTitleMenu()
                 .catch {
@@ -78,6 +82,16 @@ class TruckViewModel @Inject constructor(
                     updateState { copy(descRelease = it) }
                 }
         }
+        viewModelScope.launch {
+            getStatusSend()
+                .catch {
+                    updateState { withFailure(Errors.EXCEPTION) }
+                }
+                .collect {
+                    updateState { copy(statusSend = it) }
+                }
+        }
+    }
 
     fun recoverData() = viewModelScope.launch {
         runCatching {
@@ -106,7 +120,7 @@ class TruckViewModel @Inject constructor(
             deleteNote().getOrThrow()
         }
             .onSuccess {
-                updateState { copy(flagMenu = true) }
+                updateState { copy(flagMenu = true, flagCheckDialog = false) }
             }
             .onFailureUpdate(::updateState)
     }

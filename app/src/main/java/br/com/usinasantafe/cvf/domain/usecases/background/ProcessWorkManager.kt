@@ -35,8 +35,12 @@ class ProcessWorkManager @AssistedInject constructor(
             return Result.success()
         } ?: return Result.success()
 
+        setStatusSend(StatusSend.SEND).onFailure { handleFailure(it, getClassAndMethod()) }
+
         sendStep(hasSendManager::invoke, sendManager::invoke)?.let { return it }
         sendStep(hasSendNote::invoke, sendNote::invoke)?.let { return it }
+
+        setStatusSend(StatusSend.SENT).onFailure { handleFailure(it, getClassAndMethod()) }
 
         return Result.success()
     }
@@ -51,12 +55,12 @@ class ProcessWorkManager @AssistedInject constructor(
         }
 
         if (hasData) {
-            setStatusSend(StatusSend.SEND).onFailure { handleFailure(it, getClassAndMethod()) }
-            send().onFailure {
-                handleFailure(it, getClassAndMethod())
+            setStatusSend(StatusSend.SENDING).onFailure { handleFailure(it, getClassAndMethod()) }
+            send().onFailure { error ->
+                handleFailure(error, getClassAndMethod())
+                setStatusSend(StatusSend.SEND).onFailure { handleFailure(it, getClassAndMethod()) }
                 return Result.retry()
             }
-            setStatusSend(StatusSend.SENT).onFailure { handleFailure(it, getClassAndMethod()) }
         }
         return null
     }

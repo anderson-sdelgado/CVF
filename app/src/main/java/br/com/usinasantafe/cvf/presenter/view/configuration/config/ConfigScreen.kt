@@ -53,7 +53,7 @@ fun ConfigScreen(
             }
 
             ConfigContent(
-                option = uiState.option,
+                flagReturn = uiState.flagReturn,
                 number = uiState.number,
                 onNumberChanged = viewModel::onNumberChanged,
                 password = uiState.password,
@@ -71,7 +71,7 @@ fun ConfigScreen(
 
 @Composable
 fun ConfigContent(
-    option: Option,
+    flagReturn: Boolean,
     number: String,
     onNumberChanged: (String) -> Unit,
     password: String,
@@ -116,7 +116,7 @@ fun ConfigContent(
         ButtonMaxWidth(id = R.string.text_pattern_save, onClick = onSaveAndUpdate)
         Spacer(modifier = Modifier.padding(vertical = 8.dp))
 
-        if(option == Option.EDIT) ButtonMaxWidth(id = R.string.text_pattern_return, onClick = onNavNote)
+        if(flagReturn) ButtonMaxWidth(id = R.string.text_pattern_return, onClick = onNavNote)
 
         if (status.flagProgress) {
             Spacer(modifier = Modifier.padding(vertical = 16.dp))
@@ -155,7 +155,7 @@ fun ConfigPagePreview() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             ConfigContent(
-                option = Option.INSERT,
+                flagReturn = false,
                 number = "",
                 onNumberChanged = {},
                 password = "",
@@ -177,7 +177,7 @@ fun ConfigPagePreviewWithData() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             ConfigContent(
-                option = Option.EDIT,
+                flagReturn = true,
                 number = "16997417840",
                 onNumberChanged = {},
                 password = "12345",
@@ -209,7 +209,7 @@ fun ConfigPagePreviewShowProgress() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             ConfigContent(
-                option = Option.INSERT,
+                flagReturn = true,
                 number = "16997417840",
                 onNumberChanged = {},
                 password = "12345",
@@ -240,7 +240,7 @@ fun ConfigPagePreviewShowMsgFieldEmpty() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             ConfigContent(
-                option = Option.INSERT,
+                flagReturn = false,
                 number = "",
                 onNumberChanged = {},
                 password = "",
@@ -271,7 +271,7 @@ fun ConfigPagePreviewShowMsgSuccess() {
     CVFTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             ConfigContent(
-                option = Option.INSERT,
+                flagReturn = false,
                 number = "16997417840",
                 onNumberChanged = {},
                 password = "12345",

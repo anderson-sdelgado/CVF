@@ -10,7 +10,6 @@ import br.com.usinasantafe.cvf.domain.usecases.note.GetTypeTruck
 import br.com.usinasantafe.cvf.domain.usecases.manager.QtdLimitCart
 import br.com.usinasantafe.cvf.domain.usecases.note.CheckInvertedCart
 import br.com.usinasantafe.cvf.domain.usecases.note.CheckRepeatedCart
-import br.com.usinasantafe.cvf.domain.usecases.note.PosCart
 import br.com.usinasantafe.cvf.domain.usecases.note.SetNroCart
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.FlowCart
@@ -41,7 +40,6 @@ class CartViewModelTest {
 
     private val getTitleMenu = mock<GetTitleMenu>()
     private val deleteNote = mock<DeleteNote>()
-    private val posCart = mock<PosCart>()
     private val getNroCart = mock<GetNroCart>()
     private val hasNroEquip = mock<HasNroEquip>()
     private val setNroCart = mock<SetNroCart>()
@@ -49,80 +47,27 @@ class CartViewModelTest {
     private val qtdLimitCart = mock<QtdLimitCart>()
     private val checkRepeatedCart = mock<CheckRepeatedCart>()
     private val checkInvertedCart = mock<CheckInvertedCart>()
+    private val getStatusSend = mock<GetStatusSend>()
 
     private  fun createdViewModel(
         flowCart: FlowCart = FlowCart.NORMAL
     ) = CartViewModel(
         savedStateHandle = SavedStateHandle(
             mapOf(
-                Args.FLOW_CART_ARG to flowCart.ordinal
+                Args.POS_CART_ARG to flowCart.ordinal
             )
         ),
         getTitleMenu = getTitleMenu,
         deleteNote = deleteNote,
-        posCart = posCart,
         getNroCart = getNroCart,
         hasNroEquip = hasNroEquip,
         setNroCart = setNroCart,
         getTypeTruck = getTypeTruck,
         qtdLimitCart = qtdLimitCart,
         checkRepeatedCart = checkRepeatedCart,
-        checkInvertedCart = checkInvertedCart
+        checkInvertedCart = checkInvertedCart,
+        getStatusSend = getStatusSend
     )
-
-    @Test
-    fun `recoverData - Check return failure if have error in PosCart and flowCart is FlowCart RETURN`() =
-        runTest {
-            whenever(
-                posCart()
-            ).thenReturn(
-                resultFailure(
-                    context = "PosCart",
-                    message = "-",
-                    cause = Exception()
-                )
-            )
-            val viewModel = createdViewModel(FlowCart.RETURN)
-            viewModel.recoverData()
-            assertEquals(
-                true,
-                viewModel.uiState.value.status.flagDialog
-            )
-            assertEquals(
-                "CartViewModel.recoverData -> CartViewModel.updateState -> PosCart -> java.lang.Exception",
-                viewModel.uiState.value.status.failure
-            )
-            assertEquals(
-                Errors.EXCEPTION,
-                viewModel.uiState.value.status.errors
-            )
-            assertEquals(
-                true,
-                viewModel.uiState.value.status.flagFailure
-            )
-        }
-
-    @Test
-    fun `recoverData - Check return correct if function execute successfully and flowCart is FlowCart RETURN`() =
-        runTest {
-            whenever(
-                posCart()
-            ).thenReturn(
-                Result.success(2)
-            )
-            val viewModel = createdViewModel(FlowCart.RETURN)
-            viewModel.recoverData()
-            verify(getNroCart, atLeastOnce()).invoke(2)
-        }
-
-    @Test
-    fun `recoverData - Check return correct if function execute successfully and flowCart is FlowCart NORMAL`() =
-        runTest {
-            val viewModel = createdViewModel()
-            viewModel.recoverData()
-            verify(getNroCart, atLeastOnce()).invoke(1)
-            verify(posCart, never()).invoke()
-        }
 
     @Test
     fun `get - Check return failure if function not executed`() =
@@ -516,7 +461,7 @@ class CartViewModelTest {
                 Result.success(TypeTruck.HAULAGE_TRUCK)
             )
             whenever(
-                checkRepeatedCart("100")
+                checkRepeatedCart("100", 2)
             ).thenReturn(
                 resultFailure(
                     context = "CheckRepeatedCart",
@@ -555,7 +500,7 @@ class CartViewModelTest {
                 Result.success(TypeTruck.HAULAGE_TRUCK)
             )
             whenever(
-                checkRepeatedCart("100")
+                checkRepeatedCart("100", 2)
             ).thenReturn(
                 Result.success(true)
             )
@@ -590,7 +535,7 @@ class CartViewModelTest {
                 Result.success(TypeTruck.HAULAGE_TRUCK)
             )
             whenever(
-                checkRepeatedCart("100")
+                checkRepeatedCart("100", 2)
             ).thenReturn(
                 Result.success(false)
             )
@@ -634,7 +579,7 @@ class CartViewModelTest {
                 Result.success(TypeTruck.HAULAGE_TRUCK)
             )
             whenever(
-                checkRepeatedCart("100")
+                checkRepeatedCart("100", 1)
             ).thenReturn(
                 Result.success(false)
             )
@@ -674,7 +619,7 @@ class CartViewModelTest {
                 Result.success(TypeTruck.HAULAGE_TRUCK)
             )
             whenever(
-                checkRepeatedCart("100")
+                checkRepeatedCart("100", 1)
             ).thenReturn(
                 Result.success(false)
             )
@@ -723,7 +668,7 @@ class CartViewModelTest {
                 Result.success(TypeTruck.HAULAGE_TRUCK)
             )
             whenever(
-                checkRepeatedCart("100")
+                checkRepeatedCart("100", 1)
             ).thenReturn(
                 Result.success(false)
             )
@@ -768,7 +713,7 @@ class CartViewModelTest {
                 Result.success(TypeTruck.HAULAGE_TRUCK)
             )
             whenever(
-                checkRepeatedCart("100")
+                checkRepeatedCart("100", 1)
             ).thenReturn(
                 Result.success(false)
             )
@@ -822,7 +767,7 @@ class CartViewModelTest {
                 Result.success(TypeTruck.HAULAGE_TRUCK)
             )
             whenever(
-                checkRepeatedCart("100")
+                checkRepeatedCart("100", 2)
             ).thenReturn(
                 Result.success(false)
             )
@@ -877,7 +822,7 @@ class CartViewModelTest {
                 Result.success(TypeTruck.HAULAGE_TRUCK)
             )
             whenever(
-                checkRepeatedCart("100")
+                checkRepeatedCart("100", 3)
             ).thenReturn(
                 Result.success(false)
             )
@@ -919,7 +864,7 @@ class CartViewModelTest {
                 Result.success(TypeTruck.HAULAGE_TRUCK)
             )
             whenever(
-                checkRepeatedCart("100")
+                checkRepeatedCart("100", 2)
             ).thenReturn(
                 Result.success(false)
             )
@@ -946,7 +891,6 @@ class CartViewModelTest {
             verify(getTitleMenu, times(2)).invoke()
             verify(getNroCart, atLeastOnce()).invoke(2)
             verify(getNroCart, atLeastOnce()).invoke(3)
-            verify(posCart, atLeastOnce()).invoke()
             assertEquals(
                 false,
                 viewModel.uiState.value.status.flagAccess
@@ -965,11 +909,6 @@ class CartViewModelTest {
             getNroCart(pos)
         ).thenReturn(
             Result.success(text)
-        )
-        whenever(
-            posCart()
-        ).thenReturn(
-            Result.success(pos)
         )
     }
 

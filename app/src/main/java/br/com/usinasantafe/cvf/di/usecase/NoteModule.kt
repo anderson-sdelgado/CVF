@@ -57,10 +57,6 @@ interface NoteModule {
 
     @Binds
     @Singleton
-    fun bindPosCart(usecase: IPosCart): PosCart
-
-    @Binds
-    @Singleton
     fun bindGetTypeTruck(usecase: IGetTypeTruck): GetTypeTruck
 
     @Binds

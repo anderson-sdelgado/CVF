@@ -11,6 +11,8 @@ import br.com.usinasantafe.cvf.lib.StatusSend
 import br.com.usinasantafe.cvf.utils.EmptyResult
 import br.com.usinasantafe.cvf.utils.call
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class IConfigRepository @Inject constructor(
@@ -34,6 +36,9 @@ class IConfigRepository @Inject constructor(
 
     override suspend fun save(entity: Config): EmptyResult =
         call(getClassAndMethod()) {
+            if(entity.tokenFCM == null) {
+                entity.tokenFCM = configSharedPreferencesDatasource.getTokenFCM().getOrNull()
+            }
             val sharedPreferencesModel = entity.entityToSharedPreferencesModel()
             configSharedPreferencesDatasource.save(sharedPreferencesModel).getOrThrow()
         }
@@ -67,5 +72,8 @@ class IConfigRepository @Inject constructor(
         call(getClassAndMethod()) {
             configSharedPreferencesDatasource.setTokenFCM(token).getOrThrow()
         }
+
+    override fun observe(): Flow<Config> =
+        configSharedPreferencesDatasource.observe().map { it.sharedPreferencesModelToEntity() }
 
 }

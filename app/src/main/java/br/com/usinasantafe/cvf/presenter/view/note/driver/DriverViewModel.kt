@@ -2,6 +2,7 @@ package br.com.usinasantafe.cvf.presenter.view.note.driver
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.usinasantafe.cvf.domain.usecases.config.GetStatusSend
 import br.com.usinasantafe.cvf.domain.usecases.manager.GetTitleMenu
 import br.com.usinasantafe.cvf.domain.usecases.note.HasRegColab
 import br.com.usinasantafe.cvf.domain.usecases.note.DeleteNote
@@ -9,6 +10,7 @@ import br.com.usinasantafe.cvf.domain.usecases.note.GetRegDriver
 import br.com.usinasantafe.cvf.domain.usecases.note.SetRegDriver
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.OptionMenu
+import br.com.usinasantafe.cvf.lib.StatusSend
 import br.com.usinasantafe.cvf.lib.TypeButton
 import br.com.usinasantafe.cvf.presenter.theme.addTextField
 import br.com.usinasantafe.cvf.presenter.theme.clearTextField
@@ -27,6 +29,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class DriverState(
+    val statusSend: StatusSend = StatusSend.SEND,
     val flagCheckDialog: Boolean = false,
     val flagMenu: Boolean = false,
     val optionMenu: OptionMenu = OptionMenu.DELETE,
@@ -42,6 +45,7 @@ data class DriverState(
 
 @HiltViewModel
 class DriverViewModel @Inject constructor(
+    private val getStatusSend: GetStatusSend,
     private val getTitleMenu: GetTitleMenu,
     private val getRegDriver: GetRegDriver,
     private val deleteNote: DeleteNote,
@@ -66,8 +70,7 @@ class DriverViewModel @Inject constructor(
         observeTitle()
     }
 
-
-    private fun observeTitle() =
+    private fun observeTitle() {
         viewModelScope.launch {
             getTitleMenu()
                 .catch {
@@ -77,6 +80,16 @@ class DriverViewModel @Inject constructor(
                     updateState { copy(descRelease = it) }
                 }
         }
+        viewModelScope.launch {
+            getStatusSend()
+                .catch {
+                    updateState { withFailure(Errors.EXCEPTION) }
+                }
+                .collect {
+                    updateState { copy(statusSend = it) }
+                }
+        }
+    }
 
     fun recoverData() = viewModelScope.launch {
 
@@ -106,7 +119,7 @@ class DriverViewModel @Inject constructor(
             deleteNote().getOrThrow()
         }
             .onSuccess {
-                updateState { copy(flagMenu = true) }
+                updateState { copy(flagMenu = true, flagCheckDialog = false) }
             }
             .onFailureUpdate(::updateState)
     }

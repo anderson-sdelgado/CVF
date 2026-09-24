@@ -67,7 +67,7 @@ class ReviewViewModel @Inject constructor(
         runCatching {
             deleteNote().getOrThrow()
         }
-            .onSuccess { updateState { copy(status = status.copy(flagAccess = true)) } }
+            .onSuccess { updateState { copy(status = status.copy(flagAccess = true), flagCheckDialog = false) } }
             .onFailureState(::updateState)
     }
 

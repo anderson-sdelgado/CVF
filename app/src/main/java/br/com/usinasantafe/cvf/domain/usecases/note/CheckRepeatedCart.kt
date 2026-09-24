@@ -9,7 +9,7 @@ import br.com.usinasantafe.cvf.utils.tryCatch
 import javax.inject.Inject
 
 interface CheckRepeatedCart {
-    suspend operator fun invoke(text: String): Result<Boolean>
+    suspend operator fun invoke(text: String, pos: Int): Result<Boolean>
 }
 
 class ICheckRepeatedCart @Inject constructor(
@@ -17,12 +17,12 @@ class ICheckRepeatedCart @Inject constructor(
     private val equipRepository: EquipRepository
 ): CheckRepeatedCart {
 
-    override suspend fun invoke(text: String): Result<Boolean> =
+    override suspend fun invoke(text: String, pos: Int): Result<Boolean> =
         call(getClassAndMethod()) {
             val nro = tryCatch(ERROR_STRING_TO_INT) { text.toInt() }
             val id = equipRepository.getIdByNro(nro).getOrThrow()
             val list = noteRepository.cartList().getOrThrow()
-            list.any { it.idCart == id }
+            list.any { it.idCart == id && it.position != pos }
         }
 
 }

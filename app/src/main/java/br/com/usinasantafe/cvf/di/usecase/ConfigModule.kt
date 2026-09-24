@@ -35,4 +35,8 @@ interface ConfigModule {
     @Singleton
     fun bindSetTokenFCM(usecase: ISetTokenFCM): SetTokenFCM
 
+    @Binds
+    @Singleton
+    fun bindGetStatusSend(usecase: IGetStatusSend): GetStatusSend
+
 }

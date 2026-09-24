@@ -1,6 +1,5 @@
 package br.com.usinasantafe.cvf.presenter.view.manager.release
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,6 +24,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cvf.R
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.Option
+import br.com.usinasantafe.cvf.lib.OptionMenu
 import br.com.usinasantafe.cvf.presenter.model.ItemCheckBoxScreenModel
 import br.com.usinasantafe.cvf.presenter.theme.ButtonMaxWidth
 import br.com.usinasantafe.cvf.presenter.theme.CVFTheme
@@ -53,6 +53,7 @@ fun ReleaseScreen(
 
             ReleaseContent(
                 option = uiState.option,
+                optionMenu = uiState.optionMenu,
                 list = list,
                 onCheckChanged = viewModel::onCheckChanged,
                 onSave = viewModel::save,
@@ -71,6 +72,7 @@ fun ReleaseScreen(
 @Composable
 fun ReleaseContent(
     option: Option,
+    optionMenu: OptionMenu,
     list: List<ItemCheckBoxScreenModel>,
     onCheckChanged: (Int, Boolean) -> Unit,
     onSave: () -> Unit,
@@ -110,7 +112,7 @@ fun ReleaseContent(
             horizontalArrangement = Arrangement.Center,
         )  {
             Button(
-                onClick = if(option == Option.INSERT) onNavFront else onNavNote,
+                onClick = if(optionMenu != OptionMenu.RELEASE) onNavFront else onNavNote,
                 modifier = Modifier
                     .weight(1f)
             ) {
@@ -148,7 +150,7 @@ fun ReleaseContent(
 
     LaunchedEffect(status.flagAccess) {
         if (status.flagAccess) {
-            onNavDriver()
+            if(option == Option.INSERT) onNavDriver() else onNavNote()
         }
     }
 
@@ -161,6 +163,7 @@ fun ReleasePagePreview() {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             ReleaseContent(
                 option = Option.INSERT,
+                optionMenu = OptionMenu.CONFIG,
                 list = listOf(),
                 onCheckChanged = { _, _ -> },
                 onSave = {},
@@ -193,6 +196,7 @@ fun ReleasePagePreviewWithData() {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             ReleaseContent(
                 option = Option.INSERT,
+                optionMenu = OptionMenu.CONFIG,
                 list = listOf(
                     ItemCheckBoxScreenModel(
                         id = 1,

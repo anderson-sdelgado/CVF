@@ -1,5 +1,5 @@
 [versions]
-agp = "9.4.0"
+agp = "9.4.1"
 kotlin = "2.4.20"
 coreKtx = "1.19.0"
 junit = "4.13.2"
@@ -30,6 +30,7 @@ hiltExt = "1.4.0"
 androidxHiltNavigationCompose = "1.4.0"
 timber = "5.0.1"
 material3 = "1.4.0"
+testRules = "1.7.0"
 
 googleServices = "4.4.4"
 firebaseBom = "34.5.0"
@@ -83,6 +84,7 @@ hilt-ext-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.r
 hilt-ext-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "hiltExt" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "testRules" }
 
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }

@@ -4,7 +4,6 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ConfigSharedPreferencesModel
-import br.com.usinasantafe.cvf.infra.models.sharedpreferences.sharedPreferencesModelToEntity
 import br.com.usinasantafe.cvf.lib.BASE_SHARED_PREFERENCES_TABLE_CONFIG
 import br.com.usinasantafe.cvf.lib.StatusSend
 import br.com.usinasantafe.cvf.utils.EmptyResult
@@ -12,6 +11,9 @@ import br.com.usinasantafe.cvf.utils.getClassAndMethod
 import br.com.usinasantafe.cvf.utils.required
 import br.com.usinasantafe.cvf.utils.result
 import com.google.gson.Gson
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
 
 class IConfigSharedPreferencesDatasource @Inject constructor(
@@ -94,5 +96,30 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
             val model = get().getOrThrow()
             model::tokenFCM.required()
         }
+
+    override fun observe(): Flow<ConfigSharedPreferencesModel> = callbackFlow {
+        val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+            if (key == BASE_SHARED_PREFERENCES_TABLE_CONFIG) {
+                val data = sharedPreferences.getString(BASE_SHARED_PREFERENCES_TABLE_CONFIG, null)
+                val model = if (data.isNullOrEmpty()) {
+                    ConfigSharedPreferencesModel()
+                } else {
+                    Gson().fromJson(data, ConfigSharedPreferencesModel::class.java)
+                }
+                trySend(model)
+            }
+        }
+        sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
+
+        val initialData = sharedPreferences.getString(BASE_SHARED_PREFERENCES_TABLE_CONFIG, null)
+        val initialModel = if (initialData.isNullOrEmpty()) {
+            ConfigSharedPreferencesModel()
+        } else {
+            Gson().fromJson(initialData, ConfigSharedPreferencesModel::class.java)
+        }
+        trySend(initialModel)
+
+        awaitClose { sharedPreferences.unregisterOnSharedPreferenceChangeListener(listener) }
+    }
 
 }

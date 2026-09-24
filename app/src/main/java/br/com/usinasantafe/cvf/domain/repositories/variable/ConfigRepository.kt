@@ -3,6 +3,7 @@ package br.com.usinasantafe.cvf.domain.repositories.variable
 import br.com.usinasantafe.cvf.domain.entities.variable.Config
 import br.com.usinasantafe.cvf.lib.StatusSend
 import br.com.usinasantafe.cvf.utils.EmptyResult
+import kotlinx.coroutines.flow.Flow
 
 interface ConfigRepository {
     suspend fun get(): Result<Config>
@@ -14,4 +15,5 @@ interface ConfigRepository {
     suspend fun getPassword(): Result<String>
     suspend fun getFlagUpdate(): Result<Boolean>
     suspend fun setTokenFCM(token: String): Result<Boolean>
+    fun observe(): Flow<Config>
 }
