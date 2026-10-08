@@ -70,6 +70,11 @@ fun errors(errors: Errors, failure: String, value: String = ""): String {
                 id = R.string.text_msg_cart_inverted
             )
         }
+        Errors.RELEASE_AND_FRONT_INVALID -> {
+            stringResource(
+                id = R.string.text_invalid_front_release
+            )
+        }
         else -> stringResource(
             id = R.string.text_failure,
             failure

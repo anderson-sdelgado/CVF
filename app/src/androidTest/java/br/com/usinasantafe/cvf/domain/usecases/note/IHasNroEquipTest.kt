@@ -30,7 +30,7 @@ class IHasNroEquipTest {
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: HasNroEquip
+    lateinit var usecase: HasNroCart
 
     @BindValue
     @JvmField
@@ -202,7 +202,7 @@ class IHasNroEquipTest {
                     EquipRoomModel(
                         id = 1,
                         nro = 1,
-                        cdOperClass = 1,
+                        idOperClass = 1,
                         descOperClass = "Equip1",
                         type = TypeEquip.TRUCK
                     )
@@ -248,7 +248,7 @@ class IHasNroEquipTest {
                     EquipRoomModel(
                         id = 1,
                         nro = 1,
-                        cdOperClass = 1,
+                        idOperClass = 1,
                         descOperClass = "Equip1",
                         type = TypeEquip.CART
                     )
@@ -277,7 +277,7 @@ class IHasNroEquipTest {
                 EquipRoomModel(
                     id = 1,
                     nro = 1,
-                    cdOperClass = 1,
+                    idOperClass = 1,
                     descOperClass = "Equip1",
                     type = TypeEquip.CART
                 )
@@ -305,7 +305,7 @@ class IHasNroEquipTest {
                     EquipRoomModel(
                         id = 1,
                         nro = 1,
-                        cdOperClass = 1,
+                        idOperClass = 1,
                         descOperClass = "Equip1",
                         type = TypeEquip.CART
                     )
@@ -335,14 +335,14 @@ class IHasNroEquipTest {
                     EquipRoomModel(
                         id = 1,
                         nro = 100,
-                        cdOperClass = 1,
+                        idOperClass = 1,
                         descOperClass = "Equip1",
                         type = TypeEquip.CART
                     ),
                     EquipRoomModel(
                         id = 2,
                         nro = 2,
-                        cdOperClass = 2,
+                        idOperClass = 2,
                         descOperClass = "Equip2",
                         type = TypeEquip.TRUCK
                     )
@@ -377,7 +377,7 @@ class IHasNroEquipTest {
                     EquipRoomModel(
                         id = 2,
                         nro = 2,
-                        cdOperClass = 2,
+                        idOperClass = 2,
                         descOperClass = "Equip2",
                         type = TypeEquip.TRUCK
                     )
@@ -410,14 +410,14 @@ class IHasNroEquipTest {
                     EquipRoomModel(
                         id = 1,
                         nro = 100,
-                        cdOperClass = 1,
+                        idOperClass = 1,
                         descOperClass = "Equip1",
                         type = TypeEquip.CART
                     ),
                     EquipRoomModel(
                         id = 2,
                         nro = 2,
-                        cdOperClass = 2,
+                        idOperClass = 2,
                         descOperClass = "Equip2",
                         type = TypeEquip.TRUCK
                     )
@@ -452,14 +452,14 @@ class IHasNroEquipTest {
                     EquipRoomModel(
                         id = 1,
                         nro = 100,
-                        cdOperClass = 1,
+                        idOperClass = 1,
                         descOperClass = "Equip1",
                         type = TypeEquip.CART
                     ),
                     EquipRoomModel(
                         id = 2,
                         nro = 2,
-                        cdOperClass = 2,
+                        idOperClass = 2,
                         descOperClass = "Equip2",
                         type = TypeEquip.TRUCK
                     )
@@ -492,14 +492,14 @@ class IHasNroEquipTest {
                     EquipRoomModel(
                         id = 1,
                         nro = 100,
-                        cdOperClass = 1,
+                        idOperClass = 1,
                         descOperClass = "Equip1",
                         type = TypeEquip.CART
                     ),
                     EquipRoomModel(
                         id = 2,
                         nro = 2,
-                        cdOperClass = 2,
+                        idOperClass = 2,
                         descOperClass = "Equip2",
                         type = TypeEquip.TRUCK
                     )
@@ -534,14 +534,14 @@ class IHasNroEquipTest {
                     EquipRoomModel(
                         id = 1,
                         nro = 100,
-                        cdOperClass = 1,
+                        idOperClass = 1,
                         descOperClass = "Equip1",
                         type = TypeEquip.CART
                     ),
                     EquipRoomModel(
                         id = 2,
                         nro = 2,
-                        cdOperClass = 2,
+                        idOperClass = 2,
                         descOperClass = "Equip2",
                         type = TypeEquip.TRUCK
                     )
@@ -561,7 +561,7 @@ class IHasNroEquipTest {
                 EquipRoomModel(
                     id = 1,
                     nro = 100,
-                    cdOperClass = 1,
+                    idOperClass = 1,
                     descOperClass = "Equip1",
                     type = TypeEquip.CART
                 )
@@ -588,7 +588,7 @@ class IHasNroEquipTest {
                 EquipRoomModel(
                     id = 1,
                     nro = 100,
-                    cdOperClass = 1,
+                    idOperClass = 1,
                     descOperClass = "Equip1",
                     type = TypeEquip.CART
                 )

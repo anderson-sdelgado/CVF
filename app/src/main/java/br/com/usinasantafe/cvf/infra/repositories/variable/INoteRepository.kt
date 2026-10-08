@@ -17,6 +17,7 @@ import br.com.usinasantafe.cvf.utils.call
 import br.com.usinasantafe.cvf.utils.dateOneMonthAgo
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
 import br.com.usinasantafe.cvf.utils.required
+import java.util.Date
 import javax.inject.Inject
 
 class INoteRepository @Inject constructor(
@@ -110,6 +111,11 @@ class INoteRepository @Inject constructor(
             }
             headerSharedPreferencesDatasource.clean().getOrThrow()
             cartSharedPreferencesDatasource.clean().getOrThrow()
+        }
+
+    override suspend fun setDate(dateHourExitMill: Date, dateHourArrivalField: Date): EmptyResult =
+        call(getClassAndMethod()) {
+            headerSharedPreferencesDatasource.setDate(dateHourExitMill, dateHourArrivalField).getOrThrow()
         }
 
 }

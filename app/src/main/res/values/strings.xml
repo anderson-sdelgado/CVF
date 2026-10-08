@@ -14,6 +14,7 @@
     <string name="text_update_failure">FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR, ENTRE EM CONTATO COM TI. %1$s</string>
     <string name="text_token_failure">FALHA DE RECUPERACAO DE TOKEN! POR FAVOR ENTRE EM CONTATO COM TI. %1$s</string>
     <string name="text_failure">FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. %1$s</string>
+    <string name="text_msg_check_data">CHECANDO \"%1$s\" NO WEB SERVICE. POR FAVOR, AGUARDE A CHECAGEM PARA DAR ANDAMENTO AO APONTAMENTO.</string>
     <string name="text_number_1">1</string>
     <string name="text_number_2">2</string>
     <string name="text_number_3">3</string>
@@ -33,7 +34,7 @@
     <string name="text_pattern_return">RETORNAR</string>
     <string name="text_config">CONFIGURAÇÃO</string>
     <string name="text_number">NRO APARELHO</string>
-    S<string name="text_password">SENHA</string>
+    <string name="text_password">SENHA</string>
     <string name="text_pattern_save">SALVAR</string>
     <string name="text_front">FRENTE</string>
     <string name="text_pattern_next">AVANÇAR</string>
@@ -44,7 +45,6 @@
     <string name="text_title_menu">MENU</string>
     <string name="text_close">SAIR</string>
     <string name="text_unknown_error">UNKNONW ERROR</string>
-    <string name="text_msg_check_data">CHECANDO \"%1$s\" NO WEB SERVICE. POR FAVOR, AGUARDE A CHECAGEM PARA DAR ANDAMENTO AO APONTAMENTO.</string>
     <string name="text_password_invalid">SENHA INVÁLIDA!</string>
     <string name="text_truck">NRO. CAMINHÃO</string>
     <string name="text_title_msg">ATENÇÃO</string>
@@ -56,11 +56,13 @@
     <string name="text_finish_travel">FINALIZAR VIAGEM</string>
     <string name="text_clean_travel">APAGAR VIAGEM</string>
     <string name="text_return_invalid_front">A FRENTE JÁ FOI ALTERADA NO APLICATIVO. POR FAVOR, PARA RETORNAR AO FLUXO PRINCIPAL DO APLICATIVO PRECISA SELECIONA ALGUMA LIBERAÇÃO.</string>
-    <string name="text_data_menu">FRENTE: %1$s\nLIBERAÇÃO: %2$s\nO.S.: %3$s\nPROPRIEDADE: %4$s</string>
+    <string name="text_data_menu">FRENTE: %1$s\nLIBERAÇÃO: %2$s\nO.S.: %3$s\nSEÇÃO: %4$s</string>
     <string name="text_msg_delete">DESEJA REALMENTE EXCLUIR A VIAGEM QUE ESTÁ SENDO REALIZADA?</string>
     <string name="text_msg_finish_note">A VIAGEM FOI FINALIZADA COM SUCESSO!!!</string>
-    <string name="text_header_note">MOTORISTA: %1$s - %2$s\nCAMINHÃO: %3$s - %4$s</string>
-    <string name="text_cart_note">CARRETA %1$s: %2$s - %3$s</string>
+    <string name="text_header_note">MOTORISTA: %1$s - %2$s\nCAMINHÃO: %3$s</string>
+    <string name="text_cart_note">CARRETA %1$s: %2$s</string>
     <string name="text_msg_cart_repeated">CARRETA %1$s JÁ FOI INSERIDA ANTERIORMENTE. POR FAVOR VERIFIQUE A NUMERAÇÃO E A ORDEM DA CARRETA.</string>
     <string name="text_msg_cart_inverted">O EQUIPAMENTO DIGITADO NÃO CORRESPONDE A POSIÇÃO DO CONJUNTO. VERIFIQUE SE A NUMERAÇÃO ESTÁ CORRETA E TENTE NOVAMENTE!</string>
+    <string name="text_exit_field">DATA/HORA SAÍDA CAMPO: %1$s</string>
+    <string name="text_invalid_front_release">Os dados da Frente e Liberação vindo da LogTrac não confere com os dados do Aplicativo. Por favor, verificar com o COA.</string>
 </resources>

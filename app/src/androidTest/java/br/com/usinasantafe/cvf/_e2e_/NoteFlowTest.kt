@@ -25,7 +25,7 @@ import br.com.usinasantafe.cvf.lib.WEB_ALL_COLAB
 import br.com.usinasantafe.cvf.lib.WEB_ALL_EQUIP
 import br.com.usinasantafe.cvf.lib.WEB_ALL_FRONT
 import br.com.usinasantafe.cvf.lib.WEB_ALL_RELEASE
-import br.com.usinasantafe.cvf.lib.WEB_CHECK_NRO_EQUIP
+import br.com.usinasantafe.cvf.lib.WEB_CHECK_NRO_CART
 import br.com.usinasantafe.cvf.lib.WEB_CHECK_REG_COLAB
 import br.com.usinasantafe.cvf.lib.WEB_SAVE_MANAGER
 import br.com.usinasantafe.cvf.lib.WEB_SAVE_TOKEN
@@ -185,7 +185,7 @@ class NoteFlowTest {
                         "/$WEB_ALL_RELEASE" -> MockResponse().setBody(resultRelease)
                         "/$WEB_SAVE_MANAGER" -> MockResponse().setBody(resultManager)
                         "/$WEB_CHECK_REG_COLAB" -> MockResponse().setBody(resultColabSingle)
-                        "/$WEB_CHECK_NRO_EQUIP" -> {
+                        "/$WEB_CHECK_NRO_CART" -> {
                             val body = request.body.readUtf8()
                             when {
                                 body.contains("200") -> MockResponse().setBody(resultTruckSingle)
@@ -411,7 +411,7 @@ class NoteFlowTest {
             EquipRoomModel(
                 id = 1,
                 nro = 1,
-                cdOperClass = 1,
+                idOperClass = 1,
                 descOperClass = "Equip1",
                 type = TypeEquip.TRUCK
             ),
@@ -422,7 +422,7 @@ class NoteFlowTest {
             EquipRoomModel(
                 id = 2,
                 nro = 2,
-                cdOperClass = 2,
+                idOperClass = 2,
                 descOperClass = "Equip2",
                 type = TypeEquip.TRUCK
             ),

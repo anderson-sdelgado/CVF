@@ -8,7 +8,6 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cav.utils.waitUntilTimeout
 import br.com.usinasantafe.cvf.HiltTestActivity
 import br.com.usinasantafe.cvf.di.provider.BaseUrlModuleTest
@@ -40,7 +39,6 @@ import br.com.usinasantafe.cvf.lib.WEB_ALL_EQUIP
 import br.com.usinasantafe.cvf.lib.WEB_ALL_FRONT
 import br.com.usinasantafe.cvf.lib.WEB_ALL_RELEASE
 import br.com.usinasantafe.cvf.lib.WEB_SAVE_TOKEN
-import br.com.usinasantafe.cvf.presenter.navigation.Args.OPTION_ARG
 import br.com.usinasantafe.cvf.utils.TestConfig
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -1331,9 +1329,6 @@ class ConfigScreenTest {
         composeTestRule.setContent {
             ConfigScreen (
                 viewModel = ConfigViewModel(
-                    savedStateHandle = SavedStateHandle(
-                        mapOf(OPTION_ARG to option.ordinal)
-                    ),
                     getConfig = getConfig,
                     updateConfig = updateConfig,
                     setFinishUpdateAllTable = setFinishUpdateAllTable,
@@ -1403,7 +1398,7 @@ class ConfigScreenTest {
             EquipRoomModel(
                 id = 1,
                 nro = 1,
-                cdOperClass = 1,
+                idOperClass = 1,
                 descOperClass = "Equip1",
                 type = TypeEquip.TRUCK
             ),
@@ -1414,7 +1409,7 @@ class ConfigScreenTest {
             EquipRoomModel(
                 id = 2,
                 nro = 2,
-                cdOperClass = 2,
+                idOperClass = 2,
                 descOperClass = "Equip2",
                 type = TypeEquip.TRUCK
             ),

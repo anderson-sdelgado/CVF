@@ -60,7 +60,7 @@ class ICheckRepeatedCartTest {
                     EquipRoomModel(
                         id = 10,
                         nro = 123,
-                        cdOperClass = 13,
+                        idOperClass = 13,
                         descOperClass = "Test",
                         type = TypeEquip.TRUCK
                     )
@@ -89,7 +89,7 @@ class ICheckRepeatedCartTest {
                     EquipRoomModel(
                         id = 10,
                         nro = 123,
-                        cdOperClass = 13,
+                        idOperClass = 13,
                         descOperClass = "Test",
                         type = TypeEquip.TRUCK
                     )
@@ -120,7 +120,7 @@ class ICheckRepeatedCartTest {
                     EquipRoomModel(
                         id = 10,
                         nro = 123,
-                        cdOperClass = 13,
+                        idOperClass = 13,
                         descOperClass = "Test",
                         type = TypeEquip.TRUCK
                     )

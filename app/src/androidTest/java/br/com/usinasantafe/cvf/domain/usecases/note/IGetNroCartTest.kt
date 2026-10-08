@@ -86,7 +86,7 @@ class IGetNroCartTest {
                     EquipRoomModel(
                         id = 10,
                         nro = 200,
-                        cdOperClass = 25,
+                        idOperClass = 25,
                         descOperClass = "OperClass1",
                         type = TypeEquip.CART
                     ),

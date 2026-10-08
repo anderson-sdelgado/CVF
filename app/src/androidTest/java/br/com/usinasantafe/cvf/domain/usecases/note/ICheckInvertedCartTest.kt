@@ -56,7 +56,7 @@ class ICheckInvertedCartTest {
                     EquipRoomModel(
                         id = 10,
                         nro = 123,
-                        cdOperClass = 13,
+                        idOperClass = 13,
                         descOperClass = "Test",
                         type = TypeEquip.TRUCK
                     )
@@ -85,7 +85,7 @@ class ICheckInvertedCartTest {
                     EquipRoomModel(
                         id = 10,
                         nro = 123,
-                        cdOperClass = 21,
+                        idOperClass = 21,
                         descOperClass = "Test",
                         type = TypeEquip.TRUCK
                     )
@@ -110,7 +110,7 @@ class ICheckInvertedCartTest {
                     EquipRoomModel(
                         id = 10,
                         nro = 123,
-                        cdOperClass = 5,
+                        idOperClass = 5,
                         descOperClass = "Test",
                         type = TypeEquip.TRUCK
                     )
@@ -135,7 +135,7 @@ class ICheckInvertedCartTest {
                     EquipRoomModel(
                         id = 10,
                         nro = 123,
-                        cdOperClass = 21,
+                        idOperClass = 21,
                         descOperClass = "Test",
                         type = TypeEquip.TRUCK
                     )
@@ -160,7 +160,7 @@ class ICheckInvertedCartTest {
                     EquipRoomModel(
                         id = 10,
                         nro = 123,
-                        cdOperClass = 21,
+                        idOperClass = 21,
                         descOperClass = "Test",
                         type = TypeEquip.TRUCK
                     )
@@ -185,7 +185,7 @@ class ICheckInvertedCartTest {
                     EquipRoomModel(
                         id = 10,
                         nro = 123,
-                        cdOperClass = 5,
+                        idOperClass = 5,
                         descOperClass = "Test",
                         type = TypeEquip.TRUCK
                     )
@@ -210,7 +210,7 @@ class ICheckInvertedCartTest {
                     EquipRoomModel(
                         id = 10,
                         nro = 123,
-                        cdOperClass = 5,
+                        idOperClass = 5,
                         descOperClass = "Test",
                         type = TypeEquip.TRUCK
                     )

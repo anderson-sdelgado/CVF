@@ -1,7 +1,12 @@
 package br.com.usinasantafe.cvf.domain.usecases.note
 
+import br.com.usinasantafe.cvf.domain.entities.stable.Equip
 import br.com.usinasantafe.cvf.domain.repositories.stable.EquipRepository
+import br.com.usinasantafe.cvf.domain.repositories.stable.FrontRepository
+import br.com.usinasantafe.cvf.domain.repositories.stable.ReleaseRepository
+import br.com.usinasantafe.cvf.domain.repositories.variable.ManagerRepository
 import br.com.usinasantafe.cvf.domain.usecases.common.Token
+import br.com.usinasantafe.cvf.lib.TypeEquip
 import br.com.usinasantafe.cvf.utils.CheckNetwork
 import br.com.usinasantafe.cvf.utils.resultFailure
 import kotlinx.coroutines.test.runTest
@@ -11,27 +16,33 @@ import org.mockito.kotlin.whenever
 import java.net.SocketTimeoutException
 import kotlin.test.assertEquals
 
-class IHasNroEquipTest {
+class IHasNroTruckTest {
 
     private val token = mock<Token>()
     private val checkNetwork = mock<CheckNetwork>()
     private val equipRepository = mock<EquipRepository>()
-    private val usecase = IHasNroEquip(
+    private val managerRepository = mock<ManagerRepository>()
+    private val frontRepository = mock<FrontRepository>()
+    private val releaseRepository = mock<ReleaseRepository>()
+    private val usecase = IHasNroTruck(
         token = token,
         checkNetwork = checkNetwork,
-        equipRepository = equipRepository
+        equipRepository = equipRepository,
+        managerRepository = managerRepository,
+        frontRepository = frontRepository,
+        releaseRepository = releaseRepository
     )
 
     @Test
     fun `Check return failure if value of field is incorrect`() =
         runTest {
-            val result = usecase("de25", 1)
+            val result = usecase("de25")
             assertEquals(
                 true,
                 result.isFailure
             )
             assertEquals(
-                "IHasNroCart -> stringToInt",
+                "IHasNroTruck -> stringToInt",
                 result.exceptionOrNull()!!.message,
             )
             assertEquals(
@@ -49,7 +60,7 @@ class IHasNroEquipTest {
                 false
             )
             whenever(
-                equipRepository.check(100,2)
+                equipRepository.checkNroTruck(100)
             ).thenReturn(
                 resultFailure(
                     "IEquipRepository.check",
@@ -57,13 +68,13 @@ class IHasNroEquipTest {
                     Exception()
                 )
             )
-            val result = usecase("100", 2)
+            val result = usecase("100")
             assertEquals(
                 true,
                 result.isFailure
             )
             assertEquals(
-                "IHasNroCart -> IEquipRepository.check",
+                "IHasNroTruck -> IEquipRepository.check",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -81,11 +92,11 @@ class IHasNroEquipTest {
                 false
             )
             whenever(
-                equipRepository.check(100, 2)
+                equipRepository.checkNroTruck(100)
             ).thenReturn(
                 Result.success(false)
             )
-            val result = usecase("100", 2)
+            val result = usecase("100")
             assertEquals(
                 true,
                 result.isSuccess
@@ -113,47 +124,18 @@ class IHasNroEquipTest {
                     Exception()
                 )
             )
-            val result = usecase("100", 2)
+            val result = usecase("100")
             assertEquals(
                 true,
                 result.isFailure
             )
             assertEquals(
-                "IHasNroCart -> IToken",
+                "IHasNroTruck -> IToken",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
                 "java.lang.Exception",
                 result.exceptionOrNull()!!.cause.toString()
-            )
-        }
-
-    @Test
-    fun `Check return correct if connection and EquipRepository check(Retrofit) execute successfully`() =
-        runTest {
-            whenever(
-                checkNetwork.isConnected()
-            ).thenReturn(
-                true
-            )
-            whenever(
-                token()
-            ).thenReturn(
-                Result.success("token")
-            )
-            whenever(
-                equipRepository.check("token", 100, 2)
-            ).thenReturn(
-                Result.success(true)
-            )
-            val result = usecase("100", 2)
-            assertEquals(
-                true,
-                result.isSuccess
-            )
-            assertEquals(
-                true,
-                result.getOrNull()!!
             )
         }
 
@@ -171,7 +153,7 @@ class IHasNroEquipTest {
                 Result.success("token")
             )
             whenever(
-                equipRepository.check("token", 100, 2)
+                equipRepository.checkNroTruck("token", 100)
             ).thenReturn(
                 resultFailure(
                     "IEquipRepository.check(Retrofit)",
@@ -179,13 +161,13 @@ class IHasNroEquipTest {
                     Exception()
                 )
             )
-            val result = usecase("100", 2)
+            val result = usecase("100")
             assertEquals(
                 true,
                 result.isFailure
             )
             assertEquals(
-                "IHasNroCart -> IEquipRepository.check(Retrofit)",
+                "IHasNroTruck -> IEquipRepository.check(Retrofit)",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -208,7 +190,7 @@ class IHasNroEquipTest {
                 Result.success("token")
             )
             whenever(
-                equipRepository.check("token", 100, 2)
+                equipRepository.checkNroTruck("token", 100)
             ).thenReturn(
                 resultFailure(
                     "IEquipRepository.check(Retrofit)",
@@ -217,7 +199,7 @@ class IHasNroEquipTest {
                 )
             )
             whenever(
-                equipRepository.check(100, 2)
+                equipRepository.checkNroTruck(100)
             ).thenReturn(
                 resultFailure(
                     "IEquipRepository.check(Room)",
@@ -225,13 +207,13 @@ class IHasNroEquipTest {
                     Exception()
                 )
             )
-            val result = usecase("100", 2)
+            val result = usecase("100")
             assertEquals(
                 true,
                 result.isFailure
             )
             assertEquals(
-                "IHasNroCart -> IEquipRepository.check(Room)",
+                "IHasNroTruck -> IEquipRepository.check(Room)",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -254,7 +236,7 @@ class IHasNroEquipTest {
                 Result.success("token")
             )
             whenever(
-                equipRepository.check("token", 100, 2)
+                equipRepository.checkNroTruck("token", 100)
             ).thenReturn(
                 resultFailure(
                     "IEquipRepository.check(Retrofit)",
@@ -263,11 +245,11 @@ class IHasNroEquipTest {
                 )
             )
             whenever(
-                equipRepository.check(100, 2)
+                equipRepository.checkNroTruck(100)
             ).thenReturn(
                 Result.success(false)
             )
-            val result = usecase("100", 2)
+            val result = usecase("100")
             assertEquals(
                 true,
                 result.isSuccess
@@ -277,5 +259,79 @@ class IHasNroEquipTest {
                 result.getOrNull()!!
             )
         }
+
+    @Test
+    fun `Check return false if id is 0`() =
+        runTest {
+            whenever(
+                checkNetwork.isConnected()
+            ).thenReturn(
+                true
+            )
+            whenever(
+                token()
+            ).thenReturn(
+                Result.success("token")
+            )
+            whenever(
+                equipRepository.checkNroTruck("token", 100)
+            ).thenReturn(
+                Result.success(
+                    Equip(
+                        id = 0,
+                        nro = 0,
+                        idOperClass = 1,
+                        type = TypeEquip.TRUCK
+                    )
+                )
+            )
+            val result = usecase("100")
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                false,
+                result.getOrNull()!!
+            )
+        }
+
+    @Test
+    fun `Check return true if idFront is null`() =
+        runTest {
+            whenever(
+                checkNetwork.isConnected()
+            ).thenReturn(
+                true
+            )
+            whenever(
+                token()
+            ).thenReturn(
+                Result.success("token")
+            )
+            whenever(
+                equipRepository.checkNroTruck("token", 100)
+            ).thenReturn(
+                Result.success(
+                    Equip(
+                        id = 1,
+                        nro = 200,
+                        idOperClass = 1,
+                        type = TypeEquip.TRUCK
+                    )
+                )
+            )
+            val result = usecase("100")
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                false,
+                result.getOrNull()!!
+            )
+        }
+
+
 
 }

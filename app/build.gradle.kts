@@ -23,7 +23,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "br.com.usinasantafe.cvf.CustomTestRunner"
-//        testInstrumentationRunner = "br.com.usinasantafe.cvf.CustomTestRunner"
+//        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -47,13 +47,13 @@ android {
         flavorDimensions += "version"
         create("dev") {
             dimension = "version"
-            applicationIdSuffix = ".dev"
+//            applicationIdSuffix = ".dev"
             manifestPlaceholders["appName"] = "CVF-DEV"
             resValue("string", "base_url", "https://app.usinasantafe.com.br/cvfdev/view/")
         }
         create("qa") {
             dimension = "version"
-//            applicationIdSuffix = ".qa"
+            applicationIdSuffix = ".qa"
             manifestPlaceholders["appName"] = "CVF-QA"
             resValue("string", "base_url", "https://app.usinasantafe.com.br/cvfqa/view/")
         }

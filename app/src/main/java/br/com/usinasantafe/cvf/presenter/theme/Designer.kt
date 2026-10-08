@@ -690,5 +690,4 @@ private fun colorStatus(statusSend: StatusSend): Color {
         StatusSend.SENT -> Color.Blue
         StatusSend.SENDING -> Color.Yellow
     }
-
 }

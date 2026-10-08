@@ -9,6 +9,7 @@ import br.com.usinasantafe.cvf.utils.EmptyResult
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
 import br.com.usinasantafe.cvf.utils.result
 import com.google.gson.Gson
+import java.util.Date
 import javax.inject.Inject
 
 class IHeaderSharedPreferencesDatasource @Inject constructor(
@@ -23,6 +24,14 @@ class IHeaderSharedPreferencesDatasource @Inject constructor(
                     Gson().toJson(model)
                 )
             }
+        }
+
+    override suspend fun setDate(dateHourExitMill: Date, dateHourArrivalField: Date): EmptyResult =
+        result(getClassAndMethod()) {
+            val model = get().getOrThrow()
+            model.dateHourExitMill = dateHourExitMill
+            model.dateHourArrivalField = dateHourArrivalField
+            save(model).getOrThrow()
         }
 
     override suspend fun getRegDriver(): Result<Long?> =

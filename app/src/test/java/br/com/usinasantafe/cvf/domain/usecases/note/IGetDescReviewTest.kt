@@ -322,8 +322,7 @@ class IGetDescReviewTest {
                     Equip(
                         id = 100,
                         nro = 100,
-                        cdOperClass = 230,
-                        descOperClass = "Test Desc Oper Class Truck",
+                        idOperClass = 230,
                         type = TypeEquip.TRUCK
                     )
                 )
@@ -382,8 +381,7 @@ class IGetDescReviewTest {
                     Equip(
                         id = 100,
                         nro = 100,
-                        cdOperClass = 230,
-                        descOperClass = "Test Desc Oper Class Truck",
+                        idOperClass = 230,
                         type = TypeEquip.TRUCK
                     )
                 )
@@ -458,8 +456,7 @@ class IGetDescReviewTest {
                     Equip(
                         id = 100,
                         nro = 100,
-                        cdOperClass = 230,
-                        descOperClass = "Test Desc Oper Class Truck",
+                        idOperClass = 230,
                         type = TypeEquip.TRUCK
                     )
                 )
@@ -487,8 +484,7 @@ class IGetDescReviewTest {
                     Equip(
                         id = 20,
                         nro = 200,
-                        cdOperClass = 230,
-                        descOperClass = "Test Desc Oper Class Cart",
+                        idOperClass = 230,
                         type = TypeEquip.CART
                     ),
                 )
@@ -501,8 +497,7 @@ class IGetDescReviewTest {
                     Equip(
                         id = 30,
                         nro = 300,
-                        cdOperClass = 230,
-                        descOperClass = "Test Desc Oper Class Cart",
+                        idOperClass = 230,
                         type = TypeEquip.CART
                     ),
                 )
@@ -519,9 +514,9 @@ class IGetDescReviewTest {
                         "PROPRIEDADE: RANCHO AZUL\n" +
                         "\n" +
                         "MOTORISTA: 123456 - Test Name Driver\n" +
-                        "CAMINHÃO: 100 - Test Desc Oper Class Truck\n" +
-                        "CARRETA 1: 200 - Test Desc Oper Class Cart\n" +
-                        "CARRETA 2: 300 - Test Desc Oper Class Cart",
+                        "CAMINHÃO: 100\n" +
+                        "CARRETA 1: 200\n" +
+                        "CARRETA 2: 300",
                 result.getOrNull()!!
             )
         }

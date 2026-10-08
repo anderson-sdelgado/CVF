@@ -17,5 +17,6 @@ interface ManagerRepository {
     suspend fun getStatusSend(): Result<StatusSend>
     suspend fun getQtdLimitCart(): Result<Int>
     suspend fun update(idFront: Int, idRelease: Int, qtdLimitCart: Int): EmptyResult
+    suspend fun update(idFront: Int, idRelease: Int): EmptyResult
     fun observe(): Flow<Manager>
 }

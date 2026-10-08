@@ -11,8 +11,7 @@ data class EquipRoomModel(
     @PrimaryKey
     val id: Int,
     val nro: Int,
-    val cdOperClass: Int,
-    val descOperClass: String,
+    val idOperClass: Int,
     val type: TypeEquip
 )
 
@@ -21,8 +20,7 @@ fun EquipRoomModel.roomModelToEntity(): Equip {
         Equip(
             id = id,
             nro = nro,
-            cdOperClass = cdOperClass,
-            descOperClass = descOperClass,
+            idOperClass = idOperClass,
             type = type
         )
     }
@@ -33,8 +31,7 @@ fun Equip.entityToRoomModel(): EquipRoomModel {
         EquipRoomModel(
             id = id,
             nro = nro,
-            cdOperClass = cdOperClass,
-            descOperClass = descOperClass,
+            idOperClass = idOperClass,
             type = type
         )
     }

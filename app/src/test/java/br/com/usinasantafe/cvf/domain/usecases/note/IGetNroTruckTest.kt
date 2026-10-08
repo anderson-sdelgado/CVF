@@ -113,8 +113,7 @@ class IGetNroTruckTest {
                     Equip(
                         id = 10,
                         nro = 251,
-                        cdOperClass = 200,
-                        descOperClass = "Test",
+                        idOperClass = 200,
                         type = TypeEquip.TRUCK
                     )
                 )

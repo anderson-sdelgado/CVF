@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cvf.presenter.view.splash
 
-import br.com.usinasantafe.cvf.MainCoroutineRule
+import br.com.usinasantafe.cvf.MainDispatcherRule
 import br.com.usinasantafe.cvf.domain.usecases.common.StartApp
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.FlowApp
@@ -17,7 +17,7 @@ import kotlin.test.assertEquals
 class SplashViewModelTest {
 
     @get:Rule
-    val mainCoroutineRule = MainCoroutineRule()
+    val mainDispatcherRule = MainDispatcherRule()
 
     private val startApp = mock<StartApp>()
     private val viewModel = SplashViewModel(

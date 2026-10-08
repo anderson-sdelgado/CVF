@@ -7,10 +7,12 @@ import br.com.usinasantafe.cvf.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cvf.domain.repositories.variable.NoteRepository
 import br.com.usinasantafe.cvf.domain.usecases.manager.GetTitleMenu
 import br.com.usinasantafe.cvf.utils.call
+import br.com.usinasantafe.cvf.utils.dateToString
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
 import br.com.usinasantafe.cvf.utils.required
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
+import java.util.Date
 import javax.inject.Inject
 
 interface GetDescReview {
@@ -37,7 +39,6 @@ class IGetDescReview @Inject constructor(
                 "$regDriver",
                 nameDriver,
                 "${equip.nro}",
-                equip.descOperClass
             )
             val cartList = noteRepository.cartList().getOrThrow()
             val descCartList = cartList.map {
@@ -46,10 +47,13 @@ class IGetDescReview @Inject constructor(
                     R.string.text_cart_note,
                     "${it.position}",
                     "${equip.nro}",
-                    equip.descOperClass
                 )
             }
-            "${title}\n\n${header}\n${descCartList.joinToString("\n")}"
+            val exitField = context.getString(
+                R.string.text_exit_field,
+                Date().dateToString(),
+            )
+            "${title}\n${header}\n${descCartList.joinToString("\n")}\n${exitField}"
         }
 
 }

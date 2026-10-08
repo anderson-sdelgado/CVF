@@ -359,7 +359,7 @@ class IUpdateTableEquipTest {
                 EquipRoomModel(
                     id = 1,
                     nro = 1,
-                    cdOperClass = 1,
+                    idOperClass = 1,
                     descOperClass = "Equip1",
                     type = TypeEquip.TRUCK
                 ),
@@ -370,7 +370,7 @@ class IUpdateTableEquipTest {
                 EquipRoomModel(
                     id = 2,
                     nro = 2,
-                    cdOperClass = 2,
+                    idOperClass = 2,
                     descOperClass = "Equip2",
                     type = TypeEquip.TRUCK
                 ),

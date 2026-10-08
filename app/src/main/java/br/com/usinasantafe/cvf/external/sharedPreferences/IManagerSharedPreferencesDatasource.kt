@@ -43,6 +43,15 @@ class IManagerSharedPreferencesDatasource @Inject constructor(
             save(model).getOrThrow()
         }
 
+    override suspend fun update(idFront: Int, idRelease: Int): EmptyResult =
+        result(getClassAndMethod()) {
+            val model = get().getOrThrow()
+            model.idFront = idFront
+            model.idRelease = idRelease
+            model.dateHourUpdate = Date()
+            save(model).getOrThrow()
+        }
+
     override suspend fun hasSend(): Result<Boolean> =
         result(getClassAndMethod()) {
             if(!has().getOrThrow()) return@result false

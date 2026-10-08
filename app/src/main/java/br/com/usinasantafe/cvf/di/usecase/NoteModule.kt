@@ -37,6 +37,10 @@ interface NoteModule {
 
     @Binds
     @Singleton
+    fun bindHasNroTruck(usecase: IHasNroTruck): HasNroTruck
+
+    @Binds
+    @Singleton
     fun bindDeleteNote(usecase: IDeleteNote): DeleteNote
 
     @Binds
@@ -49,7 +53,7 @@ interface NoteModule {
 
     @Binds
     @Singleton
-    fun bindHasNroEquip(usecase: IHasNroEquip): HasNroEquip
+    fun bindHasNroCart(usecase: IHasNroCart): HasNroCart
 
     @Binds
     @Singleton
@@ -62,6 +66,10 @@ interface NoteModule {
     @Binds
     @Singleton
     fun bindGetDescReview(usecase: IGetDescReview): GetDescReview
+
+    @Binds
+    @Singleton
+    fun bindGetDescReviewBold(usecase: IGetDescReviewBold): GetDescReviewBold
 
     @Binds
     @Singleton

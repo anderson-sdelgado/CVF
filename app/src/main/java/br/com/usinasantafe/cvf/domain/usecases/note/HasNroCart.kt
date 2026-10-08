@@ -12,34 +12,34 @@ import br.com.usinasantafe.cvf.utils.tryCatch
 import java.net.SocketTimeoutException
 import javax.inject.Inject
 
-interface HasNroEquip {
-    suspend operator fun invoke(text: String, pos: Int = 0): Result<Boolean>
+interface HasNroCart {
+    suspend operator fun invoke(text: String, pos: Int): Result<Boolean>
 }
 
-class IHasNroEquip @Inject constructor(
+class IHasNroCart @Inject constructor(
     private val token: Token,
     private val checkNetwork: CheckNetwork,
     private val equipRepository: EquipRepository
-): HasNroEquip {
+): HasNroCart {
 
     override suspend fun invoke(text: String, pos: Int): Result<Boolean> =
         call(getClassAndMethod()) {
             val nro = tryCatch(ERROR_STRING_TO_INT) { text.toInt() }
             if(checkNetwork.isConnected()) {
                 val token = token().getOrThrow()
-                return@call equipRepository.check(token, nro, pos).fold(
+                return@call equipRepository.checkNroCart(token, nro, pos).fold(
                     onSuccess = { it },
                     onFailure = {
                         if(it.cause is SocketTimeoutException) {
                             handleFailure(it, getClassAndMethod())
-                            return@fold equipRepository.check(nro, pos).getOrThrow()
+                            return@fold equipRepository.checkNroCart(nro, pos).getOrThrow()
                         }
                         throw it
                     }
                 )
             }
             handleFailure(NO_CONNECTION, getClassAndMethod())
-            equipRepository.check(nro, pos).getOrThrow()
+            equipRepository.checkNroCart(nro, pos).getOrThrow()
         }
 
 }

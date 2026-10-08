@@ -31,8 +31,7 @@ class IEquipRepositoryTest {
                 EquipRoomModel(
                     id = 1,
                     nro = 1,
-                    cdOperClass = 1,
-                    descOperClass = "Test",
+                    idOperClass = 1,
                     type = TypeEquip.CART
                 )
             )
@@ -40,8 +39,7 @@ class IEquipRepositoryTest {
                 Equip(
                     id = 1,
                     nro = 1,
-                    cdOperClass = 1,
-                    descOperClass = "Test",
+                    idOperClass = 1,
                     type = TypeEquip.CART
                 )
             )
@@ -76,8 +74,7 @@ class IEquipRepositoryTest {
                 EquipRoomModel(
                     id = 1,
                     nro = 1,
-                    cdOperClass = 1,
-                    descOperClass = "Test",
+                    idOperClass = 1,
                     type = TypeEquip.CART
                 )
             )
@@ -85,8 +82,7 @@ class IEquipRepositoryTest {
                 Equip(
                     id = 1,
                     nro = 1,
-                    cdOperClass = 1,
-                    descOperClass = "Test",
+                    idOperClass = 1,
                     type = TypeEquip.CART
                 )
             )
@@ -170,15 +166,13 @@ class IEquipRepositoryTest {
                 EquipRetrofitModel(
                     id = 1,
                     nro = 1,
-                    cdOperClass = 1,
-                    descOperClass = "Test",
+                    idOperClass = 1,
                     type = 1
                 ),
                 EquipRetrofitModel(
                     id = 2,
                     nro = 2,
-                    cdOperClass = 2,
-                    descOperClass = "Test2",
+                    idOperClass = 2,
                     type = 1
                 )
             )
@@ -186,15 +180,13 @@ class IEquipRepositoryTest {
                 Equip(
                     id = 1,
                     nro = 1,
-                    cdOperClass = 1,
-                    descOperClass = "Test",
+                    idOperClass = 1,
                     type = TypeEquip.TRUCK
                 ),
                 Equip(
                     id = 2,
                     nro = 2,
-                    cdOperClass = 2,
-                    descOperClass = "Test2",
+                    idOperClass = 2,
                     type = TypeEquip.TRUCK
                 )
             )
@@ -220,7 +212,7 @@ class IEquipRepositoryTest {
     fun `check(Retrofit) - Check return failure if have error in EquipRetrofitDatasource check`() =
         runTest {
             whenever(
-                equipRetrofitDatasource.checkByNro("token", 123456)
+                equipRetrofitDatasource.checkByNroCart("token", 123456)
             ).thenReturn(
                 resultFailure(
                     "IEquipRetrofitDatasource.check",
@@ -228,7 +220,7 @@ class IEquipRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.check("token", 123456, 0)
+            val result = repository.checkNroCart("token", 123456, 0)
             assertEquals(
                 true,
                 result.isFailure
@@ -247,14 +239,13 @@ class IEquipRepositoryTest {
     fun `check(Retrofit) - Check return failure if have error in ColabRoomDatasource deleteByReg`() =
         runTest {
             whenever(
-                equipRetrofitDatasource.checkByNro("token", 123456)
+                equipRetrofitDatasource.checkByNroCart("token", 123456)
             ).thenReturn(
                 Result.success(
                     EquipRetrofitModel(
                         id = 0,
                         nro = 0,
-                        cdOperClass = 0,
-                        descOperClass = "NON-EXISTENT",
+                        idOperClass = 0,
                         type = 0
                     )
                 )
@@ -268,7 +259,7 @@ class IEquipRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.check("token", 123456, 0)
+            val result = repository.checkNroCart("token", 123456, 0)
             assertEquals(
                 true,
                 result.isFailure
@@ -287,19 +278,18 @@ class IEquipRepositoryTest {
     fun `check(Retrofit) - Check return false if function execute successfully and non-existent nro in web service`() =
         runTest {
             whenever(
-                equipRetrofitDatasource.checkByNro("token", 123456)
+                equipRetrofitDatasource.checkByNroCart("token", 123456)
             ).thenReturn(
                 Result.success(
                     EquipRetrofitModel(
                         id = 0,
                         nro = 0,
-                        cdOperClass = 0,
-                        descOperClass = "NON-EXISTENT",
+                        idOperClass = 0,
                         type = 0
                     )
                 )
             )
-            val result = repository.check("token", 123456, 0)
+            val result = repository.checkNroCart("token", 123456, 0)
             verify(equipRoomDatasource, atLeastOnce()).deleteByNro(123456)
             assertEquals(
                 true,
@@ -315,14 +305,13 @@ class IEquipRepositoryTest {
     fun `check(Retrofit) - Check return failure if have error in ColabRoomDatasource add`() =
         runTest {
             whenever(
-                equipRetrofitDatasource.checkByNro("token", 123)
+                equipRetrofitDatasource.checkByNroCart("token", 123)
             ).thenReturn(
                 Result.success(
                     EquipRetrofitModel(
                         id = 12,
                         nro = 123,
-                        cdOperClass = 10,
-                        descOperClass = "Test",
+                        idOperClass = 10,
                         type = 1
                     )
                 )
@@ -332,8 +321,7 @@ class IEquipRepositoryTest {
                     EquipRoomModel(
                         id = 12,
                         nro = 123,
-                        cdOperClass = 10,
-                        descOperClass = "Test",
+                        idOperClass = 10,
                         type = TypeEquip.TRUCK
                     )
                 )
@@ -344,7 +332,7 @@ class IEquipRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.check("token", 123, 0)
+            val result = repository.checkNroCart("token", 123, 0)
             assertEquals(
                 true,
                 result.isFailure
@@ -363,19 +351,18 @@ class IEquipRepositoryTest {
     fun `check(Retrofit) - Check return false if function execute successfully and type is TypeEquip TRUCK and pos greater than 0`() =
         runTest {
             whenever(
-                equipRetrofitDatasource.checkByNro("token", 123)
+                equipRetrofitDatasource.checkByNroCart("token", 123)
             ).thenReturn(
                 Result.success(
                     EquipRetrofitModel(
                         id = 12,
                         nro = 123,
-                        cdOperClass = 10,
-                        descOperClass = "Test",
+                        idOperClass = 10,
                         type = 1
                     )
                 )
             )
-            val result = repository.check("token", 123, 1)
+            val result = repository.checkNroCart("token", 123, 1)
             verify(
                 equipRoomDatasource,
                 atLeastOnce()
@@ -383,8 +370,7 @@ class IEquipRepositoryTest {
                 EquipRoomModel(
                     id = 12,
                     nro = 123,
-                    cdOperClass = 10,
-                    descOperClass = "Test",
+                    idOperClass = 10,
                     type = TypeEquip.TRUCK
                 )
             )
@@ -402,19 +388,18 @@ class IEquipRepositoryTest {
     fun `check(Retrofit) - Check return false if function execute successfully and type is TypeEquip CART and pos is 0`() =
         runTest {
             whenever(
-                equipRetrofitDatasource.checkByNro("token", 123)
+                equipRetrofitDatasource.checkByNroCart("token", 123)
             ).thenReturn(
                 Result.success(
                     EquipRetrofitModel(
                         id = 12,
                         nro = 123,
-                        cdOperClass = 10,
-                        descOperClass = "Test",
+                        idOperClass = 10,
                         type = 2
                     )
                 )
             )
-            val result = repository.check("token", 123, 0)
+            val result = repository.checkNroCart("token", 123, 0)
             verify(
                 equipRoomDatasource,
                 atLeastOnce()
@@ -422,8 +407,7 @@ class IEquipRepositoryTest {
                 EquipRoomModel(
                     id = 12,
                     nro = 123,
-                    cdOperClass = 10,
-                    descOperClass = "Test",
+                    idOperClass = 10,
                     type = TypeEquip.CART
                 )
             )
@@ -441,19 +425,18 @@ class IEquipRepositoryTest {
     fun `check(Retrofit) - Check return true if function execute successfully and type is TypeEquip TRUCK and pos is 0`() =
         runTest {
             whenever(
-                equipRetrofitDatasource.checkByNro("token", 123)
+                equipRetrofitDatasource.checkByNroCart("token", 123)
             ).thenReturn(
                 Result.success(
                     EquipRetrofitModel(
                         id = 12,
                         nro = 123,
-                        cdOperClass = 10,
-                        descOperClass = "Test",
+                        idOperClass = 10,
                         type = 1
                     )
                 )
             )
-            val result = repository.check("token", 123, 0)
+            val result = repository.checkNroCart("token", 123, 0)
             verify(
                 equipRoomDatasource,
                 atLeastOnce()
@@ -461,8 +444,7 @@ class IEquipRepositoryTest {
                 EquipRoomModel(
                     id = 12,
                     nro = 123,
-                    cdOperClass = 10,
-                    descOperClass = "Test",
+                    idOperClass = 10,
                     type = TypeEquip.TRUCK
                 )
             )
@@ -480,19 +462,18 @@ class IEquipRepositoryTest {
     fun `check(Retrofit) - Check return true if function execute successfully and type is TypeEquip CART and pos greater than 0`() =
         runTest {
             whenever(
-                equipRetrofitDatasource.checkByNro("token", 123)
+                equipRetrofitDatasource.checkByNroCart("token", 123)
             ).thenReturn(
                 Result.success(
                     EquipRetrofitModel(
                         id = 12,
                         nro = 123,
-                        cdOperClass = 10,
-                        descOperClass = "Test",
+                        idOperClass = 10,
                         type = 2
                     )
                 )
             )
-            val result = repository.check("token", 123, 2)
+            val result = repository.checkNroCart("token", 123, 2)
             verify(
                 equipRoomDatasource,
                 atLeastOnce()
@@ -500,8 +481,7 @@ class IEquipRepositoryTest {
                 EquipRoomModel(
                     id = 12,
                     nro = 123,
-                    cdOperClass = 10,
-                    descOperClass = "Test",
+                    idOperClass = 10,
                     type = TypeEquip.CART
                 )
             )
@@ -527,7 +507,7 @@ class IEquipRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.check(100, 0)
+            val result = repository.checkNroCart(100, 0)
             assertEquals(
                 true,
                 result.isFailure
@@ -550,7 +530,7 @@ class IEquipRepositoryTest {
             ).thenReturn(
                 Result.success(false)
             )
-            val result = repository.check(100, 1)
+            val result = repository.checkNroCart(100, 1)
             assertEquals(
                 true,
                 result.isSuccess
@@ -578,7 +558,7 @@ class IEquipRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.check(100, 1)
+            val result = repository.checkNroCart(100, 1)
             assertEquals(
                 true,
                 result.isFailure
@@ -606,7 +586,7 @@ class IEquipRepositoryTest {
             ).thenReturn(
                 Result.success(TypeEquip.TRUCK)
             )
-            val result = repository.check(100, 1)
+            val result = repository.checkNroCart(100, 1)
             assertEquals(
                 true,
                 result.isSuccess
@@ -630,7 +610,7 @@ class IEquipRepositoryTest {
             ).thenReturn(
                 Result.success(TypeEquip.CART)
             )
-            val result = repository.check(100, 0)
+            val result = repository.checkNroCart(100, 0)
             assertEquals(
                 true,
                 result.isSuccess
@@ -654,7 +634,7 @@ class IEquipRepositoryTest {
             ).thenReturn(
                 Result.success(TypeEquip.TRUCK)
             )
-            val result = repository.check(100, 0)
+            val result = repository.checkNroCart(100, 0)
             assertEquals(
                 true,
                 result.isSuccess
@@ -678,7 +658,7 @@ class IEquipRepositoryTest {
             ).thenReturn(
                 Result.success(TypeEquip.CART)
             )
-            val result = repository.check(100, 3)
+            val result = repository.checkNroCart(100, 3)
             assertEquals(
                 true,
                 result.isSuccess
@@ -726,8 +706,7 @@ class IEquipRepositoryTest {
                     EquipRoomModel(
                         id = 10,
                         nro = 10,
-                        cdOperClass = 10,
-                        descOperClass = "Test",
+                        idOperClass = 10,
                         type = TypeEquip.TRUCK
                     )
                 )
@@ -741,8 +720,7 @@ class IEquipRepositoryTest {
                 Equip(
                     id = 10,
                     nro = 10,
-                    cdOperClass = 10,
-                    descOperClass = "Test",
+                    idOperClass = 10,
                     type = TypeEquip.TRUCK
                 ),
                 result.getOrNull()!!

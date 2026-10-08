@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cvf.presenter.view.manager.front
 
 import androidx.lifecycle.SavedStateHandle
-import br.com.usinasantafe.cvf.MainCoroutineRule
+import br.com.usinasantafe.cvf.MainDispatcherRule
 import br.com.usinasantafe.cvf.domain.usecases.manager.CheckStatusManager
 import br.com.usinasantafe.cvf.domain.usecases.manager.ListFront
 import br.com.usinasantafe.cvf.domain.usecases.manager.SetIdFront
@@ -29,7 +29,7 @@ class FrontViewModelTest {
 
     @ExperimentalCoroutinesApi
     @get:Rule
-    val mainCoroutineRule = MainCoroutineRule()
+    val mainDispatcherRule = MainDispatcherRule()
 
     private val listFront = mock<ListFront>()
     private val setIdFront = mock<SetIdFront>()

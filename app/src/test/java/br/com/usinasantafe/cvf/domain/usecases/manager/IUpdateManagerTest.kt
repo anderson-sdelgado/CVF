@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cvf.domain.usecases.manager
 
-import br.com.usinasantafe.cvf.MainCoroutineRule
+import br.com.usinasantafe.cvf.MainDispatcherRule
 import br.com.usinasantafe.cvf.domain.entities.stable.Front
 import br.com.usinasantafe.cvf.domain.entities.stable.Release
 import br.com.usinasantafe.cvf.domain.repositories.stable.FrontRepository
@@ -21,7 +21,7 @@ import kotlin.test.assertEquals
 class IUpdateManagerTest {
 
     @get:Rule
-    val mainCoroutineRule = MainCoroutineRule()
+    val mainDispatcherRule = MainDispatcherRule()
 
     private val managerRepository = mock<ManagerRepository>()
     private val frontRepository = mock<FrontRepository>()

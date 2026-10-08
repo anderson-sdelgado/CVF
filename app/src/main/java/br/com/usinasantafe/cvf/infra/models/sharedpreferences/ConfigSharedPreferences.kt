@@ -17,8 +17,8 @@ data class ConfigSharedPreferencesModel(
 fun ConfigSharedPreferencesModel.sharedPreferencesModelToEntity(): Config {
     return with(this) {
         Config(
-            number = number,
-            password = password,
+            number = ::number.required(),
+            password = ::password.required(),
             idServ = idServ,
             version = version,
             statusSend = statusSend,

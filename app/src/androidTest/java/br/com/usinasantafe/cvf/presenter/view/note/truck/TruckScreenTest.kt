@@ -342,7 +342,7 @@ class TruckScreenTest {
                     EquipRoomModel(
                         id = 1,
                         nro = 100,
-                        cdOperClass = 1,
+                        idOperClass = 1,
                         descOperClass = "TRUCK_EXISTENT",
                         type = TypeEquip.TRUCK
                     )
@@ -401,7 +401,7 @@ class TruckScreenTest {
                     EquipRoomModel(
                         id = 1,
                         nro = 100,
-                        cdOperClass = 1,
+                        idOperClass = 1,
                         descOperClass = "TRUCK_EXISTENT",
                         type = TypeEquip.TRUCK
                     )
@@ -440,7 +440,7 @@ class TruckScreenTest {
                     EquipRoomModel(
                         id = 1,
                         nro = 100,
-                        cdOperClass = 1,
+                        idOperClass = 1,
                         descOperClass = "TRUCK_EXISTENT",
                         type = TypeEquip.TRUCK
                     )

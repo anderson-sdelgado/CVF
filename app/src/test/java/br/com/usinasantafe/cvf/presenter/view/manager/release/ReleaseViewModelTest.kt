@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cvf.presenter.view.manager.release
 
 import androidx.lifecycle.SavedStateHandle
-import br.com.usinasantafe.cvf.MainCoroutineRule
+import br.com.usinasantafe.cvf.MainDispatcherRule
 import br.com.usinasantafe.cvf.domain.usecases.manager.ListRelease
 import br.com.usinasantafe.cvf.domain.usecases.manager.SetIdRelease
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableRelease
@@ -29,7 +29,7 @@ class ReleaseViewModelTest {
 
     @ExperimentalCoroutinesApi
     @get:Rule
-    val mainCoroutineRule = MainCoroutineRule()
+    val mainDispatcherRule = MainDispatcherRule()
 
     private val updateTableRelease = mock<UpdateTableRelease>()
     private val listRelease = mock<ListRelease>()

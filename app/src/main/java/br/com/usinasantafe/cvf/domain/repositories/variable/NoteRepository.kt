@@ -2,6 +2,7 @@ package br.com.usinasantafe.cvf.domain.repositories.variable
 
 import br.com.usinasantafe.cvf.domain.entities.variable.Cart
 import br.com.usinasantafe.cvf.utils.EmptyResult
+import java.util.Date
 
 interface NoteRepository {
     suspend fun hasSend(): Result<Boolean>
@@ -15,4 +16,5 @@ interface NoteRepository {
     suspend fun setCart(entity: Cart): EmptyResult
     suspend fun setIdTruck(id: Int): EmptyResult
     suspend fun clean(): EmptyResult
+    suspend fun setDate(dateHourExitMill: Date, dateHourArrivalField: Date): EmptyResult
 }

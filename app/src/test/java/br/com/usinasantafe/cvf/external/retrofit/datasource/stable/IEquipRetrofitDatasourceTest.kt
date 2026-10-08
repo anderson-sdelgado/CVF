@@ -95,15 +95,13 @@ class IEquipRetrofitDatasourceTest {
                         EquipRetrofitModel(
                             id = 1,
                             nro = 1,
-                            cdOperClass = 1,
-                            descOperClass = "Equip1",
+                            idOperClass = 1,
                             type = 1
                         ),
                         EquipRetrofitModel(
                             id = 2,
                             nro = 2,
-                            cdOperClass = 2,
-                            descOperClass = "Equip2",
+                            idOperClass = 2,
                             type = 1
                         )
                     )
@@ -126,7 +124,7 @@ class IEquipRetrofitDatasourceTest {
             )
             val service = retrofit.create(EquipApi::class.java)
             val datasource = IEquipRetrofitDatasource(service, service)
-            val result = datasource.checkByNro("TOKEN", 1)
+            val result = datasource.checkByNroCart("TOKEN", 1)
             assertEquals(
                 true,
                 result.isFailure
@@ -155,7 +153,7 @@ class IEquipRetrofitDatasourceTest {
             )
             val service = retrofit.create(EquipApi::class.java)
             val datasource = IEquipRetrofitDatasource(service, service)
-            val result = datasource.checkByNro("TOKEN", 1)
+            val result = datasource.checkByNroCart("TOKEN", 1)
             assertEquals(
                 true,
                 result.isFailure
@@ -184,7 +182,7 @@ class IEquipRetrofitDatasourceTest {
             )
             val service = retrofit.create(EquipApi::class.java)
             val datasource = IEquipRetrofitDatasource(service, service)
-            val result = datasource.checkByNro("TOKEN", 1)
+            val result = datasource.checkByNroCart("TOKEN", 1)
             assertEquals(
                 true,
                 result.isSuccess
@@ -193,8 +191,7 @@ class IEquipRetrofitDatasourceTest {
                 EquipRetrofitModel(
                     id = 1,
                     nro = 1,
-                    cdOperClass = 1,
-                    descOperClass = "Equip1",
+                    idOperClass = 1,
                     type = 1
                 ),
                 result.getOrNull()!!

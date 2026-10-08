@@ -55,15 +55,13 @@ class IEquipRoomDatasourceTest {
                     EquipRoomModel(
                         id = 1,
                         nro = 1,
-                        cdOperClass = 1,
-                        descOperClass = "Test",
+                        idOperClass = 1,
                         type = TypeEquip.CART
                     ),
                     EquipRoomModel(
                         id = 1,
                         nro = 1,
-                        cdOperClass = 1,
-                        descOperClass = "Test",
+                        idOperClass = 1,
                         type = TypeEquip.CART
                     ),
                 )
@@ -100,15 +98,13 @@ class IEquipRoomDatasourceTest {
                     EquipRoomModel(
                         id = 1,
                         nro = 1,
-                        cdOperClass = 1,
-                        descOperClass = "Test",
+                        idOperClass = 1,
                         type = TypeEquip.CART
                     ),
                     EquipRoomModel(
                         id = 2,
                         nro = 2,
-                        cdOperClass = 2,
-                        descOperClass = "Test2",
+                        idOperClass = 2,
                         type = TypeEquip.CART
                     ),
                 )
@@ -132,8 +128,7 @@ class IEquipRoomDatasourceTest {
                 EquipRoomModel(
                     id = 1,
                     nro = 1,
-                    cdOperClass = 1,
-                    descOperClass = "Test",
+                    idOperClass = 1,
                     type = TypeEquip.CART
                 ),
                 model1
@@ -143,8 +138,7 @@ class IEquipRoomDatasourceTest {
                 EquipRoomModel(
                     id = 2,
                     nro = 2,
-                    cdOperClass = 2,
-                    descOperClass = "Test2",
+                    idOperClass = 2,
                     type = TypeEquip.CART
                 ),
                 model2
@@ -159,8 +153,7 @@ class IEquipRoomDatasourceTest {
                     EquipRoomModel(
                         id = 1,
                         nro = 1,
-                        cdOperClass = 1,
-                        descOperClass = "Test",
+                        idOperClass = 1,
                         type = TypeEquip.CART
                     )
                 )
@@ -190,15 +183,13 @@ class IEquipRoomDatasourceTest {
                     EquipRoomModel(
                         id = 1,
                         nro = 100,
-                        cdOperClass = 20,
-                        descOperClass = "Test",
+                        idOperClass = 20,
                         type = TypeEquip.CART
                     ),
                     EquipRoomModel(
                         id = 2,
                         nro = 124,
-                        cdOperClass = 30,
-                        descOperClass = "Test2",
+                        idOperClass = 30,
                         type = TypeEquip.CART
                     ),
                 )
@@ -223,8 +214,7 @@ class IEquipRoomDatasourceTest {
                 EquipRoomModel(
                     id = 2,
                     nro = 124,
-                    cdOperClass = 30,
-                    descOperClass = "Test2",
+                    idOperClass = 30,
                     type = TypeEquip.CART
                 ),
                 model
@@ -239,8 +229,7 @@ class IEquipRoomDatasourceTest {
                     EquipRoomModel(
                         id = 1,
                         nro = 1,
-                        cdOperClass = 1,
-                        descOperClass = "Test",
+                        idOperClass = 1,
                         type = TypeEquip.CART
                     )
                 )
@@ -254,8 +243,7 @@ class IEquipRoomDatasourceTest {
                 EquipRoomModel(
                     id = 1,
                     nro = 1,
-                    cdOperClass = 1,
-                    descOperClass = "Test",
+                    idOperClass = 1,
                     type = TypeEquip.CART
                 )
             )
@@ -281,8 +269,7 @@ class IEquipRoomDatasourceTest {
                     EquipRoomModel(
                         id = 1,
                         nro = 1,
-                        cdOperClass = 1,
-                        descOperClass = "Test",
+                        idOperClass = 1,
                         type = TypeEquip.CART
                     )
                 )
@@ -296,8 +283,7 @@ class IEquipRoomDatasourceTest {
                 EquipRoomModel(
                     id = 2,
                     nro = 2,
-                    cdOperClass = 2,
-                    descOperClass = "Test2",
+                    idOperClass = 2,
                     type = TypeEquip.CART
                 )
             )
@@ -315,8 +301,7 @@ class IEquipRoomDatasourceTest {
                 EquipRoomModel(
                     id = 1,
                     nro = 1,
-                    cdOperClass = 1,
-                    descOperClass = "Test",
+                    idOperClass = 1,
                     type = TypeEquip.CART
                 ),
                 model1
@@ -326,8 +311,7 @@ class IEquipRoomDatasourceTest {
                 EquipRoomModel(
                     id = 2,
                     nro = 2,
-                    cdOperClass = 2,
-                    descOperClass = "Test2",
+                    idOperClass = 2,
                     type = TypeEquip.CART
                 ),
                 model2
@@ -356,8 +340,7 @@ class IEquipRoomDatasourceTest {
                     EquipRoomModel(
                         id = 10,
                         nro = 125,
-                        cdOperClass = 200,
-                        descOperClass = "Test",
+                        idOperClass = 200,
                         type = TypeEquip.CART
                     )
                 )
@@ -399,8 +382,7 @@ class IEquipRoomDatasourceTest {
                     EquipRoomModel(
                         id = 10,
                         nro = 125,
-                        cdOperClass = 200,
-                        descOperClass = "Test",
+                        idOperClass = 200,
                         type = TypeEquip.CART
                     )
                 )
@@ -442,8 +424,7 @@ class IEquipRoomDatasourceTest {
                     EquipRoomModel(
                         id = 10,
                         nro = 125,
-                        cdOperClass = 200,
-                        descOperClass = "Test",
+                        idOperClass = 200,
                         type = TypeEquip.CART
                     )
                 )
@@ -457,8 +438,7 @@ class IEquipRoomDatasourceTest {
                 EquipRoomModel(
                         id = 10,
                         nro = 125,
-                        cdOperClass = 200,
-                        descOperClass = "Test",
+                        idOperClass = 200,
                         type = TypeEquip.CART
                     ),
                 result.getOrNull()!!
@@ -491,8 +471,7 @@ class IEquipRoomDatasourceTest {
                     EquipRoomModel(
                         id = 5,
                         nro = 13,
-                        cdOperClass = 52,
-                        descOperClass = "Test",
+                        idOperClass = 52,
                         type = TypeEquip.CART
                     )
                 )
@@ -534,8 +513,7 @@ class IEquipRoomDatasourceTest {
                     EquipRoomModel(
                         id = 5,
                         nro = 13,
-                        cdOperClass = 52,
-                        descOperClass = "Test",
+                        idOperClass = 52,
                         type = TypeEquip.CART
                     )
                 )

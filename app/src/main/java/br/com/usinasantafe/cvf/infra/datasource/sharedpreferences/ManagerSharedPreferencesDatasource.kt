@@ -19,5 +19,6 @@ interface ManagerSharedPreferencesDatasource {
     suspend fun getQtdLimitCart(): Result<Int>
     suspend fun save(model: ManagerSharedPreferencesModel): EmptyResult
     suspend fun update(idFront: Int, idRelease: Int, qtdLimitCart: Int): EmptyResult
+    suspend fun update(idFront: Int, idRelease: Int): EmptyResult
     fun observe(): Flow<ManagerSharedPreferencesModel>
 }

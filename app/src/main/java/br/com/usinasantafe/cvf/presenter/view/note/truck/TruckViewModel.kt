@@ -6,8 +6,9 @@ import br.com.usinasantafe.cvf.domain.usecases.config.GetStatusSend
 import br.com.usinasantafe.cvf.domain.usecases.manager.GetTitleMenu
 import br.com.usinasantafe.cvf.domain.usecases.note.DeleteNote
 import br.com.usinasantafe.cvf.domain.usecases.note.GetNroTruck
-import br.com.usinasantafe.cvf.domain.usecases.note.HasNroEquip
+import br.com.usinasantafe.cvf.domain.usecases.note.HasNroTruck
 import br.com.usinasantafe.cvf.domain.usecases.note.SetNroTruck
+import br.com.usinasantafe.cvf.lib.CheckTruck
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.OptionMenu
 import br.com.usinasantafe.cvf.lib.StatusSend
@@ -18,13 +19,11 @@ import br.com.usinasantafe.cvf.utils.UiStateWithStatusUpdate
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
 import br.com.usinasantafe.cvf.utils.onFailureUpdate
 import br.com.usinasantafe.cvf.utils.onSuccessUpdateAccess
-import br.com.usinasantafe.cvf.utils.required
 import br.com.usinasantafe.cvf.utils.withFailure
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -51,7 +50,7 @@ class TruckViewModel @Inject constructor(
     private val getTitleMenu: GetTitleMenu,
     private val deleteNote: DeleteNote,
     private val getNroTruck: GetNroTruck,
-    private val hasNroEquip: HasNroEquip,
+    private val hasNroTruck: HasNroTruck,
     private val setNroTruck: SetNroTruck
 ) : ViewModel() {
 
@@ -141,9 +140,13 @@ class TruckViewModel @Inject constructor(
                 return@launch
             }
             updateState { copy(status = status.copy(flagProgress = true)) }
-            val check = hasNroEquip(state.text).getOrThrow()
-            if (!check) {
+            val check = hasNroTruck(state.text).getOrThrow()
+            if (check == CheckTruck.INVALID) {
                 updateState { withFailure(Errors.INVALID) }
+                return@launch
+            }
+            if (check == CheckTruck.RELEASE_AND_FRONT_INVALID) {
+                updateState { withFailure(Errors.RELEASE_AND_FRONT_INVALID) }
                 return@launch
             }
             setNroTruck(state.text).getOrThrow()

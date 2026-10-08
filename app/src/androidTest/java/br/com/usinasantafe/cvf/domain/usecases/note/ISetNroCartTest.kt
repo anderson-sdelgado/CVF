@@ -77,7 +77,7 @@ class ISetNroCartTest {
                 EquipRoomModel(
                     id = 12,
                     nro = 200,
-                    cdOperClass = 25,
+                    idOperClass = 25,
                     descOperClass = "OperClass1",
                     type = TypeEquip.CART
                 )

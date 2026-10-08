@@ -9,7 +9,6 @@ import br.com.usinasantafe.cvf.utils.resultFailure
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.Mockito.mock
-import org.mockito.kotlin.not
 import org.mockito.kotlin.whenever
 import kotlin.test.assertEquals
 
@@ -119,8 +118,7 @@ class IGetTypeTruckTest {
                     Equip(
                         id = 10,
                         nro = 251,
-                        cdOperClass = 1,
-                        descOperClass = "Test",
+                        idOperClass = 1,
                         type = TypeEquip.TRUCK
                     )
                 )
@@ -151,8 +149,7 @@ class IGetTypeTruckTest {
                     Equip(
                         id = 10,
                         nro = 251,
-                        cdOperClass = 8,
-                        descOperClass = "Test2",
+                        idOperClass = 8,
                         type = TypeEquip.TRUCK
                     )
                 )

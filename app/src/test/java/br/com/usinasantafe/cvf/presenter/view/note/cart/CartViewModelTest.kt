@@ -1,9 +1,10 @@
 package br.com.usinasantafe.cvf.presenter.view.note.cart
 
 import androidx.lifecycle.SavedStateHandle
-import br.com.usinasantafe.cvf.MainCoroutineRule
+import br.com.usinasantafe.cvf.MainDispatcherRule
+import br.com.usinasantafe.cvf.domain.usecases.config.GetStatusSend
 import br.com.usinasantafe.cvf.domain.usecases.manager.GetTitleMenu
-import br.com.usinasantafe.cvf.domain.usecases.note.HasNroEquip
+import br.com.usinasantafe.cvf.domain.usecases.note.HasNroCart
 import br.com.usinasantafe.cvf.domain.usecases.note.DeleteNote
 import br.com.usinasantafe.cvf.domain.usecases.note.GetNroCart
 import br.com.usinasantafe.cvf.domain.usecases.note.GetTypeTruck
@@ -26,7 +27,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.atLeastOnce
-import org.mockito.kotlin.never
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
@@ -36,12 +36,12 @@ import kotlin.test.assertEquals
 class CartViewModelTest {
 
     @get:Rule
-    val mainCoroutineRule = MainCoroutineRule()
+    val mainDispatcherRule = MainDispatcherRule()
 
     private val getTitleMenu = mock<GetTitleMenu>()
     private val deleteNote = mock<DeleteNote>()
     private val getNroCart = mock<GetNroCart>()
-    private val hasNroEquip = mock<HasNroEquip>()
+    private val hasNroCart = mock<HasNroCart>()
     private val setNroCart = mock<SetNroCart>()
     private val getTypeTruck = mock<GetTypeTruck>()
     private val qtdLimitCart = mock<QtdLimitCart>()
@@ -60,7 +60,7 @@ class CartViewModelTest {
         getTitleMenu = getTitleMenu,
         deleteNote = deleteNote,
         getNroCart = getNroCart,
-        hasNroEquip = hasNroEquip,
+        hasNroCart = hasNroCart,
         setNroCart = setNroCart,
         getTypeTruck = getTypeTruck,
         qtdLimitCart = qtdLimitCart,
@@ -540,7 +540,7 @@ class CartViewModelTest {
                 Result.success(false)
             )
             whenever(
-                hasNroEquip("100", 2)
+                hasNroCart("100", 2)
             ).thenReturn(
                 resultFailure(
                     context = "HasNroCart",
@@ -584,7 +584,7 @@ class CartViewModelTest {
                 Result.success(false)
             )
             whenever(
-                hasNroEquip("100", 1)
+                hasNroCart("100", 1)
             ).thenReturn(
                 Result.success(false)
             )
@@ -624,7 +624,7 @@ class CartViewModelTest {
                 Result.success(false)
             )
             whenever(
-                hasNroEquip("100", 1)
+                hasNroCart("100", 1)
             ).thenReturn(
                 Result.success(true)
             )
@@ -673,7 +673,7 @@ class CartViewModelTest {
                 Result.success(false)
             )
             whenever(
-                hasNroEquip("100", 1)
+                hasNroCart("100", 1)
             ).thenReturn(
                 Result.success(true)
             )
@@ -718,7 +718,7 @@ class CartViewModelTest {
                 Result.success(false)
             )
             whenever(
-                hasNroEquip("100", 2)
+                hasNroCart("100", 2)
             ).thenReturn(
                 Result.success(true)
             )
@@ -772,7 +772,7 @@ class CartViewModelTest {
                 Result.success(false)
             )
             whenever(
-                hasNroEquip("100", 2)
+                hasNroCart("100", 2)
             ).thenReturn(
                 Result.success(true)
             )
@@ -827,7 +827,7 @@ class CartViewModelTest {
                 Result.success(false)
             )
             whenever(
-                hasNroEquip("100", 3)
+                hasNroCart("100", 3)
             ).thenReturn(
                 Result.success(true)
             )
@@ -869,7 +869,7 @@ class CartViewModelTest {
                 Result.success(false)
             )
             whenever(
-                hasNroEquip("100", 2)
+                hasNroCart("100", 2)
             ).thenReturn(
                 Result.success(true)
             )

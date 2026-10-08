@@ -82,6 +82,11 @@ class IManagerRepository @Inject constructor(
             managerSharedPreferencesDatasource.update(idFront, idRelease, qtdLimitCart).getOrThrow()
         }
 
+    override suspend fun update(idFront: Int, idRelease: Int): EmptyResult =
+        call(getClassAndMethod()) {
+            managerSharedPreferencesDatasource.update(idFront, idRelease).getOrThrow()
+        }
+
     override fun observe(): Flow<Manager> =
         managerSharedPreferencesDatasource.observe().map { it.sharedPreferencesModelToEntity() }
 

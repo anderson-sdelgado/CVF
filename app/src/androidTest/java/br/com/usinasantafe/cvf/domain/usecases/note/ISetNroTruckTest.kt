@@ -77,7 +77,7 @@ class ISetNroTruckTest {
                 EquipRoomModel(
                     id = 30,
                     nro = 230,
-                    cdOperClass = 25,
+                    idOperClass = 25,
                     descOperClass = "OperClass1",
                     type = TypeEquip.CART
                 )

@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cvf.presenter.view.note.review
 
-import br.com.usinasantafe.cvf.MainCoroutineRule
+import br.com.usinasantafe.cvf.MainDispatcherRule
 import br.com.usinasantafe.cvf.domain.usecases.note.DeleteNote
 import br.com.usinasantafe.cvf.domain.usecases.note.FinishNote
 import br.com.usinasantafe.cvf.domain.usecases.note.GetDescReview
@@ -20,7 +20,7 @@ import kotlin.test.assertEquals
 class ReviewViewModelTest {
 
     @get:Rule
-    val mainCoroutineRule = MainCoroutineRule()
+    val mainDispatcherRule = MainDispatcherRule()
 
     private val getDescReview = mock<GetDescReview>()
     private val finishNote = mock<FinishNote>()

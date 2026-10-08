@@ -294,7 +294,7 @@ class IGetDescReviewTest {
                 EquipRoomModel(
                     id = 100,
                     nro = 200,
-                    cdOperClass = 25,
+                    idOperClass = 25,
                     descOperClass = "OperClass1",
                     type = TypeEquip.TRUCK
                 ),
@@ -324,14 +324,14 @@ class IGetDescReviewTest {
                 EquipRoomModel(
                     id = 10,
                     nro = 300,
-                    cdOperClass = 35,
+                    idOperClass = 35,
                     descOperClass = "Cart1",
                     type = TypeEquip.CART
                 ),
                 EquipRoomModel(
                     id = 20,
                     nro = 400,
-                    cdOperClass = 45,
+                    idOperClass = 45,
                     descOperClass = "Cart2",
                     type = TypeEquip.CART
                 )

@@ -135,8 +135,7 @@ class IGetNroCartTest {
                     Equip(
                         id = 10,
                         nro = 250,
-                        cdOperClass = 200,
-                        descOperClass = "Test",
+                        idOperClass = 200,
                         type = TypeEquip.CART
                     )
                 )

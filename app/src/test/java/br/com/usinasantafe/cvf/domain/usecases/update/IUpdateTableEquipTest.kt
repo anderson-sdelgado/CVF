@@ -124,8 +124,7 @@ class IUpdateTableEquipTest {
                 Equip(
                     id = 1,
                     nro = 1,
-                    cdOperClass = 1,
-                    descOperClass = "Test",
+                    idOperClass = 1,
                     type = TypeEquip.CART
                 )
             )
@@ -196,8 +195,7 @@ class IUpdateTableEquipTest {
                 Equip(
                     id = 1,
                     nro = 1,
-                    cdOperClass = 1,
-                    descOperClass = "Test",
+                    idOperClass = 1,
                     type = TypeEquip.CART
                 )
             )
@@ -279,8 +277,7 @@ class IUpdateTableEquipTest {
                 Equip(
                     id = 1,
                     nro = 1,
-                    cdOperClass = 1,
-                    descOperClass = "Test",
+                    idOperClass = 1,
                     type = TypeEquip.CART
                 )
             )

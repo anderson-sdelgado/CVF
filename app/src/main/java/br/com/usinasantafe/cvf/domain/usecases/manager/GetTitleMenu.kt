@@ -33,7 +33,7 @@ class IGetTitleMenu @Inject constructor(
                 } else {
                     context.getString(
                         R.string.text_data_menu,
-                        frontEntity.description,
+                        "${frontEntity.cd}",
                         "${releaseEntity.id}",
                         "${releaseEntity.nroOS}",
                         releaseEntity.descPropAgr

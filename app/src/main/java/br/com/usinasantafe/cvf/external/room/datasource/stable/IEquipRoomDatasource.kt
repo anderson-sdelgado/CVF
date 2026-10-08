@@ -56,7 +56,7 @@ class IEquipRoomDatasource @Inject constructor(
 
     override suspend fun getCdClassOperByNro(nro: Int): Result<Int> =
         result(getClassAndMethod()) {
-            equipDao.getCdClassOperByNro(nro).notZero("cdClassOper")
+            equipDao.getIdClassOperByNro(nro).notZero("cdClassOper")
         }
 
 }

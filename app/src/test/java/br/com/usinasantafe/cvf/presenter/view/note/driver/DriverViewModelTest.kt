@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cvf.presenter.view.note.driver
 
-import br.com.usinasantafe.cvf.MainCoroutineRule
+import br.com.usinasantafe.cvf.MainDispatcherRule
+import br.com.usinasantafe.cvf.domain.usecases.config.GetStatusSend
 import br.com.usinasantafe.cvf.domain.usecases.manager.GetTitleMenu
 import br.com.usinasantafe.cvf.domain.usecases.note.HasRegColab
 import br.com.usinasantafe.cvf.domain.usecases.note.DeleteNote
@@ -26,19 +27,21 @@ import kotlin.test.assertEquals
 class DriverViewModelTest {
 
     @get:Rule
-    val mainCoroutineRule = MainCoroutineRule()
+    val mainDispatcherRule = MainDispatcherRule()
 
     private val getTitleMenu = mock<GetTitleMenu>()
     private val getRegDriver = mock<GetRegDriver>()
     private val deleteNote = mock<DeleteNote>()
     private val hasRegColab = mock<HasRegColab>()
     private val setRegDriver = mock<SetRegDriver>()
+    private val getStatusSend = mock<GetStatusSend>()
     private val viewModel = DriverViewModel(
         getTitleMenu = getTitleMenu,
         getRegDriver = getRegDriver,
         deleteNote = deleteNote,
         hasRegColab = hasRegColab,
-        setRegDriver = setRegDriver
+        setRegDriver = setRegDriver,
+        getStatusSend = getStatusSend
     )
 
     @Test

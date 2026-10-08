@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cvf.domain.usecases.config.GetStatusSend
 import br.com.usinasantafe.cvf.domain.usecases.manager.GetTitleMenu
-import br.com.usinasantafe.cvf.domain.usecases.note.HasNroEquip
+import br.com.usinasantafe.cvf.domain.usecases.note.HasNroCart
 import br.com.usinasantafe.cvf.domain.usecases.note.DeleteNote
 import br.com.usinasantafe.cvf.domain.usecases.note.GetNroCart
 import br.com.usinasantafe.cvf.domain.usecases.note.GetTypeTruck
@@ -60,7 +60,7 @@ class CartViewModel @Inject constructor(
     private val getTitleMenu: GetTitleMenu,
     private val deleteNote: DeleteNote,
     private val getNroCart: GetNroCart,
-    private val hasNroEquip: HasNroEquip,
+    private val hasNroCart: HasNroCart,
     private val setNroCart: SetNroCart,
     private val getTypeTruck: GetTypeTruck,
     private val qtdLimitCart: QtdLimitCart,
@@ -185,7 +185,7 @@ class CartViewModel @Inject constructor(
             }
             if(state.text.isEmpty()) return@runCatching true
             updateState { copy(status = status.copy(flagProgress = true)) }
-            if (!hasNroEquip(state.text, state.pos).getOrThrow()) {
+            if (!hasNroCart(state.text, state.pos).getOrThrow()) {
                 updateState { withFailure(Errors.INVALID) }
                 return@launch
             }

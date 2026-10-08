@@ -36,27 +36,40 @@ class IEquipRepository @Inject constructor(
             modelList.map { it.retrofitModelToEntity() }
         }
 
-    override suspend fun check(token: String, nro: Int, pos: Int): Result<Boolean> =
+    override suspend fun checkNroCart(token: String, nro: Int, pos: Int): Result<Boolean> =
         call(getClassAndMethod()) {
-            val modelRetrofit = equipRetrofitDatasource.checkByNro(token, nro).getOrThrow()
+            val modelRetrofit = equipRetrofitDatasource.checkByNroCart(token, nro).getOrThrow()
             if(modelRetrofit.nro == 0) {
                 equipRoomDatasource.deleteByNro(nro).getOrThrow()
                 return@call false
             }
-            val modelRoom = modelRetrofit.retrofitModelToRoomModel()
             equipRoomDatasource.add(modelRetrofit.retrofitModelToRoomModel()).getOrThrow()
-            if((modelRoom.type == TypeEquip.TRUCK) && (pos == 0)) return@call true
-            if((modelRoom.type == TypeEquip.CART) && (pos > 0)) return@call true
-            false
+            true
         }
 
-    override suspend fun check(nro: Int, pos: Int): Result<Boolean> =
+    override suspend fun checkNroTruck(token: String, nro: Int): Result<Equip> =
+        call(getClassAndMethod()) {
+            val modelRetrofit = equipRetrofitDatasource.checkByNroTruck(token, nro).getOrThrow()
+            if(modelRetrofit.nro == 0) {
+                equipRoomDatasource.deleteByNro(nro).getOrThrow()
+                return@call modelRetrofit.retrofitModelToEntity()
+            }
+            equipRoomDatasource.add(modelRetrofit.retrofitModelToRoomModel()).getOrThrow()
+            modelRetrofit.retrofitModelToEntity()
+        }
+
+    override suspend fun checkNroCart(nro: Int, pos: Int): Result<Boolean> =
         call(getClassAndMethod()) {
             if(!equipRoomDatasource.hasByNro(nro).getOrThrow()) return@call false
             val type = equipRoomDatasource.getTypeByNro(nro).getOrThrow()
-            if((type == TypeEquip.TRUCK) && (pos == 0)) return@call true
-            if((type == TypeEquip.CART) && (pos > 0)) return@call true
-            false
+            type == TypeEquip.CART
+        }
+
+    override suspend fun checkNroTruck(nro: Int): Result<Boolean> =
+        call(getClassAndMethod()) {
+            if(!equipRoomDatasource.hasByNro(nro).getOrThrow()) return@call false
+            val type = equipRoomDatasource.getTypeByNro(nro).getOrThrow()
+            type == TypeEquip.TRUCK
         }
 
     override suspend fun getById(id: Int): Result<Equip> =

@@ -79,7 +79,7 @@ class IGetTypeTruckTest {
                 EquipRoomModel(
                     id = 100,
                     nro = 256,
-                    cdOperClass = 1,
+                    idOperClass = 1,
                     descOperClass = "OperClass1",
                     type = TypeEquip.TRUCK
                 )
@@ -103,7 +103,7 @@ class IGetTypeTruckTest {
                 EquipRoomModel(
                     id = 100,
                     nro = 256,
-                    cdOperClass = 8,
+                    idOperClass = 8,
                     descOperClass = "OperClass1",
                     type = TypeEquip.TRUCK
                 )

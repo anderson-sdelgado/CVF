@@ -22,7 +22,7 @@ class ICheckRepeatedCartTest {
     @Test
     fun `Check return failure if value of field is incorrect`() =
         runTest {
-            val result = usecase("de25")
+            val result = usecase("de25", 1)
             assertEquals(
                 true,
                 result.isFailure
@@ -49,7 +49,7 @@ class ICheckRepeatedCartTest {
                     Exception()
                 )
             )
-            val result = usecase("100")
+            val result = usecase("100", 1)
             assertEquals(
                 true,
                 result.isFailure
@@ -81,7 +81,7 @@ class ICheckRepeatedCartTest {
                     Exception()
                 )
             )
-            val result = usecase("100")
+            val result = usecase("100", 1)
             assertEquals(
                 true,
                 result.isFailure
@@ -120,7 +120,7 @@ class ICheckRepeatedCartTest {
                     )
                 )
             )
-            val result = usecase("100")
+            val result = usecase("100", 1)
             assertEquals(
                 true,
                 result.isSuccess
@@ -155,7 +155,7 @@ class ICheckRepeatedCartTest {
                     )
                 )
             )
-            val result = usecase("100")
+            val result = usecase("100", 1)
             assertEquals(
                 true,
                 result.isSuccess

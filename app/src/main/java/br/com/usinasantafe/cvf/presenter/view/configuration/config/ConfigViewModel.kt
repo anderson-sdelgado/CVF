@@ -47,7 +47,6 @@ data class ConfigState(
 
 @HiltViewModel
 class ConfigViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
     private val getConfig: GetConfig,
     private val updateConfig: UpdateConfig,
     private val setFinishUpdateAllTable: SetFinishUpdateAllTable,
@@ -58,7 +57,6 @@ class ConfigViewModel @Inject constructor(
     private val checkStatusManager: CheckStatusManager
 ) : ViewModel() {
 
-    private val option: Int = savedStateHandle[OPTION_ARG]!!
 
     private val _uiState = MutableStateFlow(ConfigState())
     val uiState = _uiState.asStateFlow()
@@ -76,10 +74,7 @@ class ConfigViewModel @Inject constructor(
 
     fun onNumberChanged(v: String) = updateState { copy(number = v) }
     fun onPasswordChanged(v: String) = updateState { copy(password = v) }
-
-    fun onVersionChanged(version: String) = updateState {
-        copy(version = version)
-    }
+    fun onVersionChanged(v: String) = updateState { copy(version = v) }
 
     private fun ConfigState.isValid() = number.isNotBlank() && password.isNotBlank()
 

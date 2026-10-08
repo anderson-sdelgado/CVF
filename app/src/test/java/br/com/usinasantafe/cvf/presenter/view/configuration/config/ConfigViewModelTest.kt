@@ -1,19 +1,17 @@
 package br.com.usinasantafe.cvf.presenter.view.configuration.config
 
-import androidx.lifecycle.SavedStateHandle
-import br.com.usinasantafe.cvf.MainCoroutineRule
+import br.com.usinasantafe.cvf.MainDispatcherRule
 import br.com.usinasantafe.cvf.domain.usecases.config.GetConfig
 import br.com.usinasantafe.cvf.domain.usecases.config.SetFinishUpdateAllTable
 import br.com.usinasantafe.cvf.domain.usecases.config.UpdateConfig
+import br.com.usinasantafe.cvf.domain.usecases.manager.CheckStatusManager
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableColab
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableEquip
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableFront
 import br.com.usinasantafe.cvf.domain.usecases.update.UpdateTableRelease
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.LevelUpdate
-import br.com.usinasantafe.cvf.lib.Option
 import br.com.usinasantafe.cvf.presenter.model.ConfigScreenModel
-import br.com.usinasantafe.cvf.presenter.navigation.Args
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
 import br.com.usinasantafe.cvf.utils.percentage
 import br.com.usinasantafe.cvf.utils.resultFailure
@@ -36,7 +34,7 @@ class ConfigViewModelTest {
 
     @ExperimentalCoroutinesApi
     @get:Rule
-    val mainCoroutineRule = MainCoroutineRule()
+    val mainDispatcherRule = MainDispatcherRule()
 
     private val updateConfig = mock<UpdateConfig>()
     private val setFinishUpdateAllTable = mock<SetFinishUpdateAllTable>()
@@ -45,13 +43,10 @@ class ConfigViewModelTest {
     private val updateTableFront = mock<UpdateTableFront>()
     private val updateTableRelease = mock<UpdateTableRelease>()
     private val getConfig = mock<GetConfig>()
+    private val checkStatusManager = mock<CheckStatusManager>()
     private var tableList = mutableListOf<String>()
+
     private val viewModel = ConfigViewModel(
-        savedStateHandle = SavedStateHandle(
-            mapOf(
-                Args.OPTION_ARG to Option.INSERT.ordinal
-            )
-        ),
         getConfig = getConfig,
         updateConfig = updateConfig,
         setFinishUpdateAllTable = setFinishUpdateAllTable,
@@ -59,6 +54,7 @@ class ConfigViewModelTest {
         updateTableEquip = updateTableEquip,
         updateTableFront = updateTableFront,
         updateTableRelease = updateTableRelease,
+        checkStatusManager = checkStatusManager
     )
 
     private val qtdTable = 4f

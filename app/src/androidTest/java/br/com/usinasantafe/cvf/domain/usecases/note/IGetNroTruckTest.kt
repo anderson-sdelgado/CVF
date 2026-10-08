@@ -75,7 +75,7 @@ class IGetNroTruckTest {
                     EquipRoomModel(
                         id = 100,
                         nro = 256,
-                        cdOperClass = 25,
+                        idOperClass = 25,
                         descOperClass = "OperClass1",
                         type = TypeEquip.TRUCK
                     )

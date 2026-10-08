@@ -40,7 +40,7 @@ interface EquipDao {
     @Query("SELECT id FROM $TB_EQUIP WHERE nro = :nro")
     suspend fun getIdByNro(nro: Int): Int
 
-    @Query("SELECT cdOperClass FROM $TB_EQUIP WHERE nro = :nro")
-    suspend fun getCdClassOperByNro(nro: Int): Int
+    @Query("SELECT idOperClass FROM $TB_EQUIP WHERE nro = :nro")
+    suspend fun getIdClassOperByNro(nro: Int): Int
 
 }

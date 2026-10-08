@@ -1,10 +1,11 @@
 package br.com.usinasantafe.cvf.presenter.view.note.truck
 
-import br.com.usinasantafe.cvf.MainCoroutineRule
+import br.com.usinasantafe.cvf.MainDispatcherRule
+import br.com.usinasantafe.cvf.domain.usecases.config.GetStatusSend
 import br.com.usinasantafe.cvf.domain.usecases.manager.GetTitleMenu
 import br.com.usinasantafe.cvf.domain.usecases.note.DeleteNote
 import br.com.usinasantafe.cvf.domain.usecases.note.GetNroTruck
-import br.com.usinasantafe.cvf.domain.usecases.note.HasNroEquip
+import br.com.usinasantafe.cvf.domain.usecases.note.HasNroTruck
 import br.com.usinasantafe.cvf.domain.usecases.note.SetNroTruck
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.OptionMenu
@@ -28,19 +29,21 @@ import kotlin.test.assertEquals
 class TruckViewModelTest {
 
     @get:Rule
-    val mainCoroutineRule = MainCoroutineRule()
+    val mainDispatcherRule = MainDispatcherRule()
 
     private val getTitleMenu = mock<GetTitleMenu>()
     private val deleteNote = Mockito.mock<DeleteNote>()
     private val getNroTruck = mock<GetNroTruck>()
-    private val hasNroEquip = mock<HasNroEquip>()
+    private val hasNroTruck = mock<HasNroTruck>()
     private val setNroTruck = mock<SetNroTruck>()
+    private val getStatusSend = mock<GetStatusSend>()
     private val viewModel = TruckViewModel(
         getTitleMenu = getTitleMenu,
         deleteNote = deleteNote,
         getNroTruck = getNroTruck,
-        hasNroEquip = hasNroEquip,
-        setNroTruck = setNroTruck
+        hasNroTruck = hasNroTruck,
+        setNroTruck = setNroTruck,
+        getStatusSend = getStatusSend
     )
 
     @Test
@@ -275,8 +278,8 @@ class TruckViewModelTest {
             TypeButton.NUMERIC
         )
         assertEquals(
-            viewModel.uiState.value.text,
-            "191"
+            "191",
+            viewModel.uiState.value.text
         )
     }
 
@@ -287,12 +290,12 @@ class TruckViewModelTest {
             TypeButton.OK
         )
         assertEquals(
-            viewModel.uiState.value.status.flagDialog,
-            true
+            true,
+            viewModel.uiState.value.status.flagDialog
         )
         assertEquals(
-            viewModel.uiState.value.status.errors,
-            Errors.FIELD_EMPTY
+            Errors.FIELD_EMPTY,
+            viewModel.uiState.value.status.errors
         )
     }
 
@@ -300,7 +303,7 @@ class TruckViewModelTest {
     fun `set - Check return failure if have error in CheckNroTruck`() =
         runTest {
             whenever(
-                hasNroEquip("19759")
+                hasNroTruck("19759")
             ).thenReturn(
                 resultFailure(
                     context = "CheckNroTruck",
@@ -342,7 +345,7 @@ class TruckViewModelTest {
     fun `set - Check msg if nro truck is invalid`() =
         runTest {
             whenever(
-                hasNroEquip("19759")
+                hasNroTruck("19759")
             ).thenReturn(
                 Result.success(false)
             )
@@ -380,7 +383,7 @@ class TruckViewModelTest {
     fun `set - Check return failure if have error in SetNroTruck`() =
         runTest {
             whenever(
-                hasNroEquip("19759")
+                hasNroTruck("19759")
             ).thenReturn(
                 Result.success(true)
             )
@@ -427,7 +430,7 @@ class TruckViewModelTest {
     fun `set - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                hasNroEquip("19759")
+                hasNroTruck("19759")
             ).thenReturn(
                 Result.success(true)
             )

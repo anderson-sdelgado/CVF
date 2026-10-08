@@ -1,15 +1,13 @@
 package br.com.usinasantafe.cvf.infra.models.retrofit.variable
 
 import br.com.usinasantafe.cvf.infra.models.room.variable.HeaderRoomModel
+import br.com.usinasantafe.cvf.utils.dateToString
 import br.com.usinasantafe.cvf.utils.required
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-val formatter = SimpleDateFormat(
-    "dd/MM/yyyy HH:mm",
-    Locale.forLanguageTag("pt-BR")
-)
+
 
 data class HeaderRetrofitModelOutput(
     val id: Int,
@@ -19,6 +17,8 @@ data class HeaderRetrofitModelOutput(
     val idRelease: Int,
     val idConfigServ: Int,
     val dateHour: String,
+    val dateHourExitMill: String,
+    val dateHourArrivalField: String,
     val cartList: List<CartRetrofitModelOutput>
 )
 
@@ -47,7 +47,9 @@ fun HeaderRoomModel.roomModelToRetrofitModel(
             idFront = idFront,
             idRelease = idRelease,
             idConfigServ = idServ,
-            dateHour = formatter.format(dateHour),
+            dateHour = dateHour.dateToString(),
+            dateHourExitMill = dateHourExitMill.dateToString(),
+            dateHourArrivalField = dateHourArrivalField.dateToString(),
             cartList = cartList
         )
     }

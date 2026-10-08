@@ -5,7 +5,6 @@ import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performTextInput
 import br.com.usinasantafe.cav.utils.waitUntilTimeout
 import br.com.usinasantafe.cvf.di.provider.BaseUrlModuleTest
 import br.com.usinasantafe.cvf.external.room.dao.stable.ColabDao
@@ -29,7 +28,6 @@ import br.com.usinasantafe.cvf.lib.WEB_SAVE_MANAGER
 import br.com.usinasantafe.cvf.lib.WEB_SAVE_TOKEN
 import br.com.usinasantafe.cvf.presenter.MainActivity
 import br.com.usinasantafe.cvf.presenter.theme.TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE
-import br.com.usinasantafe.cvf.presenter.view.configuration.password.TAG_PASSWORD_TEXT_FIELD_SCREEN
 import br.com.usinasantafe.cvf.utils.TestConfig
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -385,7 +383,7 @@ class ConfigFlowTest {
             EquipRoomModel(
                 id = 1,
                 nro = 1,
-                cdOperClass = 1,
+                idOperClass = 1,
                 descOperClass = "Equip1",
                 type = TypeEquip.TRUCK
             ),
@@ -396,7 +394,7 @@ class ConfigFlowTest {
             EquipRoomModel(
                 id = 2,
                 nro = 2,
-                cdOperClass = 2,
+                idOperClass = 2,
                 descOperClass = "Equip2",
                 type = TypeEquip.TRUCK
             ),
