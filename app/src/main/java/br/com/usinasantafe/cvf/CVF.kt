@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cvf
 
 import android.app.Application
-import android.util.Log
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import br.com.usinasantafe.cvf.domain.usecases.config.SetTokenFCM
@@ -34,7 +33,7 @@ class CVF: Application(), Configuration.Provider {
 
         Timber.plant(FileLoggingTree(this))
 
-        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener { task ->
             if (!task.isSuccessful) { return@addOnCompleteListener }
             val token = task.result
             scope.launch {

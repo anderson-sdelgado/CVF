@@ -1,20 +1,11 @@
 package br.com.usinasantafe.cvf.domain.usecases.background
 
-import android.util.Log
 import br.com.usinasantafe.cvf.domain.usecases.config.SetTokenFCM
 import br.com.usinasantafe.cvf.domain.usecases.manager.UpdateManager
-import br.com.usinasantafe.cvf.infra.datasource.room.stable.FrontRoomDatasource
-import br.com.usinasantafe.cvf.infra.datasource.room.stable.ReleaseRoomDatasource
-import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
-import br.com.usinasantafe.cvf.infra.datasource.sharedpreferences.ManagerSharedPreferencesDatasource
-import br.com.usinasantafe.cvf.infra.models.room.stable.FrontRoomModel
-import br.com.usinasantafe.cvf.infra.models.room.stable.ReleaseRoomModel
-import br.com.usinasantafe.cvf.infra.models.sharedpreferences.ManagerSharedPreferencesModel
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
 import br.com.usinasantafe.cvf.utils.handleFailure
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -34,6 +25,7 @@ class CVFFirebaseMessagingService : FirebaseMessagingService() {
     private val job = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.IO + job)
 
+    @Deprecated("Deprecated in Java")
     override fun onNewToken(token: String) {
         super.onNewToken(token)
         scope.launch { setTokenFCM(token).getOrThrow() }

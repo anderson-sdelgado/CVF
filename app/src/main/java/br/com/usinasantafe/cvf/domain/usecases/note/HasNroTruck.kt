@@ -46,26 +46,11 @@ class IHasNroTruck @Inject constructor(
                         val dateHourArrivalField = entity::dateHourArrivalField.required()
                         noteRepository.setDate(dateHourExitMill, dateHourArrivalField).getOrThrow()
                         if(entity.idFront == null) return@call CheckTruck.RELEASE_AND_FRONT_INVALID
-                        val idFrontWS = entity::idFront.required()
-                        val idReleaseWS = entity::idRelease.required()
-                        val idFront = managerRepository.getIdFront().getOrThrow()
-                        val idRelease = managerRepository.getIdRelease().getOrThrow()
+                        val idFrontWS = entity.idFront
+                        val idReleaseWS = entity.idRelease
+                        val idFront = managerRepository.getIdFront().getOrThrow().required("idFront")
+                        val idRelease = managerRepository.getIdRelease().getOrThrow().required("idRelease")
                         if(idFront != idFrontWS || idRelease != idReleaseWS) return@call CheckTruck.RELEASE_AND_FRONT_INVALID
-//                        managerRepository.update(idFrontWS, idReleaseWS).getOrThrow()
-//                        val front = Front(
-//                            id = idFrontWS,
-//                            cd = entity::cdFront.required(),
-//                            description = entity::descriptionFront.required()
-//                        )
-//                        frontRepository.add(front).getOrThrow()
-//                        val release = Release(
-//                            id = idReleaseWS,
-//                            nroOS = entity::nroOSRelease.required(),
-//                            idPropAgr = entity::idPropAgrRelease.required(),
-//                            descPropAgr = entity::descPropAgrRelease.required(),
-//                            idFront = idFrontWS
-//                        )
-//                        releaseRepository.add(release).getOrThrow()
                         CheckTruck.OK
                     },
                     onFailure = {

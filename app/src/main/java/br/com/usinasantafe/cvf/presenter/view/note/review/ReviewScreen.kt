@@ -3,6 +3,7 @@ package br.com.usinasantafe.cvf.presenter.view.note.review
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,8 +18,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -26,6 +30,8 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.delay
 import br.com.usinasantafe.cvf.R
+import br.com.usinasantafe.cvf.presenter.model.CartScreenModel
+import br.com.usinasantafe.cvf.presenter.model.ReviewScreenModel
 import br.com.usinasantafe.cvf.presenter.theme.AlertDialogCheckDesign
 import br.com.usinasantafe.cvf.presenter.theme.AlertDialogSimpleDesign
 import br.com.usinasantafe.cvf.presenter.theme.ButtonMaxWidth
@@ -52,7 +58,7 @@ fun ReviewScreen(
                 flagCheckDialog = uiState.flagCheckDialog,
                 onCheckDialog = viewModel::onCheckDialog,
                 delete = viewModel::delete,
-                text = uiState.text,
+                model = uiState.model,
                 status = uiState.status,
                 onCloseDialog = viewModel::onCloseDialog,
                 onFlagAccess = viewModel::onFlagAccess,
@@ -69,7 +75,7 @@ fun ReviewContent(
     flagCheckDialog: Boolean,
     onCheckDialog: (Boolean) -> Unit,
     delete: () -> Unit,
-    text: String,
+    model: ReviewScreenModel,
     status: UiStatusState,
     onCloseDialog: () -> Unit,
     onFlagAccess: () -> Unit,
@@ -83,9 +89,7 @@ fun ReviewContent(
             .padding(16.dp)
     ) {
         TitleDesign(
-            text = stringResource(
-                id = R.string.text_title_travel
-            )
+            text = stringResource(id = R.string.text_title_travel)
         )
         Column(
             modifier = Modifier
@@ -96,13 +100,111 @@ fun ReviewContent(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = text,
-                textAlign = TextAlign.Center,
+                text = buildAnnotatedString {
+                    withStyle(
+                        style = SpanStyle(fontWeight = FontWeight.Bold)
+                    ) {
+                        append(stringResource(id = R.string.text_review_item_front))
+                    }
+                    append(" ")
+                    append(model.cdFront)
+                },
                 fontSize = 26.sp,
                 lineHeight = 38.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .fillMaxWidth()
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Text(
+                text = buildAnnotatedString {
+                    withStyle(
+                        style = SpanStyle(fontWeight = FontWeight.Bold)
+                    ) {
+                        append(stringResource(id = R.string.text_review_item_release))
+                    }
+                    append(" ")
+                    append(model.idRelease)
+                },
+                fontSize = 26.sp,
+                lineHeight = 38.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Text(
+                text = buildAnnotatedString {
+                    withStyle(
+                        style = SpanStyle(fontWeight = FontWeight.Bold)
+                    ) {
+                        append(stringResource(id = R.string.text_review_item_prop))
+                    }
+                    append(" ")
+                    append(model.descPropAgrRelease)
+                },
+                fontSize = 26.sp,
+                lineHeight = 38.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Text(
+                text = buildAnnotatedString {
+                    withStyle(
+                        style = SpanStyle(fontWeight = FontWeight.Bold)
+                    ) {
+                        append(stringResource(id = R.string.text_review_item_drive))
+                    }
+                    append(" ")
+                    append("${model.regDriver} - ${model.nameDriver}")
+                },
+                fontSize = 26.sp,
+                lineHeight = 38.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Text(
+                text = buildAnnotatedString {
+                    withStyle(
+                        style = SpanStyle(fontWeight = FontWeight.Bold)
+                    ) {
+                        append(stringResource(id = R.string.text_review_item_truck))
+                    }
+                    append(" ")
+                    append(model.nroTruck)
+                },
+                fontSize = 26.sp,
+                lineHeight = 38.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+            model.cartList.forEach {
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(
+                            style = SpanStyle(fontWeight = FontWeight.Bold)
+                        ) {
+                            append("${stringResource(id = R.string.text_review_item_cart)} ${it.position}:")
+                        }
+                        append(" ")
+                        append(it.nro)
+                    },
+                    fontSize = 26.sp,
+                    lineHeight = 38.sp,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            Text(
+                text = buildAnnotatedString {
+                    withStyle(
+                        style = SpanStyle(fontWeight = FontWeight.Bold)
+                    ) {
+                        append(stringResource(id = R.string.text_review_item_exit_field))
+                    }
+                    append(" ")
+                    append(model.dateHourExitField)
+                },
+                fontSize = 26.sp,
+                lineHeight = 38.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
             )
         }
         ButtonMaxWidth(R.string.text_finish_travel, onClick = finish)
@@ -152,7 +254,26 @@ fun ReviewPagePreview() {
                 flagCheckDialog = false,
                 onCheckDialog = {},
                 delete = {},
-                text = "Test",
+                model = ReviewScreenModel(
+                    cdFront = "01",
+                    idRelease = "123456",
+                    nroOSRelease = "123456",
+                    descPropAgrRelease = "ITAQUERE",
+                    regDriver = "111",
+                    nameDriver = "Anderson da Silva Delgado",
+                    nroTruck = "2200",
+                    cartList = listOf(
+                        CartScreenModel(
+                            position = "1",
+                            nro = "200"
+                        ),
+                        CartScreenModel(
+                            position = "2",
+                            nro = "500"
+                        ),
+                    ),
+                    dateHourExitField = "13/10/2026 10:15"
+                ),
                 status = UiStatusState(),
                 onCloseDialog = {},
                 onFlagAccess = {},

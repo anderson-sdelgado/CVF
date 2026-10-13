@@ -5,10 +5,10 @@ import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cvf.domain.usecases.note.DeleteNote
 import br.com.usinasantafe.cvf.domain.usecases.note.GetDescReview
 import br.com.usinasantafe.cvf.domain.usecases.note.FinishNote
+import br.com.usinasantafe.cvf.presenter.model.ReviewScreenModel
 import br.com.usinasantafe.cvf.utils.UiStateWithStatus
 import br.com.usinasantafe.cvf.utils.UiStatusState
 import br.com.usinasantafe.cvf.utils.onFailureState
-import br.com.usinasantafe.cvf.utils.onFailureUpdate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 data class ReviewState(
     val flagCheckDialog: Boolean = false,
-    val text: String = "",
+    val model: ReviewScreenModel = ReviewScreenModel(),
     override val status: UiStatusState = UiStatusState()
 ) : UiStateWithStatus<ReviewState> {
 
@@ -51,7 +51,7 @@ class ReviewViewModel @Inject constructor(
         runCatching {
             getDescReview().getOrThrow()
         }
-            .onSuccess { updateState { copy( text = it ) } }
+            .onSuccess { updateState { copy( model = it ) } }
             .onFailureState(::updateState)
     }
 

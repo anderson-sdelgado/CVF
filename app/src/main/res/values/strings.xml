@@ -65,4 +65,11 @@
     <string name="text_msg_cart_inverted">O EQUIPAMENTO DIGITADO NÃO CORRESPONDE A POSIÇÃO DO CONJUNTO. VERIFIQUE SE A NUMERAÇÃO ESTÁ CORRETA E TENTE NOVAMENTE!</string>
     <string name="text_exit_field">DATA/HORA SAÍDA CAMPO: %1$s</string>
     <string name="text_invalid_front_release">Os dados da Frente e Liberação vindo da LogTrac não confere com os dados do Aplicativo. Por favor, verificar com o COA.</string>
+    <string name="text_review_item_front">FRENTE:</string>
+    <string name="text_review_item_release">LIBERAÇÃO:</string>
+    <string name="text_review_item_prop">SEÇÃO:</string>
+    <string name="text_review_item_drive">MOTORISTA:</string>
+    <string name="text_review_item_truck">CAMINHÃO:</string>
+    <string name="text_review_item_cart">CARRETA</string>
+    <string name="text_review_item_exit_field">DATA/HORA SAÍDA CAMPO:</string>
 </resources>

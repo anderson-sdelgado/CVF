@@ -69,10 +69,6 @@ interface NoteModule {
 
     @Binds
     @Singleton
-    fun bindGetDescReviewBold(usecase: IGetDescReviewBold): GetDescReviewBold
-
-    @Binds
-    @Singleton
     fun bindFinishNote(usecase: IFinishNote): FinishNote
 
     @Binds
