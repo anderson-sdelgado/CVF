@@ -5,6 +5,7 @@ import br.com.usinasantafe.cvf.di.provider.ShortTimeoutApi
 import br.com.usinasantafe.cvf.external.retrofit.api.stable.EquipApi
 import br.com.usinasantafe.cvf.infra.datasource.retrofit.stable.EquipRetrofitDatasource
 import br.com.usinasantafe.cvf.infra.models.retrofit.stable.EquipRetrofitModel
+import br.com.usinasantafe.cvf.infra.models.retrofit.stable.EquipRetrofitOutput
 import br.com.usinasantafe.cvf.lib.SUCCESS
 import br.com.usinasantafe.cvf.utils.UNKNOWN_ERROR
 import br.com.usinasantafe.cvf.utils.getClassAndMethod
@@ -30,9 +31,10 @@ class IEquipRetrofitDatasource @Inject constructor(
             result.data!!
         }
 
-    override suspend fun checkByNroTruck(token: String, nro: Int): Result<EquipRetrofitModel> =
+    override suspend fun checkByNroTruck(token: String, nro: Int, idFront: Int): Result<EquipRetrofitModel> =
         result(getClassAndMethod()) {
-            val result = equipApiShortTime.checkByNroTruck(token, nro).body()!!
+            val model = EquipRetrofitOutput(nro, idFront)
+            val result = equipApiShortTime.checkByNroTruck(token, model).body()!!
             if (result.status != SUCCESS) throw Exception(result.failure ?: UNKNOWN_ERROR)
             result.data!!
         }

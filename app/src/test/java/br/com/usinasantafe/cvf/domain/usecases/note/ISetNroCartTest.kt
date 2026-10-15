@@ -78,7 +78,8 @@ class ISetNroCartTest {
                 noteRepository.setCart(
                     Cart(
                         position = 2,
-                        idCart = 20
+                        idCart = 20,
+                        nroCart = 100
                     )
                 )
             ).thenReturn(
@@ -115,7 +116,8 @@ class ISetNroCartTest {
             verify(noteRepository, atLeastOnce()).setCart(
                 Cart(
                     position = 2,
-                    idCart = 20
+                    idCart = 20,
+                    nroCart = 100
                 )
             )
             assertEquals(

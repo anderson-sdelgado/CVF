@@ -22,6 +22,8 @@ class INoteRetrofitDatasourceTest {
             idFront = 1,
             idRelease = 2,
             dateHour = "",
+            dateHourExitMill = "",
+            dateHourArrivalField = "",
             cartList = listOf(
                 CartRetrofitModelOutput(
                     id = 1,

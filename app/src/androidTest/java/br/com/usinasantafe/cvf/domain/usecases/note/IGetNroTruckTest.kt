@@ -50,7 +50,7 @@ class IGetNroTruckTest {
     @Test
     fun check_return_failure_if_equip_room_not_have_data() =
         runTest {
-            headerSharedPreferencesDatasource.setIdTruck(100)
+            headerSharedPreferencesDatasource.setTruck(100)
             val result = usecase()
             assertEquals(
                 true,
@@ -69,7 +69,7 @@ class IGetNroTruckTest {
     @Test
     fun check_return_correct_if_process_execute_successfully() =
         runTest {
-            headerSharedPreferencesDatasource.setIdTruck(100)
+            headerSharedPreferencesDatasource.setTruck(100)
             equipDao.insertAll(
                 listOf(
                     EquipRoomModel(

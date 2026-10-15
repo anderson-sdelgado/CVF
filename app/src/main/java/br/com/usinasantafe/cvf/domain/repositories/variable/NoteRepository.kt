@@ -14,7 +14,7 @@ interface NoteRepository {
     suspend fun getIdTruck(): Result<Int?>
     suspend fun cartList(): Result<List<Cart>>
     suspend fun setCart(entity: Cart): EmptyResult
-    suspend fun setIdTruck(id: Int): EmptyResult
+    suspend fun setTruck(id: Int, nro: Int): EmptyResult
     suspend fun clean(): EmptyResult
     suspend fun setDate(dateHourExitMill: Date, dateHourArrivalField: Date): EmptyResult
 }

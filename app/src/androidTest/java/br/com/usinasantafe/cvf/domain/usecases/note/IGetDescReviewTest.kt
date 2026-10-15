@@ -285,7 +285,7 @@ class IGetDescReviewTest {
 
         if(level == 3) return
 
-        headerSharedPreferencesDatasource.setIdTruck(100)
+        headerSharedPreferencesDatasource.setTruck(100)
 
         if(level == 4) return
 

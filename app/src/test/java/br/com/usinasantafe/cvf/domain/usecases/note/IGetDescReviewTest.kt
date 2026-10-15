@@ -6,9 +6,14 @@ import br.com.usinasantafe.cvf.domain.entities.stable.Equip
 import br.com.usinasantafe.cvf.domain.entities.variable.Cart
 import br.com.usinasantafe.cvf.domain.repositories.stable.ColabRepository
 import br.com.usinasantafe.cvf.domain.repositories.stable.EquipRepository
+import br.com.usinasantafe.cvf.domain.repositories.stable.FrontRepository
+import br.com.usinasantafe.cvf.domain.repositories.stable.ReleaseRepository
+import br.com.usinasantafe.cvf.domain.repositories.variable.ManagerRepository
 import br.com.usinasantafe.cvf.domain.repositories.variable.NoteRepository
 import br.com.usinasantafe.cvf.domain.usecases.manager.GetTitleMenu
 import br.com.usinasantafe.cvf.lib.TypeEquip
+import br.com.usinasantafe.cvf.presenter.model.CartScreenModel
+import br.com.usinasantafe.cvf.presenter.model.ReviewScreenModel
 import br.com.usinasantafe.cvf.utils.resultFailure
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
@@ -30,18 +35,21 @@ class IGetDescReviewTest {
     private val noteRepository = mock<NoteRepository>()
     private val colabRepository = mock<ColabRepository>()
     private val equipRepository = mock<EquipRepository>()
+    private val managerRepository = mock<ManagerRepository>()
+    private val releaseRepository = mock<ReleaseRepository>()
+    private val frontRepository = mock<FrontRepository>()
     private lateinit var usecase: IGetDescReview
 
 
     @Before
     fun setup() {
-        val context: Context = ApplicationProvider.getApplicationContext()
         usecase = IGetDescReview(
-            context = context,
-            getTitleMenu = getTitleMenu,
             noteRepository = noteRepository,
             colabRepository = colabRepository,
-            equipRepository = equipRepository
+            equipRepository = equipRepository,
+            managerRepository = managerRepository,
+            releaseRepository = releaseRepository,
+            frontRepository = frontRepository,
         )
     }
 
@@ -393,11 +401,13 @@ class IGetDescReviewTest {
                     listOf(
                         Cart(
                             idCart = 20,
-                            position = 1
+                            position = 1,
+                            nroCart = 200
                         ),
                         Cart(
                             idCart = 30,
-                            position = 2
+                            position = 2,
+                            nroCart = 300
                         )
                     )
                 )
@@ -468,11 +478,13 @@ class IGetDescReviewTest {
                     listOf(
                         Cart(
                             idCart = 20,
-                            position = 1
+                            position = 1,
+                            nroCart = 200
                         ),
                         Cart(
                             idCart = 30,
-                            position = 2
+                            position = 2,
+                            nroCart = 300
                         )
                     )
                 )
@@ -508,15 +520,26 @@ class IGetDescReviewTest {
                 result.isSuccess
             )
             assertEquals(
-                "FRENTE: 2\n" +
-                        "LIBERAÇÃO: 123456\n" +
-                        "O.S.: 456789\n" +
-                        "PROPRIEDADE: RANCHO AZUL\n" +
-                        "\n" +
-                        "MOTORISTA: 123456 - Test Name Driver\n" +
-                        "CAMINHÃO: 100\n" +
-                        "CARRETA 1: 200\n" +
-                        "CARRETA 2: 300",
+                ReviewScreenModel(
+                    cdFront = "2",
+                    idRelease = "123456",
+                    nroOSRelease = "456789",
+                    descPropAgrRelease = "RANCHO AZUL",
+                    regDriver = "123456",
+                    nameDriver = "Test Name Driver",
+                    nroTruck = "100",
+                    dateHourExitField = "",
+                    cartList = listOf(
+                        CartScreenModel(
+                            position = "1",
+                            nro = "200",
+                        ),
+                        CartScreenModel(
+                            position = "2",
+                            nro = "300",
+                        )
+                    )
+                ),
                 result.getOrNull()!!
             )
         }

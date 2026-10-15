@@ -37,7 +37,7 @@ interface NoteModule {
 
     @Binds
     @Singleton
-    fun bindHasNroTruck(usecase: IHasNroTruck): HasNroTruck
+    fun bindHasNroTruck(usecase: ICheckNroTruck): CheckNroTruck
 
     @Binds
     @Singleton
@@ -53,7 +53,7 @@ interface NoteModule {
 
     @Binds
     @Singleton
-    fun bindHasNroCart(usecase: IHasNroCart): HasNroCart
+    fun bindHasNroCart(usecase: ICheckNroCart): CheckNroCart
 
     @Binds
     @Singleton

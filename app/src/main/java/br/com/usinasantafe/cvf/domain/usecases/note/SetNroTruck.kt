@@ -21,7 +21,7 @@ class ISetNroTruck @Inject constructor(
         call(getClassAndMethod()) {
             val nro = tryCatch(ERROR_STRING_TO_INT) { text.toInt() }
             val id = equipRepository.getIdByNro(nro).getOrThrow()
-            noteRepository.setIdTruck(id).getOrThrow()
+            noteRepository.setTruck(id, nro).getOrThrow()
         }
 
 }

@@ -96,15 +96,15 @@ class INoteRepository @Inject constructor(
             cartSharedPreferencesDatasource.add(entity.entityToSharedPreferencesModel()).getOrThrow()
         }
 
-    override suspend fun setIdTruck(id: Int): EmptyResult =
+    override suspend fun setTruck(id: Int, nro: Int): EmptyResult =
         call(getClassAndMethod()) {
-            headerSharedPreferencesDatasource.setIdTruck(id).getOrThrow()
+            headerSharedPreferencesDatasource.setTruck(id, nro).getOrThrow()
         }
 
     override suspend fun clean(): EmptyResult =
         call(getClassAndMethod()) {
             val list = headerRoomDatasource.listByStatusSend(StatusSend.SENT).getOrThrow()
-            list.filter{ it.dateHour  < dateOneMonthAgo() }.forEach{
+            list.filter { it.dateHour < dateOneMonthAgo() }.forEach{
                 val id = it::id.required()
                 cartRoomDatasource.deleteByIdHeader(id).getOrThrow()
                 headerRoomDatasource.delete(id).getOrThrow()

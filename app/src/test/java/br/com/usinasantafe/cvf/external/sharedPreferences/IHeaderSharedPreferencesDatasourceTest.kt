@@ -173,7 +173,7 @@ class IHeaderSharedPreferencesDatasourceTest {
                 100,
                 resultBefore.getOrNull()
             )
-            val result = datasource.setIdTruck(200)
+            val result = datasource.setTruck(200, 2500)
             assertEquals(
                 true,
                 result.isSuccess

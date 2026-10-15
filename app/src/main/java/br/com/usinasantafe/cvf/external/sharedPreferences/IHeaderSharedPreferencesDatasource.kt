@@ -58,7 +58,7 @@ class IHeaderSharedPreferencesDatasource @Inject constructor(
             get().getOrThrow().idTruck
         }
 
-    override suspend fun setIdTruck(id: Int): EmptyResult =
+    override suspend fun setTruck(id: Int, nro: Int): EmptyResult =
         result(getClassAndMethod()) {
             val model = get().getOrThrow()
             model.idTruck = id

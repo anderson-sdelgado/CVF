@@ -14,6 +14,7 @@ data class HeaderRoomModel(
     var id: Int? = null,
     val regDriver: Long,
     val idTruck: Int,
+    val nroTruck: Int,
     var idServ: Int? = null,
     var statusSend: StatusSend = StatusSend.SEND,
     var dateHourExitMill: Date = Date(),
@@ -26,6 +27,7 @@ fun HeaderSharedPreferencesModel.sharedPreferencesModelToRoomModel(): HeaderRoom
         HeaderRoomModel(
             regDriver = ::regDriver.required(),
             idTruck = ::idTruck.required(),
+            nroTruck = ::nroTruck.required(),
             dateHourExitMill = ::dateHourExitMill.required(),
             dateHourArrivalField = ::dateHourArrivalField.required()
         )

@@ -7,8 +7,8 @@ interface EquipRepository {
     suspend fun addAll(list: List<Equip>): EmptyResult
     suspend fun deleteAll(): EmptyResult
     suspend fun listAll(token: String): Result<List<Equip>>
-    suspend fun checkNroCart(token: String, nro: Int, pos: Int): Result<Boolean>
-    suspend fun checkNroTruck(token: String, nro: Int): Result<Equip>
+    suspend fun checkNroCart(token: String, nro: Int, pos: Int): Result<Equip>
+    suspend fun checkNroTruck(token: String, nro: Int, idFront: Int): Result<Equip>
     suspend fun checkNroCart(nro: Int, pos: Int): Result<Boolean>
     suspend fun checkNroTruck(nro: Int): Result<Boolean>
     suspend fun getById(id: Int): Result<Equip>

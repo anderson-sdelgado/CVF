@@ -58,7 +58,8 @@ class IGetNroCartTest {
                     listOf(
                         Cart(
                             position = 1,
-                            idCart = 1
+                            idCart = 1,
+                            nroCart = 100
                         )
                     )
                 )
@@ -84,7 +85,8 @@ class IGetNroCartTest {
                     listOf(
                         Cart(
                             position = 2,
-                            idCart = 10
+                            idCart = 10,
+                            nroCart = 250
                         )
                     )
                 )
@@ -123,7 +125,8 @@ class IGetNroCartTest {
                     listOf(
                         Cart(
                             position = 2,
-                            idCart = 10
+                            idCart = 10,
+                            nroCart = 250
                         )
                     )
                 )

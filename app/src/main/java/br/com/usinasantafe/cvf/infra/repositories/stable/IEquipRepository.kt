@@ -36,20 +36,20 @@ class IEquipRepository @Inject constructor(
             modelList.map { it.retrofitModelToEntity() }
         }
 
-    override suspend fun checkNroCart(token: String, nro: Int, pos: Int): Result<Boolean> =
+    override suspend fun checkNroCart(token: String, nro: Int, pos: Int): Result<Equip> =
         call(getClassAndMethod()) {
             val modelRetrofit = equipRetrofitDatasource.checkByNroCart(token, nro).getOrThrow()
             if(modelRetrofit.nro == 0) {
                 equipRoomDatasource.deleteByNro(nro).getOrThrow()
-                return@call false
+                return@call modelRetrofit.retrofitModelToEntity()
             }
             equipRoomDatasource.add(modelRetrofit.retrofitModelToRoomModel()).getOrThrow()
-            true
+            modelRetrofit.retrofitModelToEntity()
         }
 
-    override suspend fun checkNroTruck(token: String, nro: Int): Result<Equip> =
+    override suspend fun checkNroTruck(token: String, nro: Int, idFront: Int): Result<Equip> =
         call(getClassAndMethod()) {
-            val modelRetrofit = equipRetrofitDatasource.checkByNroTruck(token, nro).getOrThrow()
+            val modelRetrofit = equipRetrofitDatasource.checkByNroTruck(token, nro, idFront).getOrThrow()
             if(modelRetrofit.nro == 0) {
                 equipRoomDatasource.deleteByNro(nro).getOrThrow()
                 return@call modelRetrofit.retrofitModelToEntity()

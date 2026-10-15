@@ -2,6 +2,7 @@ package br.com.usinasantafe.cvf.external.retrofit.api.stable
 
 import br.com.usinasantafe.cvf.infra.models.retrofit.stable.EquipRetrofitCheck
 import br.com.usinasantafe.cvf.infra.models.retrofit.stable.EquipRetrofitInput
+import br.com.usinasantafe.cvf.infra.models.retrofit.stable.EquipRetrofitOutput
 import br.com.usinasantafe.cvf.lib.WEB_ALL_EQUIP
 import br.com.usinasantafe.cvf.lib.WEB_CHECK_NRO_CART
 import br.com.usinasantafe.cvf.lib.WEB_CHECK_NRO_TRUCK
@@ -25,7 +26,7 @@ interface EquipApi {
     @POST(WEB_CHECK_NRO_TRUCK)
     suspend fun checkByNroTruck(
         @Header("Authorization") auth: String,
-        @Body nro: Int
+        @Body data: EquipRetrofitOutput
     ): Response<EquipRetrofitCheck>
 
 }

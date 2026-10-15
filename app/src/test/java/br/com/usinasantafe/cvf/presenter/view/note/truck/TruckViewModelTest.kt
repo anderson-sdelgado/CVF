@@ -5,11 +5,13 @@ import br.com.usinasantafe.cvf.domain.usecases.config.GetStatusSend
 import br.com.usinasantafe.cvf.domain.usecases.manager.GetTitleMenu
 import br.com.usinasantafe.cvf.domain.usecases.note.DeleteNote
 import br.com.usinasantafe.cvf.domain.usecases.note.GetNroTruck
-import br.com.usinasantafe.cvf.domain.usecases.note.HasNroTruck
+import br.com.usinasantafe.cvf.domain.usecases.note.CheckNroTruck
 import br.com.usinasantafe.cvf.domain.usecases.note.SetNroTruck
+import br.com.usinasantafe.cvf.lib.CheckTruck
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.OptionMenu
 import br.com.usinasantafe.cvf.lib.TypeButton
+import br.com.usinasantafe.cvf.lib.StatusSend
 import br.com.usinasantafe.cvf.utils.resultFailure
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
@@ -34,28 +36,51 @@ class TruckViewModelTest {
     private val getTitleMenu = mock<GetTitleMenu>()
     private val deleteNote = Mockito.mock<DeleteNote>()
     private val getNroTruck = mock<GetNroTruck>()
-    private val hasNroTruck = mock<HasNroTruck>()
+    private val checkNroTruck = mock<CheckNroTruck>()
     private val setNroTruck = mock<SetNroTruck>()
     private val getStatusSend = mock<GetStatusSend>()
-    private val viewModel = TruckViewModel(
-        getTitleMenu = getTitleMenu,
-        deleteNote = deleteNote,
-        getNroTruck = getNroTruck,
-        hasNroTruck = hasNroTruck,
-        setNroTruck = setNroTruck,
-        getStatusSend = getStatusSend
-    )
+
+    private fun createdViewModel(): TruckViewModel {
+        whenever(
+            getTitleMenu()
+        ).thenReturn(
+            flowOf("Test")
+        )
+        whenever(
+            getStatusSend()
+        ).thenReturn(
+            flowOf(StatusSend.SEND)
+        )
+        return TruckViewModel(
+            getTitleMenu = getTitleMenu,
+            deleteNote = deleteNote,
+            getNroTruck = getNroTruck,
+            checkNroTruck = checkNroTruck,
+            setNroTruck = setNroTruck,
+            getStatusSend = getStatusSend
+        )
+    }
 
     @Test
     fun `recoverData - Check return failure if function not executed`() =
         runTest {
+            whenever(
+                getNroTruck()
+            ).thenReturn(
+                resultFailure(
+                    context = "GetNroTruck",
+                    message = "-",
+                    cause = Exception()
+                )
+            )
+            val viewModel = createdViewModel()
             viewModel.recoverData()
             assertEquals(
                 true,
                 viewModel.uiState.value.status.flagDialog
             )
             assertEquals(
-                "TruckViewModel.recoverData -> TruckViewModel.updateState -> Parameter specified as non-null is null: method br.com.usinasantafe.cvf.presenter.view.note.truck.TruckViewModel\$recoverData\$1\$RecoverDriver.<init>, parameter descRelease -> null",
+                "TruckViewModel.recoverData -> TruckViewModel.updateState -> GetNroTruck -> java.lang.Exception",
                 viewModel.uiState.value.status.failure
             )
             assertEquals(
@@ -76,13 +101,25 @@ class TruckViewModelTest {
             ).thenReturn(
                 flow { throw Exception("GetDescRelease") }
             )
-            viewModel.recoverData()
+            whenever(
+                getStatusSend()
+            ).thenReturn(
+                flowOf(StatusSend.SEND)
+            )
+            val viewModel = TruckViewModel(
+                getTitleMenu = getTitleMenu,
+                deleteNote = deleteNote,
+                getNroTruck = getNroTruck,
+                checkNroTruck = checkNroTruck,
+                setNroTruck = setNroTruck,
+                getStatusSend = getStatusSend
+            )
             assertEquals(
                 true,
                 viewModel.uiState.value.status.flagDialog
             )
             assertEquals(
-                "TruckViewModel.recoverData -> TruckViewModel.updateState -> GetDescRelease -> java.lang.Exception",
+                "TruckViewModel.<init> -> TruckViewModel.updateState -> TruckViewModel.observeTitle -> EXCEPTION",
                 viewModel.uiState.value.status.failure
             )
             assertEquals(
@@ -99,11 +136,6 @@ class TruckViewModelTest {
     fun `recoverData - Check return failure if have error in GetNroTruck`() =
         runTest {
             whenever(
-                getTitleMenu()
-            ).thenReturn(
-                flowOf("Test")
-            )
-            whenever(
                 getNroTruck()
             ).thenReturn(
                 resultFailure(
@@ -112,6 +144,7 @@ class TruckViewModelTest {
                     cause = Exception()
                 )
             )
+            val viewModel = createdViewModel()
             viewModel.recoverData()
             assertEquals(
                 true,
@@ -135,15 +168,11 @@ class TruckViewModelTest {
     fun `recoverData - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                getTitleMenu()
-            ).thenReturn(
-                flowOf("Test")
-            )
-            whenever(
                 getNroTruck()
             ).thenReturn(
                 Result.success("Test2")
             )
+            val viewModel = createdViewModel()
             viewModel.recoverData()
             assertEquals(
                 "Test",
@@ -158,6 +187,7 @@ class TruckViewModelTest {
     @Test
     fun `onOptionMenu - Check altered if option is different from DELETE `() =
         runTest {
+            val viewModel = createdViewModel()
             viewModel.onOptionMenu(OptionMenu.CONFIG)
             verify(deleteNote, never()).invoke()
             assertEquals(
@@ -177,6 +207,7 @@ class TruckViewModelTest {
     @Test
     fun `onOptionMenu - Check altered if option is equal from DELETE `() =
         runTest {
+            val viewModel = createdViewModel()
             viewModel.onOptionMenu(OptionMenu.DELETE)
             verify(deleteNote, never()).invoke()
             assertEquals(
@@ -205,6 +236,7 @@ class TruckViewModelTest {
                     cause = Exception()
                 )
             )
+            val viewModel = createdViewModel()
             viewModel.delete()
             assertEquals(
                 true,
@@ -231,6 +263,7 @@ class TruckViewModelTest {
     @Test
     fun `delete - Check return correct if function execute successfully`() =
         runTest {
+            val viewModel = createdViewModel()
             viewModel.delete()
             verify(deleteNote, atLeastOnce()).invoke()
             assertEquals(
@@ -241,6 +274,7 @@ class TruckViewModelTest {
 
     @Test
     fun `onTextField - Check remover char`() {
+        val viewModel = createdViewModel()
         viewModel.onTextField(
             "1",
             TypeButton.NUMERIC
@@ -285,6 +319,7 @@ class TruckViewModelTest {
 
     @Test
     fun `set - Check msg of empty field`() {
+        val viewModel = createdViewModel()
         viewModel.onTextField(
             "OK",
             TypeButton.OK
@@ -303,7 +338,7 @@ class TruckViewModelTest {
     fun `set - Check return failure if have error in CheckNroTruck`() =
         runTest {
             whenever(
-                hasNroTruck("19759")
+                checkNroTruck("19759")
             ).thenReturn(
                 resultFailure(
                     context = "CheckNroTruck",
@@ -311,6 +346,7 @@ class TruckViewModelTest {
                     cause = Exception()
                 )
             )
+            val viewModel = createdViewModel()
             viewModel.onTextField(
                 "19759",
                 TypeButton.NUMERIC
@@ -345,10 +381,11 @@ class TruckViewModelTest {
     fun `set - Check msg if nro truck is invalid`() =
         runTest {
             whenever(
-                hasNroTruck("19759")
+                checkNroTruck("19759")
             ).thenReturn(
-                Result.success(false)
+                Result.success(CheckTruck.INVALID)
             )
+            val viewModel = createdViewModel()
             viewModel.onTextField(
                 "19759",
                 TypeButton.NUMERIC
@@ -380,12 +417,90 @@ class TruckViewModelTest {
         }
 
     @Test
+    fun `set - Check msg if release and front is invalid`() =
+        runTest {
+            whenever(
+                checkNroTruck("19759")
+            ).thenReturn(
+                Result.success(CheckTruck.RELEASE_AND_FRONT_INVALID)
+            )
+            val viewModel = createdViewModel()
+            viewModel.onTextField(
+                "19759",
+                TypeButton.NUMERIC
+            )
+            viewModel.onTextField(
+                "OK",
+                TypeButton.OK
+            )
+            assertEquals(
+                true,
+                viewModel.uiState.value.status.flagDialog
+            )
+            assertEquals(
+                "TruckViewModel.onTextField -> TruckViewModel.updateState -> TruckViewModel.set -> RELEASE_AND_FRONT_INVALID",
+                viewModel.uiState.value.status.failure
+            )
+            assertEquals(
+                Errors.RELEASE_AND_FRONT_INVALID,
+                viewModel.uiState.value.status.errors
+            )
+            assertEquals(
+                true,
+                viewModel.uiState.value.status.flagFailure
+            )
+            assertEquals(
+                false,
+                viewModel.uiState.value.status.flagProgress
+            )
+        }
+
+    @Test
+    fun `set - Check msg if a pre cec already exists`() =
+        runTest {
+            whenever(
+                checkNroTruck("19759")
+            ).thenReturn(
+                Result.success(CheckTruck.PRE_CEC_EXISTENT)
+            )
+            val viewModel = createdViewModel()
+            viewModel.onTextField(
+                "19759",
+                TypeButton.NUMERIC
+            )
+            viewModel.onTextField(
+                "OK",
+                TypeButton.OK
+            )
+            assertEquals(
+                true,
+                viewModel.uiState.value.status.flagDialog
+            )
+            assertEquals(
+                "TruckViewModel.onTextField -> TruckViewModel.updateState -> TruckViewModel.set -> PRE_CEC_EXISTENT",
+                viewModel.uiState.value.status.failure
+            )
+            assertEquals(
+                Errors.PRE_CEC_EXISTENT,
+                viewModel.uiState.value.status.errors
+            )
+            assertEquals(
+                true,
+                viewModel.uiState.value.status.flagFailure
+            )
+            assertEquals(
+                false,
+                viewModel.uiState.value.status.flagProgress
+            )
+        }
+
+    @Test
     fun `set - Check return failure if have error in SetNroTruck`() =
         runTest {
             whenever(
-                hasNroTruck("19759")
+                checkNroTruck("19759")
             ).thenReturn(
-                Result.success(true)
+                Result.success(CheckTruck.OK)
             )
             whenever(
                 setNroTruck("19759")
@@ -396,6 +511,7 @@ class TruckViewModelTest {
                     cause = Exception()
                 )
             )
+            val viewModel = createdViewModel()
             viewModel.onTextField(
                 "19759",
                 TypeButton.NUMERIC
@@ -430,10 +546,11 @@ class TruckViewModelTest {
     fun `set - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                hasNroTruck("19759")
+                checkNroTruck("19759")
             ).thenReturn(
-                Result.success(true)
+                Result.success(CheckTruck.OK)
             )
+            val viewModel = createdViewModel()
             viewModel.onTextField(
                 "19759",
                 TypeButton.NUMERIC

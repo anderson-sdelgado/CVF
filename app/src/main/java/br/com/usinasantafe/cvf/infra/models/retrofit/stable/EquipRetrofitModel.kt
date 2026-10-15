@@ -5,6 +5,11 @@ import br.com.usinasantafe.cvf.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cvf.lib.TypeEquip
 import br.com.usinasantafe.cvf.utils.stringToDate
 
+data class EquipRetrofitOutput(
+    val nro: Int,
+    val idFront: Int
+)
+
 data class EquipRetrofitInput(
     val status: String,
     val failure: String?,
@@ -31,6 +36,8 @@ data class EquipRetrofitModel(
     val descPropAgrRelease: String? = null,
     val dateHourExitMill: String? = null,
     val dateHourArrivalField: String? = null,
+    val flagPreCEC: Int? = null,
+    val flagMilling: Int? = null,
 )
 
 fun EquipRetrofitModel.retrofitModelToEntity(): Equip {
@@ -48,7 +55,9 @@ fun EquipRetrofitModel.retrofitModelToEntity(): Equip {
             idPropAgrRelease = idPropAgrRelease,
             descPropAgrRelease = descPropAgrRelease,
             dateHourExitMill = dateHourExitMill?.stringToDate(),
-            dateHourArrivalField = dateHourArrivalField?.stringToDate()
+            dateHourArrivalField = dateHourArrivalField?.stringToDate(),
+            flagPreCEC = flagPreCEC == 1,
+            flagMilling = flagMilling == 1,
         )
     }
 }

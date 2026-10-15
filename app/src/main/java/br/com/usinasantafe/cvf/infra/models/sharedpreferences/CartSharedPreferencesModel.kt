@@ -6,13 +6,15 @@ import br.com.usinasantafe.cvf.utils.required
 data class CartSharedPreferencesModel(
     val position: Int,
     val idCart: Int,
+    val nroCart: Int
 )
 
 fun CartSharedPreferencesModel.sharedPreferencesModelToEntity(): Cart {
     return with(this){
         Cart(
             position = position,
-            idCart = idCart
+            idCart = idCart,
+            nroCart = nroCart
         )
     }
 }
@@ -21,7 +23,8 @@ fun Cart.entityToSharedPreferencesModel(): CartSharedPreferencesModel {
     return with(this){
         CartSharedPreferencesModel(
             position = position,
-            idCart = idCart
+            idCart = idCart,
+            nroCart = nroCart
         )
     }
 }

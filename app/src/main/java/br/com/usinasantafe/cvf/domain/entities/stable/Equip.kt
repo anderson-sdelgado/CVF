@@ -17,4 +17,6 @@ data class Equip (
     val descPropAgrRelease: String? = null,
     val dateHourExitMill: Date? = null,
     val dateHourArrivalField: Date? = null,
+    val flagPreCEC: Boolean? = null,
+    val flagMilling: Boolean? = null,
 )

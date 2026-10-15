@@ -3,12 +3,13 @@ package br.com.usinasantafe.cvf.presenter.view.note.driver
 import br.com.usinasantafe.cvf.MainDispatcherRule
 import br.com.usinasantafe.cvf.domain.usecases.config.GetStatusSend
 import br.com.usinasantafe.cvf.domain.usecases.manager.GetTitleMenu
-import br.com.usinasantafe.cvf.domain.usecases.note.HasRegColab
 import br.com.usinasantafe.cvf.domain.usecases.note.DeleteNote
 import br.com.usinasantafe.cvf.domain.usecases.note.GetRegDriver
+import br.com.usinasantafe.cvf.domain.usecases.note.HasRegColab
 import br.com.usinasantafe.cvf.domain.usecases.note.SetRegDriver
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.OptionMenu
+import br.com.usinasantafe.cvf.lib.StatusSend
 import br.com.usinasantafe.cvf.lib.TypeButton
 import br.com.usinasantafe.cvf.utils.resultFailure
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -35,25 +36,48 @@ class DriverViewModelTest {
     private val hasRegColab = mock<HasRegColab>()
     private val setRegDriver = mock<SetRegDriver>()
     private val getStatusSend = mock<GetStatusSend>()
-    private val viewModel = DriverViewModel(
-        getTitleMenu = getTitleMenu,
-        getRegDriver = getRegDriver,
-        deleteNote = deleteNote,
-        hasRegColab = hasRegColab,
-        setRegDriver = setRegDriver,
-        getStatusSend = getStatusSend
-    )
+
+    private fun createdViewModel(): DriverViewModel {
+        whenever(
+            getTitleMenu()
+        ).thenReturn(
+            flowOf("Test")
+        )
+        whenever(
+            getStatusSend()
+        ).thenReturn(
+            flowOf(StatusSend.SEND)
+        )
+        return DriverViewModel(
+            getTitleMenu = getTitleMenu,
+            getRegDriver = getRegDriver,
+            deleteNote = deleteNote,
+            hasRegColab = hasRegColab,
+            setRegDriver = setRegDriver,
+            getStatusSend = getStatusSend
+        )
+    }
 
     @Test
     fun `recoverData - Check return failure if function not executed`() =
         runTest {
+            whenever(
+                getRegDriver()
+            ).thenReturn(
+                resultFailure(
+                    context = "GetRegDriver",
+                    message = "-",
+                    cause = Exception()
+                )
+            )
+            val viewModel = createdViewModel()
             viewModel.recoverData()
             assertEquals(
                 true,
                 viewModel.uiState.value.status.flagDialog
             )
             assertEquals(
-                "DriverViewModel.recoverData -> DriverViewModel.updateState -> Parameter specified as non-null is null: method br.com.usinasantafe.cvf.presenter.view.note.driver.DriverViewModel\$recoverData\$1\$RecoverDriver.<init>, parameter descRelease -> null",
+                "DriverViewModel.recoverData -> DriverViewModel.updateState -> GetRegDriver -> java.lang.Exception",
                 viewModel.uiState.value.status.failure
             )
             assertEquals(
@@ -74,13 +98,25 @@ class DriverViewModelTest {
             ).thenReturn(
                 flow { throw Exception("GetDescRelease") }
             )
-            viewModel.recoverData()
+            whenever(
+                getStatusSend()
+            ).thenReturn(
+                flowOf(StatusSend.SEND)
+            )
+            val viewModel = DriverViewModel(
+                getTitleMenu = getTitleMenu,
+                getRegDriver = getRegDriver,
+                deleteNote = deleteNote,
+                hasRegColab = hasRegColab,
+                setRegDriver = setRegDriver,
+                getStatusSend = getStatusSend
+            )
             assertEquals(
                 true,
                 viewModel.uiState.value.status.flagDialog
             )
             assertEquals(
-                "DriverViewModel.recoverData -> DriverViewModel.updateState -> GetDescRelease -> java.lang.Exception",
+                "DriverViewModel.<init> -> DriverViewModel.updateState -> DriverViewModel.observeTitle -> EXCEPTION",
                 viewModel.uiState.value.status.failure
             )
             assertEquals(
@@ -97,11 +133,6 @@ class DriverViewModelTest {
     fun `recoverData - Check return failure if have error in GetRegDriver`() =
         runTest {
             whenever(
-                getTitleMenu()
-            ).thenReturn(
-                flowOf("Test")
-            )
-            whenever(
                 getRegDriver()
             ).thenReturn(
                 resultFailure(
@@ -110,6 +141,7 @@ class DriverViewModelTest {
                     cause = Exception()
                 )
             )
+            val viewModel = createdViewModel()
             viewModel.recoverData()
             assertEquals(
                 true,
@@ -133,15 +165,11 @@ class DriverViewModelTest {
     fun `recoverData - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                getTitleMenu()
-            ).thenReturn(
-                flowOf("Test")
-            )
-            whenever(
                 getRegDriver()
             ).thenReturn(
                 Result.success("Test2")
             )
+            val viewModel = createdViewModel()
             viewModel.recoverData()
             assertEquals(
                 "Test",
@@ -160,6 +188,7 @@ class DriverViewModelTest {
     @Test
     fun `onOptionMenu - Check altered if option is different from DELETE `() =
         runTest {
+            val viewModel = createdViewModel()
             viewModel.onOptionMenu(OptionMenu.CONFIG)
             assertEquals(
                 OptionMenu.CONFIG,
@@ -178,6 +207,7 @@ class DriverViewModelTest {
     @Test
     fun `onOptionMenu - Check altered if option is equal from DELETE `() =
         runTest {
+            val viewModel = createdViewModel()
             viewModel.onOptionMenu(OptionMenu.DELETE)
             assertEquals(
                 OptionMenu.DELETE,
@@ -205,6 +235,7 @@ class DriverViewModelTest {
                     cause = Exception()
                 )
             )
+            val viewModel = createdViewModel()
             viewModel.delete()
             assertEquals(
                 true,
@@ -231,6 +262,7 @@ class DriverViewModelTest {
     @Test
     fun `delete - Check return correct if function execute successfully`() =
         runTest {
+            val viewModel = createdViewModel()
             viewModel.delete()
             verify(deleteNote, atLeastOnce()).invoke()
             assertEquals(
@@ -241,6 +273,7 @@ class DriverViewModelTest {
 
     @Test
     fun `onTextField - Check remover char`() {
+        val viewModel = createdViewModel()
         viewModel.onTextField(
             "1",
             TypeButton.NUMERIC
@@ -285,6 +318,7 @@ class DriverViewModelTest {
 
     @Test
     fun `set - Check msg of empty field`() {
+        val viewModel = createdViewModel()
         viewModel.onTextField(
             "OK",
             TypeButton.OK
@@ -311,6 +345,7 @@ class DriverViewModelTest {
                     cause = Exception()
                 )
             )
+            val viewModel = createdViewModel()
             viewModel.onTextField(
                 "19759",
                 TypeButton.NUMERIC
@@ -349,6 +384,7 @@ class DriverViewModelTest {
             ).thenReturn(
                 Result.success(false)
             )
+            val viewModel = createdViewModel()
             viewModel.onTextField(
                 "19759",
                 TypeButton.NUMERIC
@@ -396,6 +432,7 @@ class DriverViewModelTest {
                     cause = Exception()
                 )
             )
+            val viewModel = createdViewModel()
             viewModel.onTextField(
                 "19759",
                 TypeButton.NUMERIC
@@ -434,6 +471,7 @@ class DriverViewModelTest {
             ).thenReturn(
                 Result.success(true)
             )
+            val viewModel = createdViewModel()
             viewModel.onTextField(
                 "19759",
                 TypeButton.NUMERIC

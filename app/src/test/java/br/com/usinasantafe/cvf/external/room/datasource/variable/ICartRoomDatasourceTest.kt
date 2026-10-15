@@ -62,21 +62,24 @@ class ICartRoomDatasourceTest {
                 CartRoomModel(
                     idHeader = 1,
                     position = 1,
-                    idCart = 25
+                    idCart = 25,
+                    nroCart = 100
                 )
             )
             cartDao.insert(
                 CartRoomModel(
                     idHeader = 1,
                     position = 2,
-                    idCart = 10
+                    idCart = 10,
+                    nroCart = 200
                 )
             )
             cartDao.insert(
                 CartRoomModel(
                     idHeader = 2,
                     position = 1,
-                    idCart = 145
+                    idCart = 145,
+                    nroCart = 450
                 )
             )
             val result = datasource.listByIdHeader(1)
@@ -95,7 +98,8 @@ class ICartRoomDatasourceTest {
                     id = 1,
                     idHeader = 1,
                     position = 1,
-                    idCart = 25
+                    idCart = 25,
+                    nroCart = 100
                 ),
                 model1
             )
@@ -105,7 +109,8 @@ class ICartRoomDatasourceTest {
                     id = 2,
                     idHeader = 1,
                     position = 2,
-                    idCart = 10
+                    idCart = 10,
+                    nroCart = 200
                 ),
                 model2
             )
@@ -119,7 +124,8 @@ class ICartRoomDatasourceTest {
                     id = 1,
                     idHeader = 1,
                     position = 1,
-                    idCart = 25
+                    idCart = 25,
+                    nroCart = 100
                 )
             )
             val result = datasource.save(
@@ -127,7 +133,8 @@ class ICartRoomDatasourceTest {
                     id = 1,
                     idHeader = 1,
                     position = 1,
-                    idCart = 25
+                    idCart = 25,
+                    nroCart = 100
                 )
             )
             assertEquals(
@@ -151,14 +158,16 @@ class ICartRoomDatasourceTest {
                 CartRoomModel(
                     idHeader = 1,
                     position = 1,
-                    idCart = 25
+                    idCart = 25,
+                    nroCart = 100
                 )
             )
             val result = datasource.save(
                 CartRoomModel(
                     idHeader = 1,
                     position = 2,
-                    idCart = 63
+                    idCart = 63,
+                    nroCart = 200
                 )
             )
             assertEquals(
@@ -176,7 +185,8 @@ class ICartRoomDatasourceTest {
                     id = 1,
                     idHeader = 1,
                     position = 1,
-                    idCart = 25
+                    idCart = 25,
+                    nroCart = 100
                 ),
                 model1
             )
@@ -186,7 +196,8 @@ class ICartRoomDatasourceTest {
                     id = 2,
                     idHeader = 1,
                     position = 2,
-                    idCart = 63
+                    idCart = 63,
+                    nroCart = 240
                 ),
                 model2
             )
@@ -199,21 +210,24 @@ class ICartRoomDatasourceTest {
                 CartRoomModel(
                     idHeader = 1,
                     position = 1,
-                    idCart = 25
+                    idCart = 25,
+                    nroCart = 100
                 )
             )
             cartDao.insert(
                 CartRoomModel(
                     idHeader = 1,
                     position = 2,
-                    idCart = 63
+                    idCart = 63,
+                    nroCart = 200
                 )
             )
             cartDao.insert(
                 CartRoomModel(
                     idHeader = 2,
                     position = 1,
-                    idCart = 145
+                    idCart = 145,
+                    nroCart = 400
                 )
             )
             val listBefore = cartDao.all()
@@ -227,7 +241,8 @@ class ICartRoomDatasourceTest {
                     id = 1,
                     idHeader = 1,
                     position = 1,
-                    idCart = 25
+                    idCart = 25,
+                    nroCart = 100
                 ),
                 modelBefore1
             )
@@ -237,7 +252,8 @@ class ICartRoomDatasourceTest {
                     id = 2,
                     idHeader = 1,
                     position = 2,
-                    idCart = 63
+                    idCart = 63,
+                    nroCart = 200
                 ),
                 modelBefore2
             )
@@ -247,7 +263,8 @@ class ICartRoomDatasourceTest {
                     id = 3,
                     idHeader = 2,
                     position = 1,
-                    idCart = 145
+                    idCart = 145,
+                    nroCart = 100
                 ),
                 modelBefore3
             )
@@ -267,7 +284,8 @@ class ICartRoomDatasourceTest {
                     id = 3,
                     idHeader = 2,
                     position = 1,
-                    idCart = 145
+                    idCart = 145,
+                    nroCart = 100
                 ),
                 modelAfter
             )

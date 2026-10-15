@@ -55,7 +55,7 @@ class IGetTypeTruckTest {
     @Test
     fun check_return_failure_if_equip_room_not_have_data() =
         runTest {
-            headerSharedPreferencesDatasource.setIdTruck(100)
+            headerSharedPreferencesDatasource.setTruck(100)
             val result = usecase()
             assertEquals(
                 true,
@@ -74,7 +74,7 @@ class IGetTypeTruckTest {
     @Test
     fun check_return_TypeTruck_TRUCK_if_process_execute_successfully_and_cdOperClass_is_1() =
         runTest {
-            headerSharedPreferencesDatasource.setIdTruck(100)
+            headerSharedPreferencesDatasource.setTruck(100)
             equipDao.insert(
                 EquipRoomModel(
                     id = 100,
@@ -98,7 +98,7 @@ class IGetTypeTruckTest {
     @Test
     fun check_return_TypeTruck_HAULAGE_TRUCK_if_process_execute_successfully_and_cdOperClass_is_different_1() =
         runTest {
-            headerSharedPreferencesDatasource.setIdTruck(100)
+            headerSharedPreferencesDatasource.setTruck(100)
             equipDao.insert(
                 EquipRoomModel(
                     id = 100,

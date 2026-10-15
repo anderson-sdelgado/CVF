@@ -6,7 +6,7 @@ import br.com.usinasantafe.cvf.domain.usecases.config.GetStatusSend
 import br.com.usinasantafe.cvf.domain.usecases.manager.GetTitleMenu
 import br.com.usinasantafe.cvf.domain.usecases.note.DeleteNote
 import br.com.usinasantafe.cvf.domain.usecases.note.GetNroTruck
-import br.com.usinasantafe.cvf.domain.usecases.note.HasNroTruck
+import br.com.usinasantafe.cvf.domain.usecases.note.CheckNroTruck
 import br.com.usinasantafe.cvf.domain.usecases.note.SetNroTruck
 import br.com.usinasantafe.cvf.lib.CheckTruck
 import br.com.usinasantafe.cvf.lib.Errors
@@ -50,7 +50,7 @@ class TruckViewModel @Inject constructor(
     private val getTitleMenu: GetTitleMenu,
     private val deleteNote: DeleteNote,
     private val getNroTruck: GetNroTruck,
-    private val hasNroTruck: HasNroTruck,
+    private val checkNroTruck: CheckNroTruck,
     private val setNroTruck: SetNroTruck
 ) : ViewModel() {
 
@@ -140,16 +140,22 @@ class TruckViewModel @Inject constructor(
                 return@launch
             }
             updateState { copy(status = status.copy(flagProgress = true)) }
-            val check = hasNroTruck(state.text).getOrThrow()
-            if (check == CheckTruck.INVALID) {
-                updateState { withFailure(Errors.INVALID) }
-                return@launch
+            val check = checkNroTruck(state.text).getOrThrow()
+            when (check) {
+                CheckTruck.OK -> setNroTruck(state.text).getOrThrow()
+                CheckTruck.INVALID -> {
+                    updateState { withFailure(Errors.INVALID) }
+                    return@launch
+                }
+                CheckTruck.RELEASE_AND_FRONT_INVALID -> {
+                    updateState { withFailure(Errors.RELEASE_AND_FRONT_INVALID) }
+                    return@launch
+                }
+                CheckTruck.PRE_CEC_EXISTENT -> {
+                    updateState { withFailure(Errors.PRE_CEC_EXISTENT) }
+                    return@launch
+                }
             }
-            if (check == CheckTruck.RELEASE_AND_FRONT_INVALID) {
-                updateState { withFailure(Errors.RELEASE_AND_FRONT_INVALID) }
-                return@launch
-            }
-            setNroTruck(state.text).getOrThrow()
         }
             .onSuccessUpdateAccess(::updateState)
             .onFailureUpdate(::updateState)

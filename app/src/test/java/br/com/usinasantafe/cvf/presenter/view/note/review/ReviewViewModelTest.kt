@@ -5,6 +5,7 @@ import br.com.usinasantafe.cvf.domain.usecases.note.DeleteNote
 import br.com.usinasantafe.cvf.domain.usecases.note.FinishNote
 import br.com.usinasantafe.cvf.domain.usecases.note.GetDescReview
 import br.com.usinasantafe.cvf.lib.Errors
+import br.com.usinasantafe.cvf.presenter.model.ReviewScreenModel
 import br.com.usinasantafe.cvf.utils.resultFailure
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -68,12 +69,14 @@ class ReviewViewModelTest {
             whenever(
                 getDescReview()
             ).thenReturn(
-                Result.success("Test")
+                Result.success(
+                    ReviewScreenModel()
+                )
             )
             viewModel.recoverData()
             assertEquals(
-                "Test",
-                viewModel.uiState.value.text
+                ReviewScreenModel(),
+                viewModel.uiState.value.model
             )
         }
 

@@ -6,6 +6,14 @@ import java.util.Date
 import java.util.Locale
 import kotlin.text.format
 
+
+fun dateFiveTeenMinutesAgo(): Date {
+    val c: Calendar = Calendar.getInstance()
+    c.time = Date()
+    c.add(Calendar.MINUTE, -15)
+    return c.time
+}
+
 fun dateOneWeekAgo(): Date {
     val c: Calendar = Calendar.getInstance()
     c.time = Date()

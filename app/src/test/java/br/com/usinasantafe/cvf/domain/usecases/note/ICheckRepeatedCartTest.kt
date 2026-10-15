@@ -111,11 +111,13 @@ class ICheckRepeatedCartTest {
                     listOf(
                         Cart(
                             position = 1,
-                            idCart = 12
+                            idCart = 12,
+                            nroCart = 200
                         ),
                         Cart(
                             position = 2,
-                            idCart = 26
+                            idCart = 26,
+                            nroCart = 300
                         )
                     )
                 )
@@ -146,11 +148,13 @@ class ICheckRepeatedCartTest {
                     listOf(
                         Cart(
                             position = 1,
-                            idCart = 12
+                            idCart = 12,
+                            nroCart = 200
                         ),
                         Cart(
                             position = 2,
-                            idCart = 26
+                            idCart = 26,
+                            nroCart = 300
                         )
                     )
                 )

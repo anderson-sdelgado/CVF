@@ -1,6 +1,5 @@
 package br.com.usinasantafe.cvf.domain.usecases.note
 
-import br.com.usinasantafe.cvf.domain.entities.variable.Cart
 import br.com.usinasantafe.cvf.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cvf.domain.repositories.variable.NoteRepository
 import br.com.usinasantafe.cvf.utils.resultFailure
@@ -75,7 +74,7 @@ class ISetNroTruckTest {
                 Result.success(20)
             )
             whenever(
-                noteRepository.setIdTruck(20)
+                noteRepository.setTruck(20, 100)
             ).thenReturn(
                 resultFailure(
                     "INoteRepository.setIdTruck",
@@ -107,7 +106,7 @@ class ISetNroTruckTest {
                 Result.success(20)
             )
             val result = usecase("100")
-            verify(noteRepository, atLeastOnce()).setIdTruck(20)
+            verify(noteRepository, atLeastOnce()).setTruck(20, 100)
             assertEquals(
                 true,
                 result.isSuccess

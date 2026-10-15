@@ -34,7 +34,8 @@ class ICartSharedPreferencesDatasourceTest {
         runTest {
             val data = CartSharedPreferencesModel(
                 position = 1,
-                idCart = 1
+                idCart = 1,
+                nroCart = 100
             )
             datasource.add(data)
             val resultBefore = datasource.list()

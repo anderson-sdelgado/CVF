@@ -23,7 +23,7 @@ fun msg(levelUpdate: LevelUpdate?, failure: String, tableUpdate: String): String
 fun errors(errors: Errors, failure: String, value: String = ""): String {
     return when (errors) {
         Errors.FIELD_EMPTY -> {
-            if(!value.isEmpty()) return stringResource(
+            if(value.isNotEmpty()) return stringResource(
                 id = R.string.text_field_empty,
                 value
             )
@@ -73,6 +73,18 @@ fun errors(errors: Errors, failure: String, value: String = ""): String {
         Errors.RELEASE_AND_FRONT_INVALID -> {
             stringResource(
                 id = R.string.text_invalid_front_release
+            )
+        }
+        Errors.PRE_CEC_EXISTENT -> {
+            stringResource(
+                id = R.string.text_msg_pre_cec_existent,
+                value
+            )
+        }
+        Errors.PENDING_WEIGHING -> {
+            stringResource(
+                id = R.string.text_msg_milling_weighing,
+                value
             )
         }
         else -> stringResource(

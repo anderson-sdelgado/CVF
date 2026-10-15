@@ -18,7 +18,6 @@ import br.com.usinasantafe.cvf.utils.UiStateWithStatusUpdate
 import br.com.usinasantafe.cvf.utils.UiStatusStateUpdate
 import br.com.usinasantafe.cvf.utils.onFailureUpdate
 import br.com.usinasantafe.cvf.utils.onSuccessUpdateAccess
-import br.com.usinasantafe.cvf.utils.required
 import br.com.usinasantafe.cvf.utils.withFailure
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -140,8 +139,8 @@ class DriverViewModel @Inject constructor(
                 return@launch
             }
             updateState { copy(status = status.copy(flagProgress = true)) }
-            val check = hasRegColab(state.text).getOrThrow()
-            if(!check) {
+            val has = hasRegColab(state.text).getOrThrow()
+            if(!has) {
                 updateState { withFailure(Errors.INVALID) }
                 return@launch
             }

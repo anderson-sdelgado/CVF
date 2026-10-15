@@ -22,7 +22,7 @@ class ISetNroCart @Inject constructor(
         call(getClassAndMethod()) {
             val nro = tryCatch(ERROR_STRING_TO_INT) { text.toInt() }
             val idCart = equipRepository.getIdByNro(nro).getOrThrow()
-            val entity = Cart(position = pos, idCart = idCart)
+            val entity = Cart(position = pos, idCart = idCart, nroCart = nro)
             noteRepository.setCart(entity).getOrThrow()
         }
 

@@ -49,6 +49,7 @@ class IHeaderRoomDatasourceTest {
                 HeaderRoomModel(
                     regDriver = 123,
                     idTruck = 456,
+                    nroTruck = 2000,
                     statusSend = StatusSend.STARTED
                 )
             )
@@ -70,6 +71,7 @@ class IHeaderRoomDatasourceTest {
                 HeaderRoomModel(
                     regDriver = 123,
                     idTruck = 456,
+                    nroTruck = 2000,
                     statusSend = StatusSend.SEND
                 )
             )
@@ -91,6 +93,7 @@ class IHeaderRoomDatasourceTest {
                 HeaderRoomModel(
                     regDriver = 123,
                     idTruck = 456,
+                    nroTruck = 2000,
                     statusSend = StatusSend.STARTED
                 )
             )
@@ -112,6 +115,7 @@ class IHeaderRoomDatasourceTest {
                 HeaderRoomModel(
                     regDriver = 123,
                     idTruck = 456,
+                    nroTruck = 2000,
                     statusSend = StatusSend.SEND
                 )
             )
@@ -131,6 +135,7 @@ class IHeaderRoomDatasourceTest {
                     id = 1,
                     regDriver = 123,
                     idTruck = 456,
+                    nroTruck = 2000,
                     statusSend = StatusSend.SEND
                 ).copy(dateHour = model.dateHour),
                 model
@@ -145,7 +150,8 @@ class IHeaderRoomDatasourceTest {
                 listOf(
                     HeaderRoomModel(
                         regDriver = 123,
-                        idTruck = 456
+                        idTruck = 456,
+                        nroTruck = 2000,
                     )
                 )
             )
@@ -172,7 +178,8 @@ class IHeaderRoomDatasourceTest {
                     HeaderRoomModel(
                         id = 1,
                         regDriver = 123,
-                        idTruck = 456
+                        idTruck = 456,
+                        nroTruck = 2000,
                     )
                 )
             )
@@ -197,14 +204,16 @@ class IHeaderRoomDatasourceTest {
                 HeaderRoomModel(
                     id = 1,
                     regDriver = 123,
-                    idTruck = 456
+                    idTruck = 456,
+                    nroTruck = 2000,
                 )
             )
             headerDao.insert(
                 HeaderRoomModel(
                     id = 2,
                     regDriver = 100100,
-                    idTruck = 100
+                    idTruck = 100,
+                    nroTruck = 2500,
                 )
             )
             val listBefore = headerDao.all()
@@ -218,6 +227,7 @@ class IHeaderRoomDatasourceTest {
                     id = 1,
                     regDriver = 123,
                     idTruck = 456,
+                    nroTruck = 2000,
                     idServ = null,
                     statusSend = StatusSend.SEND
                 ).copy(dateHour = modelBefore1.dateHour),
@@ -229,6 +239,7 @@ class IHeaderRoomDatasourceTest {
                     id = 2,
                     regDriver = 100100,
                     idTruck = 100,
+                    nroTruck = 2500,
                     idServ = null,
                     statusSend = StatusSend.SEND
                     ).copy(dateHour = modelBefore2.dateHour),
@@ -241,12 +252,14 @@ class IHeaderRoomDatasourceTest {
                         id = 1,
                         regDriver = 123,
                         idTruck = 456,
+                        nroTruck = 2000,
                         idServ = 112,
                     ),
                     HeaderRoomModel(
                         id = 2,
                         regDriver = 100100,
                         idTruck = 100,
+                        nroTruck = 2500,
                         idServ = 113
                     )
                 )
@@ -266,6 +279,7 @@ class IHeaderRoomDatasourceTest {
                     id = 1,
                     regDriver = 123,
                     idTruck = 456,
+                    nroTruck = 2000,
                     idServ = 112,
                     statusSend = StatusSend.SENT
                     ).copy(dateHour = modelAfter1.dateHour),
@@ -277,6 +291,7 @@ class IHeaderRoomDatasourceTest {
                     id = 2,
                     regDriver = 100100,
                     idTruck = 100,
+                    nroTruck = 2500,
                     idServ = 113,
                     statusSend = StatusSend.SENT
                     ).copy(dateHour = modelAfter2.dateHour),
@@ -291,6 +306,7 @@ class IHeaderRoomDatasourceTest {
                 HeaderRoomModel(
                     id = 1,
                     regDriver = 123,
+                    nroTruck = 2000,
                     idTruck = 456
                 )
             )
@@ -298,6 +314,7 @@ class IHeaderRoomDatasourceTest {
                 HeaderRoomModel(
                     id = 1,
                     regDriver = 123,
+                    nroTruck = 2500,
                     idTruck = 456
                 )
             )
@@ -321,13 +338,15 @@ class IHeaderRoomDatasourceTest {
             headerDao.insert(
                 HeaderRoomModel(
                     regDriver = 123,
-                    idTruck = 456
+                    idTruck = 456,
+                    nroTruck = 2000,
                 )
             )
             val result = datasource.save(
                 HeaderRoomModel(
                     regDriver = 100100,
-                    idTruck = 100
+                    idTruck = 100,
+                    nroTruck = 2500,
                 )
             )
             assertEquals(
@@ -345,6 +364,7 @@ class IHeaderRoomDatasourceTest {
                     id = 1,
                     regDriver = 123,
                     idTruck = 456,
+                    nroTruck = 2000,
                     idServ = null,
                     statusSend = StatusSend.SEND
                 ).copy(dateHour = model1.dateHour),
@@ -356,6 +376,7 @@ class IHeaderRoomDatasourceTest {
                     id = 2,
                     regDriver = 100100,
                     idTruck = 100,
+                    nroTruck = 2500,
                     idServ = null,
                     statusSend = StatusSend.SEND
                     ).copy(dateHour = model2.dateHour),
@@ -370,14 +391,16 @@ class IHeaderRoomDatasourceTest {
                 HeaderRoomModel(
                     id = 1,
                     regDriver = 123,
-                    idTruck = 456
+                    idTruck = 456,
+                    nroTruck = 2000,
                 )
             )
             headerDao.insert(
                 HeaderRoomModel(
                     id = 2,
                     regDriver = 100100,
-                    idTruck = 100
+                    idTruck = 100,
+                    nroTruck = 2500,
                 )
             )
             val listBefore = headerDao.all()
@@ -390,7 +413,8 @@ class IHeaderRoomDatasourceTest {
                 HeaderRoomModel(
                     id = 1,
                     regDriver = 123,
-                    idTruck = 456
+                    idTruck = 456,
+                    nroTruck = 2000,
                 ).copy(dateHour = modelBefore1.dateHour),
                 modelBefore1
             )
@@ -399,7 +423,8 @@ class IHeaderRoomDatasourceTest {
                 HeaderRoomModel(
                     id = 2,
                     regDriver = 100100,
-                    idTruck = 100
+                    idTruck = 100,
+                    nroTruck = 2500,
                 ).copy(dateHour = modelBefore2.dateHour),
                 modelBefore2
             )
@@ -418,7 +443,8 @@ class IHeaderRoomDatasourceTest {
                 HeaderRoomModel(
                     id = 2,
                     regDriver = 100100,
-                    idTruck = 100
+                    idTruck = 100,
+                    nroTruck = 2000,
                 ).copy(dateHour = modelBefore2.dateHour),
                 modelAfter1
             )

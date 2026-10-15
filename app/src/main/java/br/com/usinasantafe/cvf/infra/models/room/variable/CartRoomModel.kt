@@ -12,7 +12,8 @@ data class CartRoomModel(
     var id: Int? = null,
     val idHeader: Int,
     val position: Int,
-    val idCart: Int
+    val idCart: Int,
+    val nroCart: Int
 )
 
 fun CartSharedPreferencesModel.sharedPreferencesModelToRoomModel(idHeader: Int): CartRoomModel {
@@ -20,7 +21,8 @@ fun CartSharedPreferencesModel.sharedPreferencesModelToRoomModel(idHeader: Int):
         CartRoomModel(
             idHeader = idHeader,
             position = ::position.required(),
-            idCart = ::idCart.required()
+            idCart = ::idCart.required(),
+            nroCart = ::nroCart.required()
         )
     }
 }

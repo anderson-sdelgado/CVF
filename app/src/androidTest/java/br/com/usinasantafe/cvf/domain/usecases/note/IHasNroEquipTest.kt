@@ -30,7 +30,7 @@ class IHasNroEquipTest {
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: HasNroCart
+    lateinit var usecase: CheckNroCart
 
     @BindValue
     @JvmField

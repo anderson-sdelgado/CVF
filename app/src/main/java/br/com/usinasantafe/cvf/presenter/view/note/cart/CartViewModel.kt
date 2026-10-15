@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cvf.domain.usecases.config.GetStatusSend
 import br.com.usinasantafe.cvf.domain.usecases.manager.GetTitleMenu
-import br.com.usinasantafe.cvf.domain.usecases.note.HasNroCart
+import br.com.usinasantafe.cvf.domain.usecases.note.CheckNroCart
 import br.com.usinasantafe.cvf.domain.usecases.note.DeleteNote
 import br.com.usinasantafe.cvf.domain.usecases.note.GetNroCart
 import br.com.usinasantafe.cvf.domain.usecases.note.GetTypeTruck
@@ -13,6 +13,7 @@ import br.com.usinasantafe.cvf.domain.usecases.manager.QtdLimitCart
 import br.com.usinasantafe.cvf.domain.usecases.note.CheckInvertedCart
 import br.com.usinasantafe.cvf.domain.usecases.note.CheckRepeatedCart
 import br.com.usinasantafe.cvf.domain.usecases.note.SetNroCart
+import br.com.usinasantafe.cvf.lib.CheckCart
 import br.com.usinasantafe.cvf.lib.Errors
 import br.com.usinasantafe.cvf.lib.FlowCart
 import br.com.usinasantafe.cvf.lib.OptionMenu
@@ -60,7 +61,7 @@ class CartViewModel @Inject constructor(
     private val getTitleMenu: GetTitleMenu,
     private val deleteNote: DeleteNote,
     private val getNroCart: GetNroCart,
-    private val hasNroCart: HasNroCart,
+    private val checkNroCart: CheckNroCart,
     private val setNroCart: SetNroCart,
     private val getTypeTruck: GetTypeTruck,
     private val qtdLimitCart: QtdLimitCart,
@@ -112,7 +113,7 @@ class CartViewModel @Inject constructor(
         runCatching {
             if (posCart > 0) posCart else 1
         }
-            .onSuccess { get(it) }
+            .onSuccess { get(it).join() }
             .onFailureUpdate(::updateState)
     }
 
@@ -141,7 +142,7 @@ class CartViewModel @Inject constructor(
                 return@launch
             }
         }
-            .onSuccess { get(pos = state.pos - 1) }
+            .onSuccess { get(pos = state.pos - 1).join() }
             .onFailureUpdate(::updateState)
     }
 
@@ -185,9 +186,21 @@ class CartViewModel @Inject constructor(
             }
             if(state.text.isEmpty()) return@runCatching true
             updateState { copy(status = status.copy(flagProgress = true)) }
-            if (!hasNroCart(state.text, state.pos).getOrThrow()) {
-                updateState { withFailure(Errors.INVALID) }
-                return@launch
+            val check = checkNroCart(state.text, state.pos).getOrThrow()
+            when (check) {
+                CheckCart.OK -> Unit
+                CheckCart.INVALID -> {
+                    updateState { withFailure(Errors.INVALID) }
+                    return@launch
+                }
+                CheckCart.PRE_CEC_EXISTENT -> {
+                    updateState { withFailure(Errors.PRE_CEC_EXISTENT) }
+                    return@launch
+                }
+                CheckCart.PENDING_WEIGHING -> {
+                    updateState { withFailure(Errors.PENDING_WEIGHING) }
+                    return@launch
+                }
             }
             if(checkRepeatedCart(state.text, state.pos).getOrThrow()) {
                 updateState { withFailure(Errors.CART_REPEATED) }
@@ -204,7 +217,7 @@ class CartViewModel @Inject constructor(
         }
             .onSuccess {
                 updateState { copy(status = status.copy(flagAccess = it, flagProgress = false)) }
-                if(!it) get(pos = state.pos + 1)
+                if(!it) get(pos = state.pos + 1).join()
             }
             .onFailureUpdate(::updateState)
     }

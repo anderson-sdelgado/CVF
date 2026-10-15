@@ -18,7 +18,6 @@ import br.com.usinasantafe.cvf.utils.resultFailure
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.Mockito.mock
-import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.atLeastOnce
 import org.mockito.kotlin.never
@@ -47,12 +46,14 @@ class INoteRepositoryTest {
             HeaderRoomModel(
                 id = 10,
                 regDriver = 19759,
-                idTruck = 10
+                idTruck = 10,
+                nroTruck = 100,
             ),
             HeaderRoomModel(
                 id = 11,
                 regDriver = 18017,
-                idTruck = 100
+                idTruck = 100,
+                nroTruck = 200,
             )
         )
 
@@ -62,13 +63,15 @@ class INoteRepositoryTest {
                 id = 1,
                 idHeader = 10,
                 position = 1,
-                idCart = 1
+                idCart = 1,
+                nroCart = 1000,
             ),
             CartRoomModel(
                 id = 2,
                 idHeader = 10,
                 position = 2,
-                idCart = 2
+                idCart = 2,
+                nroCart = 2000,
             )
         )
 
@@ -78,19 +81,22 @@ class INoteRepositoryTest {
                 id = 3,
                 idHeader = 11,
                 position = 1,
-                idCart = 10
+                idCart = 10,
+                nroCart = 1000,
             ),
             CartRoomModel(
                 id = 4,
                 idHeader = 11,
                 position = 2,
-                idCart = 20
+                idCart = 20,
+                nroCart = 2000,
             ),
             CartRoomModel(
                 id = 5,
                 idHeader = 11,
                 position = 3,
-                idCart = 30
+                idCart = 30,
+                nroCart = 5000,
             )
         )
 
@@ -104,6 +110,8 @@ class INoteRepositoryTest {
                 idFront = 1,
                 idRelease = 2,
                 dateHour = "",
+                dateHourArrivalField = "",
+                dateHourExitMill = "",
                 cartList = listOf(
                     CartRetrofitModelOutput(
                         id = 1,
@@ -125,6 +133,8 @@ class INoteRepositoryTest {
                 idFront = 1,
                 idRelease = 2,
                 dateHour = "",
+                dateHourArrivalField = "",
+                dateHourExitMill = "",
                 cartList = listOf(
                     CartRetrofitModelOutput(
                         id = 3,
@@ -151,12 +161,14 @@ class INoteRepositoryTest {
                 id = 10,
                 regDriver = 19759,
                 idTruck = 10,
+                nroTruck = 100,
                 idServ = 24
             ),
             HeaderRoomModel(
                 id = 11,
                 regDriver = 18017,
                 idTruck = 100,
+                nroTruck = 200,
                 idServ = 25
             )
         )
@@ -179,6 +191,7 @@ class INoteRepositoryTest {
                 id = 10,
                 regDriver = 19759,
                 idTruck = 10,
+                nroTruck = 100,
                 dateHour = Date(1786369416000),
                 statusSend = StatusSend.SENT
             ),
@@ -186,6 +199,7 @@ class INoteRepositoryTest {
                 id = 11,
                 regDriver = 18017,
                 idTruck = 100,
+                nroTruck = 200,
                 dateHour = Date(1787838216000),
                 statusSend = StatusSend.SENT
             )
@@ -794,11 +808,13 @@ class INoteRepositoryTest {
                     listOf(
                         CartSharedPreferencesModel(
                             position = 1,
-                            idCart = 1
+                            idCart = 1,
+                            nroCart = 1000
                         ),
                         CartSharedPreferencesModel(
                             position = 2,
-                            idCart = 2
+                            idCart = 2,
+                            nroCart = 2000
                         )
                     )
                 )
@@ -808,7 +824,8 @@ class INoteRepositoryTest {
                     CartRoomModel(
                         idHeader = 12,
                         position = 1,
-                        idCart = 1
+                        idCart = 1,
+                        nroCart = 1000
                     )
                 )
             ).thenReturn(
@@ -862,11 +879,13 @@ class INoteRepositoryTest {
                     listOf(
                         CartSharedPreferencesModel(
                             position = 1,
-                            idCart = 1
+                            idCart = 1,
+                            nroCart = 1000
                         ),
                         CartSharedPreferencesModel(
                             position = 2,
-                            idCart = 2
+                            idCart = 2,
+                            nroCart = 2000
                         )
                     )
                 )
@@ -885,14 +904,16 @@ class INoteRepositoryTest {
                 CartRoomModel(
                     idHeader = 12,
                     position = 1,
-                    idCart = 1
+                    idCart = 1,
+                    nroCart = 1000
                 )
             )
             verify(cartRoomDatasource, atLeastOnce()).save(
                 CartRoomModel(
                     idHeader = 12,
                     position = 2,
-                    idCart = 2
+                    idCart = 2,
+                    nroCart = 2000
                 )
             )
             assertEquals(
@@ -938,11 +959,13 @@ class INoteRepositoryTest {
                     listOf(
                         CartSharedPreferencesModel(
                             position = 1,
-                            idCart = 1
+                            idCart = 1,
+                            nroCart = 1000
                         ),
                         CartSharedPreferencesModel(
                             position = 2,
-                            idCart = 2
+                            idCart = 2,
+                            nroCart = 2000
                         )
                     )
                 )
@@ -961,14 +984,16 @@ class INoteRepositoryTest {
                 CartRoomModel(
                     idHeader = 12,
                     position = 1,
-                    idCart = 1
+                    idCart = 1,
+                    nroCart = 1000
                 )
             )
             verify(cartRoomDatasource, atLeastOnce()).save(
                 CartRoomModel(
                     idHeader = 12,
                     position = 2,
-                    idCart = 2
+                    idCart = 2,
+                    nroCart = 2000
                 )
             )
             verify(headerSharedPreferencesDatasource, atLeastOnce()).clean()
@@ -1015,11 +1040,13 @@ class INoteRepositoryTest {
                     listOf(
                         CartSharedPreferencesModel(
                             position = 1,
-                            idCart = 1
+                            idCart = 1,
+                            nroCart = 1000
                         ),
                         CartSharedPreferencesModel(
                             position = 2,
-                            idCart = 2
+                            idCart = 2,
+                            nroCart = 2000
                         )
                     )
                 )
@@ -1029,14 +1056,16 @@ class INoteRepositoryTest {
                 CartRoomModel(
                     idHeader = 12,
                     position = 1,
-                    idCart = 1
+                    idCart = 1,
+                    nroCart = 1000
                 )
             )
             verify(cartRoomDatasource, atLeastOnce()).save(
                 CartRoomModel(
                     idHeader = 12,
                     position = 2,
-                    idCart = 2
+                    idCart = 2,
+                    nroCart = 2000
                 )
             )
             verify(headerSharedPreferencesDatasource, atLeastOnce()).clean()
@@ -1084,11 +1113,13 @@ class INoteRepositoryTest {
                     listOf(
                         CartSharedPreferencesModel(
                             position = 1,
-                            idCart = 1
+                            idCart = 1,
+                            nroCart = 1000
                         ),
                         CartSharedPreferencesModel(
                             position = 2,
-                            idCart = 2
+                            idCart = 2,
+                            nroCart = 2000
                         )
                     )
                 )
@@ -1102,11 +1133,13 @@ class INoteRepositoryTest {
                 listOf(
                     Cart(
                         position = 1,
-                        idCart = 1
+                        idCart = 1,
+                        nroCart = 1000
                     ),
                     Cart(
                         position = 2,
-                        idCart = 2
+                        idCart = 2,
+                        nroCart = 2000
                     )
                 ),
                 result.getOrNull()!!
@@ -1120,7 +1153,8 @@ class INoteRepositoryTest {
                 cartSharedPreferencesDatasource.add(
                     CartSharedPreferencesModel(
                         position = 1,
-                        idCart = 1
+                        idCart = 1,
+                        nroCart = 1000
                     )
                 )
             ).thenReturn(
@@ -1133,7 +1167,8 @@ class INoteRepositoryTest {
             val result = repository.setCart(
                 Cart(
                     position = 1,
-                    idCart = 1
+                    idCart = 1,
+                    nroCart = 1000
                 )
             )
             assertEquals(
@@ -1156,13 +1191,15 @@ class INoteRepositoryTest {
             val result = repository.setCart(
                 Cart(
                     position = 1,
-                    idCart = 1
+                    idCart = 1,
+                    nroCart = 1000
                 )
             )
             verify(cartSharedPreferencesDatasource, atLeastOnce()).add(
                 CartSharedPreferencesModel(
                     position = 1,
-                    idCart = 1
+                    idCart = 1,
+                    nroCart = 1000
                 )
             )
             assertEquals(
@@ -1175,7 +1212,7 @@ class INoteRepositoryTest {
     fun `setIdTruck - Check return failure if have error in HeaderSharedPreferencesDatasource setIdTruck`() =
         runTest {
             whenever(
-                headerSharedPreferencesDatasource.setIdTruck(200)
+                headerSharedPreferencesDatasource.setTruck(200, 300)
             ).thenReturn(
                 resultFailure(
                     "IHeaderSharedPreferencesDatasource.setIdTruck",
@@ -1183,7 +1220,7 @@ class INoteRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.setIdTruck(200)
+            val result = repository.setTruck(200, 300)
             assertEquals(
                 true,
                 result.isFailure
@@ -1201,8 +1238,8 @@ class INoteRepositoryTest {
     @Test
     fun `setIdTruck - Check return correct if function execute successfully`() =
         runTest {
-            val result = repository.setIdTruck(200)
-            verify(headerSharedPreferencesDatasource, atLeastOnce()).setIdTruck(200)
+            val result = repository.setTruck(200, 300)
+            verify(headerSharedPreferencesDatasource, atLeastOnce()).setTruck(200, 300)
             assertEquals(
                 true,
                 result.isSuccess

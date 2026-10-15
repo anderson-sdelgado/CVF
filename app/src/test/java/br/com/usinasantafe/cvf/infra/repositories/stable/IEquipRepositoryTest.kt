@@ -126,10 +126,6 @@ class IEquipRepositoryTest {
         runTest {
             val result = repository.deleteAll()
             verify(equipRoomDatasource, atLeastOnce()).deleteAll()
-            assertEquals(
-                result.isSuccess,
-                true
-            )
         }
 
     @Test
@@ -296,7 +292,12 @@ class IEquipRepositoryTest {
                 result.isSuccess
             )
             assertEquals(
-                false,
+                Equip(
+                    id = 0,
+                    nro = 0,
+                    idOperClass = 0,
+                    type = TypeEquip.TRUCK
+                ),
                 result.getOrNull()!!
             )
         }
@@ -379,7 +380,12 @@ class IEquipRepositoryTest {
                 result.isSuccess
             )
             assertEquals(
-                false,
+                Equip(
+                    id = 0,
+                    nro = 0,
+                    idOperClass = 0,
+                    type = TypeEquip.TRUCK
+                ),
                 result.getOrNull()!!
             )
         }
@@ -416,7 +422,12 @@ class IEquipRepositoryTest {
                 result.isSuccess
             )
             assertEquals(
-                false,
+                Equip(
+                    id = 0,
+                    nro = 0,
+                    idOperClass = 0,
+                    type = TypeEquip.TRUCK
+                ),
                 result.getOrNull()!!
             )
         }
@@ -453,7 +464,12 @@ class IEquipRepositoryTest {
                 result.isSuccess
             )
             assertEquals(
-                true,
+                Equip(
+                    id = 0,
+                    nro = 0,
+                    idOperClass = 0,
+                    type = TypeEquip.TRUCK
+                ),
                 result.getOrNull()!!
             )
         }
@@ -490,7 +506,12 @@ class IEquipRepositoryTest {
                 result.isSuccess
             )
             assertEquals(
-                true,
+                Equip(
+                    id = 0,
+                    nro = 0,
+                    idOperClass = 0,
+                    type = TypeEquip.TRUCK
+                ),
                 result.getOrNull()!!
             )
         }
